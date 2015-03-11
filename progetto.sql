@@ -2,34 +2,20 @@
 create table Campionato(
      Nome varchar(20) not null unique,
      NrPartecipanti tinyint not null,
-     check(NrPartecipanti=4 or NrPartecipanti=6 or NrPartecipanti=8 or NrPartecipanti=10),
-	 Asta boolean,
+	Asta boolean not null,
+	Pubblico boolean not null
 );
 
 create table Regolamento(
      NomeCampionato varchar(20) primary key references Campionato(Nome) on update cascade on delete no action,
      GiornataInizio tinyint not null default 1,
      GiornataFine tinyint not null default 38,
-     check(GiornataInizio>=1 and GiornataInizio<=38),
-     check(GiornataFine>=1 and GiornataFine<=38),
-     check(GiornataFine > GiornataInizio),
      CreditiIniziali SmallInt unsigned not null default 500,
      OrarioConsegna Tinyint unsigned not null default 5,
      PrimaFascia tinyint unsigned default 66,
      LargFascia tinyint unsigned default 6,
      BonusCasa numeric(2,1) not null default 0,
      ModDifesa tinyint not null default 0
-);
-
-create table RegolamentoM(
-     IDed int references Edizione(ID) on update cascade on delete no action,
-     Dif tinyint not null,
-     check(Dif>=0 and Dif<=10),
-     Cen tinyint not null,
-     check(Cen>=0 and Cen<=10),
-     Att tinyint not null,
-     check(Att>=0 and Cen<=10),
-     primary key modulo (IDed, Dif, Cen, Att)
 );
 
 create table Fantasquadra(
@@ -44,7 +30,7 @@ create table Utente(
      Nome varchar(20),
      Cognome varchar(20),
      Email varchar(30),
-     TipoUtente tinyint
+     TipoUtente char
 );
 
 create table Presidenza(
@@ -67,12 +53,10 @@ insert into Classifica (IDed, NomeSq) values(NEW.IDed, NEW.NomeSq);
 
 create table CalciatoreAnno(
      ID int primary key ,
+	Ruolo char(1) not null,
      Cognome varchar(20) not null,
-     SqReale varchar(20),
-     Ruolo char(1) not null,
-     check( Ruolo ="p" or Ruolo="P" or Ruolo="d" or Ruolo="D" or Ruolo="c" or Ruolo="C" or Ruolo="a" or Ruolo="A"),
-	 PrezzoIniziale tinyint unsigned,
-     IDfg smallint not null,
+     SqReale varchar(20) not null,
+	Costo tinyint not null
      unique key(IDfg, Anno)
      );
 
@@ -88,7 +72,6 @@ create table Tesseramento(
 create table Voto(
      IDcalcAnno int references CalciatoreAnno(ID) on update cascade on delete no action,
      NrGioReale int,
-     Anno year,
      Voto numeric(2,1) unsigned not null,
      GolF tinyint unsigned not null,
      GolS tinyint unsigned not null,
@@ -99,7 +82,7 @@ create table Voto(
      Ass tinyint unsigned not null,
      Amm tinyint unsigned not null,
      Esp tinyint unsigned not null,
-     primary key(IDcalcAnno, NrGioReale ,Anno)
+     primary key(IDcalcAnno, NrGioReale)
 );
 
 create table Formazione(
@@ -108,14 +91,16 @@ create table Formazione(
      NomeSq varchar(20) references Fantasquadra(Nome) on update cascade on delete no action,
      Pos tinyint unsigned not null,
      Ruolo char(1) not null,
-     check( Ruolo ="p" or Ruolo="P" or Ruolo="d" or Ruolo="D" or Ruolo="c" or Ruolo="C" or Ruolo="a" or Ruolo="A"),
      primary key(IDcalcAnno, IDpart)
 );
 
 create table GiornataAnno(
-    NrGioReale tinyint unsigned primary key,
-    DataInizio date not null,
-    OraInizio time not null
+	NrGioReale tinyint unsigned primary key,
+     DataInizio date not null,
+     OraInizio time not null,
+	DataFine date not null,
+	OraFine time 
+
 )
 
 
