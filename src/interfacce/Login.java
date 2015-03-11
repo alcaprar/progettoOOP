@@ -118,6 +118,9 @@ public  class Login extends JFrame {
         gestiscibtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Applicazione app = new Applicazione();
+                getFrame().dispose();
+
                 
 
             }
