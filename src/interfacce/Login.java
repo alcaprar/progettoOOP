@@ -1,12 +1,18 @@
-package src.interfacce;
+package interfacce;
 
-import src.utils.Utils;
+import utils.*;
+import db.*;
+import classi.Persona;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
-public  class Login extends JFrame{
+public  class Login extends JFrame {
     JPanel userpnl = new JPanel();
     JPanel passpnl = new JPanel();
     JPanel buttonpnl = new JPanel();
@@ -38,9 +44,9 @@ public  class Login extends JFrame{
     JSeparator squadrespt = new JSeparator(SwingConstants.HORIZONTAL);
     JSeparator iscrivitispt = new JSeparator(SwingConstants.HORIZONTAL);
 
-    src.classi.Persona utente;
+    Persona utente;
 
-    src.utils.Utils utils = new Utils();
+    Utils utils = new Utils();
 
     Registra registra;
 
@@ -49,7 +55,7 @@ public  class Login extends JFrame{
         super("Login");
 
         //oggetto per il database
-        final src.db.Mysql db = new src.db.Mysql();
+        final Mysql db = new Mysql();
 
         //abilita la chiusura al premere di X
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -72,7 +78,7 @@ public  class Login extends JFrame{
                      public void keyPressed(KeyEvent e) {
                          int key = e.getKeyCode();
                          if (key == KeyEvent.VK_ENTER) {
-                             utente = new src.classi.Persona(usertxt.getText(),utils.passwordString(passtxt.getPassword()));
+                             utente = new Persona(usertxt.getText(),utils.passwordString(passtxt.getPassword()));
                              if(db.login(utente, getFrame())){
                                  loginTrue();
                              }
@@ -89,7 +95,7 @@ public  class Login extends JFrame{
         loginbtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                utente = new src.classi.Persona(usertxt.getText(),utils.passwordString(passtxt.getPassword()));
+                utente = new Persona(usertxt.getText(),utils.passwordString(passtxt.getPassword()));
                 if(db.login(utente,getFrame())){
                     loginTrue();
                 }

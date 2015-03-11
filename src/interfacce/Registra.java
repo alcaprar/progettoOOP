@@ -1,6 +1,13 @@
+package interfacce;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import db.*;
+import interfacce.*;
+import classi.*;
+import utils.*;
 
 /**
  * Created by alessandro on 04/03/15.

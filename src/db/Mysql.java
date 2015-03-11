@@ -1,7 +1,12 @@
+package db;
+
 import javafx.scene.paint.Color;
 
 import javax.swing.*;
 import java.sql.*;
+
+import classi.*;
+import interfacce.*;
 
 public class Mysql{
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
