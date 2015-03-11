@@ -1,3 +1,6 @@
+package src.interfacce;
+
+import src.utils.Utils;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -23,7 +26,7 @@ public  class Login extends JFrame{
     JTextField usertxt = new JTextField(20);
     JPasswordField passtxt = new JPasswordField(20);
 
-    JComboBox squadrebox = new JComboBox();
+    public JComboBox squadrebox = new JComboBox();
     JComboBox iscrivitibox = new JComboBox();
 
     JButton loginbtn = new JButton("Login");
@@ -35,9 +38,9 @@ public  class Login extends JFrame{
     JSeparator squadrespt = new JSeparator(SwingConstants.HORIZONTAL);
     JSeparator iscrivitispt = new JSeparator(SwingConstants.HORIZONTAL);
 
-    Persona utente;
+    src.classi.Persona utente;
 
-    Utils utils = new Utils();
+    src.utils.Utils utils = new Utils();
 
     Registra registra;
 
@@ -46,7 +49,7 @@ public  class Login extends JFrame{
         super("Login");
 
         //oggetto per il database
-        final Mysql db = new Mysql();
+        final src.db.Mysql db = new src.db.Mysql();
 
         //abilita la chiusura al premere di X
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -69,7 +72,7 @@ public  class Login extends JFrame{
                      public void keyPressed(KeyEvent e) {
                          int key = e.getKeyCode();
                          if (key == KeyEvent.VK_ENTER) {
-                             utente = new Persona(usertxt.getText(),utils.passwordString(passtxt.getPassword()));
+                             utente = new src.classi.Persona(usertxt.getText(),utils.passwordString(passtxt.getPassword()));
                              if(db.login(utente, getFrame())){
                                  loginTrue();
                              }
@@ -86,7 +89,7 @@ public  class Login extends JFrame{
         loginbtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                utente = new Persona(usertxt.getText(),utils.passwordString(passtxt.getPassword()));
+                utente = new src.classi.Persona(usertxt.getText(),utils.passwordString(passtxt.getPassword()));
                 if(db.login(utente,getFrame())){
                     loginTrue();
                 }
