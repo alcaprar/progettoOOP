@@ -2,20 +2,20 @@
 create table Campionato(
      Nome varchar(20) not null unique,
      NrPartecipanti tinyint not null,
-	Asta boolean not null,
-	Pubblico boolean not null
+     Asta boolean not null,
+     Pubblico boolean not null
 );
 
 create table Regolamento(
      NomeCampionato varchar(20) primary key references Campionato(Nome) on update cascade on delete no action,
-     GiornataInizio tinyint not null default 1,
-     GiornataFine tinyint not null default 38,
-     CreditiIniziali SmallInt unsigned not null default 500,
-     OrarioConsegna Tinyint unsigned not null default 5,
-     PrimaFascia tinyint unsigned default 66,
-     LargFascia tinyint unsigned default 6,
-     BonusCasa numeric(2,1) not null default 0,
-     ModDifesa tinyint not null default 0
+     GiornataInizio tinyint not null,
+     GiornataFine tinyint not null,
+     CreditiIniziali SmallInt unsigned not null,
+     OrarioConsegna Tinyint unsigned not null,
+     PrimaFascia tinyint unsigned,
+     LargFascia tinyint unsigned,
+     BonusCasa numeric(2,1) not null,
+     ModDifesa tinyint not null
 );
 
 create table Fantasquadra(
@@ -53,10 +53,10 @@ insert into Classifica (IDed, NomeSq) values(NEW.IDed, NEW.NomeSq);
 
 create table CalciatoreAnno(
      ID int primary key ,
-	Ruolo char(1) not null,
+     Ruolo char(1) not null,
      Cognome varchar(20) not null,
      SqReale varchar(20) not null,
-	Costo tinyint not null
+     Costo tinyint not null
      unique key(IDfg, Anno)
      );
 
