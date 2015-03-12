@@ -24,6 +24,7 @@ public class Formazione extends JPanel implements ItemListener {
     private JPanel pCentrocampisti;
     private JPanel pAttaccanti;
     private JPanel pCombobox;
+    private JPanel p343;
 
     private Image bkg_panel = Toolkit.getDefaultToolkit().createImage("./resources/Soccer_Field_Transparant.png");
 
