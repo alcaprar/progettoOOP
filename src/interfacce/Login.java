@@ -79,7 +79,7 @@ public  class Login extends JFrame {
                          int key = e.getKeyCode();
                          if (key == KeyEvent.VK_ENTER) {
                              utente = new Persona(usertxt.getText(),utils.passwordString(passtxt.getPassword()));
-                             if(db.login(utente, getFrame())){
+                             if(db.login(utente)){
                                  loginTrue();
                              }
 
@@ -96,7 +96,7 @@ public  class Login extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 utente = new Persona(usertxt.getText(),utils.passwordString(passtxt.getPassword()));
-                if(db.login(utente,getFrame())){
+                if(db.login(utente)){
                     loginTrue();
 
                 }
