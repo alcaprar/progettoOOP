@@ -80,4 +80,8 @@ public class Persona {
 
     }
 
+    public void addSquadra(String nome){
+        
+    }
+
 }

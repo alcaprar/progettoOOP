@@ -98,6 +98,7 @@ public  class Login extends JFrame {
                 utente = new Persona(usertxt.getText(),utils.passwordString(passtxt.getPassword()));
                 if(db.login(utente,getFrame())){
                     loginTrue();
+
                 }
 
                 else{

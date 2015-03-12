@@ -1,9 +1,10 @@
-
+use progogg;
 create table Campionato(
-     Nome varchar(20) not null unique,
+     Nome varchar(20) primary key,
      NrPartecipanti tinyint not null,
      Asta boolean not null,
-     Pubblico boolean not null
+     Pubblico boolean not null,
+	Presidente varchar(20) not null references Utente(Nickname) on update cascade on delete no action
 );
 
 create table Regolamento(
@@ -33,23 +34,18 @@ create table Utente(
      TipoUtente char
 );
 
-create table Presidenza(
-     NomeSq varchar(20) references Fantasquadra(Nome) on update cascade on delete no action,
-     NickUt varchar(20) references Utente(Nickname) on update cascade on delete no action,
-     primary key(NomeSq, NickUt)
-);
 
 create table Iscrizione(
      NomeSq varchar(20) references Fantasquadra(Nome) on update cascade on delete no action,
      Campionato varchar(20) references Campionato(Nome) on update cascade on delete no action,
      CreditiDisponibili smallint,
-     primary key (NomeSq, IDed)
+     primary key (NomeSq, Campionato)
 );
 
 create trigger Classifica
 after insert on Iscrizione
 for each row
-insert into Classifica (IDed, NomeSq) values(NEW.IDed, NEW.NomeSq);
+insert into Classifica (NomeCampionato, NomeSq) values(NEW.Campionato, NEW.NomeSq);
 
 create table CalciatoreAnno(
      ID int primary key ,
@@ -57,7 +53,6 @@ create table CalciatoreAnno(
      Cognome varchar(20) not null,
      SqReale varchar(20) not null,
      Costo tinyint not null
-     unique key(IDfg, Anno)
      );
 
 create table Tesseramento(
@@ -101,7 +96,7 @@ create table GiornataAnno(
 	DataFine date not null,
 	OraFine time 
 
-)
+);
 
 
 create table Giornata(
@@ -109,7 +104,7 @@ create table Giornata(
      NomeCampionato varchar(20) not null references Campionato(Nome) on update cascade on delete no action,
      NrGio tinyint unsigned not null,
      NrGioReale tinyint unsigned not null,
-     unique key (NomeCampionato, NrGio, NrGioReale),
+     unique key (NomeCampionato, NrGio, NrGioReale)
 
 );
 
@@ -136,5 +131,5 @@ create table Classifica(
      GolF tinyint default 0,
      GolS tinyint default 0,
      SommaPunteggi numeric(4,1) default 0,
-     primary key(Campionato, NomeSq)
+     primary key(NomeCampionato, NomeSq)
 );

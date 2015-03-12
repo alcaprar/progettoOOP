@@ -14,10 +14,10 @@ public class Mysql{
     static final String USER = "progogg";
     static final String PASS = "pagliarecci";
 
-    public boolean login(Persona utente, Login loginForm){
+    public boolean login(Persona utente){
         Connection conn = null ;
         PreparedStatement login = null;
-        String loginSql = "SELECT * FROM persona where nickname=? and password=?";
+        String loginSql = "SELECT * FROM Utente where Nickname=? and Password=?";
         try{
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
@@ -26,10 +26,10 @@ public class Mysql{
             login.setString(2,utente.getPassword());
             ResultSet rs = login.executeQuery();
             if(rs.next()){
-                utente.setNome(rs.getString("nome"));
-                utente.setCognome(rs.getString("cognome"));
-                utente.setEmail(rs.getString("email"));
-                //addSquadre(utente, loginForm);
+                utente.setNome(rs.getString("Nome"));
+                utente.setCognome(rs.getString("Cognome"));
+                utente.setEmail(rs.getString("Email"));
+                addSquadre(utente);
                 return true;
             }
             else return false;
@@ -51,7 +51,7 @@ public class Mysql{
     public boolean registra(Persona utente, Registra registraForm){
         Connection conn = null ;
         PreparedStatement registra = null;
-        String registraSql ="INSERT into persona value(?,?,?,?,?)";
+        String registraSql ="INSERT into Utente value(?,?,?,?,?,?)";
         try{
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
@@ -61,6 +61,7 @@ public class Mysql{
             registra.setString(3,utente.getEmail());
             registra.setString(4,utente.getNome());
             registra.setString(5,utente.getCognome());
+            registra.setString(6,"u");
             int rs = registra.executeUpdate();
             if(rs==1){
                 registraTrue(registraForm);
@@ -83,11 +84,11 @@ public class Mysql{
     }
 
 
-    public void addSquadre(Persona utente, Login loginForm){
+    public void addSquadre(Persona utente){
         Connection conn=null ;
         PreparedStatement stmt = null ;
-        String contaString = "SELECT count(*) from presidenza where nickUt=?";
-        String squadreString = "SELECT * from presidenza where nickUt=?";
+        String contaString = "SELECT count(*) from Fantasquadra where NickUt=?";
+        String squadreString = "SELECT * from Fantasquadra where NickUt=?";
         try{
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
@@ -103,7 +104,9 @@ public class Mysql{
             stmt.setString(1,utente.getNickname());
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
-                loginForm.squadrebox.addItem(rs.getString("NomeSq"));
+
+
+                System.out.print(rs.getString("Nome"));
 
             }
 
