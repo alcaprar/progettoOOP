@@ -36,6 +36,8 @@ public class Formazione extends JPanel implements ItemListener {
     private void createUIComponents() {
         scegliModulo = new JComboBox();
         scegliModulo.addItemListener(this);
+        p343 = new CardPanel();
+
     }
 
     //override del metodo itemStateChanged
