@@ -15,8 +15,6 @@ public class Formazione extends JPanel implements ItemListener {
     private JPanel mainPanel;
     private JPanel cards;
     private JComboBox scegliModulo;
-    private JPanel p343;
-    private JPanel p352;
     private JList lPortieri;
     private JList lCentrocampisti;
     private JList lAttaccanti;
@@ -26,7 +24,6 @@ public class Formazione extends JPanel implements ItemListener {
     private JPanel pCentrocampisti;
     private JPanel pAttaccanti;
     private JPanel pCombobox;
-    private JLabel l343;
 
     private Image bkg_panel = Toolkit.getDefaultToolkit().createImage("./resources/Soccer_Field_Transparant.png");
 
