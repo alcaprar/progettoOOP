@@ -9,6 +9,7 @@ import java.awt.*;
 public class CardPanel extends JPanel{
 
     private Image img;
+    private Dimension size;
 
     public CardPanel(String img) {
         this(new ImageIcon(img).getImage());
@@ -16,7 +17,7 @@ public class CardPanel extends JPanel{
 
     public CardPanel(Image img) {
         this.img = img;
-        Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
+        size = new Dimension(img.getWidth(null), img.getHeight(null));
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);

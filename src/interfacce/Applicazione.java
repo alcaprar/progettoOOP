@@ -7,7 +7,7 @@ import java.awt.*;
  * Created by alessandro on 11/03/15.
  */
 public class Applicazione extends JFrame {
-        private JPanel panel1;
+    private JPanel panel1;
     private JTabbedPane tabbedPane1;
 
     public Applicazione(){
