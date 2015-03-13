@@ -3,9 +3,11 @@
   <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="3" column-count="16" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="3" left="3" bottom="3" right="3"/>
     <constraints>
-      <xy x="20" y="20" width="500" height="409"/>
+      <xy x="20" y="20" width="665" height="409"/>
     </constraints>
-    <properties/>
+    <properties>
+      <maximumSize width="800" height="600"/>
+    </properties>
     <border type="none"/>
     <children>
       <grid id="209cc" binding="cards" layout-manager="CardLayout" hgap="0" vgap="0">
@@ -15,14 +17,138 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="9542f" binding="p343" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="9542f" binding="p343" layout-manager="GridLayoutManager" row-count="12" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <card name="3-4-3"/>
             </constraints>
             <properties/>
             <border type="none"/>
-            <children/>
+            <children>
+              <component id="d8676" class="javax.swing.JLabel" binding="p343PorLabel" custom-create="true">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Portiere"/>
+                </properties>
+              </component>
+              <hspacer id="e3139">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <vspacer id="49838">
+                <constraints>
+                  <grid row="5" column="1" row-span="1" col-span="2" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <component id="c2e94" class="javax.swing.JLabel" binding="p343DifLabel2" custom-create="true">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Difensore"/>
+                </properties>
+              </component>
+              <component id="ca28a" class="javax.swing.JLabel" binding="p343DifLabel1" custom-create="true">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Difensore"/>
+                </properties>
+              </component>
+              <component id="b92e9" class="javax.swing.JLabel" binding="p343DifLabel3" custom-create="true">
+                <constraints>
+                  <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Difensore"/>
+                </properties>
+              </component>
+              <vspacer id="87be4">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <component id="36deb" class="javax.swing.JLabel" binding="p343CenLabel2" custom-create="true">
+                <constraints>
+                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Centrocampista"/>
+                </properties>
+              </component>
+              <component id="b9c8b" class="javax.swing.JLabel" binding="p343CenLabel3" custom-create="true">
+                <constraints>
+                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Centrocampista"/>
+                </properties>
+              </component>
+              <component id="422a4" class="javax.swing.JLabel" binding="p343CenLabel1" custom-create="true">
+                <constraints>
+                  <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Centrocampista"/>
+                </properties>
+              </component>
+              <component id="8a89d" class="javax.swing.JLabel" binding="p343CenLabel4" custom-create="true">
+                <constraints>
+                  <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Centrocampista"/>
+                </properties>
+              </component>
+              <hspacer id="ce0af">
+                <constraints>
+                  <grid row="7" column="1" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <vspacer id="1cdc5">
+                <constraints>
+                  <grid row="8" column="1" row-span="1" col-span="2" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <component id="c9565" class="javax.swing.JLabel" binding="p343AttLabel2" custom-create="true">
+                <constraints>
+                  <grid row="9" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Attaccante"/>
+                </properties>
+              </component>
+              <component id="734f0" class="javax.swing.JLabel" binding="p343AttLabel3" custom-create="true">
+                <constraints>
+                  <grid row="10" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Attaccante"/>
+                </properties>
+              </component>
+              <component id="97511" class="javax.swing.JLabel" binding="p343AttLabel1" custom-create="true">
+                <constraints>
+                  <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Attaccante"/>
+                </properties>
+              </component>
+              <vspacer id="bd439">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <vspacer id="cc834">
+                <constraints>
+                  <grid row="11" column="1" row-span="1" col-span="2" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+            </children>
           </grid>
           <grid id="d64d1" binding="p352" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
@@ -98,6 +224,11 @@
               <component id="a6ae0" class="javax.swing.JList" binding="lPortieri">
                 <constraints/>
                 <properties>
+                  <model>
+                    <item value="Pippo"/>
+                    <item value="Pluto"/>
+                    <item value="Gianni"/>
+                  </model>
                   <selectionMode value="0"/>
                 </properties>
               </component>
@@ -113,6 +244,14 @@
               <component id="7f629" class="javax.swing.JList" binding="lDifensori">
                 <constraints/>
                 <properties>
+                  <model>
+                    <item value="fkdnjf"/>
+                    <item value="dskfj"/>
+                    <item value="fdnjsn"/>
+                    <item value="fdnjsn"/>
+                    <item value="dfnjs"/>
+                    <item value="jbia"/>
+                  </model>
                   <selectionMode value="0"/>
                 </properties>
               </component>
