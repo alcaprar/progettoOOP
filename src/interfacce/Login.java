@@ -32,7 +32,7 @@ public class Login extends JFrame {
     public Persona utente;
     public Utils utils = new Utils();
 
-    public Login(){
+    public Login() {
         //titolo del frame
         super("Login - Gestore fantacalcio");
 
@@ -53,12 +53,11 @@ public class Login extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                utente = new Persona(usertxt.getText(),utils.passwordString(passtxt.getPassword()));
-                if(db.login(utente)){
+                utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
+                if (db.login(utente)) {
                     CardLayout c1 = (CardLayout) (panel1.getLayout());
-                    c1.show(panel1,"login2");
-                }
-                else infolbl.setVisible(true);
+                    c1.show(panel1, "login2");
+                } else infolbl.setVisible(true);
             }
         });
 
@@ -69,14 +68,12 @@ public class Login extends JFrame {
                      public void keyPressed(KeyEvent e) {
                          int key = e.getKeyCode();
                          if (key == KeyEvent.VK_ENTER) {
-                             utente = new Persona(usertxt.getText(),utils.passwordString(passtxt.getPassword()));
-                             if(db.login(utente)){
+                             utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
+                             if (db.login(utente)) {
                                  System.out.print("ok");
                                  CardLayout c1 = (CardLayout) (panel1.getLayout());
-                                 c1.show(panel1,"login2");
-                             }
-
-                             else infolbl.setVisible(true);
+                                 c1.show(panel1, "login2");
+                             } else infolbl.setVisible(true);
                          }
                      }
                  }
@@ -90,7 +87,8 @@ public class Login extends JFrame {
         });
     }
 
-    public Login getFrame(){
+    public Login getFrame() {
         return this;
     }
+
 }

@@ -10,13 +10,14 @@ public class Applicazione extends JFrame {
     private JPanel panel1;
     private JTabbedPane tabbedPane1;
 
-    public Applicazione(){
+    public Applicazione() {
         super("Gestore Fantacalcio");
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
         pack();
+        setSize(800, 600);
         setVisible(true);
     }
+
 }

@@ -11,7 +11,7 @@ import java.awt.event.*;
 /**
  * Created by Christian on 11/03/2015.
  */
-public class Formazione extends JPanel implements ItemListener, MouseListener {
+public class Formazione extends JPanel implements ItemListener {
 
     private JPanel mainPanel;
     private JPanel cards;
@@ -32,6 +32,7 @@ public class Formazione extends JPanel implements ItemListener, MouseListener {
     private JList lCentrocampisti;
     private JScrollPane pAttaccanti;
     private JList lAttaccanti;
+    //pannello 3-4-3
     private JLabel p343PorLabel;
     private JLabel p343DifLabel1;
     private JLabel p343DifLabel2;
@@ -46,61 +47,107 @@ public class Formazione extends JPanel implements ItemListener, MouseListener {
 
     Image bkg_panel = Toolkit.getDefaultToolkit().createImage("resources/Soccer_Field_Transparant.png");
 
-    String selP = new String();
-    String selD = new String();
-    String selC = new String();
-    String selA = new String();
-
     public Formazione() {
         //viene generato il codice di setup dell'UI e richiamato il metodo $$$setupUI$$$() come prima istruzione
         //gestisciListe(squadra);
         setVisible(true);
-        lPortieri.addListSelectionListener(new ListSelectionListener() {
+
+        //Per ogni etichetta del pannello viene generato un Mouselistener per controllare il riempimento della formazione mediante
+        //il click del mouse
+
+        p343PorLabel.addMouseListener(new MouseAdapter() {
             @Override
-            public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                if(listSelectionEvent.getValueIsAdjusting() == false) {
-                    if(lPortieri.isSelectionEmpty() == false) selP = (String)lPortieri.getSelectedValue();
-                }
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if(lPortieri.isSelectionEmpty() == false) p343PorLabel.setText((String)lPortieri.getSelectedValue());
             }
         });
-        lDifensori.addListSelectionListener(new ListSelectionListener() {
+        p343DifLabel1.addMouseListener(new MouseAdapter() {
             @Override
-            public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                if(listSelectionEvent.getValueIsAdjusting() == false){
-                    if(lDifensori.isSelectionEmpty() == false) selD = (String)lDifensori.getSelectedValue();
-                }
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lDifensori.getSelectedValue();
+                if(lDifensori.isSelectionEmpty() == false && temp != p343DifLabel2.getText() && temp != p343DifLabel3.getText()) p343DifLabel1.setText((String)lDifensori.getSelectedValue());
+            }
+        });
+        p343DifLabel2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lDifensori.getSelectedValue();
+                if(lDifensori.isSelectionEmpty() == false && temp != p343DifLabel1.getText() && temp != p343DifLabel3.getText()) p343DifLabel2.setText((String)lDifensori.getSelectedValue());
+            }
+        });
+        p343DifLabel3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lDifensori.getSelectedValue();
+                if(lDifensori.isSelectionEmpty() == false && temp != p343DifLabel1.getText() && temp != p343DifLabel2.getText()) p343DifLabel3.setText((String)lDifensori.getSelectedValue());
+            }
+        });
+        p343CenLabel1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lCentrocampisti.getSelectedValue();
+                if(lCentrocampisti.isSelectionEmpty() == false && temp != p343CenLabel2.getText() && temp != p343CenLabel3.getText() && temp != p343CenLabel4.getText()) p343CenLabel1.setText((String)lCentrocampisti.getSelectedValue());
+            }
+        });
+        p343CenLabel2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lCentrocampisti.getSelectedValue();
+                if(lCentrocampisti.isSelectionEmpty() == false && temp != p343CenLabel1.getText() && temp != p343CenLabel3.getText() && temp != p343CenLabel4.getText()) p343CenLabel2.setText((String)lCentrocampisti.getSelectedValue());
+            }
+        });
+        p343CenLabel3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lCentrocampisti.getSelectedValue();
+                if(lCentrocampisti.isSelectionEmpty() == false && temp != p343CenLabel1.getText() && temp != p343CenLabel2.getText() && temp != p343CenLabel4.getText()) p343CenLabel3.setText((String)lCentrocampisti.getSelectedValue());
+            }
+        });
+        p343CenLabel4.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lCentrocampisti.getSelectedValue();
+                if(lCentrocampisti.isSelectionEmpty() == false && temp != p343CenLabel1.getText() && temp != p343CenLabel2.getText() && temp != p343CenLabel3.getText()) p343CenLabel4.setText((String)lCentrocampisti.getSelectedValue());
+            }
+        });
+        p343AttLabel1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lAttaccanti.getSelectedValue();
+                if(lAttaccanti.isSelectionEmpty() == false && temp != p343AttLabel2.getText() && temp != p343AttLabel3.getText()) p343AttLabel1.setText((String)lAttaccanti.getSelectedValue());
+            }
+        });
+        p343AttLabel2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lAttaccanti.getSelectedValue();
+                if(lAttaccanti.isSelectionEmpty() == false && temp != p343AttLabel1.getText() && temp != p343AttLabel3.getText()) p343AttLabel2.setText((String)lAttaccanti.getSelectedValue());
+            }
+        });
+        p343AttLabel3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lAttaccanti.getSelectedValue();
+                if(lAttaccanti.isSelectionEmpty() == false && temp != p343AttLabel1.getText() && temp != p343AttLabel2.getText()) p343AttLabel3.setText((String)lAttaccanti.getSelectedValue());
             }
         });
     }
-
 
 
     //creazione custom dei componenti
     private void createUIComponents() {
         scegliModulo = new JComboBox();
         scegliModulo.addItemListener(this);
-        p343PorLabel = new JLabel();
-        p343PorLabel.addMouseListener(this);
-        p343DifLabel1 = new JLabel();
-        p343DifLabel1.addMouseListener(this);
-        p343DifLabel2 = new JLabel();
-        p343DifLabel2.addMouseListener(this);
-        p343DifLabel3 = new JLabel();
-        p343DifLabel3.addMouseListener(this);
-        p343CenLabel1 = new JLabel();
-        p343CenLabel1.addMouseListener(this);
-        p343CenLabel2 = new JLabel();
-        p343CenLabel2.addMouseListener(this);
-        p343CenLabel3 = new JLabel();
-        p343CenLabel3.addMouseListener(this);
-        p343CenLabel4 = new JLabel();
-        p343CenLabel4.addMouseListener(this);
-        p343AttLabel1 = new JLabel();
-        p343AttLabel1.addMouseListener(this);
-        p343AttLabel2 = new JLabel();
-        p343AttLabel2.addMouseListener(this);
-        p343AttLabel3 = new JLabel();
-        p343AttLabel3.addMouseListener(this);
     }
 
     //override del metodo itemStateChanged
@@ -110,38 +157,12 @@ public class Formazione extends JPanel implements ItemListener, MouseListener {
         c1.show(cards, (String) itemEvent.getItem());
     }
 
-    //override metodi Mouselistener
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if(selP != null) p343PorLabel.setText(selP);
-        if(selD != null) p343DifLabel1.setText(selD);
-    }
-
-    @Override
-    public void mousePressed(MouseEvent mouseEvent) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent mouseEvent) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent mouseEvent) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent mouseEvent) {
-
-    }
 
     //metodo per gestire le liste
     //public void gestisciListe (Squadra sqr){
 
-        //lista dei portieri
-        //lPortieri.setListData(sqr.getGiocatori());
+    //lista dei portieri
+    //lPortieri.setListData(sqr.getGiocatori());
 
         /*lPortieri.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -160,11 +181,11 @@ public class Formazione extends JPanel implements ItemListener, MouseListener {
             }
         });*/
 
-        //lista dei difensori
+    //lista dei difensori
 
-        //lista dei centrocampisti
+    //lista dei centrocampisti
 
-        //lista degli attaccanti
+    //lista degli attaccanti
     //}
 
 }

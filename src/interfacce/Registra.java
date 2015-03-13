@@ -5,6 +5,7 @@ import db.*;
 import utils.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,7 +24,7 @@ public class Registra extends JFrame {
     public Persona utente;
     public Utils utils = new Utils();
 
-    public Registra(){
+    public Registra() {
         //titolo del frame
         super("Registrati - Gestore Fantacalcio");
         final Mysql db = new Mysql();
@@ -42,26 +43,27 @@ public class Registra extends JFrame {
         registratiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                utente =creaUtente();
-                if(db.registra(utente)) registraTrue();
+                utente = creaUtente();
+                if (db.registra(utente)) registraTrue();
                 else System.out.print("no");
             }
         });
     }
 
-    public Persona creaUtente(){
-        return new Persona(nicktxt.getText(),utils.passwordString(passtxt.getPassword()),nometxt.getText(),cognometxt.getText(),emailtxt.getText());
+    public Persona creaUtente() {
+        return new Persona(nicktxt.getText(), utils.passwordString(passtxt.getPassword()), nometxt.getText(), cognometxt.getText(), emailtxt.getText());
     }
 
-    public void registraTrue(){
+    public void registraTrue() {
         Object[] options = {"OK"};
-        int succesDialog = JOptionPane.showOptionDialog(getContentPane(),"Registrazione effettuata con successo!",
+        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Registrazione effettuata con successo!",
                 "Risposta",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
                 options[0]);
-        if(succesDialog==0 || succesDialog==-1) dispose();
+        if (succesDialog == 0 || succesDialog == -1) dispose();
     }
+
 }
