@@ -9,7 +9,6 @@ import interfacce.*;
 
 public class Fantacalcio{
     public static void main(String args[]){
-        //Login2 logingui = new Login2();
-        Applicazione a = new Applicazione();
+        Login logingui = new Login();
   	}
 }

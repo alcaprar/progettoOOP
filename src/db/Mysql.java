@@ -19,7 +19,9 @@ public class Mysql{
         PreparedStatement login = null;
         String loginSql = "SELECT * FROM Utente where Nickname=? and Password=?";
         try{
+            //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
+            //apre la connessione
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
             login = conn.prepareStatement(loginSql);
             login.setString(1,utente.getNickname());
@@ -48,12 +50,14 @@ public class Mysql{
 
 
 
-    public boolean registra(Persona utente, Registra registraForm){
+    public boolean registra(Persona utente){
         Connection conn = null ;
         PreparedStatement registra = null;
         String registraSql ="INSERT into Utente value(?,?,?,?,?,?)";
         try{
+            //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
+            //apre la connessione
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
             registra = conn.prepareStatement(registraSql);
             registra.setString(1,utente.getNickname());
@@ -61,16 +65,16 @@ public class Mysql{
             registra.setString(3,utente.getEmail());
             registra.setString(4,utente.getNome());
             registra.setString(5,utente.getCognome());
-            registra.setString(6,"u");
+            registra.setString(6,"u");  //tipo: utente
             int rs = registra.executeUpdate();
             if(rs==1){
-                registraTrue(registraForm);
+                //registraTrue(registraForm);
                 return true;
             }
             else return false;
         }catch(SQLException se){
             if(se.getErrorCode()==1062){
-                registraFalse(registraForm);
+                //registraFalse(registraForm);
             }
             System.out.print(se.getErrorCode());
             return false;
@@ -90,7 +94,9 @@ public class Mysql{
         String contaString = "SELECT count(*) from Fantasquadra where NickUt=?";
         String squadreString = "SELECT * from Fantasquadra where NickUt=?";
         try{
+            //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
+            //apre la connessione
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
             stmt = conn.prepareStatement(contaString);
             stmt.setString(1,utente.getNickname());
@@ -104,10 +110,7 @@ public class Mysql{
             stmt.setString(1,utente.getNickname());
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
-
-
                 System.out.print(rs.getString("Nome"));
-
             }
 
         }catch(SQLException se){
