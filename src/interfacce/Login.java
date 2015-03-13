@@ -33,6 +33,9 @@ public class Login extends JFrame {
     public Utils utils = new Utils();
 
     public Login(){
+        //titolo del frame
+        super("Login - Gestore fantacalcio");
+
         final Mysql db = new Mysql();
         setContentPane(panel1);
 
@@ -78,6 +81,13 @@ public class Login extends JFrame {
                      }
                  }
                 );
+        registratiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Registra registragui = new Registra();
+
+            }
+        });
     }
 
     public Login getFrame(){
