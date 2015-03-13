@@ -104,10 +104,7 @@ public class Mysql{
             stmt.setString(1,utente.getNickname());
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
-
-
                 System.out.print(rs.getString("Nome"));
-
             }
 
         }catch(SQLException se){
