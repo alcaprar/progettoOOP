@@ -9,6 +9,7 @@ import java.awt.*;
 public class Applicazione extends JFrame {
     private JPanel panel1;
     private JTabbedPane tabbedPane1;
+    private JPanel homePanel;
 
     public Applicazione() {
         super("Gestore Fantacalcio");

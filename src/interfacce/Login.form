@@ -160,7 +160,7 @@
                   </model>
                 </properties>
               </component>
-              <component id="d8757" class="javax.swing.JButton" binding="vaiButton" default-binding="true">
+              <component id="d8757" class="javax.swing.JButton" binding="gestisciButton">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -196,7 +196,7 @@
                   </model>
                 </properties>
               </component>
-              <component id="42eeb" class="javax.swing.JButton" binding="vaiButton1" default-binding="true">
+              <component id="42eeb" class="javax.swing.JButton" binding="iscrivitiButton">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -222,7 +222,7 @@
                   <text value="Crea un nuovo campionato"/>
                 </properties>
               </component>
-              <component id="73719" class="javax.swing.JButton" binding="vaiButton2" default-binding="true">
+              <component id="73719" class="javax.swing.JButton" binding="creaButton">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>

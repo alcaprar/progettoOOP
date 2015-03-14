@@ -21,10 +21,10 @@ public class Login extends JFrame {
     private JButton loginButton;
     private JButton registratiButton;
     private JComboBox comboBox1;
-    private JButton vaiButton;
+    private JButton gestisciButton;
     private JComboBox comboBox2;
-    private JButton vaiButton1;
-    private JButton vaiButton2;
+    private JButton iscrivitiButton;
+    private JButton creaButton;
     private JPanel panel1;
     private JPanel login1;
     private JPanel login2;
@@ -70,7 +70,6 @@ public class Login extends JFrame {
                          if (key == KeyEvent.VK_ENTER) {
                              utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
                              if (db.login(utente)) {
-                                 System.out.print("ok");
                                  CardLayout c1 = (CardLayout) (panel1.getLayout());
                                  c1.show(panel1, "login2");
                              } else infolbl.setVisible(true);
@@ -83,6 +82,22 @@ public class Login extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Registra registragui = new Registra();
 
+            }
+        });
+
+
+        gestisciButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Applicazione app = new Applicazione();
+            }
+        });
+        creaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CreaCampionato creaCampionato = new CreaCampionato(utente);
+
+                getFrame().setVisible(false);
             }
         });
     }
