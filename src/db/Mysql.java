@@ -127,28 +127,51 @@ public class Mysql{
 
     }
 
-    public void registraTrue(Registra registraForm){
-        Object[] options = {"OK"};
-        int succesDialog = JOptionPane.showOptionDialog(registraForm.getContentPane(), "Registrazione effettuata con successo!",
-                "Risposta",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
-        if(succesDialog==0 || succesDialog==-1) registraForm.dispose();
-    }
+    public String[] selectUtenti(){
+        Connection conn=null ;
+        PreparedStatement stmt = null ;
+        String contaString = "SELECT count(*) from Utente where TipoUtente='u'";
+        String utentiString = "SELECT * from Utente where TipoUtente='u'";
 
+        String[] utenti=null;
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            stmt = conn.prepareStatement(contaString);
 
-    public void registraFalse(Registra registraForm){
-        Object[] options = {"OK"};
-        int succesDialog = JOptionPane.showOptionDialog(registraForm.getContentPane(), "Nickname già registrato. Provare con un'altro.",
-                "Nickname esistente",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
+            ResultSet rscount = stmt.executeQuery();
+            rscount.next();
+            int numeroUtenti = rscount.getInt("count(*)");
+            utenti = new String[numeroUtenti];
+
+            stmt = conn.prepareStatement(utentiString);
+            ResultSet rs = stmt.executeQuery();
+            int i =0;
+            while(rs.next()){
+                utenti[i] = rs.getString("Nickname");
+                i++;
+            }
+            return  utenti;
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return utenti;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return utenti;
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
+                }
+            }
+        }
 
     }
 }

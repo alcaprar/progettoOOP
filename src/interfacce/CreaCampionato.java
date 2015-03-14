@@ -1,9 +1,15 @@
 package interfacce;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import classi.*;
+import db.Mysql;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by alessandro on 14/03/15.
@@ -34,10 +40,19 @@ public class CreaCampionato extends JFrame {
     private JSpinner bonuscSpinner;
     private JLabel bcasaInfo;
     private JSpinner creditiSpinner;
+    private JList partecipantiList;
+    private JList utentiList;
+    private JButton aggiungiButton;
+    private JButton rimuoviButton;
+    private String[] listaUtenti;
+    private DefaultListModel partecipantiModel, utentiModel;
 
     public CreaCampionato(Persona utente){
         //titolo del frame
         super("Crea Campionato - Gestore fantacalcio");
+
+
+
         setContentPane(panel);
 
         nomePresidente.setText(utente.getNickname());
@@ -51,10 +66,108 @@ public class CreaCampionato extends JFrame {
 
         setResizable(false);
 
+        aggiungiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!utentiList.isSelectionEmpty()) {
+                    //trovo l'indice dell'utente selezionato
+                    int indice = utentiList.getSelectedIndex();
+                    //trovo i valori dell'utente selezionato
+                    Object utente = utentiList.getSelectedValue();
+
+                    //aggiungo l'utente ai partecipanti
+                    partecipantiModel.addElement(utente);
+                    //rimuovo l'utente dai disponibili
+                    utentiModel.remove(indice);
+                }
+            }
+        });
+
+        rimuoviButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!partecipantiList.isSelectionEmpty()) {
+                    //trovo l'indice dell'utente selezionato
+                    int indice = partecipantiList.getSelectedIndex();
+                    //trovo i valori dell'utente selezionato
+                    Object utente = partecipantiList.getSelectedValue();
+
+                    //aggiungo l'utente ai disponibili
+                    utentiModel.addElement(utente);
+                    //rimuovo l'utente dai partecipanti
+                    partecipantiModel.remove(indice);
+                }
+            }
+        });
+
     }
 
 
+
+
     private void createUIComponents() {
+
+        setInfoIcon();
+
+        setSpinner();
+
+        setJlist();
+
+    }
+
+    private void setJlist(){
+        //db
+        final Mysql db = new Mysql();
+        //scarica la lista degli utenti e li metto in un array di stringhe
+        listaUtenti = db.selectUtenti();
+
+        //inizializzo i modelli per le jlist
+        utentiModel = new DefaultListModel();
+        partecipantiModel = new DefaultListModel();
+
+
+        //aggiungo al modello utenti gli elementi dell'array
+        for(String utente : listaUtenti){
+            utentiModel.addElement(utente);
+        }
+
+        //creo le jlist dal modello
+        utentiList = new JList(utentiModel);
+        partecipantiList = new JList(partecipantiModel);
+
+        //permette una selezione alla volta anche premendo CTRL
+        utentiList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        partecipantiList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+    }
+
+    private void setSpinner(){
+        //costruttore spinnermodel-->(valore da visualizzare, min, max, incremento)
+        SpinnerNumberModel inizioModel = new SpinnerNumberModel(1, 1, 38, 1);
+        //creo il jspinner dal modello
+        inizioSpinner = new JSpinner(inizioModel);
+
+        SpinnerNumberModel fineModel = new SpinnerNumberModel(38, 1, 38, 1);
+        fineSpinner = new JSpinner(fineModel);
+
+        SpinnerNumberModel creditiModel = new SpinnerNumberModel(800, 1, 2000, 10);
+        creditiSpinner = new JSpinner(creditiModel);
+
+        SpinnerNumberModel limiteModel = new SpinnerNumberModel(30,0,360,1);
+        limiteSpinner = new JSpinner(limiteModel);
+
+        SpinnerNumberModel primafModel = new SpinnerNumberModel(66,50,80,1);
+        primafSpinner = new JSpinner(primafModel);
+
+        SpinnerNumberModel fasceModel = new SpinnerNumberModel(6,1,10,1);
+        fasceSpinner = new JSpinner(fasceModel);
+
+        SpinnerNumberModel bonuscModel = new SpinnerNumberModel(0,0,5,1);
+        bonuscSpinner = new JSpinner(bonuscModel);
+    }
+
+
+    private void setInfoIcon(){
         //icona di info
         ImageIcon icon = (ImageIcon) UIManager.getIcon("OptionPane.informationIcon");
 
@@ -96,33 +209,6 @@ public class CreaCampionato extends JFrame {
 
         bcasaInfo = new JLabel(icon);
         bcasaInfo.setToolTipText("Lasciare a zero se non si vuole il bonus casa.");
-
-
-        //costruttore spinnermodel-->(valore da visualizzare, min, max, incremento)
-        SpinnerNumberModel inizioModel = new SpinnerNumberModel(1, 1, 38, 1);
-        //creo il jspinner dal modello
-        inizioSpinner = new JSpinner(inizioModel);
-
-        SpinnerNumberModel fineModel = new SpinnerNumberModel(38, 1, 38, 1);
-        fineSpinner = new JSpinner(fineModel);
-
-        SpinnerNumberModel creditiModel = new SpinnerNumberModel(800, 1, 2000, 10);
-        creditiSpinner = new JSpinner(creditiModel);
-
-        SpinnerNumberModel limiteModel = new SpinnerNumberModel(30,0,360,1);
-        limiteSpinner = new JSpinner(limiteModel);
-
-        SpinnerNumberModel primafModel = new SpinnerNumberModel(66,50,80,1);
-        primafSpinner = new JSpinner(primafModel);
-
-        SpinnerNumberModel fasceModel = new SpinnerNumberModel(6,1,10,1);
-        fasceSpinner = new JSpinner(fasceModel);
-
-        SpinnerNumberModel bonuscModel = new SpinnerNumberModel(0,0,5,1);
-        bonuscSpinner = new JSpinner(bonuscModel);
-
-
-
 
     }
 }
