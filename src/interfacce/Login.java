@@ -29,6 +29,8 @@ public class Login extends JFrame {
     private JPanel login1;
     private JPanel login2;
     private JLabel infolbl;
+    private JTextField textField1;
+    private JLabel nomeutentetxt;
     public Persona utente;
     public Utils utils = new Utils();
 
@@ -70,6 +72,7 @@ public class Login extends JFrame {
                          if (key == KeyEvent.VK_ENTER) {
                              utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
                              if (db.login(utente)) {
+                                 nomeutentetxt.setText(utente.getNickname());
                                  CardLayout c1 = (CardLayout) (panel1.getLayout());
                                  c1.show(panel1, "login2");
                              } else infolbl.setVisible(true);
@@ -95,8 +98,7 @@ public class Login extends JFrame {
         creaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CreaCampionato creaCampionato = new CreaCampionato(utente);
-
+                CreaCampionato creaCampionato = new CreaCampionato(utente, getFrame());
                 getFrame().setVisible(false);
             }
         });
@@ -105,5 +107,6 @@ public class Login extends JFrame {
     public Login getFrame() {
         return this;
     }
+
 
 }

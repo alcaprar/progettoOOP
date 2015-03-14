@@ -48,13 +48,14 @@ public class CreaCampionato extends JFrame {
     private JList utentiList;
     private JButton aggiungiButton;
     private JButton rimuoviButton;
+    private JButton annullaButton;
     private String[] listaUtenti;
 
     private DefaultListModel partecipantiModel, utentiModel;
 
     private Campionato campionato;
 
-    public CreaCampionato(Persona utente){
+    public CreaCampionato(Persona utente, final Login loginForm){
         //titolo del frame
         super("Crea Campionato - Gestore fantacalcio");
 
@@ -174,6 +175,16 @@ public class CreaCampionato extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 campionato = creaCampionato();
+            }
+        });
+
+        annullaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loginForm.setVisible(true);
+                getFrame().dispose();
+
+
             }
         });
 
@@ -306,5 +317,9 @@ public class CreaCampionato extends JFrame {
         int fasce = (Integer) fasceSpinner.getValue();
         int bonusc = (Integer) bonuscSpinner.getValue();
         return new Campionato(nome,numeroPartecipanti,asta, pubblico,inizio,fine,crediti,orario,primaf,fasce,bonusc);
+    }
+
+    public CreaCampionato getFrame(){
+        return this;
     }
 }
