@@ -1,6 +1,8 @@
 package interfacce;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -10,14 +12,16 @@ import db.Mysql;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  * Created by alessandro on 14/03/15.
  */
 public class CreaCampionato extends JFrame {
-    private JTextField textField1;
-    private JComboBox comboBox1;
-    private JComboBox comboBox2;
+    private JTextField nometxt;
+    private JComboBox astaBox;
+    private JComboBox tipoBox;
     private JLabel nomePresidente;
     private JSpinner inizioSpinner;
     private JSpinner limiteSpinner;
@@ -45,7 +49,10 @@ public class CreaCampionato extends JFrame {
     private JButton aggiungiButton;
     private JButton rimuoviButton;
     private String[] listaUtenti;
+
     private DefaultListModel partecipantiModel, utentiModel;
+
+    private Campionato campionato;
 
     public CreaCampionato(Persona utente){
         //titolo del frame
@@ -69,7 +76,11 @@ public class CreaCampionato extends JFrame {
         aggiungiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!utentiList.isSelectionEmpty()) {
+                int numeroPartecipanti = Integer.parseInt((String) numeroBox.getSelectedItem());
+
+                //se è stato selezionato qualcuno e se non si è già raggiunto
+                //il numero max di partecipanti
+                if(!utentiList.isSelectionEmpty() && partecipantiModel.getSize() < numeroPartecipanti) {
                     //trovo l'indice dell'utente selezionato
                     int indice = utentiList.getSelectedIndex();
                     //trovo i valori dell'utente selezionato
@@ -86,6 +97,8 @@ public class CreaCampionato extends JFrame {
         rimuoviButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                //se è stato selezionato qualcuno
                 if(!partecipantiList.isSelectionEmpty()) {
                     //trovo l'indice dell'utente selezionato
                     int indice = partecipantiList.getSelectedIndex();
@@ -96,7 +109,71 @@ public class CreaCampionato extends JFrame {
                     utentiModel.addElement(utente);
                     //rimuovo l'utente dai partecipanti
                     partecipantiModel.remove(indice);
+                    System.out.println(indice);
                 }
+            }
+        });
+
+        //controlla se il numero di giornata di inizio
+        //è minore di quella finale
+        inizioSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int inizio = (Integer) inizioSpinner.getValue();
+                int fine = (Integer) fineSpinner.getValue();
+                int numeroPartecipanti = Integer.parseInt((String) numeroBox.getSelectedItem());
+                if(inizio > fine){
+                    inizioSpinner.setValue(fine-numeroPartecipanti+1);
+                }
+            }
+        });
+
+        //controlla se il numero di giornata di fine
+        //è maggiore di quella iniziale
+        fineSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int inizio = (Integer) inizioSpinner.getValue();
+                int fine = (Integer) fineSpinner.getValue();
+                int numeroPartecipanti = Integer.parseInt((String) numeroBox.getSelectedItem());
+                if(inizio>fine){
+                    fineSpinner.setValue(inizio+numeroPartecipanti-1);
+                }
+            }
+        });
+
+        //quando viene cambiato il numero di partecipanti controlla se
+        //il numero degli utenti già inserito è maggiore.
+        //se è maggiore  toglie gli ultimi inseriti
+        numeroBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                //controlla se è stato cambiato nella combobox
+                if (e.getStateChange() == ItemEvent.SELECTED){
+                    //cast del numero di parteciapanti dalla combobox
+                    int numeroPartecipanti = Integer.parseInt((String) numeroBox.getSelectedItem());
+                    //controlla se i parteciapanti già inseriti sono maggiori
+                    //del numero max appena cambiato
+                    if(partecipantiModel.getSize() > numeroPartecipanti){
+                        //toglie gli ultimi inseriti dai partecipanti
+                        //e li riaggiunge ai disponibili
+                        for(int i = partecipantiModel.getSize() ;i > numeroPartecipanti ;i--){
+                            utentiModel.addElement(partecipantiModel.getElementAt(i-1));
+                            partecipantiModel.remove(i-1);
+
+                        }
+
+                    }
+
+
+                }
+            }
+        });
+
+        creaCampionatoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                campionato = creaCampionato();
             }
         });
 
@@ -115,6 +192,9 @@ public class CreaCampionato extends JFrame {
 
     }
 
+    //crea le liste dai modelli
+    //il modello partecipanti è vuoto
+    //il modello utenti disponibili viene scaricato dal db
     private void setJlist(){
         //db
         final Mysql db = new Mysql();
@@ -141,13 +221,14 @@ public class CreaCampionato extends JFrame {
 
     }
 
+    //crea gli spinner dai modelli
     private void setSpinner(){
         //costruttore spinnermodel-->(valore da visualizzare, min, max, incremento)
-        SpinnerNumberModel inizioModel = new SpinnerNumberModel(1, 1, 38, 1);
+        SpinnerNumberModel inizioModel = new SpinnerNumberModel(1, 1, 37, 1);
         //creo il jspinner dal modello
         inizioSpinner = new JSpinner(inizioModel);
 
-        SpinnerNumberModel fineModel = new SpinnerNumberModel(38, 1, 38, 1);
+        SpinnerNumberModel fineModel = new SpinnerNumberModel(38, 2, 38, 1);
         fineSpinner = new JSpinner(fineModel);
 
         SpinnerNumberModel creditiModel = new SpinnerNumberModel(800, 1, 2000, 10);
@@ -166,7 +247,7 @@ public class CreaCampionato extends JFrame {
         bonuscSpinner = new JSpinner(bonuscModel);
     }
 
-
+    //aggiunge l'icona e la descrizione
     private void setInfoIcon(){
         //icona di info
         ImageIcon icon = (ImageIcon) UIManager.getIcon("OptionPane.informationIcon");
@@ -210,5 +291,20 @@ public class CreaCampionato extends JFrame {
         bcasaInfo = new JLabel(icon);
         bcasaInfo.setToolTipText("Lasciare a zero se non si vuole il bonus casa.");
 
+    }
+
+    private Campionato creaCampionato(){
+        String nome = nometxt.getText();
+        int numeroPartecipanti = Integer.parseInt((String) numeroBox.getSelectedItem());
+        boolean asta = "Live".equals((String) astaBox.getSelectedItem());
+        boolean pubblico = "Pubblico".equals((String) tipoBox.getSelectedItem() );
+        int inizio = (Integer) inizioSpinner.getValue();
+        int fine = (Integer) fineSpinner.getValue();
+        int crediti = (Integer) creditiSpinner.getValue();
+        int orario = (Integer) limiteSpinner.getValue();
+        int primaf = (Integer) primafSpinner.getValue();
+        int fasce = (Integer) fasceSpinner.getValue();
+        int bonusc = (Integer) bonuscSpinner.getValue();
+        return new Campionato(nome,numeroPartecipanti,asta, pubblico,inizio,fine,crediti,orario,primaf,fasce,bonusc);
     }
 }
