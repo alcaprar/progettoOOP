@@ -110,7 +110,7 @@ public class Mysql{
             stmt.setString(1,utente.getNickname());
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
-                System.out.print(rs.getString("Nome"));
+                //System.out.println(rs.getString("Nome"));
             }
 
         }catch(SQLException se){
@@ -171,6 +171,89 @@ public class Mysql{
                     //ignored
                 }
             }
+        }
+
+    }
+
+    public boolean creaCampionato(Campionato campionato){
+        Connection conn = null ;
+        PreparedStatement campionatostmt = null;
+        String campionatoSql ="INSERT into Campionato value(?,?,?,?,?)";
+
+        PreparedStatement regolamentstmt = null;
+        String regolamentoSql = "INSERT into Regolamento value(?,?,?,?,?,?,?,?,?)";
+
+        PreparedStatement iscrizionestmt = null;
+        String iscrizioneSql = "INSERT into Fantasquadra(NickUt) value(?)";
+
+        PreparedStatement partecipantistmt = null;
+        String partecipantiSql = "INSERT into Iscrizione value(?,?,?)";
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            //inserisco il campionato
+            campionatostmt = conn.prepareStatement(campionatoSql);
+            campionatostmt.setString(1,campionato.getNome());
+            campionatostmt.setInt(2, campionato.getNumeroPartecipanti());
+            campionatostmt.setBoolean(3, campionato.isAstaLive());
+            campionatostmt.setBoolean(4, campionato.isPubblico());
+            campionatostmt.setString(5,campionato.getPresidente().getNickname());
+            int rscampionato = campionatostmt.executeUpdate();
+
+            //inserisco il regolamento
+            regolamentstmt = conn.prepareStatement(regolamentoSql);
+            regolamentstmt.setString(1,campionato.getNome());
+            regolamentstmt.setInt(2,campionato.getGiornataInizio());
+            regolamentstmt.setInt(3,campionato.getGiornataFine());
+            regolamentstmt.setInt(4,campionato.getCreditiIniziali());
+            regolamentstmt.setInt(5,campionato.getOrarioConsegna());
+            regolamentstmt.setInt(6,campionato.getPrimaFascia());
+            regolamentstmt.setInt(7,campionato.getLargFascia());
+            regolamentstmt.setInt(8,campionato.getBonusCasa());
+            regolamentstmt.setInt(9,0);
+            int rsregolamento = regolamentstmt.executeUpdate();
+
+            //se sono stati inseriti dei partecipanti li inserisco uno alla volta
+            if(campionato.getPartecipanti()!=null){
+                for(int i=0; i<campionato.getPartecipanti().length;i++) {
+                    //creo la nuova squadra
+                    iscrizionestmt = conn.prepareStatement(iscrizioneSql,Statement.RETURN_GENERATED_KEYS);
+                    iscrizionestmt.setString(1, campionato.getPartecipanti()[i]);
+                    iscrizionestmt.executeUpdate();
+                    //trovo l'id della squadra appena inserita
+                    ResultSet rs = iscrizionestmt.getGeneratedKeys();
+                    rs.next();
+                    int idIscrizione = rs.getInt(1);
+
+                    //iscrivo la squadra appena creata
+                    partecipantistmt = conn.prepareStatement(partecipantiSql);
+                    partecipantistmt.setString(1,campionato.getNome());
+                    partecipantistmt.setInt(2, campionato.getCreditiIniziali());
+                    partecipantistmt.setInt(3,idIscrizione);
+                    int rsPartecipanti = partecipantistmt.executeUpdate();
+                }
+
+            }
+
+            if(rscampionato==1 && rsregolamento==1){
+                return true;
+            }
+            else return false;
+        }catch(SQLException se){
+            if(se.getErrorCode()==1062){
+            }
+            System.out.println(se.getErrorCode());
+            se.printStackTrace();
+            return false;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }finally {
+            try { conn.close(); } catch (Exception e) { /* ignored */ }
         }
 
     }

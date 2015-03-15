@@ -51,6 +51,8 @@ public class CreaCampionato extends JFrame {
     private JButton annullaButton;
     private String[] listaUtenti;
 
+    private Persona presidente;
+
     private DefaultListModel partecipantiModel, utentiModel;
 
     private Campionato campionato;
@@ -59,7 +61,9 @@ public class CreaCampionato extends JFrame {
         //titolo del frame
         super("Crea Campionato - Gestore fantacalcio");
 
+        presidente = utente;
 
+        final Mysql db = new Mysql();
 
         setContentPane(panel);
 
@@ -110,7 +114,7 @@ public class CreaCampionato extends JFrame {
                     utentiModel.addElement(utente);
                     //rimuovo l'utente dai partecipanti
                     partecipantiModel.remove(indice);
-                    System.out.println(indice);
+
                 }
             }
         });
@@ -174,7 +178,46 @@ public class CreaCampionato extends JFrame {
         creaCampionatoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                campionato = creaCampionato();
+                if("".equals(nometxt.getText())){
+                    Object[] options = {"OK"};
+                    int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Inserire il nome del campionato.",
+                            "Nome vuoto",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+
+                }
+                else{
+                    campionato = creaCampionato();
+                    if(db.creaCampionato(campionato)){
+                        Object[] options = {"OK"};
+                        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Campionato creato con successo!",
+                                "Risposta",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[0]);
+                        if (succesDialog == 0 || succesDialog == -1){
+                            loginForm.setVisible(true);
+                            dispose();
+                        }
+
+                    }
+                    else{
+                        Object[] options = {"OK"};
+                        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono stati degli errori nella creazione del campionato!",
+                                "Risposta",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[0]);
+                    }
+                }
+
             }
         });
 
@@ -316,7 +359,25 @@ public class CreaCampionato extends JFrame {
         int primaf = (Integer) primafSpinner.getValue();
         int fasce = (Integer) fasceSpinner.getValue();
         int bonusc = (Integer) bonuscSpinner.getValue();
-        return new Campionato(nome,numeroPartecipanti,asta, pubblico,inizio,fine,crediti,orario,primaf,fasce,bonusc);
+
+
+        Campionato campionato = new Campionato(nome,numeroPartecipanti,asta, pubblico,inizio,fine,crediti,orario,primaf,fasce,bonusc,presidente);
+
+        //se sono stati inseriti dei partecipanti
+        if(partecipantiModel.getSize()!=0) {
+            //cast di array di object to array di stringhe
+            String[] partecipanti = new String[partecipantiModel.getSize()];
+            for (int i = 0; i < partecipantiModel.getSize(); i++) {
+                partecipanti[i] = (String) partecipantiModel.getElementAt(i);
+            }
+
+            //inizializza l'array di stringhe
+            campionato.numeroPartecipanti(numeroPartecipanti);
+            //setta l'array di strignhe
+            campionato.setPartecipanti(partecipanti);
+        }
+
+        return campionato;
     }
 
     public CreaCampionato getFrame(){
