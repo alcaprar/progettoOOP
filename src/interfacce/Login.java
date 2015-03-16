@@ -58,26 +58,8 @@ public class Login extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
-                try{
-                    if(db.login(utente)){
-                        CardLayout c1 = (CardLayout) (panel1.getLayout());
-                        c1.show(panel1, "login2");
-                    } else infolbl.setVisible(true);
-                }catch (SQLException se){
-                    Object[] options = {"OK"};
-                    int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono dei problemi con il database.\n Codice errore MySQL:"+se.getErrorCode(),
-                            "Problemi db",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.ERROR_MESSAGE,
-                            null,
-                            options,
-                            options[0]);
-                    System.out.print(se.getErrorCode());
+                controllaLogin(db);
 
-                }catch (ClassNotFoundException ce){
-
-                }
             }
         });
 
@@ -87,26 +69,7 @@ public class Login extends JFrame {
                 (new KeyAdapter() {
                      public void keyPressed(KeyEvent e) {
                          int key = e.getKeyCode();
-                         if (key == KeyEvent.VK_ENTER) {
-                             utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
-                             try{
-                                 if(db.login(utente)){
-                                     CardLayout c1 = (CardLayout) (panel1.getLayout());
-                                     c1.show(panel1, "login2");
-                                 } else infolbl.setVisible(true);
-                             }catch (SQLException se){
-                                 Object[] options = {"OK"};
-                                 int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono dei problemi con il database.",
-                                         "Problemi db",
-                                         JOptionPane.YES_NO_OPTION,
-                                         JOptionPane.ERROR_MESSAGE,
-                                         null,
-                                         options,
-                                         options[0]);
-                             }catch (ClassNotFoundException ce){
-
-                             }
-                         }
+                         controllaLogin(db);
                      }
                  }
                 );
@@ -175,6 +138,36 @@ public class Login extends JFrame {
         DefaultComboBoxModel pubbliciModel = new DefaultComboBoxModel(campionati);
         pubbliciBox = new JComboBox();
         pubbliciBox.setModel(pubbliciModel);
+    }
+
+    private void controllaLogin(Mysql db){
+        if(usertxt.getText().equals("admin")){
+            AdminApp admingui = new AdminApp();
+            getFrame().dispose();
+        }
+        else {
+
+            utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
+            try {
+                if (db.login(utente)) {
+                    CardLayout c1 = (CardLayout) (panel1.getLayout());
+                    c1.show(panel1, "login2");
+                } else infolbl.setVisible(true);
+            } catch (SQLException se) {
+                Object[] options = {"OK"};
+                int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono dei problemi con il database.\n Codice errore MySQL:" + se.getErrorCode(),
+                        "Problemi db",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.ERROR_MESSAGE,
+                        null,
+                        options,
+                        options[0]);
+                System.out.print(se.getErrorCode());
+
+            } catch (ClassNotFoundException ce) {
+
+            }
+        }
     }
 
 }

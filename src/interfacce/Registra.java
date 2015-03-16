@@ -39,6 +39,7 @@ public class Registra extends JFrame {
         setLocationRelativeTo(null);
 
         setVisible(true);
+        
 
         setResizable(false);
         registratiButton.addActionListener(new ActionListener() {
