@@ -17,6 +17,15 @@ public class Campionato {
     private int BonusCasa;
     private String[] Partecipanti;
     private Persona Presidente;
+    private int PostiDisponibili;
+
+    public int getPostiDisponibili() {
+        return PostiDisponibili;
+    }
+
+    public void setPostiDisponibili(int postiDisponibili) {
+        PostiDisponibili = postiDisponibili;
+    }
 
     public Persona getPresidente() {
         return Presidente;

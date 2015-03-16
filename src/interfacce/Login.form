@@ -191,15 +191,11 @@
               <color color="-7566196"/>
             </border>
             <children>
-              <component id="ae21f" class="javax.swing.JComboBox" binding="comboBox2" default-binding="true">
+              <component id="ae21f" class="javax.swing.JComboBox" binding="pubbliciBox" custom-create="true">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties>
-                  <model>
-                    <item value="Campionato"/>
-                  </model>
-                </properties>
+                <properties/>
               </component>
               <component id="df3df" class="javax.swing.JLabel">
                 <constraints>
@@ -217,7 +213,7 @@
                   <text value="Nome squadra"/>
                 </properties>
               </component>
-              <component id="cc590" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+              <component id="cc590" class="javax.swing.JTextField" binding="squadratxt">
                 <constraints>
                   <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>

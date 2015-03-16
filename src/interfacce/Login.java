@@ -5,6 +5,7 @@ import db.Mysql;
 import utils.Utils;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,14 +23,14 @@ public class Login extends JFrame {
     private JButton registratiButton;
     private JComboBox comboBox1;
     private JButton gestisciButton;
-    private JComboBox comboBox2;
+    private JComboBox pubbliciBox;
     private JButton iscrivitiButton;
     private JButton creaButton;
     private JPanel panel1;
     private JPanel login1;
     private JPanel login2;
     private JLabel infolbl;
-    private JTextField textField1;
+    private JTextField squadratxt;
     private JLabel nomeutentetxt;
     public Persona utente;
     public Utils utils = new Utils();
@@ -39,6 +40,7 @@ public class Login extends JFrame {
         super("Login - Gestore fantacalcio");
 
         final Mysql db = new Mysql();
+
         setContentPane(panel1);
 
         pack();
@@ -102,11 +104,49 @@ public class Login extends JFrame {
                 getFrame().setVisible(false);
             }
         });
+        iscrivitiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!squadratxt.getText().equals("")){
+                    String campionato = (String) pubbliciBox.getSelectedItem();
+                    String nomeSquadra = squadratxt.getText();
+                    if(db.iscriviti(utente,campionato ,nomeSquadra)){
+                        Object[] options = {"OK"};
+                        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Iscrizione effettuata con successo!",
+                                "Risposta",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[0]);
+
+                    }
+                    else{
+                        Object[] options = {"OK"};
+                        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono stati degli errori nell'iscrizione al campionato!",
+                                "Risposta",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[0]);
+                    }
+                }
+            }
+        });
     }
 
     public Login getFrame() {
         return this;
     }
 
+
+    private void createUIComponents() {
+        final Mysql db = new Mysql();
+        String[] campionati = db.selectCampionatiPubblici();
+        DefaultComboBoxModel pubbliciModel = new DefaultComboBoxModel(campionati);
+        pubbliciBox = new JComboBox();
+        pubbliciBox.setModel(pubbliciModel);
+    }
 
 }

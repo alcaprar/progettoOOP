@@ -1,6 +1,7 @@
 package interfacce;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -57,13 +58,15 @@ public class CreaCampionato extends JFrame {
 
     private Campionato campionato;
 
-    public CreaCampionato(Persona utente, final Login loginForm){
+    public CreaCampionato(Persona utente, final Login loginForm) {
         //titolo del frame
         super("Crea Campionato - Gestore fantacalcio");
 
         presidente = utente;
 
         final Mysql db = new Mysql();
+
+
 
         setContentPane(panel);
 
@@ -85,7 +88,7 @@ public class CreaCampionato extends JFrame {
 
                 //se è stato selezionato qualcuno e se non si è già raggiunto
                 //il numero max di partecipanti
-                if(!utentiList.isSelectionEmpty() && partecipantiModel.getSize() < numeroPartecipanti) {
+                if (!utentiList.isSelectionEmpty() && partecipantiModel.getSize() < numeroPartecipanti) {
                     //trovo l'indice dell'utente selezionato
                     int indice = utentiList.getSelectedIndex();
                     //trovo i valori dell'utente selezionato
@@ -104,7 +107,7 @@ public class CreaCampionato extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 //se è stato selezionato qualcuno
-                if(!partecipantiList.isSelectionEmpty()) {
+                if (!partecipantiList.isSelectionEmpty()) {
                     //trovo l'indice dell'utente selezionato
                     int indice = partecipantiList.getSelectedIndex();
                     //trovo i valori dell'utente selezionato
@@ -127,8 +130,8 @@ public class CreaCampionato extends JFrame {
                 int inizio = (Integer) inizioSpinner.getValue();
                 int fine = (Integer) fineSpinner.getValue();
                 int numeroPartecipanti = Integer.parseInt((String) numeroBox.getSelectedItem());
-                if(inizio > fine){
-                    inizioSpinner.setValue(fine-numeroPartecipanti+1);
+                if (inizio > fine) {
+                    inizioSpinner.setValue(fine - numeroPartecipanti + 1);
                 }
             }
         });
@@ -141,8 +144,8 @@ public class CreaCampionato extends JFrame {
                 int inizio = (Integer) inizioSpinner.getValue();
                 int fine = (Integer) fineSpinner.getValue();
                 int numeroPartecipanti = Integer.parseInt((String) numeroBox.getSelectedItem());
-                if(inizio>fine){
-                    fineSpinner.setValue(inizio+numeroPartecipanti-1);
+                if (inizio > fine) {
+                    fineSpinner.setValue(inizio + numeroPartecipanti - 1);
                 }
             }
         });
@@ -154,17 +157,17 @@ public class CreaCampionato extends JFrame {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 //controlla se è stato cambiato nella combobox
-                if (e.getStateChange() == ItemEvent.SELECTED){
+                if (e.getStateChange() == ItemEvent.SELECTED) {
                     //cast del numero di parteciapanti dalla combobox
                     int numeroPartecipanti = Integer.parseInt((String) numeroBox.getSelectedItem());
                     //controlla se i parteciapanti già inseriti sono maggiori
                     //del numero max appena cambiato
-                    if(partecipantiModel.getSize() > numeroPartecipanti){
+                    if (partecipantiModel.getSize() > numeroPartecipanti) {
                         //toglie gli ultimi inseriti dai partecipanti
                         //e li riaggiunge ai disponibili
-                        for(int i = partecipantiModel.getSize() ;i > numeroPartecipanti ;i--){
-                            utentiModel.addElement(partecipantiModel.getElementAt(i-1));
-                            partecipantiModel.remove(i-1);
+                        for (int i = partecipantiModel.getSize(); i > numeroPartecipanti; i--) {
+                            utentiModel.addElement(partecipantiModel.getElementAt(i - 1));
+                            partecipantiModel.remove(i - 1);
 
                         }
 
@@ -178,7 +181,7 @@ public class CreaCampionato extends JFrame {
         creaCampionatoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if("".equals(nometxt.getText())){
+                if ("".equals(nometxt.getText())) {
                     Object[] options = {"OK"};
                     int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Inserire il nome del campionato.",
                             "Nome vuoto",
@@ -188,10 +191,9 @@ public class CreaCampionato extends JFrame {
                             options,
                             options[0]);
 
-                }
-                else{
+                } else {
                     campionato = creaCampionato();
-                    if(db.creaCampionato(campionato)){
+                    if (db.creaCampionato(campionato)) {
                         Object[] options = {"OK"};
                         int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Campionato creato con successo!",
                                 "Risposta",
@@ -200,13 +202,12 @@ public class CreaCampionato extends JFrame {
                                 null,
                                 options,
                                 options[0]);
-                        if (succesDialog == 0 || succesDialog == -1){
+                        if (succesDialog == 0 || succesDialog == -1) {
                             loginForm.setVisible(true);
                             dispose();
                         }
 
-                    }
-                    else{
+                    } else {
                         Object[] options = {"OK"};
                         int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono stati degli errori nella creazione del campionato!",
                                 "Risposta",
@@ -234,8 +235,6 @@ public class CreaCampionato extends JFrame {
     }
 
 
-
-
     private void createUIComponents() {
 
         setInfoIcon();
@@ -249,7 +248,7 @@ public class CreaCampionato extends JFrame {
     //crea le liste dai modelli
     //il modello partecipanti è vuoto
     //il modello utenti disponibili viene scaricato dal db
-    private void setJlist(){
+    private void setJlist() {
         //db
         final Mysql db = new Mysql();
         //scarica la lista degli utenti e li metto in un array di stringhe
@@ -261,9 +260,10 @@ public class CreaCampionato extends JFrame {
 
 
         //aggiungo al modello utenti gli elementi dell'array
-        for(String utente : listaUtenti){
+        for (String utente : listaUtenti) {
             utentiModel.addElement(utente);
         }
+
 
         //creo le jlist dal modello
         utentiList = new JList(utentiModel);
@@ -276,7 +276,7 @@ public class CreaCampionato extends JFrame {
     }
 
     //crea gli spinner dai modelli
-    private void setSpinner(){
+    private void setSpinner() {
         //costruttore spinnermodel-->(valore da visualizzare, min, max, incremento)
         SpinnerNumberModel inizioModel = new SpinnerNumberModel(1, 1, 37, 1);
         //creo il jspinner dal modello
@@ -288,21 +288,21 @@ public class CreaCampionato extends JFrame {
         SpinnerNumberModel creditiModel = new SpinnerNumberModel(800, 1, 2000, 10);
         creditiSpinner = new JSpinner(creditiModel);
 
-        SpinnerNumberModel limiteModel = new SpinnerNumberModel(30,0,360,1);
+        SpinnerNumberModel limiteModel = new SpinnerNumberModel(30, 0, 360, 1);
         limiteSpinner = new JSpinner(limiteModel);
 
-        SpinnerNumberModel primafModel = new SpinnerNumberModel(66,50,80,1);
+        SpinnerNumberModel primafModel = new SpinnerNumberModel(66, 50, 80, 1);
         primafSpinner = new JSpinner(primafModel);
 
-        SpinnerNumberModel fasceModel = new SpinnerNumberModel(6,1,10,1);
+        SpinnerNumberModel fasceModel = new SpinnerNumberModel(6, 1, 10, 1);
         fasceSpinner = new JSpinner(fasceModel);
 
-        SpinnerNumberModel bonuscModel = new SpinnerNumberModel(0,0,5,1);
+        SpinnerNumberModel bonuscModel = new SpinnerNumberModel(0, 0, 5, 1);
         bonuscSpinner = new JSpinner(bonuscModel);
     }
 
     //aggiunge l'icona e la descrizione
-    private void setInfoIcon(){
+    private void setInfoIcon() {
         //icona di info
         ImageIcon icon = (ImageIcon) UIManager.getIcon("OptionPane.informationIcon");
 
@@ -347,11 +347,11 @@ public class CreaCampionato extends JFrame {
 
     }
 
-    private Campionato creaCampionato(){
+    private Campionato creaCampionato() {
         String nome = nometxt.getText();
         int numeroPartecipanti = Integer.parseInt((String) numeroBox.getSelectedItem());
         boolean asta = "Live".equals((String) astaBox.getSelectedItem());
-        boolean pubblico = "Pubblico".equals((String) tipoBox.getSelectedItem() );
+        boolean pubblico = "Pubblico".equals((String) tipoBox.getSelectedItem());
         int inizio = (Integer) inizioSpinner.getValue();
         int fine = (Integer) fineSpinner.getValue();
         int crediti = (Integer) creditiSpinner.getValue();
@@ -361,10 +361,10 @@ public class CreaCampionato extends JFrame {
         int bonusc = (Integer) bonuscSpinner.getValue();
 
 
-        Campionato campionato = new Campionato(nome,numeroPartecipanti,asta, pubblico,inizio,fine,crediti,orario,primaf,fasce,bonusc,presidente);
+        Campionato campionato = new Campionato(nome, numeroPartecipanti, asta, pubblico, inizio, fine, crediti, orario, primaf, fasce, bonusc, presidente);
 
         //se sono stati inseriti dei partecipanti
-        if(partecipantiModel.getSize()!=0) {
+        if (partecipantiModel.getSize() != 0) {
             //cast di array di object to array di stringhe
             String[] partecipanti = new String[partecipantiModel.getSize()];
             for (int i = 0; i < partecipantiModel.getSize(); i++) {
@@ -380,7 +380,8 @@ public class CreaCampionato extends JFrame {
         return campionato;
     }
 
-    public CreaCampionato getFrame(){
+    public CreaCampionato getFrame() {
         return this;
     }
+
 }
