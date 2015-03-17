@@ -117,6 +117,7 @@ public class Formazione extends JPanel implements ItemListener {
     private JLabel p541CenLabel3;
     private JLabel p541CenLabel4;
     private JLabel p541AttLabel;
+    private JButton p343Button;
 
     private DefaultListModel listModelP = new DefaultListModel();
     private DefaultListModel listModelD = new DefaultListModel();
@@ -160,6 +161,12 @@ public class Formazione extends JPanel implements ItemListener {
     public void itemStateChanged(ItemEvent itemEvent) {
         CardLayout c1 = (CardLayout) (cards.getLayout());
         c1.show(cards, (String) itemEvent.getItem());
+        listModelP.clear();
+        listModelD.clear();
+        listModelC.clear();
+        listModelA.clear();
+        crealiste();
+        resetLabel();
     }
 
     //metodo per la creazione delle liste
@@ -173,6 +180,102 @@ public class Formazione extends JPanel implements ItemListener {
         for(int i = 11; i < 19; i++) listModelC.addElement(gioc[i]);
         lAttaccanti.setModel(listModelA);
         for(int i = 19; i < 25; i++) listModelA.addElement(gioc[i]);
+    }
+
+    //metodo per resettare i label
+    private void resetLabel(){
+        //reset etichette modulo 343
+        p343PorLabel.setText("Portiere");
+        p343DifLabel1.setText("Difensore");
+        p343DifLabel2.setText("Difensore");
+        p343DifLabel3.setText("Difensore");
+        p343CenLabel1.setText("Centrocampista");
+        p343CenLabel2.setText("Centrocampista");
+        p343CenLabel3.setText("Centrocampista");
+        p343CenLabel4.setText("Centrocampista");
+        p343AttLabel1.setText("Attaccante");
+        p343AttLabel2.setText("Attaccante");
+        p343AttLabel3.setText("Attaccante");
+        //reset modulo etichette 352
+        p352PorLabel.setText("Portiere");
+        p352DifLabel1.setText("Difensore");
+        p352DifLabel2.setText("Difensore");
+        p352DifLabel3.setText("Difensore");
+        p352CenLabel1.setText("Centrocampista");
+        p352CenLabel2.setText("Centrocampista");
+        p352CenLabel3.setText("Centrocampista");
+        p352CenLabel4.setText("Centrocampista");
+        p352CenLabel5.setText("Centrocampista");
+        p352AttLabel1.setText("Attaccante");
+        p352AttLabel2.setText("Attaccante");
+        //reset etichette modulo 433
+        p433PorLabel.setText("Portiere");
+        p433DifLabel1.setText("Difensore");
+        p433DifLabel2.setText("Difensore");
+        p433DifLabel3.setText("Difensore");
+        p433DifLabel4.setText("Difensore");
+        p433CenLabel1.setText("Centrocampista");
+        p433CenLabel2.setText("Centrocampista");
+        p433CenLabel3.setText("Centrocampista");
+        p433AttLabel1.setText("Attaccante");
+        p433AttLabel2.setText("Attaccante");
+        p433AttLabel3.setText("Attaccante");
+        //reset etichette modulo 442
+        p442PorLabel.setText("Portiere");
+        p442DifLabel1.setText("Difensore");
+        p442DifLabel2.setText("Difensore");
+        p442DifLabel3.setText("Difensore");
+        p442DifLabel4.setText("Difensore");
+        p442CenLabel1.setText("Centrocampista");
+        p442CenLabel2.setText("Centrocampista");
+        p442CenLabel3.setText("Centrocampista");
+        p442CenLabel4.setText("Centrocampista");
+        p442AttLabel1.setText("Attaccante");
+        p442AttLabel2.setText("Attaccante");
+        //reset etichette modulo 451
+        p451PorLabel.setText("Portiere");
+        p451DifLabel1.setText("Difensore");
+        p451DifLabel2.setText("Difensore");
+        p451DifLabel3.setText("Difensore");
+        p451DifLabel4.setText("Difensore");
+        p451CenLabel1.setText("Centrocampista");
+        p451CenLabel2.setText("Centrocampista");
+        p451CenLabel3.setText("Centrocampista");
+        p451CenLabel4.setText("Centrocampista");
+        p451CenLabel5.setText("Centrocampista");
+        p451AttLabel.setText("Attaccante");
+        //reset etichiette modulo 532
+        p532PorLabel.setText("Portiere");
+        p532DifLabel1.setText("Difensore");
+        p532DifLabel2.setText("Difensore");
+        p532DifLabel3.setText("Difensore");
+        p532DifLabel4.setText("Difensore");
+        p532DifLabel5.setText("Difensore");
+        p532CenLabel1.setText("Centrocampista");
+        p532CenLabel2.setText("Centrocampista");
+        p532CenLabel3.setText("Centrocampista");
+        p532AttLabel1.setText("Attaccante");
+        p532AttLabel2.setText("Attaccante");
+        //reset etichette modulo 541
+        p541PorLabel.setText("Portiere");
+        p541DifLabel1.setText("Difensore");
+        p541DifLabel2.setText("Difensore");
+        p541DifLabel3.setText("Difensore");
+        p541DifLabel4.setText("Difensore");
+        p541DifLabel5.setText("Difensore");
+        p541CenLabel1.setText("Centrocampista");
+        p541CenLabel2.setText("Centrocampista");
+        p541CenLabel3.setText("Centrocampista");
+        p541CenLabel4.setText("Centrocampista");
+        p541AttLabel.setText("Attaccante");
+        //reset panchina
+        panPorLabel.setText("Portiere");
+        panDifLabel1.setText("Difensore");
+        panDifLabel2.setText("Difensore");
+        panCenLabel1.setText("Centrocampista");
+        panCenLabel2.setText("Centrocampista");
+        panAttLabel1.setText("Attaccante");
+        panAttLabel2.setText("Attaccante");
     }
 
     //gestori dell'inserimento dei giocatori
@@ -410,6 +513,12 @@ public class Formazione extends JPanel implements ItemListener {
                     p343AttLabel3.setText("Attaccante");
                 }
                 lAttaccanti.clearSelection();
+            }
+        });
+        p343Button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
             }
         });
     }
