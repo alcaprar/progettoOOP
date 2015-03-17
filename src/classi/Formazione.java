@@ -4,13 +4,18 @@ package classi;
  * Created by Christian on 04/03/2015.
  */
 public class Formazione {
-    private enum Modulo {M343, M352, M433, M442, M451, M532, M541}
 
-    private Giocatore[] rosa = new Giocatore[18];
+    private String modulo;
+    private Squadra squadra;
+    private Giocatore[] rosa;
 
     //funzione per la dichiarazione della formazione, tramite gui si sceglie il modulo e si compone il vettore con le giuste posizioni
-    public void setFormazione(Giocatore[] g) {
-        for (Giocatore i : g) rosa = g;
+    public void setFormazione(Giocatore[] g, String modulo, Squadra squadra) {
+        this.modulo = new String(modulo);
+        this.squadra = squadra;
+        for (Giocatore i : g) {
+            rosa = g;
+        }
     }
 
     public Giocatore[] getFormazione() {
