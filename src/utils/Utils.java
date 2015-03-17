@@ -1,11 +1,13 @@
 package utils;
 
 import classi.Giocatore;
+import db.Mysql;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by alessandro on 04/03/15.
@@ -17,29 +19,39 @@ public class Utils {
         return new String(a);
     }
 
-    public void csvQuotazioni(String pathFile, String aCapo, String csvSpliBy){
+    public boolean csvQuotazioni(String pathFile,  String csvSplitBy){
         BufferedReader br = null;
-        String csvFile = pathFile;
-        String line = aCapo;
-        String csvSplitBy = csvSpliBy;
+        boolean rsDb = false;
+        final Mysql db = new Mysql();
 
-        Giocatore[] giocatores = null;
+        String line = "";
+
+        ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
         try {
 
-            br = new BufferedReader(new FileReader(csvFile));
+            br = new BufferedReader(new FileReader(pathFile));
+
             while ((line = br.readLine()) != null) {
 
-                // use comma as separator
-                String[] country = line.split(csvSplitBy);
+                String[] giocatore = line.split(csvSplitBy);
 
-                System.out.println(country[0]+"-"+country[1]+"-"+country[2]);
+                listaGiocatori.add(new Giocatore(giocatore[2],Integer.parseInt(giocatore[0]),Integer.parseInt(giocatore[4]),giocatore[3],giocatore[1].charAt(0)));
 
             }
 
+            if(listaGiocatori.isEmpty()) System.out.print("vuota");
+            else System.out.print("piena");
+
+            return rsDb = db.inserisciGiocatori(listaGiocatori);
+
+
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return rsDb;
         } catch (IOException e) {
             e.printStackTrace();
+            return rsDb;
         } finally {
             if (br != null) {
                 try {
@@ -49,9 +61,6 @@ public class Utils {
                 }
             }
         }
-
-        System.out.println("Done");
-
 
     }
 }

@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 import classi.*;
 import interfacce.*;
@@ -118,6 +119,58 @@ public class Mysql{
             }
         }
 
+    }
+
+    public ArrayList<Giocatore> selectGiocatoriAdmin(){
+        Connection conn = null;
+        PreparedStatement giocatoristmt = null;
+        String giocatoriSql ="SELECT * from CalciatoreAnno";
+
+        PreparedStatement contastmt = null;
+        String contaSql ="SELECT count(*) from CalciatoreAnno";
+
+        ArrayList<Giocatore> giocatori = new ArrayList<Giocatore>();
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            contastmt = conn.prepareStatement(contaSql);
+            ResultSet rscount = contastmt.executeQuery();
+            rscount.next();
+            int numeroGiocaori = rscount.getInt("count(*)");
+
+
+            if(numeroGiocaori!=0) {
+                giocatoristmt = conn.prepareStatement(giocatoriSql);
+                ResultSet rs = giocatoristmt.executeQuery();
+                int i = 0;
+                while (rs.next()) {
+                    giocatori.add(new Giocatore(rs.getString("Cognome"), rs.getInt("ID"), rs.getInt("Costo"), rs.getString("SqReale"), rs.getString("Ruolo").charAt(0)));
+                    i++;
+                }
+            }
+            return  giocatori;
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return giocatori;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return giocatori;
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
+                }
+            }
+        }
     }
 
     //crea il campionato
@@ -318,4 +371,49 @@ public class Mysql{
         }
 
     }
+    public boolean inserisciGiocatori(ArrayList<Giocatore> listaGiocatori){
+        Connection conn = null;
+        PreparedStatement giocatorestmt = null;
+        String giocatoreSql = "INSERT into CalciatoreAnno value(?,?,?,?,?)";
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            int rsgiocatore=1;
+
+            for(int i =0;i<listaGiocatori.size() && rsgiocatore==1;i++) {
+                giocatorestmt = conn.prepareStatement(giocatoreSql);
+                giocatorestmt.setInt(1, listaGiocatori.get(i).getID());
+                giocatorestmt.setString(2,Character.toString(listaGiocatori.get(i).getRuolo()));
+                giocatorestmt.setString(3,listaGiocatori.get(i).getCognome());
+                giocatorestmt.setString(4,listaGiocatori.get(i).getSquadraReale());
+                giocatorestmt.setInt(5,listaGiocatori.get(i).getPrezzoBase());
+
+                rsgiocatore= giocatorestmt.executeUpdate();
+            }
+
+            if(rsgiocatore==1){
+                return true;
+            }
+            else{
+                return false;
+            }
+
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return false;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+
+        }finally {
+            try { conn.close(); } catch (Exception e) { /* ignored */ }
+        }
+    }
 }
+

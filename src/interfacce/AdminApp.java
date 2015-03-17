@@ -2,9 +2,9 @@ package interfacce;
 
 
 
-import classi.GiornataReale;
+import classi.*;
 import com.toedter.calendar.JDateChooser;
-import utils.ForcedListSelectionModel;
+import db.Mysql;
 import utils.*;
 
 
@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 
@@ -36,6 +37,9 @@ public class AdminApp extends JFrame {
     private JButton giornateInvia;
     private JButton quotazioniInvia;
     private JButton votiInvia;
+    private JPanel panelCsv;
+    private JPanel panelTabella;
+    private JTable tabellaGiocatori;
 
 
     JDateChooser chooserDataInizio;
@@ -45,11 +49,19 @@ public class AdminApp extends JFrame {
 
     GiornataReale[] calendario;
 
+    Giocatore[] giocatori;
+
+    ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
+
     String pathFile;
+
+    final Mysql db ;
 
     public AdminApp() {
         //titolo del frame
         super("Admin - Gestore fantacalcio");
+
+        db = new Mysql();
 
         setContentPane(panel);
 
@@ -61,6 +73,21 @@ public class AdminApp extends JFrame {
         setVisible(true);
 
         setResizable(false);
+
+        listaGiocatori = db.selectGiocatoriAdmin();
+
+        //se la lista di giocatori non è vuota, cioè
+        //è già stato caricato il csv una volta
+        if(!listaGiocatori.isEmpty()){
+            panelCsv.setVisible(false);
+            panelTabella.setVisible(true);
+
+        }
+        else{
+            panelCsv.setVisible(true);
+            panelTabella.setVisible(false);
+        }
+
 
 
         //creo i data chooser
@@ -97,7 +124,7 @@ public class AdminApp extends JFrame {
         quotazioniInvia.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                utils.csvQuotazioni(pathFile,"",",");
+                utils.csvQuotazioni(pathFile,",");
 
             }
         });
@@ -116,7 +143,17 @@ public class AdminApp extends JFrame {
     }
 
     private void createUIComponents() {
+        setTabellaGiocatori();
 
+    }
+
+    private void setTabellaGiocatori(){
+        tabellaGiocatori = new JTable();
+
+        Object[] nomeColonne= {"ID","Cognome","Ruolo","Squadra Reale","Costo"};
+        Object[][] righeGiocatori;
+
+        DefaultTableModel giocatoriModel = new DefaultTableModel();
     }
 
 

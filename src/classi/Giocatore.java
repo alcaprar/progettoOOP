@@ -4,26 +4,26 @@ package classi;
  * Created by Christian on 03/03/2015.
  */
 public class Giocatore {
-    private String nome;
+    private String cognome;
     private int ID;
     private int prezzoBase;
     private String squadraReale;
     private char ruolo;
 
-    public Giocatore(String no,  int id, int pB,  String sq, char ruolo) {
-        this.nome = no;
+    public Giocatore(String cognome,  int id, int prezzo,  String squadra, char ruolo) {
+        this.cognome = cognome;
         this.ID = id;
-        this.prezzoBase = pB;
-        this.squadraReale = sq;
+        this.prezzoBase = prezzo;
+        this.squadraReale = squadra;
         this.ruolo = ruolo;
     }
 
-    public String getNome() {
-        return nome;
+    public String getCognome() {
+        return cognome;
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.cognome = nome;
     }
 
     public int getID() {
