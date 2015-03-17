@@ -62,8 +62,23 @@ public class Formazione extends JPanel implements ItemListener {
     private JLabel panCenLabel2;
     private JLabel panAttLabel1;
     private JLabel panAttLabel2;
+    private JLabel p433PorLabel;
+    private JLabel p433DifLabel1;
+    private JLabel p433DifLabel2;
+    private JLabel p433DifLabel3;
+    private JLabel p433DifLabel4;
+    private JLabel p433CenLabel1;
+    private JLabel p433CenLabel2;
+    private JLabel p433CenLabel3;
+    private JLabel p433AttLabel1;
+    private JLabel p433AttLabel2;
+    private JLabel p433AttLabel3;
 
-    private DefaultListModel listModel;
+    private DefaultListModel listModelP = new DefaultListModel();
+    private DefaultListModel listModelD = new DefaultListModel();
+    private DefaultListModel listModelC = new DefaultListModel();
+    private DefaultListModel listModelA = new DefaultListModel();
+
 
     Image bkg_panel = Toolkit.getDefaultToolkit().createImage("resources/Soccer_Field_Transparant.png");
 
@@ -72,10 +87,14 @@ public class Formazione extends JPanel implements ItemListener {
         //gestisciListe(squadra);
         setVisible(true);
 
+        //metodo per popolare le liste di giocatori
+        crealiste();
+
         //Per ogni etichetta del pannello viene generato un Mouselistener per controllare il riempimento della formazione mediante
         //il click del mouse
         ins343();
         ins352();
+        ins433();
 
         //gestione etichette panchina
         inspan();
@@ -95,13 +114,33 @@ public class Formazione extends JPanel implements ItemListener {
         c1.show(cards, (String) itemEvent.getItem());
     }
 
+    //metodo per la creazione delle liste
+    private void crealiste(){
+        String[] gioc = {"Por1", "Por2", "Por3", "Dif1", "Dif2", "Dif3", "Dif4", "Dif5", "Dif6", "Dif7", "Dif8", "Cen1", "Cen2", "Cen3", "Cen4", "Cen5", "Cen6", "Cen7", "Cen8", "Att1", "Att2", "Att3", "Att4", "Att5", "Att6"};
+        lPortieri.setModel(listModelP);
+        for(int i = 0; i < 3; i++) listModelP.addElement(gioc[i]);
+        lDifensori.setModel(listModelD);
+        for(int i = 3; i < 11; i++) listModelD.addElement(gioc[i]);
+        lCentrocampisti.setModel(listModelC);
+        for(int i = 11; i < 19; i++) listModelC.addElement(gioc[i]);
+        lAttaccanti.setModel(listModelA);
+        for(int i = 19; i < 25; i++) listModelA.addElement(gioc[i]);
+    }
+
     //gestori dell'inserimento dei giocatori
 
     private void ins343(){
         p343PorLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                if(lPortieri.isSelectionEmpty() == false) p343PorLabel.setText((String)lPortieri.getSelectedValue());
+                if (lPortieri.isSelectionEmpty() == false){
+                    p343PorLabel.setText((String)lPortieri.getSelectedValue());
+                    listModelP.removeElement(lPortieri.getSelectedValue());
+                }
+                else if(p343PorLabel.getText() != "Portiere"){
+                    listModelP.add(0, p343PorLabel.getText());
+                    p343PorLabel.setText("Portiere");
+                }
                 lPortieri.clearSelection();
             }
         });
@@ -110,18 +149,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false && temp != p343DifLabel2.getText() && temp != p343DifLabel3.getText()) p343DifLabel1.setText((String)lDifensori.getSelectedValue());
-                if(lDifensori.isSelectionEmpty() == false ){
-                    if(temp == p343DifLabel2.getText()) {
-                        p343DifLabel2.setText(p343DifLabel1.getText());
-                        p343DifLabel1.setText(temp);
-                    }
-                    else if(temp == p343DifLabel3.getText()){
-                        p343DifLabel3.setText(p343DifLabel1.getText());
-                        p343DifLabel1.setText(temp);
-                    }
+                if(lDifensori.isSelectionEmpty() == false){
+                    p343DifLabel1.setText(temp);
+                    listModelD.removeElement(lDifensori.getSelectedValue());
                 }
-                if(lDifensori.isSelectionEmpty() == true) p343DifLabel1.setText("Difensore");
+                else if(p343DifLabel1.getText() != "Difensore"){
+                    listModelD.add(0, p343DifLabel1.getText());
+                    p343DifLabel1.setText("Difensore");
+                }
                 lDifensori.clearSelection();
             }
         });
@@ -130,18 +165,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false && temp != p343DifLabel1.getText() && temp != p343DifLabel3.getText()) p343DifLabel2.setText((String)lDifensori.getSelectedValue());
-                if(lDifensori.isSelectionEmpty() == false ){
-                    if(temp == p343DifLabel1.getText()) {
-                        p343DifLabel1.setText(p343DifLabel2.getText());
-                        p343DifLabel2.setText(temp);
-                    }
-                    else if(temp == p343DifLabel3.getText()){
-                        p352DifLabel3.setText(p352DifLabel2.getText());
-                        p352DifLabel2.setText(temp);
-                    }
+                if(lDifensori.isSelectionEmpty() == false){
+                    p343DifLabel2.setText(temp);
+                    listModelD.removeElement(lDifensori.getSelectedValue());
                 }
-                if(lDifensori.isSelectionEmpty() == true) p343DifLabel2.setText("Difensore");
+                else if(p343DifLabel2.getText() != "Difensore"){
+                    listModelD.add(0, p343DifLabel2.getText());
+                    p343DifLabel2.setText("Difensore");
+                }
                 lDifensori.clearSelection();
             }
         });
@@ -150,18 +181,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false && temp != p343DifLabel1.getText() && temp != p343DifLabel2.getText()) p343DifLabel3.setText((String)lDifensori.getSelectedValue());
-                if(lDifensori.isSelectionEmpty() == false ){
-                    if(temp == p343DifLabel1.getText()) {
-                        p343DifLabel1.setText(p343DifLabel3.getText());
-                        p343DifLabel3.setText(temp);
-                    }
-                    else if(temp == p343DifLabel2.getText()){
-                        p343DifLabel2.setText(p343DifLabel3.getText());
-                        p343DifLabel3.setText(temp);
-                    }
+                if(lDifensori.isSelectionEmpty() == false){
+                    p343DifLabel3.setText(temp);
+                    listModelD.removeElement(lDifensori.getSelectedValue());
                 }
-                if(lDifensori.isSelectionEmpty() == true) p343DifLabel3.setText("Difensore");
+                else if(p343DifLabel3.getText() != "Difensore"){
+                    listModelD.add(0, p343DifLabel3.getText());
+                    p343DifLabel3.setText("Difensore");
+                }
                 lDifensori.clearSelection();
             }
         });
@@ -170,22 +197,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
-                if(lCentrocampisti.isSelectionEmpty() == false && temp != p343CenLabel2.getText() && temp != p343CenLabel3.getText() && temp != p343CenLabel4.getText()) p343CenLabel1.setText((String)lCentrocampisti.getSelectedValue());
-                if(lCentrocampisti.isSelectionEmpty() == false ){
-                    if(temp == p343CenLabel2.getText()) {
-                        p343CenLabel2.setText(p343CenLabel1.getText());
-                        p343CenLabel1.setText(temp);
-                    }
-                    else if(temp == p343CenLabel3.getText()){
-                        p343CenLabel3.setText(p343CenLabel1.getText());
-                        p343CenLabel1.setText(temp);
-                    }
-                    else if(temp == p343CenLabel4.getText()){
-                        p343CenLabel4.setText(p343CenLabel1.getText());
-                        p343CenLabel1.setText(temp);
-                    }
+                if (lCentrocampisti.isSelectionEmpty() == false) {
+                    p343CenLabel1.setText(temp);
+                    listModelC.removeElement(lCentrocampisti.getSelectedValue());
+                } else if (p343CenLabel1.getText() != "Centrocampista") {
+                    listModelC.add(0, p343CenLabel1.getText());
+                    p343CenLabel1.setText("Centrocampista");
                 }
-                if(lCentrocampisti.isSelectionEmpty() == true) p343CenLabel1.setText("Centrocampista");
                 lCentrocampisti.clearSelection();
             }
         });
@@ -194,22 +212,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
-                if(lCentrocampisti.isSelectionEmpty() == false && temp != p343CenLabel1.getText() && temp != p343CenLabel3.getText() && temp != p343CenLabel4.getText()) p343CenLabel2.setText((String)lCentrocampisti.getSelectedValue());
-                if(lCentrocampisti.isSelectionEmpty() == false ){
-                    if(temp == p343CenLabel1.getText()) {
-                        p343CenLabel1.setText(p343CenLabel2.getText());
-                        p343CenLabel2.setText(temp);
-                    }
-                    else if(temp == p343CenLabel3.getText()){
-                        p343CenLabel3.setText(p343CenLabel2.getText());
-                        p343CenLabel2.setText(temp);
-                    }
-                    else if(temp == p343CenLabel4.getText()){
-                        p343CenLabel4.setText(p343CenLabel2.getText());
-                        p343CenLabel2.setText(temp);
-                    }
+                if (lCentrocampisti.isSelectionEmpty() == false) {
+                    p343CenLabel3.setText(temp);
+                    listModelC.removeElement(lCentrocampisti.getSelectedValue());
+                } else if (p343CenLabel3.getText() != "Centrocampista") {
+                    listModelC.add(0, p343CenLabel3.getText());
+                    p343CenLabel3.setText("Centrocampista");
                 }
-                if(lCentrocampisti.isSelectionEmpty() == true) p343CenLabel2.setText("Centrocampista");
                 lCentrocampisti.clearSelection();
             }
         });
@@ -218,22 +227,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
-                if(lCentrocampisti.isSelectionEmpty() == false && temp != p343CenLabel1.getText() && temp != p343CenLabel2.getText() && temp != p343CenLabel4.getText()) p343CenLabel3.setText((String)lCentrocampisti.getSelectedValue());
-                if(lCentrocampisti.isSelectionEmpty() == false ){
-                    if(temp == p343CenLabel1.getText()) {
-                        p343CenLabel1.setText(p343CenLabel3.getText());
-                        p343CenLabel3.setText(temp);
-                    }
-                    else if(temp == p343CenLabel2.getText()){
-                        p343CenLabel2.setText(p343CenLabel3.getText());
-                        p343CenLabel3.setText(temp);
-                    }
-                    else if(temp == p343CenLabel4.getText()){
-                        p343CenLabel4.setText(p343CenLabel3.getText());
-                        p343CenLabel3.setText(temp);
-                    }
+                if (lCentrocampisti.isSelectionEmpty() == false) {
+                    p343CenLabel3.setText(temp);
+                    listModelC.removeElement(lCentrocampisti.getSelectedValue());
+                } else if (p343CenLabel3.getText() != "Centrocampista") {
+                    listModelC.add(0, p343CenLabel3.getText());
+                    p343CenLabel3.setText("Centrocampista");
                 }
-                if(lCentrocampisti.isSelectionEmpty() == true) p343CenLabel3.setText("Centrocampista");
                 lCentrocampisti.clearSelection();
             }
         });
@@ -242,22 +242,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
-                if(lCentrocampisti.isSelectionEmpty() == false && temp != p343CenLabel1.getText() && temp != p343CenLabel2.getText() && temp != p343CenLabel3.getText()) p343CenLabel4.setText((String)lCentrocampisti.getSelectedValue());
-                if(lCentrocampisti.isSelectionEmpty() == false ){
-                    if(temp == p343CenLabel1.getText()) {
-                        p343CenLabel1.setText(p343CenLabel4.getText());
-                        p343CenLabel4.setText(temp);
-                    }
-                    else if(temp == p343CenLabel2.getText()){
-                        p343CenLabel2.setText(p343CenLabel4.getText());
-                        p343CenLabel4.setText(temp);
-                    }
-                    else if(temp == p343CenLabel3.getText()){
-                        p343CenLabel3.setText(p343CenLabel4.getText());
-                        p343CenLabel4.setText(temp);
-                    }
+                if (lCentrocampisti.isSelectionEmpty() == false) {
+                    p343CenLabel4.setText(temp);
+                    listModelC.removeElement(lCentrocampisti.getSelectedValue());
+                } else if (p343CenLabel4.getText() != "Centrocampista") {
+                    listModelC.add(0, p343CenLabel4.getText());
+                    p343CenLabel4.setText("Centrocampista");
                 }
-                if(lCentrocampisti.isSelectionEmpty() == true) p343CenLabel4.setText("Centrocampista");
                 lCentrocampisti.clearSelection();
             }
         });
@@ -266,18 +257,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
-                if(lAttaccanti.isSelectionEmpty() == false && temp != p343AttLabel2.getText() && temp != p343AttLabel3.getText()) p343AttLabel1.setText((String)lAttaccanti.getSelectedValue());
-                if(lAttaccanti.isSelectionEmpty() == false) {
-                    if (temp == p343AttLabel2.getText()) {
-                        p343AttLabel2.setText(p343AttLabel1.getText());
-                        p343AttLabel1.setText(temp);
-                    }
-                    else if(temp == p343AttLabel3.getText()){
-                        p343AttLabel3.setText(p343AttLabel1.getText());
-                        p343AttLabel1.setText(temp);
-                    }
+                if (lAttaccanti.isSelectionEmpty() == false) {
+                    p343AttLabel1.setText(temp);
+                    listModelA.removeElement(lAttaccanti.getSelectedValue());
+                } else if (p343AttLabel1.getText() != "Attaccante") {
+                    listModelA.add(0, p343AttLabel1.getText());
+                    p343AttLabel1.setText("Attaccante");
                 }
-                if (lAttaccanti.isSelectionEmpty() == true) p343AttLabel1.setText("Attaccante");
                 lAttaccanti.clearSelection();
             }
         });
@@ -286,18 +272,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
-                if(lAttaccanti.isSelectionEmpty() == false && temp != p343AttLabel1.getText() && temp != p343AttLabel3.getText()) p343AttLabel2.setText((String)lAttaccanti.getSelectedValue());
-                if(lAttaccanti.isSelectionEmpty() == false) {
-                    if (temp == p343AttLabel1.getText()) {
-                        p343AttLabel1.setText(p343AttLabel2.getText());
-                        p343AttLabel2.setText(temp);
-                    }
-                    else if(temp == p343AttLabel3.getText()){
-                        p343AttLabel3.setText(p343AttLabel2.getText());
-                        p343AttLabel2.setText(temp);
-                    }
+                if (lAttaccanti.isSelectionEmpty() == false) {
+                    p343AttLabel2.setText(temp);
+                    listModelA.removeElement(lAttaccanti.getSelectedValue());
+                } else if (p343AttLabel2.getText() != "Attaccante") {
+                    listModelA.add(0, p343AttLabel2.getText());
+                    p343AttLabel2.setText("Attaccante");
                 }
-                if (lAttaccanti.isSelectionEmpty() == true) p343AttLabel2.setText("Attaccante");
                 lAttaccanti.clearSelection();
             }
         });
@@ -306,18 +287,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
-                if(lAttaccanti.isSelectionEmpty() == false && temp != p343AttLabel1.getText() && temp != p343AttLabel2.getText()) p343AttLabel3.setText((String)lAttaccanti.getSelectedValue());
-                if(lAttaccanti.isSelectionEmpty() == false) {
-                    if (temp == p343AttLabel1.getText()) {
-                        p343AttLabel1.setText(p343AttLabel3.getText());
-                        p343AttLabel3.setText(temp);
-                    }
-                    else if(temp == p343AttLabel2.getText()){
-                        p343AttLabel2.setText(p343AttLabel3.getText());
-                        p343AttLabel3.setText(temp);
-                    }
+                if (lAttaccanti.isSelectionEmpty() == false) {
+                    p343AttLabel3.setText(temp);
+                    listModelA.removeElement(lAttaccanti.getSelectedValue());
+                } else if (p343AttLabel3.getText() != "Attaccante") {
+                    listModelA.add(0, p343AttLabel3.getText());
+                    p343AttLabel3.setText("Attaccante");
                 }
-                if (lAttaccanti.isSelectionEmpty() == true) p343AttLabel3.setText("Attaccante");
                 lAttaccanti.clearSelection();
             }
         });
@@ -327,7 +303,14 @@ public class Formazione extends JPanel implements ItemListener {
         p352PorLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                if(lPortieri.isSelectionEmpty() == false) p352PorLabel.setText((String)lPortieri.getSelectedValue());
+                if (lPortieri.isSelectionEmpty() == false){
+                    p352PorLabel.setText((String)lPortieri.getSelectedValue());
+                    listModelP.removeElement(lPortieri.getSelectedValue());
+                }
+                else if(p352PorLabel.getText() != "Portiere"){
+                    listModelP.add(0, p352PorLabel.getText());
+                    p352PorLabel.setText("Portiere");
+                }
                 lPortieri.clearSelection();
             }
         });
@@ -396,26 +379,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
-                if(lCentrocampisti.isSelectionEmpty() == false && temp != p352CenLabel2.getText() && temp != p352CenLabel3.getText() && temp != p352CenLabel4.getText() && temp != p352CenLabel5.getText()) p352CenLabel1.setText((String)lCentrocampisti.getSelectedValue());
-                if(lCentrocampisti.isSelectionEmpty() == false ){
-                    if(temp == p352CenLabel2.getText()) {
-                        p352CenLabel2.setText(p352CenLabel1.getText());
-                        p352CenLabel1.setText(temp);
-                    }
-                    else if(temp == p352CenLabel3.getText()){
-                        p352CenLabel3.setText(p352CenLabel1.getText());
-                        p352CenLabel1.setText(temp);
-                    }
-                    else if(temp == p352CenLabel4.getText()){
-                        p352CenLabel4.setText(p352CenLabel1.getText());
-                        p352CenLabel1.setText(temp);
-                    }
-                    else if(temp == p352CenLabel5.getText()){
-                        p352CenLabel5.setText(p352CenLabel1.getText());
-                        p352CenLabel1.setText(temp);
-                    }
+                if (lCentrocampisti.isSelectionEmpty() == false) {
+                    p352CenLabel1.setText(temp);
+                    listModelC.removeElement(lCentrocampisti.getSelectedValue());
+                } else if (p352CenLabel1.getText() != "Centrocampista") {
+                    listModelC.add(0, p352CenLabel1.getText());
+                    p352CenLabel1.setText("Centrocampista");
                 }
-                if(lCentrocampisti.isSelectionEmpty() == true) p352CenLabel1.setText("Centrocampista");
                 lCentrocampisti.clearSelection();
             }
         });
@@ -424,26 +394,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
-                if(lCentrocampisti.isSelectionEmpty() == false && temp != p352CenLabel1.getText() && temp != p352CenLabel3.getText() && temp != p352CenLabel4.getText() && temp != p352CenLabel5.getText()) p352CenLabel2.setText((String)lCentrocampisti.getSelectedValue());
-                if(lCentrocampisti.isSelectionEmpty() == false ){
-                    if(temp == p352CenLabel1.getText()) {
-                        p352CenLabel1.setText(p352CenLabel2.getText());
-                        p352CenLabel2.setText(temp);
-                    }
-                    else if(temp == p352CenLabel3.getText()){
-                        p352CenLabel3.setText(p352CenLabel2.getText());
-                        p352CenLabel2.setText(temp);
-                    }
-                    else if(temp == p352CenLabel4.getText()){
-                        p352CenLabel4.setText(p352CenLabel2.getText());
-                        p352CenLabel2.setText(temp);
-                    }
-                    else if(temp == p352CenLabel5.getText()){
-                        p352CenLabel5.setText(p352CenLabel2.getText());
-                        p352CenLabel2.setText(temp);
-                    }
+                if (lCentrocampisti.isSelectionEmpty() == false) {
+                    p352CenLabel2.setText(temp);
+                    listModelC.removeElement(lCentrocampisti.getSelectedValue());
+                } else if (p352CenLabel2.getText() != "Centrocampista") {
+                    listModelC.add(0, p352CenLabel2.getText());
+                    p352CenLabel2.setText("Centrocampista");
                 }
-                if(lCentrocampisti.isSelectionEmpty() == true) p352CenLabel2.setText("Centrocampista");
                 lCentrocampisti.clearSelection();
             }
         });
@@ -452,26 +409,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
-                if(lCentrocampisti.isSelectionEmpty() == false && temp != p352CenLabel1.getText() && temp != p352CenLabel2.getText() && temp != p352CenLabel4.getText() && temp != p352CenLabel5.getText()) p352CenLabel3.setText((String)lCentrocampisti.getSelectedValue());
-                if(lCentrocampisti.isSelectionEmpty() == false ){
-                    if(temp == p352CenLabel1.getText()) {
-                        p352CenLabel1.setText(p352CenLabel3.getText());
-                        p352CenLabel3.setText(temp);
-                    }
-                    else if(temp == p352CenLabel2.getText()){
-                        p352CenLabel2.setText(p352CenLabel3.getText());
-                        p352CenLabel3.setText(temp);
-                    }
-                    else if(temp == p352CenLabel4.getText()){
-                        p352CenLabel4.setText(p352CenLabel3.getText());
-                        p352CenLabel3.setText(temp);
-                    }
-                    else if(temp == p352CenLabel5.getText()){
-                        p352CenLabel5.setText(p352CenLabel3.getText());
-                        p352CenLabel3.setText(temp);
-                    }
+                if (lCentrocampisti.isSelectionEmpty() == false) {
+                    p352CenLabel3.setText(temp);
+                    listModelC.removeElement(lCentrocampisti.getSelectedValue());
+                } else if (p352CenLabel3.getText() != "Centrocampista") {
+                    listModelC.add(0, p352CenLabel3.getText());
+                    p352CenLabel3.setText("Centrocampista");
                 }
-                if(lCentrocampisti.isSelectionEmpty() == true) p352CenLabel3.setText("Centrocampista");
                 lCentrocampisti.clearSelection();
             }
         });
@@ -480,26 +424,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
-                if(lCentrocampisti.isSelectionEmpty() == false && temp != p352CenLabel1.getText() && temp != p352CenLabel2.getText() && temp != p352CenLabel3.getText() && temp != p352CenLabel5.getText()) p352CenLabel4.setText((String)lCentrocampisti.getSelectedValue());
-                if(lCentrocampisti.isSelectionEmpty() == false ){
-                    if(temp == p352CenLabel1.getText()) {
-                        p352CenLabel1.setText(p352CenLabel4.getText());
-                        p352CenLabel4.setText(temp);
-                    }
-                    else if(temp == p352CenLabel2.getText()){
-                        p352CenLabel2.setText(p352CenLabel4.getText());
-                        p352CenLabel4.setText(temp);
-                    }
-                    else if(temp == p352CenLabel3.getText()){
-                        p352CenLabel3.setText(p352CenLabel4.getText());
-                        p352CenLabel4.setText(temp);
-                    }
-                    else if(temp == p352CenLabel5.getText()){
-                        p352CenLabel5.setText(p352CenLabel4.getText());
-                        p352CenLabel4.setText(temp);
-                    }
+                if (lCentrocampisti.isSelectionEmpty() == false) {
+                    p352CenLabel4.setText(temp);
+                    listModelC.removeElement(lCentrocampisti.getSelectedValue());
+                } else if (p352CenLabel4.getText() != "Centrocampista") {
+                    listModelC.add(0, p352CenLabel4.getText());
+                    p352CenLabel4.setText("Centrocampista");
                 }
-                if(lCentrocampisti.isSelectionEmpty() == true) p352CenLabel4.setText("Centrocampista");
                 lCentrocampisti.clearSelection();
             }
         });
@@ -508,26 +439,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
-                if(lCentrocampisti.isSelectionEmpty() == false && temp != p352CenLabel1.getText() && temp != p352CenLabel2.getText() && temp != p352CenLabel3.getText() && temp != p352CenLabel4.getText()) p352CenLabel5.setText((String)lCentrocampisti.getSelectedValue());
-                if(lCentrocampisti.isSelectionEmpty() == false ){
-                    if(temp == p352CenLabel1.getText()) {
-                        p352CenLabel2.setText(p352CenLabel5.getText());
-                        p352CenLabel5.setText(temp);
-                    }
-                    else if(temp == p352CenLabel2.getText()){
-                        p352CenLabel2.setText(p352CenLabel5.getText());
-                        p352CenLabel5.setText(temp);
-                    }
-                    else if(temp == p352CenLabel3.getText()){
-                        p352CenLabel3.setText(p352CenLabel5.getText());
-                        p352CenLabel5.setText(temp);
-                    }
-                    else if(temp == p352CenLabel4.getText()){
-                        p352CenLabel4.setText(p352CenLabel5.getText());
-                        p352CenLabel5.setText(temp);
-                    }
+                if (lCentrocampisti.isSelectionEmpty() == false) {
+                    p352CenLabel5.setText(temp);
+                    listModelC.removeElement(lCentrocampisti.getSelectedValue());
+                } else if (p352CenLabel5.getText() != "Centrocampista") {
+                    listModelC.add(0, p352CenLabel5.getText());
+                    p352CenLabel5.setText("Centrocampista");
                 }
-                if(lCentrocampisti.isSelectionEmpty() == true) p352CenLabel5.setText("Centrocampista");
                 lCentrocampisti.clearSelection();
             }
         });
@@ -536,15 +454,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
-                if(lAttaccanti.isSelectionEmpty() == false && temp != p352AttLabel2.getText())
-                    p352AttLabel1.setText((String) lAttaccanti.getSelectedValue());
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    if (temp == p352AttLabel2.getText()) {
-                        p352AttLabel2.setText(p352AttLabel1.getText());
-                        p352AttLabel1.setText(temp);
-                    }
+                    p352AttLabel1.setText(temp);
+                    listModelA.removeElement(lAttaccanti.getSelectedValue());
+                } else if (p352AttLabel1.getText() != "Attaccante") {
+                    listModelA.add(0, p352AttLabel1.getText());
+                    p352AttLabel1.setText("Attaccante");
                 }
-                if (lAttaccanti.isSelectionEmpty() == true) p352AttLabel1.setText("Attaccante");
                 lAttaccanti.clearSelection();
             }
         });
@@ -553,14 +469,184 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
-                if(lAttaccanti.isSelectionEmpty() == false && temp != p352AttLabel1.getText()) p352AttLabel2.setText((String)lAttaccanti.getSelectedValue());
-                if(lAttaccanti.isSelectionEmpty() == false ){
-                    if(temp == p352AttLabel1.getText()) {
-                        p352AttLabel1.setText(p352AttLabel2.getText());
-                        p352AttLabel2.setText(temp);
-                    }
+                if (lAttaccanti.isSelectionEmpty() == false) {
+                    p352AttLabel2.setText(temp);
+                    listModelA.removeElement(lAttaccanti.getSelectedValue());
+                } else if (p352AttLabel2.getText() != "Attaccante") {
+                    listModelA.add(0, p352AttLabel2.getText());
+                    p352AttLabel2.setText("Attaccante");
                 }
-                if(lAttaccanti.isSelectionEmpty() == true) p352AttLabel2.setText("Attaccante");
+                lAttaccanti.clearSelection();
+            }
+        });
+    }
+
+    private void ins433(){
+        p433PorLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if (lPortieri.isSelectionEmpty() == false){
+                    p433PorLabel.setText((String)lPortieri.getSelectedValue());
+                    listModelP.removeElement(lPortieri.getSelectedValue());
+                }
+                else if(p433PorLabel.getText() != "Portiere"){
+                    listModelP.add(0, p433PorLabel.getText());
+                    p433PorLabel.setText("Portiere");
+                }
+                lPortieri.clearSelection();
+            }
+        });
+        p433DifLabel1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lDifensori.getSelectedValue();
+                if(lDifensori.isSelectionEmpty() == false){
+                    p433DifLabel1.setText(temp);
+                    listModelD.removeElement(lDifensori.getSelectedValue());
+                }
+                else if(p433DifLabel1.getText() != "Difensore"){
+                    listModelD.add(0, p433DifLabel1.getText());
+                    p433DifLabel1.setText("Difensore");
+                }
+                lDifensori.clearSelection();
+            }
+        });
+        p433DifLabel2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lDifensori.getSelectedValue();
+                if(lDifensori.isSelectionEmpty() == false){
+                    p433DifLabel2.setText(temp);
+                    listModelD.removeElement(lDifensori.getSelectedValue());
+                }
+                else if(p433DifLabel2.getText() != "Difensore"){
+                    listModelD.add(0, p433DifLabel2.getText());
+                    p433DifLabel2.setText("Difensore");
+                }
+                lDifensori.clearSelection();
+            }
+        });
+        p433DifLabel3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lDifensori.getSelectedValue();
+                if(lDifensori.isSelectionEmpty() == false){
+                    p433DifLabel3.setText(temp);
+                    listModelD.removeElement(lDifensori.getSelectedValue());
+                }
+                else if(p433DifLabel3.getText() != "Difensore"){
+                    listModelD.add(0, p433DifLabel3.getText());
+                    p433DifLabel3.setText("Difensore");
+                }
+                lDifensori.clearSelection();
+            }
+        });
+        p433DifLabel4.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lDifensori.getSelectedValue();
+                if(lDifensori.isSelectionEmpty() == false){
+                    p433DifLabel4.setText(temp);
+                    listModelD.removeElement(lDifensori.getSelectedValue());
+                }
+                else if(p433DifLabel4.getText() != "Difensore"){
+                    listModelD.add(0, p433DifLabel4.getText());
+                    p433DifLabel4.setText("Difensore");
+                }
+                lDifensori.clearSelection();
+            }
+        });
+        p433CenLabel1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lCentrocampisti.getSelectedValue();
+                if (lCentrocampisti.isSelectionEmpty() == false) {
+                    p433CenLabel1.setText(temp);
+                    listModelC.removeElement(lCentrocampisti.getSelectedValue());
+                } else if (p433CenLabel1.getText() != "Centrocampista") {
+                    listModelC.add(0, p433CenLabel1.getText());
+                    p433CenLabel1.setText("Centrocampista");
+                }
+                lCentrocampisti.clearSelection();
+            }
+        });
+        p433CenLabel2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lCentrocampisti.getSelectedValue();
+                if (lCentrocampisti.isSelectionEmpty() == false) {
+                    p433CenLabel2.setText(temp);
+                    listModelC.removeElement(lCentrocampisti.getSelectedValue());
+                } else if (p433CenLabel2.getText() != "Centrocampista") {
+                    listModelC.add(0, p433CenLabel2.getText());
+                    p433CenLabel2.setText("Centrocampista");
+                }
+                lCentrocampisti.clearSelection();
+            }
+        });
+        p433CenLabel3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lCentrocampisti.getSelectedValue();
+                if (lCentrocampisti.isSelectionEmpty() == false) {
+                    p433CenLabel3.setText(temp);
+                    listModelC.removeElement(lCentrocampisti.getSelectedValue());
+                } else if (p433CenLabel3.getText() != "Centrocampista") {
+                    listModelC.add(0, p433CenLabel3.getText());
+                    p433CenLabel3.setText("Centrocampista");
+                }
+                lCentrocampisti.clearSelection();
+            }
+        });
+        p433AttLabel1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lAttaccanti.getSelectedValue();
+                if (lAttaccanti.isSelectionEmpty() == false) {
+                    p433AttLabel1.setText(temp);
+                    listModelA.removeElement(lAttaccanti.getSelectedValue());
+                } else if (p433AttLabel1.getText() != "Attaccante") {
+                    listModelA.add(0, p433AttLabel1.getText());
+                    p433AttLabel1.setText("Attaccante");
+                }
+                lAttaccanti.clearSelection();
+            }
+        });
+        p433AttLabel2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lAttaccanti.getSelectedValue();
+                if (lAttaccanti.isSelectionEmpty() == false) {
+                    p433AttLabel2.setText(temp);
+                    listModelA.removeElement(lAttaccanti.getSelectedValue());
+                } else if (p433AttLabel2.getText() != "Attaccante") {
+                    listModelA.add(0, p433AttLabel2.getText());
+                    p433AttLabel2.setText("Attaccante");
+                }
+                lAttaccanti.clearSelection();
+            }
+        });
+        p433AttLabel3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                String temp = new String();
+                temp = (String) lAttaccanti.getSelectedValue();
+                if (lAttaccanti.isSelectionEmpty() == false) {
+                    p433AttLabel3.setText(temp);
+                    listModelA.removeElement(lAttaccanti.getSelectedValue());
+                } else if (p433AttLabel3.getText() != "Attaccante") {
+                    listModelA.add(0, p433AttLabel3.getText());
+                    p433AttLabel3.setText("Attaccante");
+                }
                 lAttaccanti.clearSelection();
             }
         });
@@ -570,7 +656,14 @@ public class Formazione extends JPanel implements ItemListener {
         panPorLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                if(lPortieri.isSelectionEmpty() == false) panPorLabel.setText((String)lPortieri.getSelectedValue());
+                if (lPortieri.isSelectionEmpty() == false){
+                    panPorLabel.setText((String)lPortieri.getSelectedValue());
+                    listModelP.removeElement(lPortieri.getSelectedValue());
+                }
+                else if(panPorLabel.getText() != "Portiere"){
+                    listModelP.add(0, panPorLabel.getText());
+                    panPorLabel.setText("Portiere");
+                }
                 lPortieri.clearSelection();
             }
         });
@@ -579,14 +672,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if (lDifensori.isSelectionEmpty() == false && temp != panDifLabel2.getText()) panDifLabel1.setText(temp);
-                if (lDifensori.isSelectionEmpty() == false) {
-                    if (temp == panDifLabel2.getText()) {
-                        panDifLabel2.setText(panDifLabel1.getText());
-                        panDifLabel1.setText(temp);
-                    }
+                if(lDifensori.isSelectionEmpty() == false){
+                    panDifLabel1.setText(temp);
+                    listModelD.removeElement(lDifensori.getSelectedValue());
                 }
-                if(lDifensori.isSelectionEmpty() == true) panDifLabel1.setText("Difensore");
+                else if(panDifLabel1.getText() != "Difensore"){
+                    listModelD.add(0, panDifLabel1.getText());
+                    panDifLabel1.setText("Difensore");
+                }
                 lDifensori.clearSelection();
             }
         });
@@ -595,14 +688,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false && temp != panDifLabel1.getText()) panDifLabel2.setText(temp);
-                if(lDifensori.isSelectionEmpty() == false ) {
-                    if (temp == panDifLabel1.getText()) {
-                        panDifLabel1.setText(panDifLabel2.getText());
-                        panDifLabel2.setText(temp);
-                    }
+                if(lDifensori.isSelectionEmpty() == false){
+                    panDifLabel2.setText(temp);
+                    listModelD.removeElement(lDifensori.getSelectedValue());
                 }
-                if(lDifensori.isSelectionEmpty() == true) panDifLabel2.setText("Difensore");
+                else if(panDifLabel2.getText() != "Difensore"){
+                    listModelD.add(0, panDifLabel2.getText());
+                    panDifLabel2.setText("Difensore");
+                }
                 lDifensori.clearSelection();
             }
         });
@@ -611,14 +704,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
-                if(lCentrocampisti.isSelectionEmpty() == false && temp != panCenLabel2.getText()) panCenLabel1.setText(temp);
-                if(lCentrocampisti.isSelectionEmpty() == false ) {
-                    if (temp == panCenLabel2.getText()) {
-                        panCenLabel2.setText(panCenLabel1.getText());
-                        panCenLabel1.setText(temp);
-                    }
+                if (lCentrocampisti.isSelectionEmpty() == false) {
+                    panCenLabel1.setText(temp);
+                    listModelC.removeElement(lCentrocampisti.getSelectedValue());
+                } else if (panCenLabel1.getText() != "Centrocampista") {
+                    listModelC.add(0, panCenLabel1.getText());
+                    panCenLabel1.setText("Centrocampista");
                 }
-                if(lCentrocampisti.isSelectionEmpty() == true) panCenLabel2.setText("Centrocampista");
                 lCentrocampisti.clearSelection();
             }
         });
@@ -627,14 +719,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
-                if(lCentrocampisti.isSelectionEmpty() == false && temp != panCenLabel1.getText()) panCenLabel2.setText(temp);
-                if(lCentrocampisti.isSelectionEmpty() == false ) {
-                    if (temp == panCenLabel1.getText()) {
-                        panCenLabel1.setText(panCenLabel2.getText());
-                        panCenLabel2.setText(temp);
-                    }
+                if (lCentrocampisti.isSelectionEmpty() == false) {
+                    panCenLabel2.setText(temp);
+                    listModelC.removeElement(lCentrocampisti.getSelectedValue());
+                } else if (panCenLabel2.getText() != "Centrocampista") {
+                    listModelC.add(0, panCenLabel2.getText());
+                    panCenLabel2.setText("Centrocampista");
                 }
-                if(lCentrocampisti.isSelectionEmpty() == true) panCenLabel1.setText("Centrocampista");
                 lCentrocampisti.clearSelection();
             }
         });
@@ -643,14 +734,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
-                if(lAttaccanti.isSelectionEmpty() == false && temp != panAttLabel2.getText()) panAttLabel1.setText(temp);
-                if(lAttaccanti.isSelectionEmpty() == false ) {
-                    if (temp == panAttLabel2.getText()) {
-                        panAttLabel2.setText(panAttLabel1.getText());
-                        panAttLabel1.setText(temp);
-                    }
+                if (lAttaccanti.isSelectionEmpty() == false) {
+                    panAttLabel1.setText(temp);
+                    listModelA.removeElement(lAttaccanti.getSelectedValue());
+                } else if (panAttLabel1.getText() != "Attaccante") {
+                    listModelA.add(0, panAttLabel1.getText());
+                    panAttLabel1.setText("Attaccante");
                 }
-                if(lAttaccanti.isSelectionEmpty() == true) panAttLabel1.setText("Attaccante");
                 lAttaccanti.clearSelection();
             }
         });
@@ -659,14 +749,13 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
-                if(lAttaccanti.isSelectionEmpty() == false && temp != panAttLabel1.getText()) panAttLabel2.setText(temp);
-                if(lAttaccanti.isSelectionEmpty() == false ) {
-                    if (temp == panAttLabel1.getText()) {
-                        panAttLabel1.setText(panAttLabel2.getText());
-                        panAttLabel2.setText(temp);
-                    }
+                if (lAttaccanti.isSelectionEmpty() == false) {
+                    panAttLabel2.setText(temp);
+                    listModelA.removeElement(lAttaccanti.getSelectedValue());
+                } else if (panAttLabel2.getText() != "Attaccante") {
+                    listModelA.add(0, panAttLabel2.getText());
+                    panAttLabel2.setText("Attaccante");
                 }
-                if(lAttaccanti.isSelectionEmpty() == true) panAttLabel2.setText("Attaccante");
                 lAttaccanti.clearSelection();
             }
         });
