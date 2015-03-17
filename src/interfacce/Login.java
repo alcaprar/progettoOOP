@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 
 /**
  * Created by alessandro on 12/03/15.
@@ -58,10 +59,25 @@ public class Login extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
-                if (db.login(utente)) {
-                    CardLayout c1 = (CardLayout) (panel1.getLayout());
-                    c1.show(panel1, "login2");
-                } else infolbl.setVisible(true);
+                try{
+                    if(db.login(utente)){
+                        CardLayout c1 = (CardLayout) (panel1.getLayout());
+                        c1.show(panel1, "login2");
+                    } else infolbl.setVisible(true);
+                }catch (SQLException se){
+                    Object[] options = {"OK"};
+                    int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono dei problemi con il database.\n Codice errore MySQL:"+se.getErrorCode(),
+                            "Problemi db",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.ERROR_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+                    System.out.print(se.getErrorCode());
+
+                }catch (ClassNotFoundException ce){
+
+                }
             }
         });
 
@@ -73,11 +89,23 @@ public class Login extends JFrame {
                          int key = e.getKeyCode();
                          if (key == KeyEvent.VK_ENTER) {
                              utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
-                             if (db.login(utente)) {
-                                 nomeutentetxt.setText(utente.getNickname());
-                                 CardLayout c1 = (CardLayout) (panel1.getLayout());
-                                 c1.show(panel1, "login2");
-                             } else infolbl.setVisible(true);
+                             try{
+                                 if(db.login(utente)){
+                                     CardLayout c1 = (CardLayout) (panel1.getLayout());
+                                     c1.show(panel1, "login2");
+                                 } else infolbl.setVisible(true);
+                             }catch (SQLException se){
+                                 Object[] options = {"OK"};
+                                 int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono dei problemi con il database.",
+                                         "Problemi db",
+                                         JOptionPane.YES_NO_OPTION,
+                                         JOptionPane.ERROR_MESSAGE,
+                                         null,
+                                         options,
+                                         options[0]);
+                             }catch (ClassNotFoundException ce){
+
+                             }
                          }
                      }
                  }
@@ -123,7 +151,7 @@ public class Login extends JFrame {
                     }
                     else{
                         Object[] options = {"OK"};
-                        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono stati degli errori nell'iscrizione al campionato!",
+                        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono stati degli errori nel!",
                                 "Risposta",
                                 JOptionPane.YES_NO_OPTION,
                                 JOptionPane.QUESTION_MESSAGE,

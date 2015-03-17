@@ -14,7 +14,7 @@ public class Mysql{
     static final String USER = "progogg";
     static final String PASS = "pagliarecci";
 
-    public boolean login(Persona utente){
+    public boolean login(Persona utente) throws SQLException,ClassNotFoundException{
         Connection conn = null ;
         PreparedStatement login = null;
         String loginSql = "SELECT * FROM Utente where Nickname=? and Password=?";
@@ -34,12 +34,6 @@ public class Mysql{
                 return true;
             }
             else return false;
-        }catch(SQLException se){
-            se.printStackTrace();
-            return false;
-        }catch(Exception e){
-            e.printStackTrace();
-            return false;
         }finally {
             try { conn.close(); } catch (Exception e) { /* ignored */ }
         }
@@ -49,7 +43,7 @@ public class Mysql{
 
 
 
-    public boolean registra(Persona utente){
+    public boolean registra(Persona utente)throws SQLException, ClassNotFoundException{
         Connection conn = null ;
         PreparedStatement registra = null;
         String registraSql ="INSERT into Utente value(?,?,?,?,?,?)";
@@ -71,15 +65,6 @@ public class Mysql{
                 return true;
             }
             else return false;
-        }catch(SQLException se){
-            if(se.getErrorCode()==1062){
-                //registraFalse(registraForm);
-            }
-            System.out.print(se.getErrorCode());
-            return false;
-        }catch(Exception e){
-            e.printStackTrace();
-            return false;
         }finally {
             try { conn.close(); } catch (Exception e) { /* ignored */ }
         }

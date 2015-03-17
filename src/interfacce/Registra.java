@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 /**
  * Created by alessandro on 13/03/15.
@@ -44,8 +45,20 @@ public class Registra extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 utente = creaUtente();
-                if (db.registra(utente)) registraTrue();
-                else System.out.print("no");
+
+                try{
+                    if (db.registra(utente)) registraTrue();
+
+                }catch(SQLException se){
+                    if(se.getErrorCode()==1062){
+
+                        nicknameRegistrato();
+                    }
+
+                }catch(Exception ce){
+
+
+                }
             }
         });
     }
@@ -64,6 +77,18 @@ public class Registra extends JFrame {
                 options,
                 options[0]);
         if (succesDialog == 0 || succesDialog == -1) dispose();
+    }
+
+    public void nicknameRegistrato(){
+        Object[] options = {"OK"};
+        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Nickname già registrato!",
+                "Nickname esistente",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+
     }
 
 }
