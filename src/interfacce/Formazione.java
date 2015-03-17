@@ -182,7 +182,13 @@ public class Formazione extends JPanel implements ItemListener {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 if (lPortieri.isSelectionEmpty() == false){
-                    p343PorLabel.setText((String)lPortieri.getSelectedValue());
+                    if(p343PorLabel.getText() == "Portiere"){
+                        p343PorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
+                    else {
+                        listModelP.add(0, p343PorLabel.getText());
+                        p343PorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
                     listModelP.removeElement(lPortieri.getSelectedValue());
                 }
                 else if(p343PorLabel.getText() != "Portiere"){
@@ -197,8 +203,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p343DifLabel1.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p343DifLabel1.getText() == "Difensore"){
+                        p343DifLabel1.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p343DifLabel1.getText());
+                        p343DifLabel1.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p343DifLabel1.getText() != "Difensore"){
@@ -213,8 +225,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p343DifLabel2.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p343DifLabel2.getText() == "Difensore"){
+                        p343DifLabel2.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p343DifLabel2.getText());
+                        p343DifLabel2.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p343DifLabel2.getText() != "Difensore"){
@@ -229,8 +247,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p343DifLabel3.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p343DifLabel3.getText() == "Difensore"){
+                        p343DifLabel3.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p343DifLabel3.getText());
+                        p343DifLabel3.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p343DifLabel3.getText() != "Difensore"){
@@ -246,9 +270,16 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p343CenLabel1.setText(temp);
+                    if(p343CenLabel1.getText() == "Centrocampista"){
+                        p343CenLabel1.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p343CenLabel1.getText());
+                        p343CenLabel1.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
-                } else if (p343CenLabel1.getText() != "Centrocampista") {
+                }
+                else if (p343CenLabel1.getText() != "Centrocampista") {
                     listModelC.add(0, p343CenLabel1.getText());
                     p343CenLabel1.setText("Centrocampista");
                 }
@@ -261,11 +292,17 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p343CenLabel3.setText(temp);
+                    if(p343CenLabel2.getText() == "Centrocampista"){
+                        p343CenLabel2.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p343CenLabel2.getText());
+                        p343CenLabel2.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
-                } else if (p343CenLabel3.getText() != "Centrocampista") {
-                    listModelC.add(0, p343CenLabel3.getText());
-                    p343CenLabel3.setText("Centrocampista");
+                } else if (p343CenLabel2.getText() != "Centrocampista") {
+                    listModelC.add(0, p343CenLabel2.getText());
+                    p343CenLabel2.setText("Centrocampista");
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -276,9 +313,15 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p343CenLabel3.setText(temp);
+                    if(p343CenLabel3.getText() == "Centrocampista"){
+                        p343CenLabel3.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p343CenLabel3.getText());
+                        p343CenLabel3.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
-                } else if (p343CenLabel3.getText() != "Centrocampista") {
+                }  else if (p343CenLabel3.getText() != "Centrocampista") {
                     listModelC.add(0, p343CenLabel3.getText());
                     p343CenLabel3.setText("Centrocampista");
                 }
@@ -291,9 +334,15 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p343CenLabel4.setText(temp);
+                    if(p343CenLabel4.getText() == "Centrocampista"){
+                        p343CenLabel4.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p343CenLabel4.getText());
+                        p343CenLabel4.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
-                } else if (p343CenLabel4.getText() != "Centrocampista") {
+                }  else if (p343CenLabel4.getText() != "Centrocampista") {
                     listModelC.add(0, p343CenLabel4.getText());
                     p343CenLabel4.setText("Centrocampista");
                 }
@@ -306,7 +355,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    p343AttLabel1.setText(temp);
+                    if(p343AttLabel1.getText() == "Attaccante"){
+                        p343AttLabel1.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, p343AttLabel1.getText());
+                        p343AttLabel1.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (p343AttLabel1.getText() != "Attaccante") {
                     listModelA.add(0, p343AttLabel1.getText());
@@ -321,7 +376,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    p343AttLabel2.setText(temp);
+                    if(p343AttLabel2.getText() == "Attaccante"){
+                        p343AttLabel2.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, p343AttLabel2.getText());
+                        p343AttLabel2.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (p343AttLabel2.getText() != "Attaccante") {
                     listModelA.add(0, p343AttLabel2.getText());
@@ -336,7 +397,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    p343AttLabel3.setText(temp);
+                    if(p343AttLabel3.getText() == "Attaccante"){
+                        p343AttLabel3.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, p343AttLabel3.getText());
+                        p343AttLabel3.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (p343AttLabel3.getText() != "Attaccante") {
                     listModelA.add(0, p343AttLabel3.getText());
@@ -352,7 +419,13 @@ public class Formazione extends JPanel implements ItemListener {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 if (lPortieri.isSelectionEmpty() == false){
-                    p352PorLabel.setText((String)lPortieri.getSelectedValue());
+                    if(p352PorLabel.getText() == "Portiere"){
+                        p352PorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
+                    else {
+                        listModelP.add(0, p352PorLabel.getText());
+                        p352PorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
                     listModelP.removeElement(lPortieri.getSelectedValue());
                 }
                 else if(p352PorLabel.getText() != "Portiere"){
@@ -367,18 +440,20 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false && temp != p352DifLabel2.getText() && temp != p352DifLabel3.getText()) p352DifLabel1.setText((String)lDifensori.getSelectedValue());
-                if(lDifensori.isSelectionEmpty() == false ){
-                    if(temp == p352DifLabel2.getText()) {
-                        p352DifLabel2.setText(p352DifLabel1.getText());
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p352DifLabel1.getText() == "Difensore"){
                         p352DifLabel1.setText(temp);
                     }
-                    else if(temp == p352DifLabel3.getText()){
-                        p352DifLabel3.setText(p352DifLabel1.getText());
+                    else {
+                        listModelD.add(0, p352DifLabel1.getText());
                         p352DifLabel1.setText(temp);
                     }
+                    listModelD.removeElement(lDifensori.getSelectedValue());
                 }
-                if(lDifensori.isSelectionEmpty() == true) p352DifLabel1.setText("Difensore");
+                else if(p352DifLabel1.getText() != "Difensore"){
+                    listModelD.add(0, p352DifLabel1.getText());
+                    p352DifLabel1.setText("Difensore");
+                }
                 lDifensori.clearSelection();
             }
         });
@@ -387,18 +462,20 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false && temp != p352DifLabel1.getText() && temp != p352DifLabel3.getText()) p352DifLabel2.setText((String)lDifensori.getSelectedValue());
-                if(lDifensori.isSelectionEmpty() == false ){
-                    if(temp == p352DifLabel1.getText()) {
-                        p352DifLabel1.setText(p352DifLabel2.getText());
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p352DifLabel2.getText() == "Difensore"){
                         p352DifLabel2.setText(temp);
                     }
-                    else if(temp == p352DifLabel3.getText()){
-                        p352DifLabel3.setText(p352DifLabel2.getText());
+                    else {
+                        listModelD.add(0, p352DifLabel2.getText());
                         p352DifLabel2.setText(temp);
                     }
+                    listModelD.removeElement(lDifensori.getSelectedValue());
                 }
-                if(lDifensori.isSelectionEmpty() == true) p352DifLabel2.setText("Difensore");
+                else if(p352DifLabel2.getText() != "Difensore"){
+                    listModelD.add(0, p352DifLabel2.getText());
+                    p352DifLabel2.setText("Difensore");
+                }
                 lDifensori.clearSelection();
             }
         });
@@ -407,18 +484,20 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false && temp != p352DifLabel1.getText() && temp != p352DifLabel2.getText()) p352DifLabel3.setText((String)lDifensori.getSelectedValue());
-                if(lDifensori.isSelectionEmpty() == false ){
-                    if(temp == p352DifLabel1.getText()) {
-                        p352DifLabel1.setText(p352DifLabel3.getText());
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p352DifLabel3.getText() == "Difensore"){
                         p352DifLabel3.setText(temp);
                     }
-                    else if(temp == p352DifLabel2.getText()){
-                        p352DifLabel2.setText(p352DifLabel3.getText());
+                    else {
+                        listModelD.add(0, p352DifLabel3.getText());
                         p352DifLabel3.setText(temp);
                     }
+                    listModelD.removeElement(lDifensori.getSelectedValue());
                 }
-                if(lDifensori.isSelectionEmpty() == true) p352DifLabel3.setText("Difensore");
+                else if(p352DifLabel3.getText() != "Difensore"){
+                    listModelD.add(0, p352DifLabel3.getText());
+                    p352DifLabel3.setText("Difensore");
+                }
                 lDifensori.clearSelection();
             }
         });
@@ -428,7 +507,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p352CenLabel1.setText(temp);
+                    if(p352CenLabel1.getText() == "Centrocampista"){
+                        p352CenLabel1.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p352CenLabel1.getText());
+                        p352CenLabel1.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p352CenLabel1.getText() != "Centrocampista") {
                     listModelC.add(0, p352CenLabel1.getText());
@@ -443,7 +528,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p352CenLabel2.setText(temp);
+                    if(p352CenLabel2.getText() == "Centrocampista"){
+                        p352CenLabel2.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p352CenLabel2.getText());
+                        p352CenLabel2.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p352CenLabel2.getText() != "Centrocampista") {
                     listModelC.add(0, p352CenLabel2.getText());
@@ -458,7 +549,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p352CenLabel3.setText(temp);
+                    if(p352CenLabel3.getText() == "Centrocampista"){
+                        p352CenLabel3.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p352CenLabel3.getText());
+                        p352CenLabel3.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p352CenLabel3.getText() != "Centrocampista") {
                     listModelC.add(0, p352CenLabel3.getText());
@@ -473,7 +570,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p352CenLabel4.setText(temp);
+                    if(p352CenLabel4.getText() == "Centrocampista"){
+                        p352CenLabel4.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p352CenLabel4.getText());
+                        p352CenLabel4.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p352CenLabel4.getText() != "Centrocampista") {
                     listModelC.add(0, p352CenLabel4.getText());
@@ -488,7 +591,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p352CenLabel5.setText(temp);
+                    if(p352CenLabel5.getText() == "Centrocampista"){
+                        p352CenLabel5.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p352CenLabel5.getText());
+                        p352CenLabel5.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p352CenLabel5.getText() != "Centrocampista") {
                     listModelC.add(0, p352CenLabel5.getText());
@@ -503,7 +612,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    p352AttLabel1.setText(temp);
+                    if(p352AttLabel1.getText() == "Attaccante"){
+                        p352AttLabel1.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, p352AttLabel1.getText());
+                        p352AttLabel1.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (p352AttLabel1.getText() != "Attaccante") {
                     listModelA.add(0, p352AttLabel1.getText());
@@ -518,7 +633,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    p352AttLabel2.setText(temp);
+                    if(p352AttLabel2.getText() == "Attaccante"){
+                        p352AttLabel2.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, p352AttLabel2.getText());
+                        p352AttLabel2.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (p352AttLabel2.getText() != "Attaccante") {
                     listModelA.add(0, p352AttLabel2.getText());
@@ -534,7 +655,13 @@ public class Formazione extends JPanel implements ItemListener {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 if (lPortieri.isSelectionEmpty() == false){
-                    p433PorLabel.setText((String)lPortieri.getSelectedValue());
+                    if(p433PorLabel.getText() == "Portiere"){
+                        p433PorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
+                    else {
+                        listModelP.add(0, p433PorLabel.getText());
+                        p433PorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
                     listModelP.removeElement(lPortieri.getSelectedValue());
                 }
                 else if(p433PorLabel.getText() != "Portiere"){
@@ -549,8 +676,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p433DifLabel1.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p433DifLabel1.getText() == "Difensore"){
+                        p433DifLabel1.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p433DifLabel1.getText());
+                        p433DifLabel1.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p433DifLabel1.getText() != "Difensore"){
@@ -565,8 +698,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p433DifLabel2.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p433DifLabel2.getText() == "Difensore"){
+                        p433DifLabel2.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p433DifLabel2.getText());
+                        p433DifLabel2.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p433DifLabel2.getText() != "Difensore"){
@@ -581,8 +720,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p433DifLabel3.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p433DifLabel3.getText() == "Difensore"){
+                        p433DifLabel3.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p433DifLabel3.getText());
+                        p433DifLabel3.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p433DifLabel3.getText() != "Difensore"){
@@ -597,8 +742,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p433DifLabel4.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p433DifLabel4.getText() == "Difensore"){
+                        p433DifLabel4.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p433DifLabel4.getText());
+                        p433DifLabel4.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p433DifLabel4.getText() != "Difensore"){
@@ -614,7 +765,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p433CenLabel1.setText(temp);
+                    if(p433CenLabel1.getText() == "Centrocampista"){
+                        p433CenLabel1.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p433CenLabel1.getText());
+                        p433CenLabel1.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p433CenLabel1.getText() != "Centrocampista") {
                     listModelC.add(0, p433CenLabel1.getText());
@@ -629,7 +786,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p433CenLabel2.setText(temp);
+                    if(p433CenLabel2.getText() == "Centrocampista"){
+                        p433CenLabel2.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p433CenLabel2.getText());
+                        p433CenLabel2.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p433CenLabel2.getText() != "Centrocampista") {
                     listModelC.add(0, p433CenLabel2.getText());
@@ -644,7 +807,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p433CenLabel3.setText(temp);
+                    if(p433CenLabel3.getText() == "Centrocampista"){
+                        p433CenLabel3.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p433CenLabel3.getText());
+                        p433CenLabel3.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p433CenLabel3.getText() != "Centrocampista") {
                     listModelC.add(0, p433CenLabel3.getText());
@@ -659,7 +828,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    p433AttLabel1.setText(temp);
+                    if(p433AttLabel1.getText() == "Attaccante"){
+                        p433AttLabel1.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, p433AttLabel1.getText());
+                        p433AttLabel1.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (p433AttLabel1.getText() != "Attaccante") {
                     listModelA.add(0, p433AttLabel1.getText());
@@ -674,7 +849,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    p433AttLabel2.setText(temp);
+                    if(p433AttLabel2.getText() == "Attaccante"){
+                        p433AttLabel2.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, p433AttLabel2.getText());
+                        p433AttLabel2.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (p433AttLabel2.getText() != "Attaccante") {
                     listModelA.add(0, p433AttLabel2.getText());
@@ -689,7 +870,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    p433AttLabel3.setText(temp);
+                    if(p433AttLabel3.getText() == "Attaccante"){
+                        p433AttLabel3.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, p433AttLabel3.getText());
+                        p433AttLabel3.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (p433AttLabel3.getText() != "Attaccante") {
                     listModelA.add(0, p433AttLabel3.getText());
@@ -705,7 +892,13 @@ public class Formazione extends JPanel implements ItemListener {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 if (lPortieri.isSelectionEmpty() == false){
-                    p442PorLabel.setText((String)lPortieri.getSelectedValue());
+                    if(p442PorLabel.getText() == "Portiere"){
+                        p442PorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
+                    else {
+                        listModelP.add(0, p442PorLabel.getText());
+                        p442PorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
                     listModelP.removeElement(lPortieri.getSelectedValue());
                 }
                 else if(p442PorLabel.getText() != "Portiere"){
@@ -720,8 +913,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p442DifLabel1.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p442DifLabel1.getText() == "Difensore"){
+                        p442DifLabel1.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p442DifLabel1.getText());
+                        p442DifLabel1.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p442DifLabel1.getText() != "Difensore"){
@@ -736,8 +935,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p442DifLabel2.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p442DifLabel2.getText() == "Difensore"){
+                        p442DifLabel2.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p442DifLabel2.getText());
+                        p442DifLabel2.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p442DifLabel2.getText() != "Difensore"){
@@ -752,8 +957,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p442DifLabel3.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p442DifLabel3.getText() == "Difensore"){
+                        p442DifLabel3.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p442DifLabel3.getText());
+                        p442DifLabel3.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p442DifLabel3.getText() != "Difensore"){
@@ -768,8 +979,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p442DifLabel4.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p442DifLabel4.getText() == "Difensore"){
+                        p442DifLabel4.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p442DifLabel4.getText());
+                        p442DifLabel4.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p442DifLabel1.getText() != "Difensore"){
@@ -785,7 +1002,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p442CenLabel1.setText(temp);
+                    if(p442CenLabel1.getText() == "Centrocampista"){
+                        p442CenLabel1.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p442CenLabel1.getText());
+                        p442CenLabel1.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p442CenLabel1.getText() != "Centrocampista") {
                     listModelC.add(0, p442CenLabel1.getText());
@@ -800,7 +1023,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p442CenLabel2.setText(temp);
+                    if(p442CenLabel2.getText() == "Centrocampista"){
+                        p442CenLabel2.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p442CenLabel2.getText());
+                        p442CenLabel2.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p442CenLabel2.getText() != "Centrocampista") {
                     listModelC.add(0, p442CenLabel2.getText());
@@ -815,7 +1044,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p442CenLabel1.setText(temp);
+                    if(p442CenLabel3.getText() == "Centrocampista"){
+                        p442CenLabel3.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p442CenLabel3.getText());
+                        p442CenLabel3.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p442CenLabel1.getText() != "Centrocampista") {
                     listModelC.add(0, p442CenLabel1.getText());
@@ -830,7 +1065,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p442CenLabel4.setText(temp);
+                    if(p442CenLabel4.getText() == "Centrocampista"){
+                        p442CenLabel4.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p442CenLabel4.getText());
+                        p442CenLabel4.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p442CenLabel4.getText() != "Centrocampista") {
                     listModelC.add(0, p442CenLabel4.getText());
@@ -845,7 +1086,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    p442AttLabel1.setText(temp);
+                    if(p442AttLabel1.getText() == "Attaccante"){
+                        p442AttLabel1.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, p442AttLabel1.getText());
+                        p442AttLabel1.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (p442AttLabel1.getText() != "Attaccante") {
                     listModelA.add(0, p442AttLabel1.getText());
@@ -860,7 +1107,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    p442AttLabel2.setText(temp);
+                    if(p442AttLabel2.getText() == "Attaccante"){
+                        p442AttLabel2.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, p442AttLabel2.getText());
+                        p442AttLabel2.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (p442AttLabel2.getText() != "Attaccante") {
                     listModelA.add(0, p442AttLabel2.getText());
@@ -876,7 +1129,13 @@ public class Formazione extends JPanel implements ItemListener {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 if (lPortieri.isSelectionEmpty() == false){
-                    p451PorLabel.setText((String)lPortieri.getSelectedValue());
+                    if(p451PorLabel.getText() == "Portiere"){
+                        p451PorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
+                    else {
+                        listModelP.add(0, p451PorLabel.getText());
+                        p451PorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
                     listModelP.removeElement(lPortieri.getSelectedValue());
                 }
                 else if(p451PorLabel.getText() != "Portiere"){
@@ -891,8 +1150,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p451DifLabel1.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p451DifLabel1.getText() == "Difensore"){
+                        p451DifLabel1.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p451DifLabel1.getText());
+                        p451DifLabel1.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p451DifLabel1.getText() != "Difensore"){
@@ -907,8 +1172,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p451DifLabel2.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p451DifLabel2.getText() == "Difensore"){
+                        p451DifLabel2.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p451DifLabel2.getText());
+                        p451DifLabel2.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p451DifLabel2.getText() != "Difensore"){
@@ -923,8 +1194,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p451DifLabel3.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p451DifLabel3.getText() == "Difensore"){
+                        p451DifLabel3.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p451DifLabel3.getText());
+                        p451DifLabel3.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p451DifLabel3.getText() != "Difensore"){
@@ -939,8 +1216,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p451DifLabel4.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p451DifLabel4.getText() == "Difensore"){
+                        p451DifLabel4.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p451DifLabel4.getText());
+                        p451DifLabel4.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p451DifLabel4.getText() != "Difensore"){
@@ -956,7 +1239,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p451CenLabel1.setText(temp);
+                    if(p451CenLabel1.getText() == "Centrocampista"){
+                        p451CenLabel1.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p451CenLabel1.getText());
+                        p451CenLabel1.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p451CenLabel1.getText() != "Centrocampista") {
                     listModelC.add(0, p451CenLabel1.getText());
@@ -971,7 +1260,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p451CenLabel2.setText(temp);
+                    if(p451CenLabel2.getText() == "Centrocampista"){
+                        p451CenLabel2.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p451CenLabel2.getText());
+                        p451CenLabel2.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p451CenLabel2.getText() != "Centrocampista") {
                     listModelC.add(0, p442CenLabel2.getText());
@@ -986,7 +1281,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p451CenLabel3.setText(temp);
+                    if(p451CenLabel3.getText() == "Centrocampista"){
+                        p451CenLabel3.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p451CenLabel3.getText());
+                        p451CenLabel3.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p451CenLabel3.getText() != "Centrocampista") {
                     listModelC.add(0, p451CenLabel3.getText());
@@ -1001,7 +1302,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p451CenLabel4.setText(temp);
+                    if(p451CenLabel4.getText() == "Centrocampista"){
+                        p451CenLabel4.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p451CenLabel4.getText());
+                        p451CenLabel4.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p451CenLabel4.getText() != "Centrocampista") {
                     listModelC.add(0, p451CenLabel4.getText());
@@ -1016,7 +1323,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p451CenLabel5.setText(temp);
+                    if(p451CenLabel5.getText() == "Centrocampista"){
+                        p451CenLabel5.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p451CenLabel5.getText());
+                        p451CenLabel5.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p451CenLabel5.getText() != "Centrocampista") {
                     listModelC.add(0, p451CenLabel5.getText());
@@ -1031,7 +1344,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    p451AttLabel.setText(temp);
+                    if(p451AttLabel.getText() == "Attaccante"){
+                        p451AttLabel.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, p451AttLabel.getText());
+                        p451AttLabel.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (p451AttLabel.getText() != "Attaccante") {
                     listModelA.add(0, p451AttLabel.getText());
@@ -1047,7 +1366,13 @@ public class Formazione extends JPanel implements ItemListener {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 if (lPortieri.isSelectionEmpty() == false){
-                    p532PorLabel.setText((String)lPortieri.getSelectedValue());
+                    if(p532PorLabel.getText() == "Portiere"){
+                        p532PorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
+                    else {
+                        listModelP.add(0, p532PorLabel.getText());
+                        p532PorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
                     listModelP.removeElement(lPortieri.getSelectedValue());
                 }
                 else if(p532PorLabel.getText() != "Portiere"){
@@ -1062,8 +1387,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p532DifLabel1.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p532DifLabel1.getText() == "Difensore"){
+                        p532DifLabel1.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p532DifLabel1.getText());
+                        p532DifLabel1.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p532DifLabel1.getText() != "Difensore"){
@@ -1078,8 +1409,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p532DifLabel2.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p532DifLabel2.getText() == "Difensore"){
+                        p532DifLabel2.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p532DifLabel2.getText());
+                        p532DifLabel2.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p532DifLabel2.getText() != "Difensore"){
@@ -1094,8 +1431,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p532DifLabel3.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p532DifLabel3.getText() == "Difensore"){
+                        p532DifLabel3.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p532DifLabel3.getText());
+                        p532DifLabel3.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p532DifLabel3.getText() != "Difensore"){
@@ -1110,8 +1453,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p532DifLabel4.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p532DifLabel4.getText() == "Difensore"){
+                        p532DifLabel4.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p532DifLabel4.getText());
+                        p532DifLabel4.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p532DifLabel4.getText() != "Difensore"){
@@ -1126,8 +1475,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p532DifLabel5.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p532DifLabel5.getText() == "Difensore"){
+                        p532DifLabel5.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p532DifLabel5.getText());
+                        p532DifLabel5.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p532DifLabel5.getText() != "Difensore"){
@@ -1143,7 +1498,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p532CenLabel1.setText(temp);
+                    if(p532CenLabel1.getText() == "Centrocampista"){
+                        p532CenLabel1.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p532CenLabel1.getText());
+                        p532CenLabel1.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p532CenLabel1.getText() != "Centrocampista") {
                     listModelC.add(0, p532CenLabel1.getText());
@@ -1158,7 +1519,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p532CenLabel2.setText(temp);
+                    if(p532CenLabel2.getText() == "Centrocampista"){
+                        p532CenLabel2.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p532CenLabel2.getText());
+                        p532CenLabel2.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p532CenLabel2.getText() != "Centrocampista") {
                     listModelC.add(0, p532CenLabel2.getText());
@@ -1173,7 +1540,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p532CenLabel3.setText(temp);
+                    if(p532CenLabel3.getText() == "Centrocampista"){
+                        p532CenLabel3.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p532CenLabel3.getText());
+                        p532CenLabel3.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p532CenLabel3.getText() != "Centrocampista") {
                     listModelC.add(0, p532CenLabel3.getText());
@@ -1188,7 +1561,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    p532AttLabel1.setText(temp);
+                    if(p532AttLabel1.getText() == "Attaccante"){
+                        p532AttLabel1.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, p532AttLabel1.getText());
+                        p532AttLabel1.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (p532AttLabel1.getText() != "Attaccante") {
                     listModelA.add(0, p532AttLabel1.getText());
@@ -1203,7 +1582,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    p532AttLabel2.setText(temp);
+                    if(p532AttLabel2.getText() == "Attaccante"){
+                        p532AttLabel2.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, p532AttLabel2.getText());
+                        p532AttLabel2.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (p532AttLabel2.getText() != "Attaccante") {
                     listModelA.add(0, p532AttLabel2.getText());
@@ -1219,7 +1604,13 @@ public class Formazione extends JPanel implements ItemListener {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 if (lPortieri.isSelectionEmpty() == false){
-                    p541PorLabel.setText((String)lPortieri.getSelectedValue());
+                    if(p541PorLabel.getText() == "Portiere"){
+                        p541PorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
+                    else {
+                        listModelP.add(0, p541PorLabel.getText());
+                        p541PorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
                     listModelP.removeElement(lPortieri.getSelectedValue());
                 }
                 else if(p541PorLabel.getText() != "Portiere"){
@@ -1234,8 +1625,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if (lDifensori.isSelectionEmpty() == false) {
-                    p541DifLabel1.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p541DifLabel1.getText() == "Difensore"){
+                        p541DifLabel1.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p541DifLabel1.getText());
+                        p541DifLabel1.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 } else if (p541DifLabel1.getText() != "Difensore") {
                     listModelD.add(0, p541DifLabel1.getText());
@@ -1249,8 +1646,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p541DifLabel2.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p541DifLabel2.getText() == "Difensore"){
+                        p541DifLabel2.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p541DifLabel2.getText());
+                        p541DifLabel2.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p541DifLabel2.getText() != "Difensore"){
@@ -1265,8 +1668,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p541DifLabel3.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p541DifLabel3.getText() == "Difensore"){
+                        p541DifLabel3.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p541DifLabel3.getText());
+                        p541DifLabel3.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p541DifLabel3.getText() != "Difensore"){
@@ -1281,8 +1690,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p541DifLabel4.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p541DifLabel4.getText() == "Difensore"){
+                        p541DifLabel4.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p541DifLabel4.getText());
+                        p541DifLabel4.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p541DifLabel4.getText() != "Difensore"){
@@ -1297,8 +1712,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    p541DifLabel5.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(p541DifLabel5.getText() == "Difensore"){
+                        p541DifLabel5.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, p541DifLabel5.getText());
+                        p541DifLabel5.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(p541DifLabel5.getText() != "Difensore"){
@@ -1314,7 +1735,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p541CenLabel1.setText(temp);
+                    if(p541CenLabel1.getText() == "Centrocampista"){
+                        p541CenLabel1.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p541CenLabel1.getText());
+                        p541CenLabel1.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p541CenLabel1.getText() != "Centrocampista") {
                     listModelC.add(0, p541CenLabel1.getText());
@@ -1329,7 +1756,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p541CenLabel2.setText(temp);
+                    if(p541CenLabel2.getText() == "Centrocampista"){
+                        p541CenLabel2.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p541CenLabel2.getText());
+                        p541CenLabel2.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p541CenLabel2.getText() != "Centrocampista") {
                     listModelC.add(0, p541CenLabel2.getText());
@@ -1344,7 +1777,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p541CenLabel3.setText(temp);
+                    if(p541CenLabel3.getText() == "Centrocampista"){
+                        p541CenLabel3.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p541CenLabel3.getText());
+                        p541CenLabel3.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p541CenLabel3.getText() != "Centrocampista") {
                     listModelC.add(0, p541CenLabel3.getText());
@@ -1359,7 +1798,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    p541CenLabel4.setText(temp);
+                    if(p541CenLabel4.getText() == "Centrocampista"){
+                        p541CenLabel4.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, p541CenLabel4.getText());
+                        p541CenLabel4.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (p541CenLabel4.getText() != "Centrocampista") {
                     listModelC.add(0, p541CenLabel4.getText());
@@ -1374,7 +1819,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    p541AttLabel.setText(temp);
+                    if(p541AttLabel.getText() == "Attaccante"){
+                        p541AttLabel.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, p541AttLabel.getText());
+                        p541AttLabel.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (p541AttLabel.getText() != "Attaccante") {
                     listModelA.add(0, p541AttLabel.getText());
@@ -1390,7 +1841,13 @@ public class Formazione extends JPanel implements ItemListener {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 if (lPortieri.isSelectionEmpty() == false){
-                    panPorLabel.setText((String)lPortieri.getSelectedValue());
+                    if(panPorLabel.getText() == "Portiere"){
+                        panPorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
+                    else {
+                        listModelP.add(0, panPorLabel.getText());
+                        panPorLabel.setText((String) lPortieri.getSelectedValue());
+                    }
                     listModelP.removeElement(lPortieri.getSelectedValue());
                 }
                 else if(panPorLabel.getText() != "Portiere"){
@@ -1405,8 +1862,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    panDifLabel1.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(panDifLabel1.getText() == "Difensore"){
+                        panDifLabel1.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, panDifLabel1.getText());
+                        panDifLabel1.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(panDifLabel1.getText() != "Difensore"){
@@ -1421,8 +1884,14 @@ public class Formazione extends JPanel implements ItemListener {
             public void mouseClicked(MouseEvent mouseEvent) {
                 String temp = new String();
                 temp = (String) lDifensori.getSelectedValue();
-                if(lDifensori.isSelectionEmpty() == false){
-                    panDifLabel2.setText(temp);
+                if (lDifensori.isSelectionEmpty() == false){
+                    if(panDifLabel2.getText() == "Difensore"){
+                        panDifLabel2.setText(temp);
+                    }
+                    else {
+                        listModelD.add(0, panDifLabel2.getText());
+                        panDifLabel2.setText(temp);
+                    }
                     listModelD.removeElement(lDifensori.getSelectedValue());
                 }
                 else if(panDifLabel2.getText() != "Difensore"){
@@ -1438,7 +1907,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    panCenLabel1.setText(temp);
+                    if(panCenLabel1.getText() == "Centrocampista"){
+                        panCenLabel1.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, panCenLabel1.getText());
+                        panCenLabel1.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (panCenLabel1.getText() != "Centrocampista") {
                     listModelC.add(0, panCenLabel1.getText());
@@ -1453,7 +1928,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lCentrocampisti.getSelectedValue();
                 if (lCentrocampisti.isSelectionEmpty() == false) {
-                    panCenLabel2.setText(temp);
+                    if(panCenLabel2.getText() == "Centrocampista"){
+                        panCenLabel2.setText(temp);
+                    }
+                    else {
+                        listModelC.add(0, panCenLabel2.getText());
+                        panCenLabel2.setText(temp);
+                    }
                     listModelC.removeElement(lCentrocampisti.getSelectedValue());
                 } else if (panCenLabel2.getText() != "Centrocampista") {
                     listModelC.add(0, panCenLabel2.getText());
@@ -1468,7 +1949,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    panAttLabel1.setText(temp);
+                    if(panAttLabel1.getText() == "Attaccante"){
+                        panAttLabel1.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, panAttLabel1.getText());
+                        panAttLabel1.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (panAttLabel1.getText() != "Attaccante") {
                     listModelA.add(0, panAttLabel1.getText());
@@ -1483,7 +1970,13 @@ public class Formazione extends JPanel implements ItemListener {
                 String temp = new String();
                 temp = (String) lAttaccanti.getSelectedValue();
                 if (lAttaccanti.isSelectionEmpty() == false) {
-                    panAttLabel2.setText(temp);
+                    if(panAttLabel2.getText() == "Attaccante"){
+                        panAttLabel2.setText(temp);
+                    }
+                    else {
+                        listModelA.add(0, panAttLabel2.getText());
+                        panAttLabel2.setText(temp);
+                    }
                     listModelA.removeElement(lAttaccanti.getSelectedValue());
                 } else if (panAttLabel2.getText() != "Attaccante") {
                     listModelA.add(0, panAttLabel2.getText());
