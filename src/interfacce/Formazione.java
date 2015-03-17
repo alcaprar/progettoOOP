@@ -124,9 +124,6 @@ public class Formazione extends JPanel implements ItemListener {
     private DefaultListModel listModelC = new DefaultListModel();
     private DefaultListModel listModelA = new DefaultListModel();
 
-
-    Image bkg_panel = Toolkit.getDefaultToolkit().createImage("resources/Soccer_Field_Transparant.png");
-
     public Formazione() {
         //viene generato il codice di setup dell'UI e richiamato il metodo $$$setupUI$$$() come prima istruzione
         //gestisciListe(squadra);
