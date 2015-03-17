@@ -33,14 +33,18 @@ public class Login extends JFrame {
     private JLabel infolbl;
     private JTextField squadratxt;
     private JLabel nomeutentetxt;
+
     public Persona utente;
+
     public Utils utils = new Utils();
+
+    final Mysql db;
 
     public Login() {
         //titolo del frame
         super("Login - Gestore fantacalcio");
 
-        final Mysql db = new Mysql();
+        db = new Mysql();
 
         setContentPane(panel1);
 
@@ -58,7 +62,7 @@ public class Login extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controllaLogin(db);
+                controllaLogin();
 
             }
         });
@@ -69,7 +73,7 @@ public class Login extends JFrame {
                 (new KeyAdapter() {
                      public void keyPressed(KeyEvent e) {
                          int key = e.getKeyCode();
-                         controllaLogin(db);
+                         controllaLogin();
                      }
                  }
                 );
@@ -140,7 +144,7 @@ public class Login extends JFrame {
         pubbliciBox.setModel(pubbliciModel);
     }
 
-    private void controllaLogin(Mysql db){
+    private void controllaLogin(){
         if(usertxt.getText().equals("admin")){
             AdminApp admingui = new AdminApp();
             getFrame().dispose();

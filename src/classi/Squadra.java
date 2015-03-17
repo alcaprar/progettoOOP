@@ -28,16 +28,6 @@ public class Squadra {
         return this.proprietario;
     }
 
-    //lista dei cognomi dei giocatori
-    public String[] getLista() {
-        int i = 0;
-        String[] gioc = new String[25];
-        for (Giocatore g : giocatori) {
-            gioc[i] = g.getCognome();
-            i++;
-        }
-        return gioc;
-    }
 
     public Giocatore[] getGiocatori(){
         return giocatori;

@@ -2,26 +2,50 @@ package interfacce;
 
 
 
+import classi.GiornataReale;
+import com.toedter.calendar.JDateChooser;
+import utils.ForcedListSelectionModel;
+import utils.*;
+
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
 
 /**
  * Created by alessandro on 16/03/15.
  */
 public class AdminApp extends JFrame {
-    private JButton CSVButton;
+    private JButton giornateButton;
     private JPanel panel;
     private JTextField pathtxt;
-    private JButton inviaButton;
-    private JButton browseButton;
-    private JTextField textField1;
-    private JButton inviaButton1;
-    private JButton browseButton1;
-    private JComboBox comboBox1;
-    private JTextField textField2;
-    private JButton inviaButton2;
+    private JTabbedPane tabbedPane;
+    private JButton quotazioniButton;
+    private JTextField quotazionipath;
+    private JButton votiButton;
+    private JTextField votitxt;
+    private JButton giornateInvia;
+    private JButton quotazioniInvia;
+    private JButton votiInvia;
+
+
+    JDateChooser chooserDataInizio;
+    JDateChooser chooserDataFine;
+
+    Utils utils = new Utils();
+
+    GiornataReale[] calendario;
+
+    String pathFile;
 
     public AdminApp() {
         //titolo del frame
@@ -38,7 +62,20 @@ public class AdminApp extends JFrame {
 
         setResizable(false);
 
-        CSVButton.addActionListener(new ActionListener() {
+
+        //creo i data chooser
+        chooserDataInizio = new JDateChooser();
+        chooserDataFine = new JDateChooser();
+
+        //setto il formato della data
+        chooserDataInizio.setDateFormatString("dd-mm-yy");
+        chooserDataFine.setDateFormatString("dd-mm-yy");
+
+
+
+
+
+        quotazioniButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 FileDialog fc = new FileDialog(getFrame(), "Choose a file", FileDialog.LOAD);
@@ -46,19 +83,41 @@ public class AdminApp extends JFrame {
                 fc.setVisible(true);
                 String filename = fc.getFile();
                 String path = fc.getDirectory();
-                String pathFile = fc.getDirectory()+fc.getFile();
+                pathFile = fc.getDirectory()+fc.getFile();
                 if (pathFile == null) {
                     System.out.println("You cancelled the choice");
                 }
                 else {
-                    pathtxt.setText(pathFile);
+                    quotazionipath.setText(pathFile);
                     pack();
                 }
             }
         });
+
+        quotazioniInvia.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                utils.csvQuotazioni(pathFile,"",",");
+
+            }
+        });
+
+
+
+
     }
 
     public AdminApp getFrame(){
         return this;
     }
+
+    public static void main(String args[]){
+        AdminApp app = new AdminApp();
+    }
+
+    private void createUIComponents() {
+
+    }
+
+
 }

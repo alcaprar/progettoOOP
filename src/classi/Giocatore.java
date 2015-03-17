@@ -5,55 +5,56 @@ package classi;
  */
 public class Giocatore {
     private String nome;
-    private String cognome;
     private int ID;
     private int prezzoBase;
-    private int prezzoAcquisto;
-    private int voto;
-    private boolean acquistato;
-    private String squadra;
+    private String squadraReale;
+    private char ruolo;
 
-    public Giocatore(String no, String cog, int id, int pB, int pA, boolean acq, String sq) {
+    public Giocatore(String no,  int id, int pB,  String sq, char ruolo) {
         this.nome = no;
-        this.cognome = cog;
         this.ID = id;
         this.prezzoBase = pB;
-        this.prezzoAcquisto = pA;
-        this.voto = 0;
-        this.acquistato = acq;
-        this.squadra = sq;
+        this.squadraReale = sq;
+        this.ruolo = ruolo;
     }
 
     public String getNome() {
-        return this.nome;
+        return nome;
     }
 
-    public String getCognome() {
-        return this.cognome;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public int getID() {
-        return this.ID;
+        return ID;
     }
 
-    public int getPB() {
-        return this.prezzoBase;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
-    public int getPA() {
-        return this.prezzoAcquisto;
+    public int getPrezzoBase() {
+        return prezzoBase;
     }
 
-    public int getVoto() {
-        return this.voto;
+    public void setPrezzoBase(int prezzoBase) {
+        this.prezzoBase = prezzoBase;
     }
 
-    public boolean checkAcq() {
-        return this.acquistato;
+    public String getSquadraReale() {
+        return squadraReale;
     }
 
-    public String getSquadra() {
-        return this.squadra;
+    public void setSquadraReale(String squadraReale) {
+        this.squadraReale = squadraReale;
     }
 
+    public char getRuolo() {
+        return ruolo;
+    }
+
+    public void setRuolo(char ruolo) {
+        this.ruolo = ruolo;
+    }
 }
