@@ -4,57 +4,56 @@ package classi;
  * Created by Christian on 03/03/2015.
  */
 public class Giocatore {
+    private String nome;
     private String cognome;
     private int ID;
     private int prezzoBase;
-    private String squadraReale;
-    private char ruolo;
+    private int prezzoAcquisto;
+    private float voto;
+    private boolean acquistato;
+    private String squadra;
 
-    public Giocatore(String cognome,  int id, int prezzo,  String squadra, char ruolo) {
-        this.cognome = cognome;
+    public Giocatore(String no, String cog, int id, int pB, int pA, boolean acq, String sq) {
+        this.nome = no;
+        this.cognome = cog;
         this.ID = id;
-        this.prezzoBase = prezzo;
-        this.squadraReale = squadra;
-        this.ruolo = ruolo;
+        this.prezzoBase = pB;
+        this.prezzoAcquisto = pA;
+        this.voto = 0;
+        this.acquistato = acq;
+        this.squadra = sq;
+    }
+
+    public String getNome() {
+        return this.nome;
     }
 
     public String getCognome() {
-        return cognome;
-    }
-
-    public void setNome(String nome) {
-        this.cognome = nome;
+        return this.cognome;
     }
 
     public int getID() {
-        return ID;
+        return this.ID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public int getPB() {
+        return this.prezzoBase;
     }
 
-    public int getPrezzoBase() {
-        return prezzoBase;
+    public int getPA() {
+        return this.prezzoAcquisto;
     }
 
-    public void setPrezzoBase(int prezzoBase) {
-        this.prezzoBase = prezzoBase;
+    public float getVoto() {
+        return this.voto;
     }
 
-    public String getSquadraReale() {
-        return squadraReale;
+    public boolean checkAcq() {
+        return this.acquistato;
     }
 
-    public void setSquadraReale(String squadraReale) {
-        this.squadraReale = squadraReale;
+    public String getSquadra() {
+        return this.squadra;
     }
 
-    public char getRuolo() {
-        return ruolo;
-    }
-
-    public void setRuolo(char ruolo) {
-        this.ruolo = ruolo;
-    }
 }
