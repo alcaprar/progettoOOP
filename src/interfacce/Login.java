@@ -46,6 +46,8 @@ public class Login extends JFrame {
 
         db = new Mysql();
 
+
+
         setContentPane(panel1);
 
         pack();
@@ -54,6 +56,8 @@ public class Login extends JFrame {
 
         //centra il frame
         setLocationRelativeTo(null);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setVisible(true);
 
@@ -102,10 +106,10 @@ public class Login extends JFrame {
         iscrivitiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!squadratxt.getText().equals("")){
+                if (!squadratxt.getText().equals("")) {
                     String campionato = (String) pubbliciBox.getSelectedItem();
                     String nomeSquadra = squadratxt.getText();
-                    if(db.iscriviti(utente,campionato ,nomeSquadra)){
+                    if (db.iscriviti(utente, campionato, nomeSquadra)) {
                         Object[] options = {"OK"};
                         int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Iscrizione effettuata con successo!",
                                 "Risposta",
@@ -115,8 +119,7 @@ public class Login extends JFrame {
                                 options,
                                 options[0]);
 
-                    }
-                    else{
+                    } else {
                         Object[] options = {"OK"};
                         int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono stati degli errori nel!",
                                 "Risposta",
@@ -144,12 +147,11 @@ public class Login extends JFrame {
         pubbliciBox.setModel(pubbliciModel);
     }
 
-    private void controllaLogin(){
-        if(usertxt.getText().equals("admin")){
-            AdminApp admingui = new AdminApp();
+    private void controllaLogin() {
+        if (usertxt.getText().equals("admin")) {
+            ApplicazioneAdmin admingui = new ApplicazioneAdmin();
             getFrame().dispose();
-        }
-        else {
+        } else {
 
             utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
             try {

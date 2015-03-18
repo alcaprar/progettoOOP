@@ -77,6 +77,8 @@ public class CreaCampionato extends JFrame {
         //centra il frame
         setLocationRelativeTo(null);
 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         setVisible(true);
 
         setResizable(false);

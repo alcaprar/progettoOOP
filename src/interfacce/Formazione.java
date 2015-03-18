@@ -127,6 +127,9 @@ public class Formazione extends JPanel implements ItemListener {
     public Formazione() {
         //viene generato il codice di setup dell'UI e richiamato il metodo $$$setupUI$$$() come prima istruzione
         //gestisciListe(squadra);
+
+
+
         setVisible(true);
 
         //metodo per popolare le liste di giocatori

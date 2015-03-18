@@ -39,7 +39,7 @@ public class Registra extends JFrame {
         setLocationRelativeTo(null);
 
         setVisible(true);
-        
+
 
         setResizable(false);
         registratiButton.addActionListener(new ActionListener() {
@@ -47,16 +47,16 @@ public class Registra extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 utente = creaUtente();
 
-                try{
+                try {
                     if (db.registra(utente)) registraTrue();
 
-                }catch(SQLException se){
-                    if(se.getErrorCode()==1062){
+                } catch (SQLException se) {
+                    if (se.getErrorCode() == 1062) {
 
                         nicknameRegistrato();
                     }
 
-                }catch(Exception ce){
+                } catch (Exception ce) {
 
 
                 }
@@ -80,7 +80,7 @@ public class Registra extends JFrame {
         if (succesDialog == 0 || succesDialog == -1) dispose();
     }
 
-    public void nicknameRegistrato(){
+    public void nicknameRegistrato() {
         Object[] options = {"OK"};
         int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Nickname già registrato!",
                 "Nickname esistente",
