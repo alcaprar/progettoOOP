@@ -1,6 +1,5 @@
 package db;
 
-import javafx.scene.paint.Color;
 
 import javax.swing.*;
 import java.sql.*;

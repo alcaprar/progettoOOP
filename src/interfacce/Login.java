@@ -50,7 +50,6 @@ public class Login extends JFrame {
 
         setContentPane(panel1);
 
-
         pack();
 
         infolbl.setVisible(false);
