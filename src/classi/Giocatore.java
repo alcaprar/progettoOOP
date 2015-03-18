@@ -9,6 +9,7 @@ public class Giocatore {
     private int prezzoBase;
     private String squadraReale;
     private char ruolo;
+    private Voto voto;
 
     public Giocatore(String cognome,  int id, int prezzo,  String squadra, char ruolo) {
         this.cognome = cognome;
@@ -22,7 +23,7 @@ public class Giocatore {
         return cognome;
     }
 
-    public void setNome(String nome) {
+    public void setCognome(String nome) {
         this.cognome = nome;
     }
 
@@ -56,5 +57,13 @@ public class Giocatore {
 
     public void setRuolo(char ruolo) {
         this.ruolo = ruolo;
+    }
+
+    public Voto getVoto() {
+        return voto;
+    }
+
+    public void setVoto(Voto voto) {
+        this.voto = voto;
     }
 }
