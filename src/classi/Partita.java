@@ -7,7 +7,7 @@ public class Partita {
     private Formazione formCasa;
     private Formazione formOspite;
 
-    public Partita(Formazione formCasa, Formazione formOspite) {bo
+    public Partita(Formazione formCasa, Formazione formOspite) {
         this.formCasa = formCasa;
         this.formOspite = formOspite;
     }
