@@ -250,7 +250,7 @@ public class Mysql{
             campionatostmt.setString(1,campionato.getNome());
             campionatostmt.setInt(2, campionato.getNumeroPartecipanti());
             campionatostmt.setBoolean(3, campionato.isAstaLive());
-            campionatostmt.setBoolean(4, campionato.isPubblico());
+            campionatostmt.setBoolean(4, true);
             campionatostmt.setString(5,campionato.getPresidente().getNickname());
             campionatostmt.setInt(6,campionato.getNumeroPartecipanti()-campionato.getPartecipanti().length);
             int rscampionato = campionatostmt.executeUpdate();

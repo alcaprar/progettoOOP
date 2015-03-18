@@ -5,7 +5,6 @@ import db.Mysql;
 import utils.Utils;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,8 +44,6 @@ public class Login extends JFrame {
         super("Login - Gestore fantacalcio");
 
         db = new Mysql();
-
-
 
         setContentPane(panel1);
 
@@ -103,35 +100,6 @@ public class Login extends JFrame {
                 getFrame().setVisible(false);
             }
         });
-        iscrivitiButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!squadratxt.getText().equals("")) {
-                    String campionato = (String) pubbliciBox.getSelectedItem();
-                    String nomeSquadra = squadratxt.getText();
-                    if (db.iscriviti(utente, campionato, nomeSquadra)) {
-                        Object[] options = {"OK"};
-                        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Iscrizione effettuata con successo!",
-                                "Risposta",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                options,
-                                options[0]);
-
-                    } else {
-                        Object[] options = {"OK"};
-                        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono stati degli errori nel!",
-                                "Risposta",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                options,
-                                options[0]);
-                    }
-                }
-            }
-        });
     }
 
     public Login getFrame() {
@@ -140,11 +108,7 @@ public class Login extends JFrame {
 
 
     private void createUIComponents() {
-        final Mysql db = new Mysql();
-        String[] campionati = db.selectCampionatiPubblici();
-        DefaultComboBoxModel pubbliciModel = new DefaultComboBoxModel(campionati);
-        pubbliciBox = new JComboBox();
-        pubbliciBox.setModel(pubbliciModel);
+
     }
 
     private void controllaLogin() {
@@ -158,6 +122,7 @@ public class Login extends JFrame {
                 if (db.login(utente)) {
                     CardLayout c1 = (CardLayout) (panel1.getLayout());
                     c1.show(panel1, "login2");
+                    nomeutentetxt.setText(utente.getNickname());
                 } else infolbl.setVisible(true);
             } catch (SQLException se) {
                 Object[] options = {"OK"};

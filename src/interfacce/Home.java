@@ -1,5 +1,7 @@
 package interfacce;
 
+import classi.Persona;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -15,5 +17,9 @@ public class Home extends JPanel {
     private JButton inviaLaFormazioneButton;
     private JPanel ultimaGiornata;
     private JList list1;
+
+    public Home(){
+
+    }
 
 }

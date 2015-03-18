@@ -1,5 +1,7 @@
 package interfacce;
 
+import classi.Persona;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,15 +12,17 @@ public class Applicazione extends JFrame {
     private JPanel panel1;
     private JTabbedPane tabbedPane1;
     private JPanel homePanel;
+    Persona utente;
 
     public Applicazione() {
         super("Gestore Fantacalcio");
+
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        pack();
-        setSize(800, 600);
+        setSize(1000, 700);
         setVisible(true);
+        setLocationRelativeTo(null);
     }
+
 
 }

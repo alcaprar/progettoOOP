@@ -7,7 +7,6 @@ public class Campionato {
     private String Nome;
     private int NumeroPartecipanti;
     private boolean AstaLive;
-    private boolean Pubblico;
     private int GiornataInizio;
     private int GiornataFine;
     private int CreditiIniziali;
@@ -17,15 +16,7 @@ public class Campionato {
     private int BonusCasa;
     private String[] Partecipanti;
     private Persona Presidente;
-    private int PostiDisponibili;
 
-    public int getPostiDisponibili() {
-        return PostiDisponibili;
-    }
-
-    public void setPostiDisponibili(int postiDisponibili) {
-        PostiDisponibili = postiDisponibili;
-    }
 
     public Persona getPresidente() {
         return Presidente;
@@ -35,11 +26,11 @@ public class Campionato {
         Presidente = presidente;
     }
 
-    public Campionato(String nome, int numerop, boolean asta, boolean pubblico, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente ){
+    public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente ){
         this.Nome = nome;
         this.NumeroPartecipanti = numerop;
         this.AstaLive = asta;
-        this.Pubblico = pubblico;
+
         this.GiornataInizio = inizio;
         this.GiornataFine = fine;
         this.CreditiIniziali = crediti;
@@ -66,14 +57,6 @@ public class Campionato {
 
     public void setAstaLive(boolean astaLive) {
         AstaLive = astaLive;
-    }
-
-    public boolean isPubblico() {
-        return Pubblico;
-    }
-
-    public void setPubblico(boolean pubblico) {
-        Pubblico = pubblico;
     }
 
     public int getGiornataInizio() {
@@ -133,7 +116,6 @@ public class Campionato {
     }
 
     public String getNome() {
-
         return Nome;
     }
 

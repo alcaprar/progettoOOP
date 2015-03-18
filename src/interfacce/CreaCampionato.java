@@ -22,7 +22,6 @@ import java.awt.event.ItemListener;
 public class CreaCampionato extends JFrame {
     private JTextField nometxt;
     private JComboBox astaBox;
-    private JComboBox tipoBox;
     private JLabel nomePresidente;
     private JSpinner inizioSpinner;
     private JSpinner limiteSpinner;
@@ -35,7 +34,6 @@ public class CreaCampionato extends JFrame {
     private JLabel nomeInfo;
     private JLabel numeroInfo;
     private JLabel astaInfo;
-    private JLabel campionatoInfo;
     private JLabel inizioInfo;
     private JLabel fineInfo;
     private JLabel creditiInfo;
@@ -192,7 +190,21 @@ public class CreaCampionato extends JFrame {
                             options,
                             options[0]);
 
-                } else {
+                } else if(partecipantiModel.size()!=Integer.parseInt((String) numeroBox.getSelectedItem())){
+                    Object[] options = {"OK"};
+                    int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Inserisci tutti i partecipanti",
+                            "Mancano dei partecipanti",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+
+                }
+
+
+
+                else {
                     campionato = creaCampionato();
                     if (db.creaCampionato(campionato)) {
                         Object[] options = {"OK"};
@@ -320,9 +332,6 @@ public class CreaCampionato extends JFrame {
         astaInfo = new JLabel(icon);
         astaInfo.setToolTipText("<html>Se si sceglie live l'asta verrà fatta tramite l'applicazione.<br> Se si sceglie offline bisogna inserire manualmente le singole rose</html>");
 
-        campionatoInfo = new JLabel(icon);
-        campionatoInfo.setToolTipText("<html>Se si sceglie pubblico chiunque si può iscrivere al campionato.<br> Se si sceglie privato solo il presidente di lega può iscrivere.</html>");
-
         inizioInfo = new JLabel(icon);
         inizioInfo.setToolTipText("Giornata di inizio del fantacampionato rispetto alla giornata del campionato di Serie A");
 
@@ -352,7 +361,6 @@ public class CreaCampionato extends JFrame {
         String nome = nometxt.getText();
         int numeroPartecipanti = Integer.parseInt((String) numeroBox.getSelectedItem());
         boolean asta = "Live".equals((String) astaBox.getSelectedItem());
-        boolean pubblico = "Pubblico".equals((String) tipoBox.getSelectedItem());
         int inizio = (Integer) inizioSpinner.getValue();
         int fine = (Integer) fineSpinner.getValue();
         int crediti = (Integer) creditiSpinner.getValue();
@@ -362,7 +370,7 @@ public class CreaCampionato extends JFrame {
         int bonusc = (Integer) bonuscSpinner.getValue();
 
 
-        Campionato campionato = new Campionato(nome, numeroPartecipanti, asta, pubblico, inizio, fine, crediti, orario, primaf, fasce, bonusc, presidente);
+        Campionato campionato = new Campionato(nome, numeroPartecipanti, asta, inizio, fine, crediti, orario, primaf, fasce, bonusc, presidente);
 
         //se sono stati inseriti dei partecipanti
         if (partecipantiModel.getSize() != 0) {
