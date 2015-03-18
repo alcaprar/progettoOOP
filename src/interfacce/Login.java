@@ -50,6 +50,7 @@ public class Login extends JFrame {
 
         setContentPane(panel1);
 
+
         pack();
 
         infolbl.setVisible(false);
@@ -77,7 +78,7 @@ public class Login extends JFrame {
                 (new KeyAdapter() {
                      public void keyPressed(KeyEvent e) {
                          int key = e.getKeyCode();
-                         controllaLogin();
+                         if(key==10) controllaLogin();
                      }
                  }
                 );
@@ -148,7 +149,7 @@ public class Login extends JFrame {
     }
 
     private void controllaLogin() {
-        if (usertxt.getText().equals("admin")) {
+        if (usertxt.getText().equals("admin")&& utils.passwordString(passtxt.getPassword()).equals("admin")) {
             ApplicazioneAdmin admingui = new ApplicazioneAdmin();
             getFrame().dispose();
         } else {

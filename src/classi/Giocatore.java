@@ -9,7 +9,6 @@ public class Giocatore {
     private int prezzoBase;
     private String squadraReale;
     private char ruolo;
-    private int datogliere;
 
     public Giocatore(String cognome,  int id, int prezzo,  String squadra, char ruolo) {
         this.cognome = cognome;

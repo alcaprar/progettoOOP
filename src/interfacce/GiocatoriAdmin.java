@@ -35,10 +35,7 @@ public class GiocatoriAdmin extends JPanel {
     Utils utils = new Utils();
 
 
-
     public GiocatoriAdmin(final ApplicazioneAdmin frame){
-        final Logger log = Logger.getLogger(GiocatoriAdmin.class.getName());
-
 
         listaGiocatori = db.selectGiocatoriAdmin();
 
@@ -55,14 +52,12 @@ public class GiocatoriAdmin extends JPanel {
         quotazioniButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                FileDialog fc = new FileDialog(frame, "Choose a file", FileDialog.LOAD);
-                fc.setDirectory("/");
+                FileDialog fc = new FileDialog(frame, "Scegli un file", FileDialog.LOAD);
+                String directory = System.getProperty("user.home");
+                fc.setDirectory(directory);
                 fc.setVisible(true);
-                String filename = fc.getFile();
-                String path = fc.getDirectory();
                 pathFile = fc.getDirectory() + fc.getFile();
                 if (pathFile == null) {
-                    System.out.println("You cancelled the choice");
                 } else {
                     quotazioniPath.setText(pathFile);
                 }
@@ -82,7 +77,7 @@ public class GiocatoriAdmin extends JPanel {
     private void setTabella(){
         Object[] nomeColonne = {"ID", "Cognome", "Ruolo", "Squadra Reale", "Costo"};
         //listaToArray ritorna un array di obkect che serve per il model
-        Object[][] righeGiocatori = utils.listaToArray(listaGiocatori);
+        Object[][] righeGiocatori = utils.listaGiocatoriToArray(listaGiocatori);
         //creo il modello con le colonne e i giocatori
         DefaultTableModel giocatoriModel = new DefaultTableModel(righeGiocatori, nomeColonne) {
             //rende non modificabili le colonne dell'ID,cognome e ruolo

@@ -12,6 +12,18 @@ public class GiornataReale {
     private Date DataFine;
     private Date OraFine;
 
+    public GiornataReale(int numeroGiornata){
+        NumeroGiornata = numeroGiornata;
+    }
+
+    public GiornataReale(int numeroGiornata, Date dataInizio, Date oraInizio, Date dataFine, Date oraFine) {
+        NumeroGiornata = numeroGiornata;
+        DataInizio = dataInizio;
+        OraInizio = oraInizio;
+        DataFine = dataFine;
+        OraFine = oraFine;
+    }
+
     public Date getDataInizio() {
         return DataInizio;
     }

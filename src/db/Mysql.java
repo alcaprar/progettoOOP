@@ -173,6 +173,58 @@ public class Mysql{
         }
     }
 
+    public ArrayList<GiornataReale> selectGiornate(){
+        Connection conn = null;
+        PreparedStatement giocatoristmt = null;
+        String giocatoriSql ="SELECT * from GiornataAnno";
+
+        PreparedStatement contastmt = null;
+        String contaSql ="SELECT count(*) from GiornataAnno";
+
+        ArrayList<GiornataReale> giornate = new ArrayList<GiornataReale>();
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            contastmt = conn.prepareStatement(contaSql);
+            ResultSet rscount = contastmt.executeQuery();
+            rscount.next();
+            int numeroGiornate = rscount.getInt("count(*)");
+
+
+            if(numeroGiornate!=0) {
+                giocatoristmt = conn.prepareStatement(giocatoriSql);
+                ResultSet rs = giocatoristmt.executeQuery();
+                int i = 0;
+                while (rs.next()) {
+                    giornate.add(new GiornataReale(rs.getInt("NrGioReale"),rs.getDate("DataInizio"),rs.getDate("OraInizio"),rs.getDate("DataFine"),rs.getDate("OraFine")));
+                    i++;
+                }
+            }
+            return  giornate;
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return giornate;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return giornate;
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
+                }
+            }
+        }
+
+    }
+
     //crea il campionato
     public boolean creaCampionato(Campionato campionato){
         Connection conn = null ;
