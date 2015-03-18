@@ -67,7 +67,6 @@ public class CreaCampionato extends JFrame {
         final Mysql db = new Mysql();
 
 
-        $$$setupUI$$$();
         setContentPane(panel);
 
         nomePresidente.setText(utente.getNickname());

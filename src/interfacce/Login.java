@@ -42,7 +42,6 @@ public class Login extends JFrame {
 
         final Mysql db = new Mysql();
 
-        $$$setupUI$$$();
         setContentPane(panel1);
 
         pack();
