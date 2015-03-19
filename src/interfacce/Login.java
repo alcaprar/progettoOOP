@@ -105,35 +105,7 @@ public class Login extends JFrame {
                 getFrame().setVisible(false);
             }
         });
-        iscrivitiButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!squadratxt.getText().equals("")) {
-                    String campionato = (String) pubbliciBox.getSelectedItem();
-                    String nomeSquadra = squadratxt.getText();
-                    if (db.iscriviti(utente, campionato, nomeSquadra)) {
-                        Object[] options = {"OK"};
-                        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Iscrizione effettuata con successo!",
-                                "Risposta",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                options,
-                                options[0]);
 
-                    } else {
-                        Object[] options = {"OK"};
-                        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono stati degli errori nel!",
-                                "Risposta",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                options,
-                                options[0]);
-                    }
-                }
-            }
-        });
     }
 
     public Login getFrame() {
@@ -141,13 +113,7 @@ public class Login extends JFrame {
     }
 
 
-    private void createUIComponents() {
-        final Mysql db = new Mysql();
-        String[] campionati = db.selectCampionatiPubblici();
-        DefaultComboBoxModel pubbliciModel = new DefaultComboBoxModel(campionati);
-        pubbliciBox = new JComboBox();
-        pubbliciBox.setModel(pubbliciModel);
-    }
+
 
     private void controllaLogin() {
         if (usertxt.getText().equals("admin") && utils.passwordString(passtxt.getPassword()).equals("admin")) {
@@ -182,7 +148,6 @@ public class Login extends JFrame {
 
     private void setComboBoxSquadre(ArrayList<Squadra> listaSquadre){
         DefaultComboBoxModel squadreModel = new DefaultComboBoxModel();
-        squadreModel.addElement("ID - NomeSquadra - NomeCampionato");
         for(Squadra squadra : listaSquadre){
             int ID = squadra.getID();
             String nome  = squadra.getNome()==null ? "NomeDaInserire" : squadra.getNome();
