@@ -14,7 +14,6 @@ public class Classifica {
     private JTable classifica;
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
 
         Object[] colonne = {"Pos", "Squadra", "Partite", "V", "N", "P", "DiffReti", "GolF", "GolS", "Punteggio", "Punti"};//bisogna farla vedere
         Object[][] valori = {
