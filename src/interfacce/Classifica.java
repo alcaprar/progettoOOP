@@ -23,6 +23,7 @@ public class Classifica {
         DefaultTableModel classificamodel = new DefaultTableModel(valori, colonne);
         classifica = new JTable();
         classifica.setModel(classificamodel);
+
     }
 
 }

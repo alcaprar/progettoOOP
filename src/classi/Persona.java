@@ -1,5 +1,7 @@
 package classi;
 
+import java.util.ArrayList;
+
 /**
  * Created by alessandro on 25/02/15.
  */
@@ -9,11 +11,22 @@ public class Persona {
     private String nome;
     private String cognome;
     private String email;
-    private Squadra presidenza[];
+    private ArrayList<Squadra> presidenza;
+
+    public Persona(String nick){
+        this.nickname = nick;
+    }
 
     public Persona(String nick, String pass){
         this.nickname = nick;
         this.password = pass;
+    }
+
+    public Persona(String nick, String nome, String cognome, String email){
+        this.nickname = nick;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.email = email;
     }
 
     public  Persona(String nick, String pass, String nome,String cognome, String email){
@@ -45,7 +58,7 @@ public class Persona {
         return this.email;
     }
 
-    public Squadra[] getPresidenza() {
+    public ArrayList<Squadra> getPresidenza() {
         return this.presidenza;
     }
 
@@ -75,13 +88,15 @@ public class Persona {
         else return false;
     }
 
-    public void numeroSquadre(int numero){
-        this.presidenza = new Squadra[numero];
-
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public void addSquadra(String nome){
-        
+    public void setPresidenza(ArrayList<Squadra> presidenza) {
+        this.presidenza = presidenza;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

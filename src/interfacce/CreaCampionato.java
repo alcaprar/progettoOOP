@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 
 /**
  * Created by alessandro on 14/03/15.
@@ -48,7 +49,11 @@ public class CreaCampionato extends JFrame {
     private JButton aggiungiButton;
     private JButton rimuoviButton;
     private JButton annullaButton;
-    private String[] listaUtenti;
+
+    //private String[] listaUtenti;
+
+    private ArrayList<Persona> listaUtenti = new ArrayList<Persona>();
+    private ArrayList<Persona> listaPartecipanti = new ArrayList<Persona>();
 
     private Persona presidente;
 
@@ -56,14 +61,17 @@ public class CreaCampionato extends JFrame {
 
     private Campionato campionato;
 
+    final Mysql db = new Mysql();
+
     public CreaCampionato(Persona utente, final Login loginForm) {
         //titolo del frame
         super("Crea Campionato - Gestore fantacalcio");
 
         presidente = utente;
 
-        final Mysql db = new Mysql();
+        //System.out.println(presidente.getNickname());
 
+        setJlist();
 
         setContentPane(panel);
 
@@ -79,6 +87,8 @@ public class CreaCampionato extends JFrame {
         setVisible(true);
 
         setResizable(false);
+
+        //TODO: iscrivere d'ufficio la squadra del presidente di lega, quindi toglierla dalla lista degli utenti disponibili
 
         aggiungiButton.addActionListener(new ActionListener() {
             @Override
@@ -112,10 +122,13 @@ public class CreaCampionato extends JFrame {
                     //trovo i valori dell'utente selezionato
                     Object utente = partecipantiList.getSelectedValue();
 
-                    //aggiungo l'utente ai disponibili
-                    utentiModel.addElement(utente);
-                    //rimuovo l'utente dai partecipanti
-                    partecipantiModel.remove(indice);
+                    //non si può rimuovere la squadra del presidente
+                    if(!utente.equals(presidente.getNickname())) {
+                        //aggiungo l'utente ai disponibili
+                        utentiModel.addElement(utente);
+                        //rimuovo l'utente dai partecipanti
+                        partecipantiModel.remove(indice);
+                    }
 
                 }
             }
@@ -204,7 +217,7 @@ public class CreaCampionato extends JFrame {
 
 
 
-                else {
+                else  {
                     campionato = creaCampionato();
                     if (db.creaCampionato(campionato)) {
                         Object[] options = {"OK"};
@@ -254,7 +267,7 @@ public class CreaCampionato extends JFrame {
 
         setSpinner();
 
-        setJlist();
+
 
     }
 
@@ -273,14 +286,20 @@ public class CreaCampionato extends JFrame {
 
 
         //aggiungo al modello utenti gli elementi dell'array
-        for (String utente : listaUtenti) {
-            utentiModel.addElement(utente);
+        for (Persona utenteLista : listaUtenti) {
+            if(!utenteLista.getNickname().equals(presidente.getNickname())){
+                utentiModel.addElement(utenteLista.getNickname());
+            }
+
         }
+
+        //aggiungo ai partecipanti il presidente
+        partecipantiModel.addElement(presidente.getNickname());
 
 
         //creo le jlist dal modello
-        utentiList = new JList(utentiModel);
-        partecipantiList = new JList(partecipantiModel);
+        utentiList.setModel(utentiModel);
+        partecipantiList.setModel(partecipantiModel);
 
         //permette una selezione alla volta anche premendo CTRL
         utentiList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -372,19 +391,14 @@ public class CreaCampionato extends JFrame {
 
         Campionato campionato = new Campionato(nome, numeroPartecipanti, asta, inizio, fine, crediti, orario, primaf, fasce, bonusc, presidente);
 
-        //se sono stati inseriti dei partecipanti
-        if (partecipantiModel.getSize() != 0) {
-            //cast di array di object to array di stringhe
-            String[] partecipanti = new String[partecipantiModel.getSize()];
-            for (int i = 0; i < partecipantiModel.getSize(); i++) {
-                partecipanti[i] = (String) partecipantiModel.getElementAt(i);
-            }
 
-            //inizializza l'array di stringhe
-            campionato.numeroPartecipanti(numeroPartecipanti);
-            //setta l'array di strignhe
-            campionato.setPartecipanti(partecipanti);
+        for (int i = 0; i < partecipantiModel.getSize(); i++) {
+            listaPartecipanti.add(new Persona((String) partecipantiModel.getElementAt(i)));
         }
+
+        //setta l'arraylist  di partecipanti
+        campionato.setPartecipanti(listaPartecipanti);
+
 
         return campionato;
     }

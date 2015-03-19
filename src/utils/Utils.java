@@ -44,7 +44,7 @@ public class Utils {
             if(listaGiocatori.isEmpty()) System.out.print("vuota");
             else System.out.print("piena");
 
-            return rsDb = db.inserisciGiocatori(listaGiocatori);
+            return rsDb = db.inserisciGiocatoriAnno(listaGiocatori);
 
 
 
