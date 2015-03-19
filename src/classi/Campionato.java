@@ -1,5 +1,7 @@
 package classi;
 
+import java.util.ArrayList;
+
 /**
  * Created by alessandro on 14/03/15.
  */
@@ -14,7 +16,7 @@ public class Campionato {
     private int PrimaFascia;
     private int LargFascia;
     private int BonusCasa;
-    private String[] Partecipanti;
+    private ArrayList<Persona> listaPartecipanti;
     private Persona Presidente;
 
 
@@ -24,6 +26,10 @@ public class Campionato {
 
     public void setPresidente(Persona presidente) {
         Presidente = presidente;
+    }
+
+    public Campionato(String nome){
+        this.Nome = nome;
     }
 
     public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente ){
@@ -123,16 +129,12 @@ public class Campionato {
         Nome = nome;
     }
 
-    public String[] getPartecipanti() {
-        return Partecipanti;
+    public ArrayList<Persona> getPartecipanti() {
+        return listaPartecipanti;
     }
 
-    public void setPartecipanti(String[] partecipanti) {
-        Partecipanti = partecipanti;
+    public void setPartecipanti(ArrayList<Persona> partecipanti) {
+        listaPartecipanti = partecipanti;
     }
 
-    public void numeroPartecipanti(int numero){
-        this.Partecipanti = new String[numero];
-
-    }
 }

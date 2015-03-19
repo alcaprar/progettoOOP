@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by alessandro on 12/03/15.
@@ -22,7 +23,7 @@ public class Login extends JFrame {
     private JPasswordField passtxt;
     private JButton loginButton;
     private JButton registratiButton;
-    private JComboBox comboBox1;
+    private JComboBox comboBoxSquadre;
     private JButton gestisciButton;
     private JComboBox pubbliciBox;
     private JButton iscrivitiButton;
@@ -35,6 +36,8 @@ public class Login extends JFrame {
     private JLabel nomeutentetxt;
 
     public Persona utente;
+
+    public ArrayList<Squadra> listaSquadre = new ArrayList<Squadra>();
 
     public Utils utils = new Utils();
 
@@ -155,6 +158,8 @@ public class Login extends JFrame {
             utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
             try {
                 if (db.login(utente)) {
+                    listaSquadre = db.selectSquadre(utente);
+                    setComboBoxSquadre(listaSquadre);
                     CardLayout c1 = (CardLayout) (panel1.getLayout());
                     c1.show(panel1, "login2");
                 } else infolbl.setVisible(true);
@@ -173,6 +178,23 @@ public class Login extends JFrame {
 
             }
         }
+    }
+
+    private void setComboBoxSquadre(ArrayList<Squadra> listaSquadre){
+        DefaultComboBoxModel squadreModel = new DefaultComboBoxModel();
+        squadreModel.addElement("ID - NomeSquadra - NomeCampionato");
+        for(Squadra squadra : listaSquadre){
+            int ID = squadra.getID();
+            String nome  = squadra.getNome()==null ? "NomeDaInserire" : squadra.getNome();
+            String campionato = squadra.getCampionato().getNome();
+            String presidente = squadra.getCampionato().getPresidente().getNickname().equals(utente.getNickname()) ? "(P)" : "";
+            if(presidente.equals("(P)")) campionato = campionato.toUpperCase();
+            squadreModel.addElement(ID+" - "+nome+" - "+campionato+presidente);
+        }
+        comboBoxSquadre.setModel(squadreModel);
+        comboBoxSquadre.setToolTipText("<html>I campionati in cui sei presidente sono in maiuscolo<br> e indicati da (P).<br>Se compare NomeDaInserire vuol dire che è il primo login.</html>");
+        getFrame().pack();
+
     }
 
 }
