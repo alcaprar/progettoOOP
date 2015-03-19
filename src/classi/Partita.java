@@ -20,7 +20,7 @@ public class Partita {
         this.puntiFuori = 0;
     }
 
-    public void calcolaPartita (Formazione formCasa, Formazione formOspite) {
+    public void calcolaPartita () {
         puntiCasa=formCasa.calcola();
         puntiFuori=formOspite.calcola();
         golCasa=numGol(puntiCasa);
