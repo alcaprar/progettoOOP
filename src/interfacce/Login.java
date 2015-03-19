@@ -97,7 +97,15 @@ public class Login extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 Squadra squadra = listaSquadre.get(comboBoxSquadre.getSelectedIndex());
-                Applicazione app = new Applicazione(squadra);
+                String succesDialog= new String();
+                if(squadra.getNome()==null){
+                    succesDialog = JOptionPane.showInputDialog(getContentPane(), "Questo è il tuo primo login!\n Dai un nome alla tua squadra:","Nome Squadra");
+                }
+                if(succesDialog!=null && succesDialog.length()>0){
+                    squadra.setNome(succesDialog);
+                    getFrame().dispose();
+                    Applicazione app = new Applicazione(squadra);
+                }
             }
         });
         creaButton.addActionListener(new ActionListener() {
@@ -154,7 +162,7 @@ public class Login extends JFrame {
             int ID = squadra.getID();
             String nome  = squadra.getNome()==null ? "NomeDaInserire" : squadra.getNome();
             String campionato = squadra.getCampionato().getNome();
-            String presidente = squadra.getCampionato().getPresidente().getNickname().equals(utente.getNickname()) ? "(P)" : "";
+            String presidente = squadra.getCampionato().getPresidente().equals(utente) ? "(P)" : "";
             if(presidente.equals("(P)")) campionato = campionato.toUpperCase();
             squadreModel.addElement(ID+" - "+nome+" - "+campionato+presidente);
         }

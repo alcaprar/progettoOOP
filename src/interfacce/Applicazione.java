@@ -11,26 +11,18 @@ import java.awt.*;
 public class Applicazione extends JFrame {
     private JPanel panel1;
     private JTabbedPane tabbedPane1;
-    private JPanel homePanel;
+    private Home homePanel;
     private JPanel pFormazione;
-    private Formazione pForm;
 
     private Squadra sqr;
 
     public Applicazione(Squadra squadra) {
         super("Gestore Fantacalcio");
-        if(squadra.getNome()==null){
-            Object[] options = {"OK"};
-            int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Questo è il tuo primo login!\n Dai un nome alla tua squadra:",
-                    "Nome Squadra",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE,
-                    null,
-                    options,
-                    options[0]);
-        }
 
-        System.out.print(squadra.getNome());
+        sqr = squadra;
+
+        homePanel = new Home(squadra);
+
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
@@ -39,8 +31,9 @@ public class Applicazione extends JFrame {
         setVisible(true);
     }
 
-    /*private void createUIComponents() {
-        pForm = new Formazione(sqr);
-    }*/
+    private void createUIComponents() {
+
+    }
+
 
 }

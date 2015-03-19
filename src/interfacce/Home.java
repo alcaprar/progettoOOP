@@ -1,6 +1,7 @@
 package interfacce;
 
 import classi.Persona;
+import classi.Squadra;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -17,8 +18,12 @@ public class Home extends JPanel {
     private JButton inviaLaFormazioneButton;
     private JPanel ultimaGiornata;
     private JList list1;
+    private JLabel nomeSquadra;
+
+    private Squadra sqr;
 
     public Home(){
+
 
     }
 

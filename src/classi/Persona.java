@@ -84,7 +84,7 @@ public class Persona {
     }
 
     public boolean equal(Persona a) {
-        if (this.nickname == a.nickname && this.password == a.password) return true;
+        if (this.nickname == a.nickname) return true;
         else return false;
     }
 
