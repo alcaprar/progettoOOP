@@ -95,7 +95,9 @@ public class Login extends JFrame {
         gestisciButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Applicazione app = new Applicazione();
+
+                Squadra squadra = listaSquadre.get(comboBoxSquadre.getSelectedIndex());
+                Applicazione app = new Applicazione(squadra);
             }
         });
         creaButton.addActionListener(new ActionListener() {
