@@ -20,11 +20,14 @@ public class Home extends JPanel {
     private JList list1;
     private JLabel nomeSquadra;
 
-    private Squadra sqr;
+    private Squadra squadra;
 
-    public Home(){
+    public void setSquadre(Squadra squadra){
+        this.squadra = squadra;
+    }
 
-
+    public void refresh(){
+        nomeSquadra.setText(squadra.getNome());
     }
 
 }

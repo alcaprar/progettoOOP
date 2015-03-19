@@ -232,6 +232,43 @@ public class Mysql{
 
     }
 
+    public void aggiornaNomeSquadra(Squadra squadra){
+        Connection conn = null;
+        PreparedStatement aggiornaNome = null;
+        String aggiornaNomeSql = "UPDATE Fantasquadra set Nome =? where ID=?";
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            aggiornaNome = conn.prepareStatement(aggiornaNomeSql);
+            aggiornaNome.setString(1,squadra.getNome());
+            aggiornaNome.setInt(2,squadra.getID());
+            int rs = aggiornaNome.executeUpdate();
+
+
+        }catch(SQLException se){
+            se.printStackTrace();
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
+                }
+            }
+        }
+
+    }
+
     public ArrayList<GiornataReale> selectGiornate(){
         Connection conn = null;
         PreparedStatement giocatoristmt = null;
