@@ -1,5 +1,7 @@
 package classi;
 
+import java.util.ArrayList;
+
 /**
  * Created by Christian on 03/03/2015.
  */
@@ -7,7 +9,7 @@ public class Squadra {
     private int ID;
     private String nome;
     private Persona proprietario;
-    private Giocatore[] giocatori;
+    private ArrayList<Giocatore> giocatori;
     private Campionato campionato;
 
     public int getID() {
@@ -26,7 +28,7 @@ public class Squadra {
         this.proprietario = proprietario;
     }
 
-    public void setGiocatori(Giocatore[] giocatori) {
+    public void setGiocatori(ArrayList<Giocatore> giocatori) {
         this.giocatori = giocatori;
     }
 
@@ -45,7 +47,7 @@ public class Squadra {
         this.campionato = campionato;
     }
 
-    public Squadra(String nome, Persona prop, Giocatore[] gioc) {
+    public Squadra(String nome, Persona prop, ArrayList<Giocatore> gioc) {
         this.nome = nome;
         this.proprietario = prop;
         for (Giocatore i : gioc) this.giocatori = gioc;
@@ -62,7 +64,7 @@ public class Squadra {
     }
 
 
-    public Giocatore[] getGiocatori(){
+    public ArrayList<Giocatore> getGiocatori(){
         return giocatori;
     }
 
