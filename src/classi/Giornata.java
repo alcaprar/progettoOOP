@@ -7,16 +7,16 @@ import java.util.ArrayList;
  */
 public class Giornata {
     private int numGiornata;
-    private GiornataReale GioReale;
-    //ArrayList partite
+    private GiornataReale gioReale;
+    ArrayList<Partita> partite;
 
-    public Giornata(int numGiornata, GiornataReale GioReale) {
+    public Giornata(int numGiornata, GiornataReale gioReale) {
         this.numGiornata = numGiornata;
-        this.GioReale = GioReale;
+        this.gioReale = gioReale;
     }
 
     public void calcolaGiornata() {
-
+        for (Partita i : partite ) i.calcolaPartita();
     }
 
     public int getNumGiornata() {
@@ -28,10 +28,10 @@ public class Giornata {
     }
 
     public GiornataReale getNumGioReale() {
-        return GioReale;
+        return gioReale;
     }
 
     public void setNumGioReale(GiornataReale numGioReale) {
-        this.GioReale = numGioReale;
+        this.gioReale = numGioReale;
     }
 }

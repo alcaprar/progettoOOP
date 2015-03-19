@@ -35,7 +35,7 @@ public class Voto {
 
     private float calcolaMagicVoto(int gol, float voto, int golSubito, int rigParato, int rigSbagliato, int rigSegnato, int autogol, int ammonizione, int espulsione, int assist, int assistFermo) {
         if (voto==0) return 0;
-        else return voto+3*gol;//–golSubito+3*rigParato–3*rigSbagliato+3*rigSegnato–2*autogol–0,5*ammonizione–espulsione+assist+assistFermo;
+        else return voto+3*gol-golSubito+3*rigParato-3*rigSbagliato+3*rigSegnato-2*autogol;//-0,5*ammonizione-espulsione+assist+assistFermo;
     }
 
     public float getVoto() {

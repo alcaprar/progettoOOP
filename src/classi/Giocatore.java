@@ -9,7 +9,7 @@ public class Giocatore {
     private int prezzoBase;
     private String squadraReale;
     private char ruolo;
-    private Voto voto;
+    private Voto voti;
 
     public Giocatore(String cognome,  int id, int prezzo,  String squadra, char ruolo) {
         this.cognome = cognome;
@@ -59,11 +59,11 @@ public class Giocatore {
         this.ruolo = ruolo;
     }
 
-    public Voto getVoto() {
-        return voto;
+    public Voto getVoti() {
+        return voti;
     }
 
-    public void setVoto(Voto voto) {
-        this.voto = voto;
+    public void setVoti(Voto voti) {
+        this.voti = voti;
     }
 }
