@@ -128,10 +128,10 @@ public class Formazione extends JPanel implements ItemListener {
     private JButton p532Button;
     private JButton p541Button;
 
-    private DefaultListModel listModelP = new DefaultListModel();
-    private DefaultListModel listModelD = new DefaultListModel();
-    private DefaultListModel listModelC = new DefaultListModel();
-    private DefaultListModel listModelA = new DefaultListModel();
+    private DefaultListModel listModelP = new DefaultListModel<String>();
+    private DefaultListModel listModelD = new DefaultListModel<String>();
+    private DefaultListModel listModelC = new DefaultListModel<String>();
+    private DefaultListModel listModelA = new DefaultListModel<String>();
 
     private ArrayList<Giocatore> giocatori;
     private ArrayList<Giocatore> formazione;
@@ -165,7 +165,6 @@ public class Formazione extends JPanel implements ItemListener {
         //gestione etichette panchina
         inspan();
     }
-
 
     //creazione custom dei componenti
     private void createUIComponents() {
