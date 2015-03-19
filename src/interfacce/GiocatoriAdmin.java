@@ -35,7 +35,7 @@ public class GiocatoriAdmin extends JPanel {
     Utils utils = new Utils();
 
 
-    public GiocatoriAdmin(final ApplicazioneAdmin frame){
+    public GiocatoriAdmin(final ApplicazioneAdmin frame) {
 
         listaGiocatori = db.selectGiocatoriAdmin();
 
@@ -74,7 +74,7 @@ public class GiocatoriAdmin extends JPanel {
 
     }
 
-    private void setTabella(){
+    private void setTabella() {
         Object[] nomeColonne = {"ID", "Cognome", "Ruolo", "Squadra Reale", "Costo"};
         //listaToArray ritorna un array di obkect che serve per il model
         Object[][] righeGiocatori = utils.listaGiocatoriToArray(listaGiocatori);
@@ -90,4 +90,5 @@ public class GiocatoriAdmin extends JPanel {
         tabellaGiocatori.setModel(giocatoriModel);
 
     }
+
 }

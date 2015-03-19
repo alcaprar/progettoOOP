@@ -6,6 +6,7 @@ import utils.Utils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -21,14 +22,14 @@ public class GiornateAdmin extends JPanel {
 
     Utils utils = new Utils();
 
-    public GiornateAdmin(){
+    public GiornateAdmin() {
 
         listaGiornate = db.selectGiornate();
 
         //se non sono mai state inserite creo le 38 giornate
         //che poi verranno mostrate nella tabella
         if (listaGiornate.isEmpty()) {
-            for(int i= 1;i<=38;i++){
+            for (int i = 1; i <= 38; i++) {
                 listaGiornate.add(new GiornataReale(i));
             }
         }
@@ -37,7 +38,7 @@ public class GiornateAdmin extends JPanel {
 
     }
 
-    private void setTabella(){
+    private void setTabella() {
         Object[] nomeColonne = {"Numero Giornata", "Data Inizio", "Ora Inizio", "Data fine", "Ora Fine"};
         //listaToArray ritorna un array di obkect che serve per il model
         Object[][] righeGiornate = utils.listaGiornateToArray(listaGiornate);
@@ -46,11 +47,12 @@ public class GiornateAdmin extends JPanel {
             //rende non modificabili le colonne dell'ID,cognome e ruolo
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 0  ? false : true;
+                return column == 0 ? false : true;
             }
         };
 
         tabellaGiornate.setModel(giocatoriModel);
 
     }
+
 }

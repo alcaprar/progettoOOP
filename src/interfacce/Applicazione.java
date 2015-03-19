@@ -1,6 +1,6 @@
 package interfacce;
 
-import classi.Persona;
+import classi.Squadra;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,17 +12,23 @@ public class Applicazione extends JFrame {
     private JPanel panel1;
     private JTabbedPane tabbedPane1;
     private JPanel homePanel;
-    Persona utente;
+    private JPanel pFormazione;
+    private Formazione pForm;
+
+    private Squadra sqr;
 
     public Applicazione() {
         super("Gestore Fantacalcio");
-
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 700);
-        setVisible(true);
         setLocationRelativeTo(null);
+        pack();
+        setSize(800, 600);
+        setVisible(true);
     }
 
+    /*private void createUIComponents() {
+        pForm = new Formazione(sqr);
+    }*/
 
 }
