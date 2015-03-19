@@ -1,5 +1,7 @@
 package classi;
 
+import java.util.ArrayList;
+
 /**
  * Created by Christian on 04/03/2015.
  */
@@ -7,9 +9,9 @@ public class Formazione {
 
     private String modulo;
     private Squadra squadra;
-    private Giocatore[] formazione;
+    private ArrayList<Giocatore> formazione;
 
-    public Formazione(Giocatore[] g, String modulo, Squadra squadra){
+    public Formazione(ArrayList<Giocatore> g, String modulo, Squadra squadra){
         this.modulo = new String(modulo);
         this.squadra = squadra;
         for (Giocatore i : g) {
@@ -18,7 +20,7 @@ public class Formazione {
     }
 
     //funzione per la dichiarazione della formazione, tramite gui si sceglie il modulo e si compone il vettore con le giuste posizioni
-    public void setFormazione(Giocatore[] g, String modulo, Squadra squadra) {
+    public void setFormazione(ArrayList<Giocatore> g, String modulo, Squadra squadra) {
         this.modulo = new String(modulo);
         this.squadra = squadra;
         for (Giocatore i : g) {
@@ -26,7 +28,7 @@ public class Formazione {
         }
     }
 
-    public Giocatore[] getFormazione() {
+    public ArrayList<Giocatore> getFormazione() {
         return formazione;
     }
 
