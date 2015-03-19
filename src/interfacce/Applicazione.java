@@ -20,6 +20,7 @@ public class Applicazione extends JFrame {
         super("Gestore Fantacalcio");
 
         sqr = squadra;
+
         homePanel.setSquadre(sqr);
         homePanel.refresh();
         setContentPane(panel1);

@@ -74,6 +74,16 @@ public class Login extends JFrame {
             }
         });
 
+        //se viene premuto enter sul bottone login parte la funzione per controllare le credenziali
+        loginButton.addKeyListener
+                (new KeyAdapter() {
+                     public void keyPressed(KeyEvent e) {
+                         int key = e.getKeyCode();
+                         if (key == 10) controllaLogin();
+                     }
+                 }
+                );
+
 
         //se viene premuto enter quando si sta scrivendo la pass parte la funzione per controllare le credenziali
         passtxt.addKeyListener
@@ -92,6 +102,17 @@ public class Login extends JFrame {
 
             }
         });
+
+        //se viene premuto enter sul bottone registrati si crea il jframe per la registrazione
+        registratiButton.addKeyListener
+                (new KeyAdapter() {
+                     public void keyPressed(KeyEvent e) {
+                         int key = e.getKeyCode();
+                         if (key == 10){ Registra registragui = new Registra();}
+
+                     }
+                 }
+                );
 
         //quando viene cliccato il bottone per gestire le squadre vengono fatte alcune operazioni
         gestisciButton.addActionListener(new ActionListener() {
