@@ -19,6 +19,7 @@ public class Home extends JPanel {
     private JPanel ultimaGiornata;
     private JList list1;
     private JLabel nomeSquadra;
+    private JLabel nomeUtente;
 
     private Squadra squadra;
 
@@ -28,6 +29,7 @@ public class Home extends JPanel {
 
     public void refresh(){
         nomeSquadra.setText(squadra.getNome());
+        nomeUtente.setText(squadra.getProprietario().getNickname());
     }
 
 }
