@@ -30,7 +30,12 @@ public class Voto {
         this.espulsione = espulsione;
         this.assist = assist;
         this.assistFermo = assistFermo;
-        this.magicVoto = voto+3*gol;//–golSubito+3*rigParato–3*rigSbagliato+3*rigSegnato–2*autogol–0,5*ammonizione–espulsione+assist+assistFermo;
+        this.magicVoto = calcolaMagicVoto(gol, voto, golSubito, rigParato, rigSbagliato, rigSegnato, autogol, ammonizione, espulsione, assist, assistFermo);
+    }
+
+    private float calcolaMagicVoto(int gol, float voto, int golSubito, int rigParato, int rigSbagliato, int rigSegnato, int autogol, int ammonizione, int espulsione, int assist, int assistFermo) {
+        if (voto==0) return 0;
+        else return voto+3*gol;//–golSubito+3*rigParato–3*rigSbagliato+3*rigSegnato–2*autogol–0,5*ammonizione–espulsione+assist+assistFermo;
     }
 
     public float getVoto() {
@@ -119,5 +124,13 @@ public class Voto {
 
     public void setAssistFermo(int assistFermo) {
         this.assistFermo = assistFermo;
+    }
+
+    public float getMagicVoto() {
+        return magicVoto;
+    }
+
+    public void setMagicVoto(float magicVoto) {
+        this.magicVoto = magicVoto;
     }
 }

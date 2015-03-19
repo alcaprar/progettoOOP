@@ -1,11 +1,23 @@
 package classi;
 
+import java.util.ArrayList;
+
 /**
  * Created by Giacomo on 18/03/15.
  */
 public class Giornata {
     private int numGiornata;
-    private GiornataReale numGioReale;
+    private GiornataReale GioReale;
+    //ArrayList partite
+
+    public Giornata(int numGiornata, GiornataReale GioReale) {
+        this.numGiornata = numGiornata;
+        this.GioReale = GioReale;
+    }
+
+    public void calcolaGiornata() {
+
+    }
 
     public int getNumGiornata() {
         return numGiornata;
@@ -16,10 +28,10 @@ public class Giornata {
     }
 
     public GiornataReale getNumGioReale() {
-        return numGioReale;
+        return GioReale;
     }
 
     public void setNumGioReale(GiornataReale numGioReale) {
-        this.numGioReale = numGioReale;
+        this.GioReale = numGioReale;
     }
 }
