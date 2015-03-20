@@ -23,8 +23,8 @@ public class InserimentoGiocatori extends JPanel implements ItemListener{
     private JList listaSquadra;
 
     private DefaultComboBoxModel<Squadra> comboBoxModel;
-    private DefaultListModel<Giocatore> listaSquadraModel;
     private DefaultListModel<Giocatore> listaGiocatoriModel;
+    private ArrayList<DefaultListModel<Giocatore>> listeSquadreModel;
     private Persona utente;
 
 
@@ -33,32 +33,36 @@ public class InserimentoGiocatori extends JPanel implements ItemListener{
         utente = ut;
 
 
+        listeSquadreModel = new ArrayList<DefaultListModel<Giocatore>>(10);
         listaGiocatoriModel = new DefaultListModel<Giocatore>();
-        listaSquadraModel = new DefaultListModel<Giocatore>();
 
         creaListaGiocatori(giocatori);
+        creaListeSquadra(utente.getPresidenza());
 
         creaComboBox(utente);
         comboBox.setModel(comboBoxModel);
         comboBox.addItemListener(this);
 
-        listaSquadra.setModel(listaSquadraModel);
-        listaGiocatori.setModel(listaGiocatoriModel);
 
     }
 
     //override del metodo itemStateChanged
     @Override
     public void itemStateChanged(ItemEvent itemEvent) {
-        creaListaSquadra((Squadra) itemEvent.getItem());
+        listaSquadra.setModel((DefaultListModel<Giocatore>) itemEvent.getItem());
     }
 
     private void creaComboBox(Persona utente){
         for(Squadra i : utente.getPresidenza()) comboBoxModel.addElement(i);
     }
 
-    private void creaListaSquadra(Squadra squadra){
-        for(Giocatore i : squadra.getGiocatori()) listaSquadraModel.addElement(i);
+    private void creaListeSquadra(ArrayList<Squadra> squadre){
+        int i = 0;
+        for(Squadra s : squadre) {
+            listeSquadreModel.set(i, new DefaultListModel<Giocatore>());
+            for (Giocatore g : s.getGiocatori()) listeSquadreModel.get(i).addElement(g);
+            i++;
+        }
     }
 
     private void creaListaGiocatori(ArrayList<Giocatore> giocatori){
