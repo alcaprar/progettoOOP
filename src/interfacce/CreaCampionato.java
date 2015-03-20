@@ -88,7 +88,6 @@ public class CreaCampionato extends JFrame {
 
         setResizable(false);
 
-        //TODO: iscrivere d'ufficio la squadra del presidente di lega, quindi toglierla dalla lista degli utenti disponibili
 
         aggiungiButton.addActionListener(new ActionListener() {
             @Override

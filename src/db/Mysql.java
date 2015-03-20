@@ -6,6 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import classi.*;
+import classi.Classifica;
 import interfacce.*;
 
 public class Mysql{
@@ -186,6 +187,7 @@ public class Mysql{
         //String contaSql ="SELECT count(*) from GiornataAnno";
 
         ArrayList<Squadra> listaSquadre = new ArrayList<Squadra>();
+        ArrayList<Classifica> classifica = new ArrayList<Classifica>();
         try{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
@@ -205,6 +207,8 @@ public class Mysql{
             int i = 0;
             while (rs.next()) {
                 Campionato campionato = new Campionato(rs.getString("Campionato"),rs.getInt("NrPartecipanti"),rs.getBoolean("Asta"),rs.getInt("GiornataInizio"),rs.getInt("GiornataFine"),rs.getInt("CreditiIniziali"),rs.getInt("OrarioConsegna"),rs.getInt("PrimaFascia"),rs.getInt("LargFascia"),rs.getInt("BonusCasa"),new Persona(rs.getString("Presidente")));
+                classifica = selectClassifica(campionato);
+                campionato.setClassifica(classifica);
                 Squadra squadra = new Squadra(rs.getInt("ID"),rs.getString("Nome"),utente,campionato);
                 listaSquadre.add(squadra);
                 i++;
@@ -219,6 +223,61 @@ public class Mysql{
         }catch(Exception e){
             e.printStackTrace();
             return listaSquadre;
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
+                }
+            }
+        }
+
+    }
+
+    public ArrayList<Classifica> selectClassifica(Campionato campionato){
+        Connection conn = null;
+        PreparedStatement classificastmt = null;
+        String classificaSql ="SELECT * from Classifica JOIN Fantasquadra on Classifica.IDsq=Fantasquadra.ID where NomeCampionato=?";
+
+        ArrayList<Classifica> classifica = new ArrayList<Classifica>();
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+
+            classificastmt = conn.prepareStatement(classificaSql);
+            classificastmt.setString(1,campionato.getNome());
+            ResultSet rs = classificastmt.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                Squadra squadra = new Squadra(rs.getInt("ID"),rs.getString("Nome"));
+                int vinte = rs.getInt("Vinte");
+                int pareggiate = rs.getInt("Pareggiate");
+                int perse = rs.getInt("Perse");
+                int punti = rs.getInt("Punti");
+                float punteggio = rs.getInt("SommaPunteggi");
+                int golFatti = rs.getInt("GolF");
+                int golSubiti = rs.getInt("GolS");
+                int giocate = vinte+pareggiate+perse;
+                int diffReti = golFatti-golSubiti;
+                classifica.add(new Classifica(squadra,giocate,vinte,perse,pareggiate,golFatti,golSubiti,diffReti,punteggio,punti));
+                i++;
+            }
+
+            return  classifica;
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return classifica;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return classifica;
 
         }finally {
             if(conn!=null) {

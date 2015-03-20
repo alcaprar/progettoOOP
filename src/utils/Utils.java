@@ -1,5 +1,6 @@
 package utils;
 
+import classi.Classifica;
 import classi.Giocatore;
 import classi.GiornataReale;
 import com.sun.corba.se.spi.ior.ObjectKey;
@@ -91,6 +92,40 @@ public class Utils {
             listaObject[i][2] = listaGiornate.get(i).getOraInizio();
             listaObject[i][3] = listaGiornate.get(i).getDataFine();
             listaObject[i][4] = listaGiornate.get(i).getOraFine();
+
+        }
+
+        return listaObject;
+    }
+
+    public Object[][] listaClassificaToArrayPiccola(ArrayList<Classifica> listaClassifica){
+
+        Object[][] listaObject = new Object[listaClassifica.size()][2];
+
+        for(int i=0;i<listaClassifica.size();i++){
+            listaObject[i][0] = listaClassifica.get(i).getSquadra().getNome();
+            listaObject[i][1] = listaClassifica.get(i).getPunti();
+        }
+
+        return listaObject;
+    }
+
+
+    public Object[][] listaClassificaToArray(ArrayList<Classifica> listaClassifica){
+
+        Object[][] listaObject = new Object[listaClassifica.size()][10];
+
+        for(int i=0;i<listaClassifica.size();i++){
+            listaObject[i][0] = listaClassifica.get(i).getSquadra().getNome();
+            listaObject[i][1] = listaClassifica.get(i).getGiocate();
+            listaObject[i][2] = listaClassifica.get(i).getVinte();
+            listaObject[i][3] = listaClassifica.get(i).getPareggiate();
+            listaObject[i][4] = listaClassifica.get(i).getPerse();
+            listaObject[i][5] = listaClassifica.get(i).getGolFatti();
+            listaObject[i][6] = listaClassifica.get(i).getGolSubiti();
+            listaObject[i][7] = listaClassifica.get(i).getPunteggio();
+            listaObject[i][8] = listaClassifica.get(i).getPunti();
+
 
         }
 

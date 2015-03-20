@@ -13,6 +13,7 @@ public class Applicazione extends JFrame {
     private JTabbedPane tabbedPane1;
     private Home homePanel;
     private JPanel pFormazione;
+    private Classifica classificaPanel;
 
     private Squadra sqr;
 
@@ -22,7 +23,11 @@ public class Applicazione extends JFrame {
         sqr = squadra;
 
         homePanel.setSquadre(sqr);
+        classificaPanel.setSquadre(sqr);
+
         homePanel.refresh();
+        classificaPanel.refresh();
+
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
