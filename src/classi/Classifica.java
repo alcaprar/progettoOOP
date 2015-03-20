@@ -13,6 +13,4 @@ public class Classifica {
     private int[] golSubiti;
     private int[] diffReti;
     private int[] punteggio;
-
-
 }
