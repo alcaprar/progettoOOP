@@ -7,6 +7,8 @@ import classi.Squadra;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -16,13 +18,13 @@ import java.util.ArrayList;
  */
 public class GestioneGiocatori extends JPanel implements ItemListener{
     private JTable tabellaGiocatori;
-    private JButton button1;
-    private JButton button2;
+    private JButton removeButton;
+    private JButton addButton;
     private JTable tabellaSquadra;
     private JComboBox comboBox;
     private JButton inviaModificheButton;
 
-    private DefaultComboBoxModel<Squadra> comboBoxModel;
+    private DefaultComboBoxModel<String> comboBoxModel;
     private DefaultTableModel tabellaGiocatoriModel;
     private ArrayList<DefaultTableModel> tabellaSquadraModel;
     private Campionato campionato;
@@ -46,24 +48,23 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
         creaTabelleSquadre(campionato.getListaSquadrePartecipanti());
         tabellaSquadra.setModel(tabellaSquadraModel.get(0));
 
-
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+            }
+        });
     }
 
     //override del metodo itemStateChanged
     @Override
     public void itemStateChanged(ItemEvent itemEvent) {
-        Squadra sqr = (Squadra) itemEvent.getItem();
-        int i = 0;
-        for(Squadra s : campionato.getListaSquadrePartecipanti()) {
-            if (sqr.getNome().equals(s.getNome())){
-                i = campionato.getListaSquadrePartecipanti().indexOf(s);
-                tabellaSquadra.setModel(tabellaSquadraModel.get(i));
-            }
-        }
+        int i;
+        i = comboBox.getSelectedIndex();
+        tabellaSquadra.setModel(tabellaSquadraModel.get(i));
     }
 
     private void creaComboBox(ArrayList<Squadra> squadre){
-        for(Squadra i : squadre) comboBoxModel.addElement(i);
+        for(Squadra i : squadre) comboBoxModel.addElement(i.getNome());
     }
 
     private void creaTabellaGiocatori(ArrayList<Giocatore> giocatori){
@@ -80,12 +81,11 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
         for(Squadra s : squadre) {
             tabellaSquadraModel.set(i, new DefaultTableModel());
             tabellaSquadraModel.get(i).setColumnIdentifiers(colonne2);
-            for (Giocatore g : s.getGiocatori()){
-                tabellaSquadraModel.get(i).addRow(new String[]{g.getCognome(), )});
-            }
             i++;
         }
     }
+
+
 
 
 
