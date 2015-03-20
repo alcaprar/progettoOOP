@@ -31,6 +31,7 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
     //intestazioni delle due tabelle del panel, la prima per la tabella dei
     //giocatori mentre la seconda per la tabella delle squadre
     String[] colonne1 = {"ID", "Giocatore", "Ruolo", "Prezzo Base"};
+    //TODO su colonne2 prezzo base si può anche togliere che non serve come info
     String[] colonne2 = {"ID", "Giocatore", "Ruolo", "Prezzo Base", "Prezzo di Acquisto"};
 
     public GestioneGiocatori(Campionato camp, ArrayList<Giocatore> gioc){
