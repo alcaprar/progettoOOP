@@ -23,6 +23,7 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
     private JTable tabellaSquadra;
     private JComboBox comboBox;
     private JButton inviaModificheButton;
+    private JSpinner spinner;
 
     private DefaultComboBoxModel<String> comboBoxModel;
     private DefaultTableModel tabellaGiocatoriModel;
@@ -34,6 +35,8 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
     public GestioneGiocatori(Campionato camp, ArrayList<Giocatore> gioc){
 
         campionato = camp;
+        SpinnerModel spinnerModel = new SpinnerNumberModel(1, 1, 1000, 1);
+        spinner.setModel(spinnerModel);
 
         //la funzione crea un combobox in base al vettore di squadre che viene passato
         creaComboBox(campionato.getListaSquadrePartecipanti());
@@ -51,6 +54,10 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                    int i = comboBox.getSelectedIndex();
+                    int r = tabellaGiocatori.getSelectedRow();
+                    String nomeGiocatore = (String) tabellaGiocatori.getValueAt(r, 0);
+                    tabellaSquadraModel.get(i).addRow(new String[]{nomeGiocatore, String.valueOf(spinner.getValue())});
             }
         });
     }
