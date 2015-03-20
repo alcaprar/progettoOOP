@@ -15,7 +15,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="6fe04" class="javax.swing.JTable" binding="table1" default-binding="true">
+          <component id="6fe04" class="javax.swing.JTable" binding="tabellaGiocatori">
             <constraints/>
             <properties/>
           </component>
@@ -54,13 +54,13 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="92550" class="javax.swing.JTable" binding="table2" default-binding="true">
+          <component id="92550" class="javax.swing.JTable" binding="tabellaSquadra">
             <constraints/>
             <properties/>
           </component>
         </children>
       </scrollpane>
-      <component id="b7872" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+      <component id="b7872" class="javax.swing.JComboBox" binding="comboBox">
         <constraints>
           <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
