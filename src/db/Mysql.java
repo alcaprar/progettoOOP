@@ -183,23 +183,12 @@ public class Mysql{
         PreparedStatement squadrestmt = null;
         String squadreSql ="SELECT * from Iscrizione JOIN Fantasquadra on Iscrizione.IDsq=Fantasquadra.ID JOIN Campionato on Iscrizione.Campionato = Campionato.Nome JOIN Regolamento on Campionato.Nome=Regolamento.NomeCampionato where NickUt=?";
 
-        //PreparedStatement contastmt = null;
-        //String contaSql ="SELECT count(*) from GiornataAnno";
-
         ArrayList<Squadra> listaSquadre = new ArrayList<Squadra>();
-        ArrayList<Classifica> classifica = new ArrayList<Classifica>();
         try{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
-
-            //contastmt = conn.prepareStatement(contaSql);
-            //ResultSet rscount = contastmt.executeQuery();
-            //rscount.next();
-            //int numeroGiornate = rscount.getInt("count(*)");
-
-
 
             squadrestmt = conn.prepareStatement(squadreSql);
             squadrestmt.setString(1,utente.getNickname());
@@ -207,8 +196,6 @@ public class Mysql{
             int i = 0;
             while (rs.next()) {
                 Campionato campionato = new Campionato(rs.getString("Campionato"),rs.getInt("NrPartecipanti"),rs.getBoolean("Asta"),rs.getInt("GiornataInizio"),rs.getInt("GiornataFine"),rs.getInt("CreditiIniziali"),rs.getInt("OrarioConsegna"),rs.getInt("PrimaFascia"),rs.getInt("LargFascia"),rs.getInt("BonusCasa"),new Persona(rs.getString("Presidente")));
-                classifica = selectClassifica(campionato);
-                campionato.setClassifica(classifica);
                 Squadra squadra = new Squadra(rs.getInt("ID"),rs.getString("Nome"),utente,campionato);
                 listaSquadre.add(squadra);
                 i++;

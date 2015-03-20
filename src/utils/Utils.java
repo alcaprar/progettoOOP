@@ -45,7 +45,7 @@ public class Utils {
             if(listaGiocatori.isEmpty()) System.out.print("vuota");
             else System.out.print("piena");
 
-            return rsDb = db.inserisciGiocatoriAnno(listaGiocatori);
+            return db.inserisciGiocatoriAnno(listaGiocatori);
 
 
 
@@ -121,10 +121,11 @@ public class Utils {
             listaObject[i][2] = listaClassifica.get(i).getVinte();
             listaObject[i][3] = listaClassifica.get(i).getPareggiate();
             listaObject[i][4] = listaClassifica.get(i).getPerse();
-            listaObject[i][5] = listaClassifica.get(i).getGolFatti();
-            listaObject[i][6] = listaClassifica.get(i).getGolSubiti();
-            listaObject[i][7] = listaClassifica.get(i).getPunteggio();
-            listaObject[i][8] = listaClassifica.get(i).getPunti();
+            listaObject[i][5] = listaClassifica.get(i).getDiffReti();
+            listaObject[i][6] = listaClassifica.get(i).getGolFatti();
+            listaObject[i][7] = listaClassifica.get(i).getGolSubiti();
+            listaObject[i][8] = listaClassifica.get(i).getPunteggio();
+            listaObject[i][9] = listaClassifica.get(i).getPunti();
 
 
         }

@@ -1,9 +1,11 @@
 package interfacce;
 
-import classi.Squadra;
+import classi.*;
+import db.Mysql;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Created by alessandro on 11/03/15.
@@ -17,10 +19,16 @@ public class Applicazione extends JFrame {
 
     private Squadra sqr;
 
+    final Mysql db = new Mysql();
+
     public Applicazione(Squadra squadra) {
         super("Gestore Fantacalcio");
 
         sqr = squadra;
+
+        ArrayList<classi.Classifica> classifica = new ArrayList<classi.Classifica>();
+        classifica = db.selectClassifica(sqr.getCampionato());
+        sqr.getCampionato().setClassifica(classifica);
 
         homePanel.setSquadre(sqr);
         classificaPanel.setSquadre(sqr);
