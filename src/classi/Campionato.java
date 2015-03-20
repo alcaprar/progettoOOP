@@ -18,6 +18,7 @@ public class Campionato {
     private int BonusCasa;
     private ArrayList<Squadra> listaSquadrePartecipanti;
     private Persona Presidente;
+    private ArrayList<Classifica> classifica;
 
 
     public ArrayList<Squadra> getListaSquadrePartecipanti() {
@@ -43,6 +44,14 @@ public class Campionato {
         this.Nome = nome;
     }
 
+    public ArrayList<Classifica> getClassifica() {
+        return classifica;
+    }
+
+    public void setClassifica(ArrayList<Classifica> classifica) {
+        this.classifica = classifica;
+    }
+
     public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente ){
         this.Nome = nome;
         this.NumeroPartecipanti = numerop;
@@ -57,6 +66,7 @@ public class Campionato {
         this.LargFascia = fasce;
         this.BonusCasa = bonusc;
         this.Presidente = presidente;
+        //this.classifica = classifica;
 
     }
 
