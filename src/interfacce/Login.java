@@ -131,7 +131,7 @@ public class Login extends JFrame {
                 //-viene aggiornata il nome della squadra nel db
                 //-viene chiuso il Jframe del login
                 //-viene creato l'oggetto Applicazione passandogli la squadra
-                if(squadra.getNome()!=null && squadra.getNome().length()>0){
+                if(squadra.getNome()!= null && squadra.getNome().length()>0){
                     db.aggiornaNomeSquadra(squadra);
                     getFrame().dispose();
                     Applicazione app = new Applicazione(squadra);
