@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import classi.*;
 import classi.Classifica;
 import interfacce.*;
+import utils.*;
 
 public class Mysql{
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://db4free.net/progogg";
     static final String USER = "progogg";
     static final String PASS = "pagliarecci";
+    Utils utils = new Utils();
 
     public boolean login(Persona utente) throws SQLException,ClassNotFoundException{
         Connection conn = null ;
@@ -411,7 +413,7 @@ public class Mysql{
                 regolamentstmt.setInt(9, 0);
                 int rsregolamento = regolamentstmt.executeUpdate();
 
-
+                //creazione squadre e iscrizione
                 for (int i = 0; i < campionato.getListaSquadrePartecipanti().size(); i++) {
                     //creo la nuova squadra
                     iscrizionestmt = conn.prepareStatement(iscrizioneSql, Statement.RETURN_GENERATED_KEYS);
@@ -420,15 +422,19 @@ public class Mysql{
                     //trovo l'id della squadra appena inserita
                     ResultSet rs = iscrizionestmt.getGeneratedKeys();
                     rs.next();
-                    int idIscrizione = rs.getInt(1);
+                    campionato.getListaSquadrePartecipanti().get(i).setID(rs.getInt(1));
 
                     //iscrivo la squadra appena creata
                     partecipantistmt = conn.prepareStatement(partecipantiSql);
                     partecipantistmt.setString(1, campionato.getNome());
                     partecipantistmt.setInt(2, campionato.getCreditiIniziali());
-                    partecipantistmt.setInt(3, idIscrizione);
+                    partecipantistmt.setInt(3, campionato.getListaSquadrePartecipanti().get(i).getID());
                     int rsPartecipanti = partecipantistmt.executeUpdate();
                 }
+
+                //creazione e inserimento calendario
+                utils.creaCalendario(campionato.getGiornataInizio(),campionato.getGiornataFine(),campionato);
+
 
 
             }

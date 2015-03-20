@@ -4,8 +4,8 @@ package classi;
  * Created by Giacomo on 18/03/15.
  */
 public class Partita {
-    private String casa;
-    private String ospite;
+    private int IDcasa;
+    private int IDospite;
     private Formazione formCasa;
     private Formazione formOspite;
     private int golCasa;
@@ -13,9 +13,9 @@ public class Partita {
     private float puntiCasa;
     private float puntiFuori;
 
-    public Partita(String casa, String ospite){
-        this.casa = casa;
-        this.ospite = ospite;
+    public Partita(int casa, int ospite){
+        this.IDcasa = casa;
+        this.IDospite = ospite;
     }
 
     public Partita(Formazione formCasa, Formazione formOspite) {
@@ -91,19 +91,19 @@ public class Partita {
         this.puntiFuori = puntiFuori;
     }
 
-    public String getCasa() {
-        return casa;
+    public int getIDcasa() {
+        return IDcasa;
     }
 
-    public void setCasa(String casa) {
-        this.casa = casa;
+    public void setIDcasa(int IDcasa) {
+        this.IDcasa = IDcasa;
     }
 
-    public String getOspite() {
-        return ospite;
+    public int getIDospite() {
+        return IDospite;
     }
 
-    public void setOspite(String ospite) {
-        this.ospite = ospite;
+    public void setIDospite(int IDospite) {
+        this.IDospite = IDospite;
     }
 }

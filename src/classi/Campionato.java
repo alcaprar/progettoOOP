@@ -19,7 +19,15 @@ public class Campionato {
     private ArrayList<Squadra> listaSquadrePartecipanti;
     private Persona Presidente;
     private ArrayList<Classifica> classifica;
+    private ArrayList<Giornata> calendario;
 
+    public ArrayList<Giornata> getCalendario() {
+        return calendario;
+    }
+
+    public void setCalendario(ArrayList<Giornata> calendario) {
+        this.calendario = calendario;
+    }
 
     public ArrayList<Squadra> getListaSquadrePartecipanti() {
         return listaSquadrePartecipanti;
