@@ -32,149 +32,139 @@ public class Formazione {
         return formazione;
     }
 
-
+    //calcola il punteggio della formazione
     public float calcola () {
         float p=0; //p indica il punteggio della giornata
         int n; //variabile per sapere quanti sono i gicatori da sostituire
         for (int i=0; i<11; i++) p+=formazione.get(i).getVoti().getMagicVoto(); //somma i punteggi dei titolari
         if (formazione.get(0).getVoti().getVoto()==0) p+=formazione.get(11).getVoti().getMagicVoto(); //fa entrare in campo il portiere di riserva se il titolare non gioca
 
+        //per fare entrare le riserve dobbiamo conoscere i ruoli dei giocatori, quindi dividiamo per modulo
         if (modulo.equals("3-4-3")) {
 
-                n=0; //controlla quanti difensori sostituire
-                for (int i=1; i<4; i++) { n++; }
-                if (n>1) p+=formazione.get(12).getVoti().getMagicVoto()+formazione.get(13).getVoti().getMagicVoto();
-                if (n==1 && formazione.get(12).getVoti().getVoto()==0) p+=formazione.get(13).getVoti().getMagicVoto();
-                if (n==1) p+=formazione.get(13).getVoti().getMagicVoto();
+            n=0; //n indica il numero di difensori da sostituire
+            for (int i=1; i<4; i++) { n++; } //controlla quanti difensori sostituire
+            //se nen ne deve sostituire nessuno non fa niente
+            //se ne deve sostituire uno e il primo panchinaro ha giocato allora entra
+            if (n==1 && formazione.get(12).getVoti().getVoto()!=0) p+=formazione.get(12).getVoti().getMagicVoto();
+            //se ne deve sostituire uno e il primo panchinaro non ha giocato o ne deve sostituire più di uno allora entrano entrambi i panchinari
+            //se anche i panchinari non hanno giocato la squadra gioca in meno, si somma 0 e il punteggio non cambia
+            else if (n>0) p+=formazione.get(12).getVoti().getMagicVoto()+formazione.get(13).getVoti().getMagicVoto();
 
-                n=0; //controlla quanti centrocampisti sostituire
-                for (int i=4; i<8; i++) { n++; }
-                if (n>1) p+=formazione.get(14).getVoti().getMagicVoto()+formazione.get(15).getVoti().getMagicVoto();
-                if (n==1 && formazione.get(14).getVoti().getVoto()==0) p+=formazione.get(15).getVoti().getMagicVoto();
-                if (n==1) p+=formazione.get(15).getVoti().getMagicVoto();
+            n=0; //riinizializza n a 0 e ripete il procedimento per i centrocampisti
+            for (int i=4; i<8; i++) { n++; }
+            if (n==1 && formazione.get(14).getVoti().getVoto()!=0) p+=formazione.get(14).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(14).getVoti().getMagicVoto()+formazione.get(15).getVoti().getMagicVoto();
 
-                n=0; //controlla quanti attaccanti sostituire
-                for (int i=8; i<11; i++) { n++; }
-                if (n>1) p+=formazione.get(16).getVoti().getMagicVoto()+formazione.get(17).getVoti().getMagicVoto();
-                if (n==1 && formazione.get(16).getVoti().getVoto()==0) p+=formazione.get(17).getVoti().getMagicVoto();
-                if (n==1) p+=formazione.get(17).getVoti().getMagicVoto();
+
+            n=0; //lo stesso per gli attaccanti
+            for (int i=8; i<11; i++) { n++; }
+            if (n==1 && formazione.get(16).getVoti().getVoto()!=0) p+=formazione.get(16).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(16).getVoti().getMagicVoto()+formazione.get(17).getVoti().getMagicVoto();
         }
 
         else if (modulo.equals("3-5-2")) {
 
-            n=0; //controlla quanti difensori sostituire
+            n=0;
             for (int i=1; i<4; i++) { n++; }
-            if (n>1) p+=formazione.get(12).getVoti().getMagicVoto()+formazione.get(13).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(12).getVoti().getVoto()==0) p+=formazione.get(13).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(13).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(12).getVoti().getVoto()!=0) p+=formazione.get(12).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(12).getVoti().getMagicVoto()+formazione.get(13).getVoti().getMagicVoto();
 
-            n=0; //controlla quanti centrocampisti sostituire
+            n=0;
             for (int i=4; i<9; i++) { n++; }
-            if (n>1) p+=formazione.get(14).getVoti().getMagicVoto()+formazione.get(15).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(14).getVoti().getVoto()==0) p+=formazione.get(15).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(15).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(14).getVoti().getVoto()!=0) p+=formazione.get(14).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(14).getVoti().getMagicVoto()+formazione.get(15).getVoti().getMagicVoto();
 
-            n=0; //controlla quanti attaccanti sostituire
+            n=0;
             for (int i=9; i<11; i++) { n++; }
-            if (n>1) p+=formazione.get(16).getVoti().getMagicVoto()+formazione.get(17).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(16).getVoti().getVoto()==0) p+=formazione.get(17).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(17).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(16).getVoti().getVoto()!=0) p+=formazione.get(16).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(16).getVoti().getMagicVoto()+formazione.get(17).getVoti().getMagicVoto();
         }
 
         if (modulo.equals("4-3-3")) {
 
-            n=0; //controlla quanti difensori sostituire
+            n=0;
             for (int i=1; i<5; i++) { n++; }
-            if (n>1) p+=formazione.get(12).getVoti().getMagicVoto()+formazione.get(13).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(12).getVoti().getVoto()==0) p+=formazione.get(13).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(13).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(12).getVoti().getVoto()!=0) p+=formazione.get(12).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(12).getVoti().getMagicVoto()+formazione.get(13).getVoti().getMagicVoto();
 
-            n=0; //controlla quanti centrocampisti sostituire
+            n=0;
             for (int i=5; i<8; i++) { n++; }
-            if (n>1) p+=formazione.get(14).getVoti().getMagicVoto()+formazione.get(15).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(14).getVoti().getVoto()==0) p+=formazione.get(15).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(15).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(14).getVoti().getVoto()!=0) p+=formazione.get(14).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(14).getVoti().getMagicVoto()+formazione.get(15).getVoti().getMagicVoto();
 
-            n=0; //controlla quanti attaccanti sostituire
+            n=0;
             for (int i=8; i<11; i++) { n++; }
-            if (n>1) p+=formazione.get(16).getVoti().getMagicVoto()+formazione.get(17).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(16).getVoti().getVoto()==0) p+=formazione.get(17).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(17).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(16).getVoti().getVoto()!=0) p+=formazione.get(16).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(16).getVoti().getMagicVoto()+formazione.get(17).getVoti().getMagicVoto();
         }
 
         if (modulo.equals("4-4-2")) {
 
-            n=0; //controlla quanti difensori sostituire
+            n=0;
             for (int i=1; i<5; i++) { n++; }
-            if (n>1) p+=formazione.get(12).getVoti().getMagicVoto()+formazione.get(13).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(12).getVoti().getVoto()==0) p+=formazione.get(13).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(13).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(12).getVoti().getVoto()!=0) p+=formazione.get(12).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(12).getVoti().getMagicVoto()+formazione.get(13).getVoti().getMagicVoto();
 
-            n=0; //controlla quanti centrocampisti sostituire
+            n=0;
             for (int i=5; i<9; i++) { n++; }
-            if (n>1) p+=formazione.get(14).getVoti().getMagicVoto()+formazione.get(15).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(14).getVoti().getVoto()==0) p+=formazione.get(15).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(15).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(14).getVoti().getVoto()!=0) p+=formazione.get(14).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(14).getVoti().getMagicVoto()+formazione.get(15).getVoti().getMagicVoto();
 
-            n=0; //controlla quanti attaccanti sostituire
+            n=0;
             for (int i=9; i<11; i++) { n++; }
-            if (n>1) p+=formazione.get(16).getVoti().getMagicVoto()+formazione.get(17).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(16).getVoti().getVoto()==0) p+=formazione.get(17).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(17).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(16).getVoti().getVoto()!=0) p+=formazione.get(16).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(16).getVoti().getMagicVoto()+formazione.get(17).getVoti().getMagicVoto();
         }
 
         if (modulo.equals("4-5-1")) {
 
-            n=0; //controlla quanti difensori sostituire
+            n=0;
             for (int i=1; i<5; i++) { n++; }
-            if (n>1) p+=formazione.get(12).getVoti().getMagicVoto()+formazione.get(13).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(12).getVoti().getVoto()==0) p+=formazione.get(13).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(13).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(12).getVoti().getVoto()!=0) p+=formazione.get(12).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(12).getVoti().getMagicVoto()+formazione.get(13).getVoti().getMagicVoto();
 
-            n=0; //controlla quanti centrocampisti sostituire
+            n=0;
             for (int i=5; i<10; i++) { n++; }
-            if (n>1) p+=formazione.get(14).getVoti().getMagicVoto()+formazione.get(15).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(14).getVoti().getVoto()==0) p+=formazione.get(15).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(15).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(14).getVoti().getVoto()!=0) p+=formazione.get(14).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(14).getVoti().getMagicVoto()+formazione.get(15).getVoti().getMagicVoto();
 
+            //poichè abbiamo un solo attaccante non abbiamo bisogno del ciclo
+            //se l'attaccante non ha giocato e il primo panchinaro si, allora entra
             if (formazione.get(10).getVoti().getVoto()==0 && formazione.get(16).getVoti().getVoto()!=0) p+=formazione.get(16).getVoti().getMagicVoto();
-            if (formazione.get(10).getVoti().getVoto()==0 && formazione.get(16).getVoti().getVoto()==0) p+=formazione.get(17).getVoti().getMagicVoto();
+            //altrimenti entra il secondo
+            if (formazione.get(10).getVoti().getVoto()==0 ) p+=formazione.get(17).getVoti().getMagicVoto();
         }
 
         if (modulo.equals("5-3-2")) {
 
-            n=0; //controlla quanti difensori sostituire
+            n=0;
             for (int i=1; i<6; i++) { n++; }
-            if (n>1) p+=formazione.get(12).getVoti().getMagicVoto()+formazione.get(13).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(12).getVoti().getVoto()==0) p+=formazione.get(13).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(13).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(12).getVoti().getVoto()!=0) p+=formazione.get(12).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(12).getVoti().getMagicVoto()+formazione.get(13).getVoti().getMagicVoto();
 
-            n=0; //controlla quanti centrocampisti sostituire
+            n=0;
             for (int i=6; i<9; i++) { n++; }
-            if (n>1) p+=formazione.get(14).getVoti().getMagicVoto()+formazione.get(15).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(14).getVoti().getVoto()==0) p+=formazione.get(15).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(15).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(14).getVoti().getVoto()!=0) p+=formazione.get(14).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(14).getVoti().getMagicVoto()+formazione.get(15).getVoti().getMagicVoto();
 
-            n=0; //controlla quanti attaccanti sostituire
+            n=0;
             for (int i=9; i<11; i++) { n++; }
-            if (n>1) p+=formazione.get(16).getVoti().getMagicVoto()+formazione.get(17).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(16).getVoti().getVoto()==0) p+=formazione.get(17).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(17).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(16).getVoti().getVoto()!=0) p+=formazione.get(16).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(16).getVoti().getMagicVoto()+formazione.get(17).getVoti().getMagicVoto();
         }
 
         if (modulo.equals("5-4-1")) {
 
-            n=0; //controlla quanti difensori sostituire
+            n=0;
             for (int i=1; i<6; i++) { n++; }
-            if (n>1) p+=formazione.get(12).getVoti().getMagicVoto()+formazione.get(13).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(12).getVoti().getVoto()==0) p+=formazione.get(13).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(13).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(12).getVoti().getVoto()!=0) p+=formazione.get(12).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(12).getVoti().getMagicVoto()+formazione.get(13).getVoti().getMagicVoto();
 
-            n=0; //controlla quanti centrocampisti sostituire
+            n=0;
             for (int i=6; i<10; i++) { n++; }
-            if (n>1) p+=formazione.get(14).getVoti().getMagicVoto()+formazione.get(15).getVoti().getMagicVoto();
-            if (n==1 && formazione.get(14).getVoti().getVoto()==0) p+=formazione.get(15).getVoti().getMagicVoto();
-            if (n==1) p+=formazione.get(15).getVoti().getMagicVoto();
+            if (n==1 && formazione.get(14).getVoti().getVoto()!=0) p+=formazione.get(14).getVoti().getMagicVoto();
+            else if (n>0) p+=formazione.get(14).getVoti().getMagicVoto()+formazione.get(15).getVoti().getMagicVoto();
 
             if (formazione.get(10).getVoti().getVoto()==0 && formazione.get(16).getVoti().getVoto()!=0) p+=formazione.get(16).getVoti().getMagicVoto();
             if (formazione.get(10).getVoti().getVoto()==0 && formazione.get(16).getVoti().getVoto()==0) p+=formazione.get(17).getVoti().getMagicVoto();

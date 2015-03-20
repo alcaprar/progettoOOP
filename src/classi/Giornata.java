@@ -15,8 +15,9 @@ public class Giornata {
         this.gioReale = gioReale;
     }
 
-    public void calcolaGiornata() {
-        for (Partita i : partite ) i.calcolaPartita();
+    //calcola i risultati della giornata
+    public void calcolaGiornata(Campionato c) {
+        for (Partita i : partite ) i.calcolaPartita(c); //chiama il metodo calcola partita su ogni partita della giornata
     }
 
     public int getNumGiornata() {

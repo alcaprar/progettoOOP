@@ -20,17 +20,19 @@ public class Partita {
         this.puntiFuori = 0;
     }
 
-    public void calcolaPartita () {
-        puntiCasa=formCasa.calcola();
-        puntiFuori=formOspite.calcola();
-        golCasa=numGol(puntiCasa);
-        golFuori=numGol(puntiFuori);
+    //calcola il risultato della partita e lo mette negli appositi attributi
+    public void calcolaPartita (Campionato c) {
+        puntiCasa=formCasa.calcola()+c.getBonusCasa(); //calcola il punteggio della squadra di casa aggiungendo bonus casa al punteggio dei giocatori
+        puntiFuori=formOspite.calcola(); //calcola il punteggio della squadra ospite
+        golCasa=numGol(puntiCasa, c); //calcola i gol che corrispondono al punteggio della squadra di casa
+        golFuori=numGol(puntiFuori, c); //calcola i gol che corrispondono al punteggio della squadra ospite
     }
 
     //questo metodo calcola i gol dato il punteggio
-    private int numGol (float p) {
-        int g=0;
-        for (int i=66; i>p; i+=4)  g++; //66 è l'inizio della prima fascia, 4 è la larghezza della fascia
+    private int numGol (float p, Campionato c) {
+        int g=0; //inizializza i gol a 0
+        //si entra nel ciclo solo se il punteggio è superiore al punteggio del primo gol, ogni iterazione alza la condizione per rientrare della larghezza di una fascia
+        for (int i=c.getPrimaFascia(); i>p; i+=c.getLargFascia())  g++;
         return g;
     }
 
