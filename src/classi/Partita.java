@@ -4,6 +4,7 @@ package classi;
  * Created by Giacomo on 18/03/15.
  */
 public class Partita {
+    private int numeroPartita;
     private int IDcasa;
     private int IDospite;
     private Formazione formCasa;
@@ -13,9 +14,10 @@ public class Partita {
     private float puntiCasa;
     private float puntiFuori;
 
-    public Partita(int casa, int ospite){
+    public Partita(int casa, int ospite,int numeroPartita){
         this.IDcasa = casa;
         this.IDospite = ospite;
+        this.numeroPartita = numeroPartita;
     }
 
     public Partita(Formazione formCasa, Formazione formOspite) {
@@ -105,5 +107,13 @@ public class Partita {
 
     public void setIDospite(int IDospite) {
         this.IDospite = IDospite;
+    }
+
+    public int getNumeroPartita() {
+        return numeroPartita;
+    }
+
+    public void setNumeroPartita(int numeroPartita) {
+        this.numeroPartita = numeroPartita;
     }
 }

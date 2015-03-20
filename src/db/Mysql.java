@@ -384,6 +384,12 @@ public class Mysql{
         PreparedStatement partecipantistmt = null;
         String partecipantiSql = "INSERT into Iscrizione value(?,?,?)";
 
+        PreparedStatement giornatastmt = null;
+        String giornataSql = "INSERT into Giornata(NomeCampionato, NrGio, NrGioReale) value(?,?,?)";
+
+        PreparedStatement partitastmt = null;
+        String partitaSql = "INSERT into Partita(IDgiorn,NrPart,IDFantasquadraCasa,IDFantasquadraOspite) value(?,?,?,?)";
+
         try{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
@@ -434,6 +440,35 @@ public class Mysql{
 
                 //creazione e inserimento calendario
                 utils.creaCalendario(campionato.getGiornataInizio(),campionato.getGiornataFine(),campionato);
+
+
+                //inserimento delle giornate
+                for(Giornata giornata : campionato.getCalendario()){
+                    //inserisco la giornata
+                    giornatastmt = conn.prepareStatement(giornataSql, Statement.RETURN_GENERATED_KEYS);
+                    giornatastmt.setString(1,campionato.getNome());
+                    giornatastmt.setInt(2,giornata.getNumGiornata());
+                    giornatastmt.setInt(3,giornata.getGioReale().getNumeroGiornata());
+                    giornatastmt.executeUpdate();
+                    //trovo l'id della giornata appena inserita
+                    ResultSet rs = giornatastmt.getGeneratedKeys();
+                    rs.next();
+                    giornata.setID(rs.getInt(1));
+
+                    //inserisco le partite della giornata
+                    for(Partita partita:giornata.getPartite()){
+                        //inserisco la singola partita
+                        partitastmt = conn.prepareStatement(partitaSql);
+                        partitastmt.setInt(1,giornata.getID());
+                        partitastmt.setInt(2,partita.getNumeroPartita());
+                        partitastmt.setInt(3,partita.getIDcasa());
+                        partitastmt.setInt(4,partita.getIDospite());
+
+                        partitastmt.executeUpdate();
+                    }
+
+
+                }
 
 
 

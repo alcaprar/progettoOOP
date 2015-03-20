@@ -173,11 +173,11 @@ public class Utils {
 
                 if (i % 2 == 0) {
                     for (int j = 0; j < n / 2; j++) {
-                        listaPartite.add(new Partita(trasferta[j], casa[j]));
+                        listaPartite.add(new Partita(trasferta[j], casa[j],j+1));
                     }
                 } else {
                     for (int j = 0; j < n / 2; j++) {
-                        listaPartite.add(new Partita(casa[j], trasferta[j]));
+                        listaPartite.add(new Partita(casa[j], trasferta[j],j+1));
                     }
                 }
                 listaGiornate.add(new Giornata(k, new GiornataReale(primaGiornata), listaPartite));
@@ -202,7 +202,7 @@ public class Utils {
                 ArrayList<Partita> listaPartite = new ArrayList<Partita>();
 
                 for (int j = 0; j < n / 2; j++) {
-                    listaPartite.add(new Partita(listaGiornate.get(i).getPartite().get(j).getIDospite(), listaGiornate.get(i).getPartite().get(j).getIDcasa()));
+                    listaPartite.add(new Partita(listaGiornate.get(i).getPartite().get(j).getIDospite(), listaGiornate.get(i).getPartite().get(j).getIDcasa(),j+1));
                 }
                 listaGiornate.add(new Giornata(k, new GiornataReale(primaGiornata), listaPartite));
 
@@ -211,6 +211,8 @@ public class Utils {
 
             }
         }
+
+        campionato.setCalendario(listaGiornate);
 
         for(Giornata giornata:listaGiornate){
             System.out.println("Giornata: " + giornata.getNumGiornata()+" Giornata reale: "+giornata.getNumGioReale().getNumeroGiornata());
