@@ -53,7 +53,7 @@ public class CreaCampionato extends JFrame {
     //private String[] listaUtenti;
 
     private ArrayList<Persona> listaUtenti = new ArrayList<Persona>();
-    private ArrayList<Persona> listaPartecipanti = new ArrayList<Persona>();
+    private ArrayList<Squadra> listaSquadrePartecipanti = new ArrayList<Squadra>();
 
     private Persona presidente;
 
@@ -229,6 +229,7 @@ public class CreaCampionato extends JFrame {
                                 options,
                                 options[0]);
                         if (succesDialog == 0 || succesDialog == -1) {
+                            loginForm.refresh();
                             loginForm.setVisible(true);
                             dispose();
                         }
@@ -393,11 +394,11 @@ public class CreaCampionato extends JFrame {
 
 
         for (int i = 0; i < partecipantiModel.getSize(); i++) {
-            listaPartecipanti.add(new Persona((String) partecipantiModel.getElementAt(i)));
+            listaSquadrePartecipanti.add(new Squadra(new Persona((String) partecipantiModel.getElementAt(i))));
         }
 
         //setta l'arraylist  di partecipanti
-        campionato.setPartecipanti(listaPartecipanti);
+        campionato.setListaSquadrePartecipanti(listaSquadrePartecipanti);
 
 
         return campionato;

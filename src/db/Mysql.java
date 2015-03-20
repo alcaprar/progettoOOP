@@ -366,10 +366,10 @@ public class Mysql{
                 int rsregolamento = regolamentstmt.executeUpdate();
 
 
-                for (int i = 0; i < campionato.getPartecipanti().size(); i++) {
+                for (int i = 0; i < campionato.getListaSquadrePartecipanti().size(); i++) {
                     //creo la nuova squadra
                     iscrizionestmt = conn.prepareStatement(iscrizioneSql, Statement.RETURN_GENERATED_KEYS);
-                    iscrizionestmt.setString(1, campionato.getPartecipanti().get(i).getNickname());
+                    iscrizionestmt.setString(1, campionato.getListaSquadrePartecipanti().get(i).getProprietario().getNickname());
                     iscrizionestmt.executeUpdate();
                     //trovo l'id della squadra appena inserita
                     ResultSet rs = iscrizionestmt.getGeneratedKeys();

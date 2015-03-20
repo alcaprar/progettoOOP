@@ -240,4 +240,13 @@ public class Login extends JFrame {
 
     }
 
+    public void refresh(){
+        //se l'utente esiste scarico le squadre di cui è presidente con la funzione selectSquadre
+        //che restituisce un arraylist di squadre
+        listaSquadre = db.selectSquadre(utente);
+        //setto il combobox delle squadre dalla lista di squadre
+        setComboBoxSquadre(listaSquadre);
+
+    }
+
 }

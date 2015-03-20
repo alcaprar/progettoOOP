@@ -16,8 +16,19 @@ public class Campionato {
     private int PrimaFascia;
     private int LargFascia;
     private int BonusCasa;
-    private ArrayList<Persona> listaPartecipanti;
+    private ArrayList<Squadra> listaSquadrePartecipanti;
     private Persona Presidente;
+
+
+    public ArrayList<Squadra> getListaSquadrePartecipanti() {
+        return listaSquadrePartecipanti;
+    }
+
+    public void setListaSquadrePartecipanti(ArrayList<Squadra> listaSquadrePartecipanti) {
+        this.listaSquadrePartecipanti = listaSquadrePartecipanti;
+    }
+
+
 
 
     public Persona getPresidente() {
@@ -129,12 +140,12 @@ public class Campionato {
         Nome = nome;
     }
 
-    public ArrayList<Persona> getPartecipanti() {
+    /*public ArrayList<Persona> getPartecipanti() {
         return listaPartecipanti;
     }
 
     public void setPartecipanti(ArrayList<Persona> partecipanti) {
         listaPartecipanti = partecipanti;
-    }
+    }*/
 
 }
