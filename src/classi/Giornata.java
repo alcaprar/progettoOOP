@@ -15,6 +15,29 @@ public class Giornata {
         this.gioReale = gioReale;
     }
 
+    public GiornataReale getGioReale() {
+        return gioReale;
+    }
+
+    public void setGioReale(GiornataReale gioReale) {
+        this.gioReale = gioReale;
+    }
+
+    public ArrayList<Partita> getPartite() {
+        return partite;
+    }
+
+    public void setPartite(ArrayList<Partita> partite) {
+        this.partite = partite;
+    }
+
+    public Giornata(int numGiornata,GiornataReale giornataReale, ArrayList<Partita> listaPartite){
+        this.numGiornata = numGiornata;
+        this.gioReale = giornataReale;
+        this.partite = listaPartite;
+
+    }
+
     //calcola i risultati della giornata
     public void calcolaGiornata(Campionato c) {
         for (Partita i : partite ) i.calcolaPartita(c); //chiama il metodo calcola partita su ogni partita della giornata

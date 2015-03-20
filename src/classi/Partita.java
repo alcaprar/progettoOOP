@@ -4,12 +4,19 @@ package classi;
  * Created by Giacomo on 18/03/15.
  */
 public class Partita {
+    private String casa;
+    private String ospite;
     private Formazione formCasa;
     private Formazione formOspite;
     private int golCasa;
     private int golFuori;
     private float puntiCasa;
     private float puntiFuori;
+
+    public Partita(String casa, String ospite){
+        this.casa = casa;
+        this.ospite = ospite;
+    }
 
     public Partita(Formazione formCasa, Formazione formOspite) {
         this.formCasa = formCasa;
@@ -82,5 +89,21 @@ public class Partita {
 
     public void setPuntiFuori(float puntiFuori) {
         this.puntiFuori = puntiFuori;
+    }
+
+    public String getCasa() {
+        return casa;
+    }
+
+    public void setCasa(String casa) {
+        this.casa = casa;
+    }
+
+    public String getOspite() {
+        return ospite;
+    }
+
+    public void setOspite(String ospite) {
+        this.ospite = ospite;
     }
 }
