@@ -389,15 +389,11 @@ public class CreaCampionato extends JFrame {
         int bonusc = (Integer) bonuscSpinner.getValue();
 
 
-        Campionato campionato = new Campionato(nome, numeroPartecipanti, asta, inizio, fine, crediti, orario, primaf, fasce, bonusc, presidente);
-
-
         for (int i = 0; i < partecipantiModel.getSize(); i++) {
             listaSquadrePartecipanti.add(new Squadra(new Persona((String) partecipantiModel.getElementAt(i))));
         }
+        Campionato campionato = new Campionato(nome, numeroPartecipanti, asta, inizio, fine, crediti, orario, primaf, fasce, bonusc, presidente,listaSquadrePartecipanti,true);
 
-        //setta l'arraylist  di partecipanti
-        campionato.setListaSquadrePartecipanti(listaSquadrePartecipanti);
 
 
         return campionato;

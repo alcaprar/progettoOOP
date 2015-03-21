@@ -49,6 +49,12 @@ public class Squadra {
         this.nome = nome;
     }
 
+    public Squadra(int ID,  String nome,Persona proprietario){
+        this.ID = ID;
+        this.proprietario = proprietario;
+        this.nome = nome;
+    }
+
     public Squadra(int ID, String nome, Persona proprietario , Campionato campionato){
         this.ID = ID;
         this.nome = nome;

@@ -11,6 +11,7 @@ public class Persona {
     private String nome;
     private String cognome;
     private String email;
+    private boolean presidenteLega;
     private ArrayList<Squadra> presidenza;
 
     public Persona(String nick){
@@ -83,8 +84,8 @@ public class Persona {
         a.presidenza = this.presidenza;
     }
 
-    public boolean equal(Persona a) {
-        if (this.nickname == a.nickname) return true;
+    public boolean equals(Persona a) {
+        if (this.nickname.equals(a.nickname)) return true;
         else return false;
     }
 
@@ -98,5 +99,13 @@ public class Persona {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isPresidenteLega() {
+        return presidenteLega;
+    }
+
+    public void setPresidenteLega(boolean presidenteLega) {
+        this.presidenteLega = presidenteLega;
     }
 }

@@ -133,6 +133,7 @@ public class Login extends JFrame {
                 //-viene creato l'oggetto Applicazione passandogli la squadra
                 if(squadra.getNome()!= null && squadra.getNome().length()>0){
                     db.aggiornaNomeSquadra(squadra);
+                    if(utente.equals(squadra.getCampionato().getPresidente())) squadra.getProprietario().setPresidenteLega(true);
                     getFrame().dispose();
                     Applicazione app = new Applicazione(squadra);
                 }

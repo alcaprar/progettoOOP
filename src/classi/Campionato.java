@@ -16,6 +16,7 @@ public class Campionato {
     private int PrimaFascia;
     private int LargFascia;
     private int BonusCasa;
+    private boolean giocatoriDaInserire;
     private ArrayList<Squadra> listaSquadrePartecipanti;
     private Persona Presidente;
     private ArrayList<Classifica> classifica;
@@ -37,9 +38,6 @@ public class Campionato {
         this.listaSquadrePartecipanti = listaSquadrePartecipanti;
     }
 
-
-
-
     public Persona getPresidente() {
         return Presidente;
     }
@@ -60,6 +58,22 @@ public class Campionato {
         this.classifica = classifica;
     }
 
+    public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente,ArrayList<Squadra> listaSquadrePartecipanti,boolean giocatoriDaInserire ){
+        this.Nome = nome;
+        this.NumeroPartecipanti = numerop;
+        this.AstaLive = asta;
+        this.GiornataInizio = inizio;
+        this.GiornataFine = fine;
+        this.CreditiIniziali = crediti;
+        this.OrarioConsegna = orario;
+        this.PrimaFascia = primaf;
+        this.LargFascia = fasce;
+        this.BonusCasa = bonusc;
+        this.Presidente = presidente;
+        this.listaSquadrePartecipanti = listaSquadrePartecipanti;
+        this.giocatoriDaInserire = giocatoriDaInserire;
+    }
+
     public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente ){
         this.Nome = nome;
         this.NumeroPartecipanti = numerop;
@@ -74,7 +88,7 @@ public class Campionato {
         this.LargFascia = fasce;
         this.BonusCasa = bonusc;
         this.Presidente = presidente;
-        //this.classifica = classifica;
+
 
     }
 
@@ -166,4 +180,19 @@ public class Campionato {
         listaPartecipanti = partecipanti;
     }*/
 
+    public Object[] squadreToArray(){
+        Object[] arrayObject = new Object[this.listaSquadrePartecipanti.size()];
+        for(int i=0;i<listaSquadrePartecipanti.size();i++){
+            arrayObject[i] = listaSquadrePartecipanti.get(i).getID()+" - "+listaSquadrePartecipanti.get(i).getNome()+" - " + listaSquadrePartecipanti.get(i).getProprietario().getNickname();
+        }
+        return arrayObject;
+    }
+
+    public boolean isGiocatoriDaInserire() {
+        return giocatoriDaInserire;
+    }
+
+    public void setGiocatoriDaInserire(boolean giocatoriDaInserire) {
+        this.giocatoriDaInserire = giocatoriDaInserire;
+    }
 }

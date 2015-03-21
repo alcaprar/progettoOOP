@@ -185,7 +185,11 @@ public class Mysql{
         PreparedStatement squadrestmt = null;
         String squadreSql ="SELECT * from Iscrizione JOIN Fantasquadra on Iscrizione.IDsq=Fantasquadra.ID JOIN Campionato on Iscrizione.Campionato = Campionato.Nome JOIN Regolamento on Campionato.Nome=Regolamento.NomeCampionato where NickUt=?";
 
+        PreparedStatement partecipantistmt = null;
+        String partecipantiSql ="SELECT Fantasquadra.ID, Fantasquadra.Nome, Fantasquadra.NickUt from Iscrizione JOIN Fantasquadra on Iscrizione.IDsq=Fantasquadra.ID JOIN Campionato on Iscrizione.Campionato = Campionato.Nome JOIN Regolamento on Campionato.Nome=Regolamento.NomeCampionato where Campionato=?";;
+
         ArrayList<Squadra> listaSquadre = new ArrayList<Squadra>();
+        ArrayList<Squadra> listaSquadrePartecipanti = new ArrayList<Squadra>();
         try{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
@@ -197,7 +201,15 @@ public class Mysql{
             ResultSet rs = squadrestmt.executeQuery();
             int i = 0;
             while (rs.next()) {
-                Campionato campionato = new Campionato(rs.getString("Campionato"),rs.getInt("NrPartecipanti"),rs.getBoolean("Asta"),rs.getInt("GiornataInizio"),rs.getInt("GiornataFine"),rs.getInt("CreditiIniziali"),rs.getInt("OrarioConsegna"),rs.getInt("PrimaFascia"),rs.getInt("LargFascia"),rs.getInt("BonusCasa"),new Persona(rs.getString("Presidente")));
+                partecipantistmt = conn.prepareStatement(partecipantiSql);
+                partecipantistmt.setString(1,rs.getString("Campionato"));
+                ResultSet rspartecipanti = partecipantistmt.executeQuery();
+
+                while(rspartecipanti.next()){
+                    listaSquadrePartecipanti.add(new Squadra(rspartecipanti.getInt("ID"),rspartecipanti.getString("Nome"),new Persona(rspartecipanti.getString("Nome"))));
+                }
+
+                Campionato campionato = new Campionato(rs.getString("Campionato"),rs.getInt("NrPartecipanti"),rs.getBoolean("Asta"),rs.getInt("GiornataInizio"),rs.getInt("GiornataFine"),rs.getInt("CreditiIniziali"),rs.getInt("OrarioConsegna"),rs.getInt("PrimaFascia"),rs.getInt("LargFascia"),rs.getInt("BonusCasa"),new Persona(rs.getString("Presidente")),listaSquadrePartecipanti,rs.getBoolean("GiocatoriDaInserire"));
                 Squadra squadra = new Squadra(rs.getInt("ID"),rs.getString("Nome"),utente,campionato);
                 listaSquadre.add(squadra);
                 i++;
@@ -373,7 +385,7 @@ public class Mysql{
     public boolean creaCampionato(Campionato campionato){
         Connection conn = null ;
         PreparedStatement campionatostmt = null;
-        String campionatoSql ="INSERT into Campionato value(?,?,?,?)";
+        String campionatoSql ="INSERT into Campionato value(?,?,?,?,?)";
 
         PreparedStatement regolamentstmt = null;
         String regolamentoSql = "INSERT into Regolamento value(?,?,?,?,?,?,?,?,?)";
@@ -402,6 +414,7 @@ public class Mysql{
             campionatostmt.setInt(2, campionato.getNumeroPartecipanti());
             campionatostmt.setBoolean(3, campionato.isAstaLive());
             campionatostmt.setString(4,campionato.getPresidente().getNickname());
+            campionatostmt.setBoolean(5,campionato.isGiocatoriDaInserire());
             int rscampionato = campionatostmt.executeUpdate();
 
             if(rscampionato==1) {
@@ -466,12 +479,7 @@ public class Mysql{
 
                         partitastmt.executeUpdate();
                     }
-
-
                 }
-
-
-
             }
 
             if(rscampionato==1){

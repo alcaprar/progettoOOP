@@ -16,6 +16,9 @@ public class Applicazione extends JFrame {
     private Home homePanel;
     private JPanel pFormazione;
     private Classifica classificaPanel;
+    private GestioneGiocatori gestioneGiocatoriPanel;
+    private JPanel classificaTab;
+    private JPanel gestioneGiocatoriTab;
 
     private Squadra sqr;
 
@@ -35,6 +38,14 @@ public class Applicazione extends JFrame {
 
         homePanel.refresh();
         classificaPanel.refresh();
+
+        if(squadra.getProprietario().isPresidenteLega() && squadra.getCampionato().isGiocatoriDaInserire() && !squadra.getCampionato().isAstaLive()){
+            gestioneGiocatoriPanel.setSquadra(sqr);
+            gestioneGiocatoriPanel.refresh();
+        } else{
+            tabbedPane1.remove(tabbedPane1.indexOfTab("Gestione Giocatori"));
+
+        }
 
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
