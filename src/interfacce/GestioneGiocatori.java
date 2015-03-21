@@ -77,7 +77,6 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
                     int j = 0, k = 0;
                     //indice riga nella tabella dei giocatori
                     int r = tabellaGiocatori.getSelectedRow();
-                    System.out.print(r);
                     //memorizza i parametri in variabili per rendere il codice più chiaro
                     String ID = String.valueOf(tabellaGiocatori.getValueAt(r, 0));
                     String nomeGiocatore = (String) tabellaGiocatori.getValueAt(r, 1);
@@ -89,23 +88,23 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
                     //del giocatore che si vuole inserire, incrementa un contatore per evitare che si inseriscano più
                     //giocatori di quelli consentiti per un determinato ruolo*/
                     while ( k < tabellaSquadraModel.get(i).getRowCount()){
-                        if(((String)tabellaSquadraModel.get(i).getValueAt(j, 2)).equals(ruolo)) j++;
+                        if(String.valueOf(tabellaSquadraModel.get(i).getValueAt(k, 2)).equals(ruolo)) j++;
                         k++;
                     }
                     /*a seconda del ruolo controlla il contatore incrementato precedentemente e se c'è un
                     //errore nel numero di giocatori apre una finestra d'errore per segnalarlo. Se non c'è nessun errore,
                     //popola la nuova riga aggiungendola in fondo alla tabella*/
-                    if(ruolo.equals("p")){
-                        if(j >= 3) JOptionPane.showMessageDialog(null, "Sono già stati aggiunti 3 portieri alla squadra.\nRimuovere un portiere per aggiungerne un altro.", "Errore", JOptionPane.ERROR_MESSAGE);
-                    } else if(ruolo.equals("d")){
-                        if(j >= 8) JOptionPane.showMessageDialog(null, "Sono già stati aggiunti 8 difensori alla squadra.\nRimuovere un difensore per aggiungerne un altro", "Errore", JOptionPane.ERROR_MESSAGE);
-                    } else if(ruolo.equals("c")){
-                        if(j >= 8) JOptionPane.showMessageDialog(null, "Sono già stati aggiunti 8 centrocampisti alla squadra.\nRimuovere un centrocampista per aggiungerne un altro", "Errore", JOptionPane.ERROR_MESSAGE);
-                    } else if(ruolo.equals("a")){
-                        if(j >=6) JOptionPane.showMessageDialog(null, "Sono già stati aggiunti 6 attaccanti alla squadra.\nRimuovere un attaccante per aggiungerne un altro", "Errore", JOptionPane.ERROR_MESSAGE);
+                    if(ruolo.equals("P") && j >= 3){
+                        JOptionPane.showMessageDialog(null, "Sono già stati aggiunti 3 portieri alla squadra.\nRimuovere un portiere per aggiungerne un altro.", "Errore", JOptionPane.ERROR_MESSAGE);
+                    } else if(ruolo.equals("D") && j >= 8){
+                        JOptionPane.showMessageDialog(null, "Sono già stati aggiunti 8 difensori alla squadra.\nRimuovere un difensore per aggiungerne un altro", "Errore", JOptionPane.ERROR_MESSAGE);
+                    } else if(ruolo.equals("C") && j >= 8){
+                        JOptionPane.showMessageDialog(null, "Sono già stati aggiunti 8 centrocampisti alla squadra.\nRimuovere un centrocampista per aggiungerne un altro", "Errore", JOptionPane.ERROR_MESSAGE);
+                    } else if(ruolo.equals("A")&&j >=6){
+                        JOptionPane.showMessageDialog(null, "Sono già stati aggiunti 6 attaccanti alla squadra.\nRimuovere un attaccante per aggiungerne un altro", "Errore", JOptionPane.ERROR_MESSAGE);
                     } else {
                         //aggiunge la riga
-                        ((DefaultTableModel)tabellaSquadra.getModel()).addRow(new String[]{ID, nomeGiocatore, ruolo,squadra,prezzoIniziale, String.valueOf(spinner.getValue())});
+                        ((DefaultTableModel)tabellaSquadraModel.get(i)).addRow(new String[]{ID, nomeGiocatore, ruolo, squadra, prezzoIniziale, String.valueOf(spinner.getValue())});
                         //rimuove la riga
                         ((DefaultTableModel)tabellaGiocatori.getModel()).removeRow(r);
 
@@ -170,6 +169,7 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
                     else completo = false;
                 }
                 if(completo){
+                    System.out.println("finito");
                     //TODO richiamare la funzione che salva sul database le formazioni
                 } else {
                     JOptionPane.showMessageDialog(null, "La rosa di qualche squadre non è completa.\nPrima di confermare è necessario completare tutte le rose.", "Errore", JOptionPane.ERROR_MESSAGE);
@@ -189,10 +189,14 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
         //controlla che la lista della squadra non sia completa
         if(tabellaSquadraModel.get(i).getRowCount() == 25){
             addButton.setEnabled(false);
+        }else{
+            addButton.setEnabled(true);
         }
         //controlla che la lista della squadra non sia vuota
         if(tabellaSquadraModel.get(i).getRowCount() == 0){
             removeButton.setEnabled(false);
+        } else {
+            removeButton.setEnabled(true);
         }
     }
     private void setTabelleSquadre(){
@@ -200,7 +204,13 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
         tabellaSquadraModel = new ArrayList<DefaultTableModel>();
         int i = 0;
         for(Squadra s : squadra.getCampionato().getListaSquadrePartecipanti()) {
-            tabellaSquadraModel.add(new DefaultTableModel());
+            tabellaSquadraModel.add(new DefaultTableModel(){
+                //rende non modificabili le colonne dell'ID,cognome e ruolo
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            });
             tabellaSquadraModel.get(i).setColumnIdentifiers(colonne2);
             i++;
         }
