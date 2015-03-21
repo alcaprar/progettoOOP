@@ -33,9 +33,11 @@ public class Voto {
         this.magicVoto = calcolaMagicVoto(gol, voto, golSubito, rigParato, rigSbagliato, rigSegnato, autogol, ammonizione, espulsione, assist, assistFermo);
     }
 
+    //calcola il magic voto dati voto, bonus e malus
     private float calcolaMagicVoto(int gol, float voto, int golSubito, int rigParato, int rigSbagliato, int rigSegnato, int autogol, int ammonizione, int espulsione, int assist, int assistFermo) {
-        if (voto==0) return 0;
-        else return voto+3*gol-golSubito+3*rigParato-3*rigSbagliato+3*rigSegnato-2*autogol;//-0,5*ammonizione-espulsione+assist+assistFermo;
+        if (voto==0) return 0; //serve a evitare che giocatori che non prendono il voto, ma qualche malus abbiano magic voto negativo
+        else return voto+3*gol-golSubito+3*rigParato-3*rigSbagliato+3*rigSegnato-2*autogol-(float)0.5*ammonizione-espulsione+assist+assistFermo;
+        //0.5 viene interpretato come double, è necessario un cast a float
     }
 
     public float getVoto() {
