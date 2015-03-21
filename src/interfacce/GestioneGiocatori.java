@@ -31,13 +31,12 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
     private DefaultComboBoxModel comboBoxModel;
     private DefaultTableModel tabellaGiocatoriModel;
     private ArrayList<DefaultTableModel> tabellaSquadraModel;
-    //private Campionato campionato;
 
     //intestazioni delle due tabelle del panel, la prima per la tabella dei
     //giocatori mentre la seconda per la tabella delle squadre
 
-    //TODO su colonne2 prezzo base si può anche togliere che non serve come info
     String[] colonne2 = {"ID", "Cognome", "Ruolo","Squadra Reale","Prezzo iniziale", "Prezzo d'Acquisto"};
+    Object[] colonne1 = {"ID", "Cognome", "Ruolo", "Squadra Reale", "Prezzo Iniziale"};
 
     private Squadra squadra;
 
@@ -49,7 +48,6 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
 
     public void setSquadra(Squadra squadra){
         this.squadra = squadra;
-
     }
 
     public void refresh(){
@@ -59,93 +57,12 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
         setTabelleSquadre();
     }
 
-    public void setComboBox(){
-
-        comboBoxModel = new DefaultComboBoxModel(squadra.getCampionato().squadreToArray());
-        comboBox.setModel(comboBoxModel);
-
-    }
-
-    public void setSpinner(){
-        SpinnerModel spinnerModel = new SpinnerNumberModel(1, 1, 1000, 1);
-        spinner.setModel(spinnerModel);
-    }
-
-    private void setSpinnerGiocatore(int prezzo){
-        SpinnerModel spinnerModel = new SpinnerNumberModel(prezzo, prezzo,1000,1);
-        spinner.setModel(spinnerModel);
-
-    }
-
-    public void setTabellaGiocatori(){
-        Object[] colonne1 = {"ID", "Cognome", "Ruolo", "Squadra Reale", "Prezzo Iniziale"};
-        Object[][] righeGiocatori = utils.listaGiocatoriToArray(listaGiocatori);
-
-        DefaultTableModel giocatoriModel = new DefaultTableModel(righeGiocatori, colonne1) {
-            //rende non modificabili le colonne dell'ID,cognome e ruolo
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
-        //permette di selezionare una riga alla volta nella tabella giocatori
-        DefaultListSelectionModel giocatoriListModel = new DefaultListSelectionModel(){
-            @Override
-            public void clearSelection() {
-            }
-
-            @Override
-            public void removeSelectionInterval(int index0, int index1) {
-            }
-        };
-        giocatoriListModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        //quando viene selezionata una riga della tabella giornata aggiorna lo spinner
-        giocatoriListModel.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                //Ignore extra messages.
-                if (e.getValueIsAdjusting()) return;
-
-                ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-                if (!lsm.isSelectionEmpty()) {
-                    int riga = lsm.getMinSelectionIndex();
-                    setSpinnerGiocatore((Integer) tabellaGiocatori.getValueAt(riga, 4));
-
-                }
-            }
-        });
-        tabellaGiocatori.setSelectionModel(giocatoriListModel);
-
-        tabellaGiocatori.setModel(giocatoriModel);
-
-    }
 
     public GestioneGiocatori(){
 
         listaGiocatori = db.selectGiocatoriAdmin();
-
-        //campionato = camp;
-        /*model per l'oggetto spinner che si occupa dell'inserimento del prezzo d'acquisto
-        dei giocatori al momento dell'inserimento nella tabella della squadra.
-        Gli argomenti del costruttore sono; (partenza, minimo, massimo, incremento)
-        */
-
-
-        //la funzione crea un combobox in base al vettore di squadre che viene passato
-        //creaComboBox(campionato.getListaSquadrePartecipanti());
-        //si imposta il modello del combobox e si aggiunge il listener per il cambio degli elementi
-        //comboBox.setModel(comboBoxModel);
+        //si aggiunge il listener per il cambio degli elementi
         comboBox.addItemListener(this);
-
-        //gestione lista dei giocatori
-        //creaTabellaGiocatori(gioc);
-        //tabellaGiocatori.setModel(tabellaGiocatoriModel);
-
-        //crea le tabelle per ogni squadra partecipante, si selezione la tabella desidarata attraverso il combobox
-        //creaTabelleSquadre(campionato.getListaSquadrePartecipanti());
-        //tabellaSquadra.setModel(tabellaSquadraModel.get(0));
-
 
         //Pulsante aggiungi giocatore
         addButton.addActionListener(new ActionListener() {
@@ -187,8 +104,8 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
                     } else if(ruolo.equals("a")){
                         if(j >=6) JOptionPane.showMessageDialog(null, "Sono già stati aggiunti 6 attaccanti alla squadra.\nRimuovere un attaccante per aggiungerne un altro", "Errore", JOptionPane.ERROR_MESSAGE);
                     } else {
+                        //aggiunge la riga
                         ((DefaultTableModel)tabellaSquadra.getModel()).addRow(new String[]{ID, nomeGiocatore, ruolo,squadra,prezzoIniziale, String.valueOf(spinner.getValue())});
-                        //tabellaSquadraModel.get(i)(new String[]{ID, nomeGiocatore, ruolo, String.valueOf(spinner.getValue())});
                         //rimuove la riga
                         ((DefaultTableModel)tabellaGiocatori.getModel()).removeRow(r);
 
@@ -215,14 +132,14 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
                 //aggiunge una nuova riga nella tabella dei giocatori e la elimina da quella delle squadre
                 if(tabellaSquadra.getSelectedRow() != -1){
                     int r = tabellaSquadra.getSelectedRow();
-
                     String ID = String.valueOf(tabellaSquadra.getValueAt(r, 0));
                     String cognome = (String)tabellaSquadra.getValueAt(r, 1);
                     String ruolo = String.valueOf(tabellaSquadra.getValueAt(r, 2));
                     String squadraReale = (String)tabellaSquadra.getValueAt(r, 3);
                     String prezzo = String.valueOf(tabellaSquadra.getValueAt(r, 4));
-
+                    //aggiunge la riga
                     ((DefaultTableModel) tabellaGiocatori.getModel()).addRow(new String[]{ID, cognome, ruolo, squadraReale, prezzo});
+                    //rimuove la riga
                     ((DefaultTableModel)tabellaSquadra.getModel()).removeRow(r);
 
                 } else {
@@ -278,21 +195,6 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
             removeButton.setEnabled(false);
         }
     }
-
-    private void creaComboBox(ArrayList<Squadra> squadre){
-        //per ogni squadra del campionato crea un elemento del combobox
-        for(Squadra i : squadre) comboBoxModel.addElement(i.getNome());
-    }
-
-    private void creaTabellaGiocatori(ArrayList<Giocatore> giocatori){
-        //crea la tabella con tutti i giocatori disponibili per il campionato
-        tabellaGiocatoriModel = new DefaultTableModel();
-        //tabellaGiocatoriModel.setColumnIdentifiers(colonne1);
-        for(Giocatore g : giocatori){
-            tabellaGiocatoriModel.addRow(new String[]{String.valueOf(g.getID()), g.getCognome(), String.valueOf(g.getRuolo()), String.valueOf(g.getPrezzoBase())});
-        }
-    }
-
     private void setTabelleSquadre(){
         //crea una tabella vuota per ogni squadra del campionato
         tabellaSquadraModel = new ArrayList<DefaultTableModel>();
@@ -317,6 +219,72 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
         tabellaSquadra.setSelectionModel(squadreListModel);
 
         tabellaSquadra.setModel(tabellaSquadraModel.get(0));
+    }
+
+    public void setComboBox(){
+        comboBoxModel = new DefaultComboBoxModel(squadra.getCampionato().squadreToArray());
+        comboBox.setModel(comboBoxModel);
+    }
+
+    public void setSpinner(){
+        /*model per l'oggetto spinner che si occupa dell'inserimento del prezzo d'acquisto
+        dei giocatori al momento dell'inserimento nella tabella della squadra.
+        Gli argomenti del costruttore sono; (partenza, minimo, massimo, incremento)
+        */
+        SpinnerModel spinnerModel = new SpinnerNumberModel(1, 1, 1000, 1);
+        spinner.setModel(spinnerModel);
+    }
+
+    private void setSpinnerGiocatore(int prezzo){
+        /*model per l'oggetto spinner che si occupa dell'inserimento del prezzo d'acquisto
+        dei giocatori al momento dell'inserimento nella tabella della squadra.
+        Gli argomenti del costruttore sono; (partenza, minimo, massimo, incremento)
+        */
+        SpinnerModel spinnerModel = new SpinnerNumberModel(prezzo, prezzo,1000,1);
+        spinner.setModel(spinnerModel);
+    }
+
+    public void setTabellaGiocatori(){
+        Object[][] righeGiocatori = utils.listaGiocatoriToArray(listaGiocatori);
+
+        DefaultTableModel giocatoriModel = new DefaultTableModel(righeGiocatori, colonne1) {
+            //rende non modificabili le colonne dell'ID,cognome e ruolo
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        //permette di selezionare una riga alla volta nella tabella giocatori
+        DefaultListSelectionModel giocatoriListModel = new DefaultListSelectionModel(){
+            @Override
+            public void clearSelection() {
+            }
+
+            @Override
+            public void removeSelectionInterval(int index0, int index1) {
+            }
+        };
+        giocatoriListModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //quando viene selezionata una riga della tabella giornata aggiorna lo spinner
+        giocatoriListModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                //Ignore extra messages.
+                if (e.getValueIsAdjusting()) return;
+
+                ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+                if (!lsm.isSelectionEmpty()) {
+                    int riga = lsm.getMinSelectionIndex();
+                    setSpinnerGiocatore((Integer) tabellaGiocatori.getValueAt(riga, 4));
+
+                }
+            }
+        });
+        tabellaGiocatori.setSelectionModel(giocatoriListModel);
+
+        tabellaGiocatori.setModel(giocatoriModel);
+
     }
 
 
