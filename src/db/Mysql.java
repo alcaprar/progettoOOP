@@ -547,5 +547,41 @@ public class Mysql{
             try { conn.close(); } catch (Exception e) { /* ignored */ }
         }
     }
+
+    public int deleteCampionati(){
+        Connection conn = null;
+        PreparedStatement deletestmt = null;
+        String[] deleteSql = {"DELETE FROM Campionato","delete from  Iscrizione","delete from Fantasquadra","delete from Classifica","delete from Regolamento","delete from Partita","delete from Giornata"};
+
+        int rs  =0;
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            int i =0;
+
+            for(String delete : deleteSql){
+                deletestmt = conn.prepareStatement(delete);
+                deletestmt.execute();
+                System.out.println(i);
+                i++;
+            }
+
+            return rs;
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return rs;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return rs;
+
+        }finally {
+            try { conn.close(); } catch (Exception e) { /* ignored */ }
+        }
+    }
 }
 

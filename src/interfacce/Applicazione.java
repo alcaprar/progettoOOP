@@ -29,6 +29,7 @@ public class Applicazione extends JFrame {
 
         sqr = squadra;
 
+        //scarico la classifica e la inserisco nel campionato
         ArrayList<classi.Classifica> classifica = new ArrayList<classi.Classifica>();
         classifica = db.selectClassifica(sqr.getCampionato());
         sqr.getCampionato().setClassifica(classifica);
@@ -39,6 +40,9 @@ public class Applicazione extends JFrame {
         homePanel.refresh();
         classificaPanel.refresh();
 
+        //se l'utente loggato è il presidente, il tipo di asta è offline e i giocatori sono da inserire popolo le tabelle
+        //del pannello gestione giocatori
+        //se no rimuovo il pannello
         if(squadra.getProprietario().isPresidenteLega() && squadra.getCampionato().isGiocatoriDaInserire() && !squadra.getCampionato().isAstaLive()){
             gestioneGiocatoriPanel.setSquadra(sqr);
             gestioneGiocatoriPanel.refresh();
@@ -54,10 +58,5 @@ public class Applicazione extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
-
-    private void createUIComponents() {
-
-    }
-
 
 }
