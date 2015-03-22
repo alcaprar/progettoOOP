@@ -11,11 +11,11 @@ import interfacce.*;
 import utils.*;
 
 public class Mysql{
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://db4free.net/progogg";
-    static final String USER = "progogg";
-    static final String PASS = "pagliarecci";
-    Utils utils = new Utils();
+    static final private String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final private String DB_URL = "jdbc:mysql://db4free.net/progogg";
+    static final private String USER = "progogg";
+    static final private String PASS = "pagliarecci";
+    private Utils utils = new Utils();
 
     public boolean login(Persona utente) throws SQLException,ClassNotFoundException{
         Connection conn = null ;
@@ -33,7 +33,7 @@ public class Mysql{
             if(rs.next()){
                 utente.setNome(rs.getString("Nome"));
                 utente.setCognome(rs.getString("Cognome"));
-                utente.setEmail(rs.getString("Email"));;
+                utente.setEmail(rs.getString("Email"));
                 return true;
             }
             else return false;
@@ -186,7 +186,7 @@ public class Mysql{
         String squadreSql ="SELECT * from Iscrizione JOIN Fantasquadra on Iscrizione.IDsq=Fantasquadra.ID JOIN Campionato on Iscrizione.Campionato = Campionato.Nome JOIN Regolamento on Campionato.Nome=Regolamento.NomeCampionato where NickUt=?";
 
         PreparedStatement partecipantistmt = null;
-        String partecipantiSql ="SELECT Fantasquadra.ID, Fantasquadra.Nome, Fantasquadra.NickUt from Iscrizione JOIN Fantasquadra on Iscrizione.IDsq=Fantasquadra.ID JOIN Campionato on Iscrizione.Campionato = Campionato.Nome JOIN Regolamento on Campionato.Nome=Regolamento.NomeCampionato where Campionato=?";;
+        String partecipantiSql ="SELECT Fantasquadra.ID, Fantasquadra.Nome, Fantasquadra.NickUt from Iscrizione JOIN Fantasquadra on Iscrizione.IDsq=Fantasquadra.ID JOIN Campionato on Iscrizione.Campionato = Campionato.Nome JOIN Regolamento on Campionato.Nome=Regolamento.NomeCampionato where Campionato=?";
 
         ArrayList<Squadra> listaSquadre = new ArrayList<Squadra>();
         ArrayList<Squadra> listaSquadrePartecipanti = new ArrayList<Squadra>();

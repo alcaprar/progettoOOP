@@ -38,16 +38,16 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
     //intestazioni delle due tabelle del panel, la prima per la tabella dei
     //giocatori mentre la seconda per la tabella delle squadre
 
-    String[] colonne2 = {"ID", "Cognome", "Ruolo","Squadra Reale","Prezzo iniziale", "Prezzo d'Acquisto"};
-    Object[] colonne1 = {"ID", "Cognome", "Ruolo", "Squadra Reale", "Prezzo Iniziale"};
+    private String[] colonne2 = {"ID", "Cognome", "Ruolo","Squadra Reale","Prezzo iniziale", "Prezzo d'Acquisto"};
+    private Object[] colonne1 = {"ID", "Cognome", "Ruolo", "Squadra Reale", "Prezzo Iniziale"};
 
     private Squadra squadra;
 
     private ArrayList<Giocatore> listaGiocatori;
 
-    final Mysql db = new Mysql();
+    final private Mysql db = new Mysql();
 
-    Utils utils = new Utils();
+    private Utils utils = new Utils();
 
     public void setSquadra(Squadra squadra){
         this.squadra = squadra;

@@ -22,7 +22,6 @@ public class Utils {
 
     public boolean csvQuotazioni(String pathFile,  String csvSplitBy){
         BufferedReader br = null;
-        boolean rsDb = false;
         final Mysql db = new Mysql();
 
         String line = "";
@@ -49,10 +48,10 @@ public class Utils {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return rsDb;
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
-            return rsDb;
+            return false;
         } finally {
             if (br != null) {
                 try {

@@ -22,8 +22,8 @@ public class Registra extends JFrame {
     private JButton registratiButton;
     private JPanel panel1;
     private JLabel infolbl;
-    public Persona utente;
-    public Utils utils = new Utils();
+    private Persona utente;
+    private Utils utils = new Utils();
 
     public Registra() {
         //titolo del frame
@@ -82,7 +82,7 @@ public class Registra extends JFrame {
 
     public void nicknameRegistrato() {
         Object[] options = {"OK"};
-        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Nickname già registrato!",
+        JOptionPane.showOptionDialog(getContentPane(), "Nickname già registrato!",
                 "Nickname esistente",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,

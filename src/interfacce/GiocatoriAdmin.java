@@ -28,11 +28,11 @@ public class GiocatoriAdmin extends JPanel {
 
     private ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
 
-    final Mysql db = new Mysql();
+    final private Mysql db = new Mysql();
 
-    String pathFile;
+    private String pathFile;
 
-    Utils utils = new Utils();
+    private Utils utils = new Utils();
 
 
     public GiocatoriAdmin(final ApplicazioneAdmin frame) {

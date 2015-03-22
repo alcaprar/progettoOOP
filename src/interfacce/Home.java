@@ -33,7 +33,7 @@ public class Home extends JPanel {
         this.squadra = squadra;
     }
 
-    Utils utils = new Utils();
+    private Utils utils = new Utils();
 
     public void refresh(){
         nomeSquadra.setText(squadra.getNome());

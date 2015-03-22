@@ -14,9 +14,9 @@ public class HomeAdmin extends JPanel {
     private JButton pulisciButton;
     private JLabel righeLabel;
 
-    final Mysql db = new Mysql();
+    final private  Mysql db = new Mysql();
 
-    int delete;
+    private int delete;
 
     public HomeAdmin() {
 

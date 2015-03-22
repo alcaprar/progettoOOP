@@ -18,9 +18,9 @@ public class GiornateAdmin extends JPanel {
 
     private ArrayList<GiornataReale> listaGiornate = new ArrayList<GiornataReale>();
 
-    final Mysql db = new Mysql();
+    final private Mysql db = new Mysql();
 
-    Utils utils = new Utils();
+    private Utils utils = new Utils();
 
     public GiornateAdmin() {
 

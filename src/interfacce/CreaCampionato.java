@@ -61,7 +61,7 @@ public class CreaCampionato extends JFrame {
 
     private Campionato campionato;
 
-    final Mysql db = new Mysql();
+    final private Mysql db = new Mysql();
 
     public CreaCampionato(Persona utente, final Login loginForm) {
         //titolo del frame
@@ -392,11 +392,7 @@ public class CreaCampionato extends JFrame {
         for (int i = 0; i < partecipantiModel.getSize(); i++) {
             listaSquadrePartecipanti.add(new Squadra(new Persona((String) partecipantiModel.getElementAt(i))));
         }
-        Campionato campionato = new Campionato(nome, numeroPartecipanti, asta, inizio, fine, crediti, orario, primaf, fasce, bonusc, presidente,listaSquadrePartecipanti,true);
-
-
-
-        return campionato;
+        return new Campionato(nome, numeroPartecipanti, asta, inizio, fine, crediti, orario, primaf, fasce, bonusc, presidente,listaSquadrePartecipanti,true);
     }
 
     public CreaCampionato getFrame() {

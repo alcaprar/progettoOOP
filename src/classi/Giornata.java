@@ -9,7 +9,7 @@ public class Giornata {
     private int ID;
     private int numGiornata;
     private GiornataReale gioReale;
-    ArrayList<Partita> partite;
+    private ArrayList<Partita> partite;
 
     public Giornata(int numGiornata, GiornataReale gioReale) {
         this.numGiornata = numGiornata;

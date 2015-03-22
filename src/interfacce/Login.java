@@ -35,15 +35,15 @@ public class Login extends JFrame {
     private JLabel nomeutentetxt;
 
     //è l'utente che fa il login
-    public Persona utente;
+    private Persona utente;
 
     //è la lista delle squadre che possiede l'utente loggato
-    public ArrayList<Squadra> listaSquadre = new ArrayList<Squadra>();
+    private ArrayList<Squadra> listaSquadre = new ArrayList<Squadra>();
 
     //serve per le funzioni utili
     public Utils utils = new Utils();
 
-    final Mysql db;
+    final private Mysql db;
 
     public Login() {
         //titolo del frame
@@ -202,7 +202,7 @@ public class Login extends JFrame {
             catch (SQLException se) {
                 //se ci sono state eccezioni mostro un Dialog con il codice degli errori
                 Object[] options = {"OK"};
-                int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono dei problemi con il database.\n Codice errore MySQL:" + se.getErrorCode(),
+                JOptionPane.showOptionDialog(getContentPane(), "Ci sono dei problemi con il database.\n Codice errore MySQL:" + se.getErrorCode(),
                         "Problemi db",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.ERROR_MESSAGE,
