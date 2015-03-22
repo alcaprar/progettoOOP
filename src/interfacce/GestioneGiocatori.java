@@ -202,7 +202,7 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
                         squadra.getCampionato().getListaSquadrePartecipanti().get(i).setSoldiDisponibili(soldiDisponibili);
                     }
                     if(db.inserisciGiocatori(squadra.getCampionato())){
-                        JOptionPane.showMessageDialog(null, "Le rose sono state inserite con successo!", "Errore", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Le rose sono state inserite con successo!", "Avviso", JOptionPane.INFORMATION_MESSAGE);
                     };
                 } else {
                     JOptionPane.showMessageDialog(null, "La rosa di qualche squadre non è completa.\nPrima di confermare è necessario completare tutte le rose.", "Errore", JOptionPane.ERROR_MESSAGE);
