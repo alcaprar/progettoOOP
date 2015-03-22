@@ -4,7 +4,6 @@ import classi.*;
 import db.Mysql;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -20,6 +19,8 @@ public class Applicazione extends JFrame {
     private JPanel classificaTab;
     private JPanel gestioneGiocatoriTab;
     private Formazione formazionePanel;
+    private JPanel calendarioTab;
+    private Calendario calendarioPanel;
 
     private Squadra sqr;
 
@@ -47,9 +48,11 @@ public class Applicazione extends JFrame {
 
         homePanel.setSquadre(sqr);
         classificaPanel.setSquadre(sqr);
+        calendarioPanel.setSquadra(sqr);
 
         homePanel.refresh();
         classificaPanel.refresh();
+        calendarioPanel.refresh();
 
         //se l'utente loggato è il presidente, il tipo di asta è offline e i giocatori sono da inserire popolo le tabelle
         //del pannello gestione giocatori
