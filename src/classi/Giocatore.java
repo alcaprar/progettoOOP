@@ -7,14 +7,24 @@ public class Giocatore {
     private String cognome;
     private int ID;
     private int prezzoBase;
+    private int prezzoAcquisto;
     private String squadraReale;
     private char ruolo;
     private Voto voti;
 
-    public Giocatore(String cognome,  int id, int prezzo,  String squadra, char ruolo) {
+    public Giocatore(String cognome,  int id, int prezzoBase,  String squadra, char ruolo) {
         this.cognome = cognome;
         this.ID = id;
-        this.prezzoBase = prezzo;
+        this.prezzoBase = prezzoBase;
+        this.squadraReale = squadra;
+        this.ruolo = ruolo;
+    }
+
+    public Giocatore(int id, String cognome,   int prezzoBase, int prezzoAcquisto, String squadra, char ruolo) {
+        this.cognome = cognome;
+        this.ID = id;
+        this.prezzoBase = prezzoBase;
+        this.prezzoAcquisto = prezzoAcquisto;
         this.squadraReale = squadra;
         this.ruolo = ruolo;
     }
@@ -65,5 +75,13 @@ public class Giocatore {
 
     public void setVoti(Voto voti) {
         this.voti = voti;
+    }
+
+    public int getPrezzoAcquisto() {
+        return prezzoAcquisto;
+    }
+
+    public void setPrezzoAcquisto(int prezzoAcquisto) {
+        this.prezzoAcquisto = prezzoAcquisto;
     }
 }

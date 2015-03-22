@@ -11,6 +11,7 @@ public class Squadra {
     private Persona proprietario;
     private ArrayList<Giocatore> giocatori;
     private Campionato campionato;
+    private int soldiDisponibili;
 
     public int getID() {
         return ID;
@@ -55,11 +56,12 @@ public class Squadra {
         this.nome = nome;
     }
 
-    public Squadra(int ID, String nome, Persona proprietario , Campionato campionato){
+    public Squadra(int ID, String nome, Persona proprietario , Campionato campionato,int soldiDisponibili){
         this.ID = ID;
         this.nome = nome;
         this.proprietario = proprietario;
         this.campionato = campionato;
+        this.soldiDisponibili = soldiDisponibili;
     }
 
     public Squadra(String nome, Persona prop, ArrayList<Giocatore> gioc) {
@@ -83,4 +85,11 @@ public class Squadra {
         return giocatori;
     }
 
+    public int getSoldiDisponibili() {
+        return soldiDisponibili;
+    }
+
+    public void setSoldiDisponibili(int soldiDisponibili) {
+        this.soldiDisponibili = soldiDisponibili;
+    }
 }

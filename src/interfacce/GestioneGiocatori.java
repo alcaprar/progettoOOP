@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -26,11 +27,13 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
     private JButton confermaRoseButton;
     private JSpinner spinner;
     private JPanel mainPanel;
+    private JLabel soldiSpesilbl;
     private JScrollPane tabellaListaGiocatori;
 
     private DefaultComboBoxModel comboBoxModel;
     private DefaultTableModel tabellaGiocatoriModel;
     private ArrayList<DefaultTableModel> tabellaSquadraModel;
+    private ArrayList<Integer> soldiSpesi = new ArrayList<Integer>();
 
     //intestazioni delle due tabelle del panel, la prima per la tabella dei
     //giocatori mentre la seconda per la tabella delle squadre
@@ -83,6 +86,7 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
                     String ruolo = String.valueOf(tabellaGiocatori.getValueAt(r, 2));
                     String squadra = (String) tabellaGiocatori.getValueAt(r,3);
                     String prezzoIniziale = String.valueOf(tabellaGiocatori.getValueAt(r,4));
+                    String prezzoPagato = String.valueOf(spinner.getValue());
                     /*fa scorrere un indice lungo le righe della tabella della squadra
                     //ad ogni iterazione se il valore del campo ruolo della riga della tabella squadra è uguale al ruolo
                     //del giocatore che si vuole inserire, incrementa un contatore per evitare che si inseriscano più
@@ -104,9 +108,12 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
                         JOptionPane.showMessageDialog(null, "Sono già stati aggiunti 6 attaccanti alla squadra.\nRimuovere un attaccante per aggiungerne un altro", "Errore", JOptionPane.ERROR_MESSAGE);
                     } else {
                         //aggiunge la riga
-                        ((DefaultTableModel)tabellaSquadraModel.get(i)).addRow(new String[]{ID, nomeGiocatore, ruolo, squadra, prezzoIniziale, String.valueOf(spinner.getValue())});
+                        ((DefaultTableModel)tabellaSquadraModel.get(i)).addRow(new String[]{ID, nomeGiocatore, ruolo, squadra, prezzoIniziale, prezzoPagato});
                         //rimuove la riga
                         ((DefaultTableModel)tabellaGiocatori.getModel()).removeRow(r);
+
+                        soldiSpesi.set(i,soldiSpesi.get(i)+Integer.parseInt(prezzoPagato));
+                        aggiornaSoldi(soldiSpesi.get(i));
 
                     }
                 } else {
@@ -136,10 +143,15 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
                     String ruolo = String.valueOf(tabellaSquadra.getValueAt(r, 2));
                     String squadraReale = (String)tabellaSquadra.getValueAt(r, 3);
                     String prezzo = String.valueOf(tabellaSquadra.getValueAt(r, 4));
+                    int prezzoPagato = Integer.parseInt((String) tabellaSquadra.getValueAt(r, 5));
                     //aggiunge la riga
                     ((DefaultTableModel) tabellaGiocatori.getModel()).addRow(new String[]{ID, cognome, ruolo, squadraReale, prezzo});
                     //rimuove la riga
                     ((DefaultTableModel)tabellaSquadra.getModel()).removeRow(r);
+
+                    //aggiorno il contatore dei soldi spesi
+                    soldiSpesi.set(i,soldiSpesi.get(i)-prezzoPagato);
+                    aggiornaSoldi(soldiSpesi.get(i));
 
                 } else {
                     JOptionPane.showMessageDialog(null, "Nessuna riga della tabella della squadra è stata selezionata! \n Seleziona una riga prima di premere il pulsante", "Errore", JOptionPane.ERROR_MESSAGE);
@@ -170,7 +182,28 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
                 }
                 if(completo){
                     System.out.println("finito");
-                    //TODO richiamare la funzione che salva sul database le formazioni
+                    //creo una lista di giocatori per ogni squadra
+                    for(int i = 0; i<squadra.getCampionato().getListaSquadrePartecipanti().size();i++){
+                        ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
+                        //inserisco i giocatori nella lista
+                        for(int k =0; k<25;k++) {
+                            int ID = Integer.parseInt((String) tabellaSquadraModel.get(i).getValueAt(k, 0));
+                            String cognome = (String) tabellaSquadraModel.get(i).getValueAt(k,1);
+                            char ruolo = ((String) tabellaSquadraModel.get(i).getValueAt(k,2)).charAt(0);
+                            String squadra = (String) tabellaSquadraModel.get(i).getValueAt(k,3);
+                            int prezzoBase = Integer.parseInt((String)tabellaSquadraModel.get(i).getValueAt(k,4));
+                            int prezzoAcquisto = Integer.parseInt((String)tabellaSquadraModel.get(i).getValueAt(k,5));
+
+                            Giocatore giocatore = new Giocatore(ID,cognome,prezzoBase,prezzoAcquisto,squadra,ruolo);
+                            listaGiocatori.add(giocatore);
+                        }
+                        squadra.getCampionato().getListaSquadrePartecipanti().get(i).setGiocatori(listaGiocatori);
+                        int soldiDisponibili = squadra.getCampionato().getCreditiIniziali()-soldiSpesi.get(i)>=0 ? squadra.getCampionato().getCreditiIniziali()-soldiSpesi.get(i) :0 ;
+                        squadra.getCampionato().getListaSquadrePartecipanti().get(i).setSoldiDisponibili(soldiDisponibili);
+                    }
+                    if(db.inserisciGiocatori(squadra.getCampionato())){
+                        JOptionPane.showMessageDialog(null, "Le rose sono state inserite con successo!", "Errore", JOptionPane.INFORMATION_MESSAGE);
+                    };
                 } else {
                     JOptionPane.showMessageDialog(null, "La rosa di qualche squadre non è completa.\nPrima di confermare è necessario completare tutte le rose.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -184,6 +217,8 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
     public void itemStateChanged(ItemEvent itemEvent) {
         int i;
         i = comboBox.getSelectedIndex();
+        //mostro i soldi spesi per questa squadra
+        soldiSpesilbl.setText(soldiSpesi.get(i).toString());
         //imposta il modella per la tabella della squadra secondo l'indice del combobox
         tabellaSquadra.setModel(tabellaSquadraModel.get(i));
         //controlla che la lista della squadra non sia completa
@@ -212,6 +247,9 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
                 }
             });
             tabellaSquadraModel.get(i).setColumnIdentifiers(colonne2);
+
+            //inizializzo a zero il contatore dei soldi spesi
+            soldiSpesi.add(new Integer(0));
             i++;
         }
         //permette di selezionare una riga alla volta nella tabella giocatori
@@ -229,11 +267,16 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
         tabellaSquadra.setSelectionModel(squadreListModel);
 
         tabellaSquadra.setModel(tabellaSquadraModel.get(0));
+
+        aggiornaSoldi(soldiSpesi.get(0));
+
+
     }
 
     public void setComboBox(){
         comboBoxModel = new DefaultComboBoxModel(squadra.getCampionato().squadreToArray());
         comboBox.setModel(comboBoxModel);
+        comboBox.setToolTipText("ID-Nome Squadra-Nick Proprietario");
     }
 
     public void setSpinner(){
@@ -294,6 +337,20 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
         tabellaGiocatori.setSelectionModel(giocatoriListModel);
 
         tabellaGiocatori.setModel(giocatoriModel);
+
+    }
+
+    private void aggiornaSoldi(Integer soldi){
+        if(soldi<=squadra.getCampionato().getCreditiIniziali()){
+            soldiSpesilbl.setText(soldi.toString());
+            soldiSpesilbl.setForeground(Color.black);
+        }
+        else{
+            soldiSpesilbl.setText(soldi.toString());
+            soldiSpesilbl.setForeground(Color.RED);
+            soldiSpesilbl.setToolTipText("Questa squadra ha superato il budget consentito");
+            JOptionPane.showMessageDialog(null, "Questa squadra ha superato il budget consentito.", "Errore", JOptionPane.ERROR_MESSAGE);
+        }
 
     }
 

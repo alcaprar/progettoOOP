@@ -206,11 +206,11 @@ public class Mysql{
                 ResultSet rspartecipanti = partecipantistmt.executeQuery();
 
                 while(rspartecipanti.next()){
-                    listaSquadrePartecipanti.add(new Squadra(rspartecipanti.getInt("ID"),rspartecipanti.getString("Nome"),new Persona(rspartecipanti.getString("Nome"))));
+                    listaSquadrePartecipanti.add(new Squadra(rspartecipanti.getInt("ID"),rspartecipanti.getString("Nome"),new Persona(rspartecipanti.getString("NickUt"))));
                 }
 
                 Campionato campionato = new Campionato(rs.getString("Campionato"),rs.getInt("NrPartecipanti"),rs.getBoolean("Asta"),rs.getInt("GiornataInizio"),rs.getInt("GiornataFine"),rs.getInt("CreditiIniziali"),rs.getInt("OrarioConsegna"),rs.getInt("PrimaFascia"),rs.getInt("LargFascia"),rs.getInt("BonusCasa"),new Persona(rs.getString("Presidente")),listaSquadrePartecipanti,rs.getBoolean("GiocatoriDaInserire"));
-                Squadra squadra = new Squadra(rs.getInt("ID"),rs.getString("Nome"),utente,campionato);
+                Squadra squadra = new Squadra(rs.getInt("ID"),rs.getString("Nome"),utente,campionato,rs.getInt("CreditiDisponibili"));
                 listaSquadre.add(squadra);
                 i++;
             }
@@ -501,8 +501,6 @@ public class Mysql{
 
     }
 
-
-
     public boolean inserisciGiocatoriAnno(ArrayList<Giocatore> listaGiocatori){
         Connection conn = null;
         PreparedStatement giocatorestmt = null;
@@ -546,6 +544,57 @@ public class Mysql{
         }finally {
             try { conn.close(); } catch (Exception e) { /* ignored */ }
         }
+    }
+
+    public boolean inserisciGiocatori(Campionato campionato){
+        Connection conn = null;
+        PreparedStatement giocatorestmt = null;
+        String giocatoreSql = "INSERT into Tesseramento value(?,?,?,?)";
+
+        PreparedStatement soldiDisponibilistmt = null;
+        String soldiDisponibiliSql = "UPDATE Iscrizione set CreditiDisponibili=? where IDsq=?";
+        int rs=0;
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            String nomeCampionato = campionato.getNome();
+
+            for(int i=0;i<campionato.getListaSquadrePartecipanti().size();i++){
+                int IDsq = campionato.getListaSquadrePartecipanti().get(i).getID();
+                soldiDisponibilistmt = conn.prepareStatement(soldiDisponibiliSql);
+                soldiDisponibilistmt.setInt(1,campionato.getListaSquadrePartecipanti().get(i).getSoldiDisponibili());
+                soldiDisponibilistmt.setInt(2,IDsq);
+                soldiDisponibilistmt.executeUpdate();
+                for(int k=0;k<25;k++){
+                    int IDcalc = campionato.getListaSquadrePartecipanti().get(i).getGiocatori().get(k).getID();
+                    int prezzoPagato = campionato.getListaSquadrePartecipanti().get(i).getGiocatori().get(k).getPrezzoAcquisto();
+
+                    giocatorestmt = conn.prepareStatement(giocatoreSql);
+                    giocatorestmt.setInt(1,IDcalc);
+                    giocatorestmt.setString(2,nomeCampionato);
+                    giocatorestmt.setInt(3,prezzoPagato);
+                    giocatorestmt.setInt(4,IDsq);
+
+                    rs = giocatorestmt.executeUpdate();
+                }
+            }
+
+            if(rs==1)return true;
+            else return false;
+        }catch(SQLException se){
+        se.printStackTrace();
+        return false;
+
+        }catch(Exception e){
+        e.printStackTrace();
+        return false;
+
+        }finally {
+        try { conn.close(); } catch (Exception e) { /* ignored */ }
+        }
+
     }
 
     public int deleteCampionati(){
