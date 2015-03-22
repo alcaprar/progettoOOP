@@ -181,7 +181,6 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
                     else completo = false;
                 }
                 if(completo){
-                    System.out.println("finito");
                     //creo una lista di giocatori per ogni squadra
                     for(int i = 0; i<squadra.getCampionato().getListaSquadrePartecipanti().size();i++){
                         ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
