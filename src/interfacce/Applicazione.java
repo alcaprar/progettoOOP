@@ -19,6 +19,7 @@ public class Applicazione extends JFrame {
     private GestioneGiocatori gestioneGiocatoriPanel;
     private JPanel classificaTab;
     private JPanel gestioneGiocatoriTab;
+    private Formazione formazionePanel;
 
     private Squadra sqr;
 
@@ -33,6 +34,16 @@ public class Applicazione extends JFrame {
         ArrayList<classi.Classifica> classifica = new ArrayList<classi.Classifica>();
         classifica = db.selectClassifica(sqr.getCampionato());
         sqr.getCampionato().setClassifica(classifica);
+
+        //se sono stati inseriti i giocatori nell squadre
+        //scarico la lista dei giocatori della squadra appena loggata
+        ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
+        listaGiocatori = db.selectGiocatori(sqr);
+        if(!listaGiocatori.isEmpty()) {
+            sqr.setGiocatori(listaGiocatori);
+            formazionePanel.setSquadra(sqr);
+            formazionePanel.refresh();
+        }
 
         homePanel.setSquadre(sqr);
         classificaPanel.setSquadre(sqr);
@@ -59,4 +70,15 @@ public class Applicazione extends JFrame {
         setVisible(true);
     }
 
+    public JTabbedPane getTabbedPane(){
+        return this.tabbedPane1;
+    }
+
+    private void createUIComponents() {
+        gestioneGiocatoriPanel = new GestioneGiocatori(getFrame());
+    }
+
+    private Applicazione getFrame(){
+        return this;
+    }
 }

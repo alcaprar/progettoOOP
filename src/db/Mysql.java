@@ -180,6 +180,57 @@ public class Mysql{
         }
     }
 
+    public ArrayList<Giocatore> selectGiocatori(Squadra squadra){
+        Connection conn = null;
+        PreparedStatement listaGiocatoristmt = null;
+        String listaGiocatoriSql = "select IDcalcAnno,PrezzoPagato,Costo,SqReale,Cognome,Ruolo from Tesseramento JOIN Fantasquadra on Fantasquadra.ID=Tesseramento.IDsq JOIN CalciatoreAnno on CalciatoreAnno.ID=Tesseramento.IDcalcAnno where IDsq=?";
+
+        int IDsq = squadra.getID();
+        ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            listaGiocatoristmt = conn.prepareStatement(listaGiocatoriSql);
+            listaGiocatoristmt.setInt(1,IDsq);
+
+            ResultSet rs = listaGiocatoristmt.executeQuery();
+
+            while(rs.next()){
+                int ID = rs.getInt("IDcalcAnno");
+                String cognome = rs.getString("Cognome");
+                int costo = rs.getInt("Costo");
+                int prezzoPagato = rs.getInt("PrezzoPagato");
+                String squadraReale = rs.getString("SqReale");
+                char ruolo=rs.getString("Ruolo").charAt(0);
+                Giocatore giocatore = new Giocatore(ID,cognome,costo,prezzoPagato,squadraReale,ruolo);
+                listaGiocatori.add(giocatore);
+            }
+
+            return listaGiocatori;
+
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return listaGiocatori;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return listaGiocatori;
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
+                }
+            }
+        }
+    }
+
     public ArrayList<Squadra> selectSquadre(Persona utente){
         Connection conn = null;
         PreparedStatement squadrestmt = null;
