@@ -20,13 +20,14 @@ import java.util.Arrays;
 public class Home extends JPanel {
     private JPanel panel1;
     private JButton inviaLaFormazioneButton;
-    private JPanel ultimaGiornata;
     private JList list1;
     private JLabel nomeSquadra;
     private JLabel nomeUtente;
     private JTable tableClassifica;
     private JScrollPane scrollpaneClassifica;
     private JLabel nomeCampionato;
+    private JTable ultimaGiornataTable;
+    private JTable prossimaGiornataTable;
 
     private Squadra squadra;
 
@@ -54,6 +55,60 @@ public class Home extends JPanel {
         nomeUtente.setText(squadra.getProprietario().getNickname());
         nomeCampionato.setText(squadra.getCampionato().getNome());
         setTableClassifica();
+        if(squadra.getCampionato().getProssimaGiornata()<squadra.getCampionato().getGiornataFine()){
+            setTableProssimaG();
+        }
+        if(squadra.getCampionato().getProssimaGiornata()>squadra.getCampionato().getGiornataInizio()){
+            setTableUltimaG();
+        }
+    }
+
+    private void setTableProssimaG(){
+        Object[] nomeColonne = {"Casa","Trasferta"};
+        Object[][] righeProssimaGiornata = squadra.getCampionato().prossimaGiornata().prossimaGiornataToArray();
+
+        DefaultTableModel prossimaGiornataModel = new DefaultTableModel(righeProssimaGiornata, nomeColonne) {
+            //rende non modificabili le celle
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        prossimaGiornataTable.setModel(prossimaGiornataModel);
+        //setta il colore delle righe alternato
+        prossimaGiornataTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.CYAN);
+                return c;
+            }
+        });
+    }
+
+    private void setTableUltimaG(){
+        Object[] nomeColonne = {"","","","","","",""};
+        Object[][] righeUltimaGiornata = squadra.getCampionato().ultimaGiornata().partiteToArray();
+
+        DefaultTableModel prossimaGiornataModel = new DefaultTableModel(righeUltimaGiornata, nomeColonne) {
+            //rende non modificabili le celle
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        ultimaGiornataTable.setModel(prossimaGiornataModel);
+        //setta il colore delle righe alternato
+        ultimaGiornataTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
+        {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+            {
+                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.CYAN);
+                return c;
+            }
+        });
     }
 
     private void setTableClassifica(){

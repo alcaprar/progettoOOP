@@ -393,7 +393,7 @@ public class CreaCampionato extends JFrame {
         for (int i = 0; i < partecipantiModel.getSize(); i++) {
             listaSquadrePartecipanti.add(new Squadra(new Persona((String) partecipantiModel.getElementAt(i))));
         }
-        return new Campionato(nome, numeroPartecipanti, asta, inizio, fine, crediti, orario, primaf, fasce, bonusc, presidente,listaSquadrePartecipanti,true);
+        return new Campionato(nome, numeroPartecipanti, asta, inizio, fine, crediti, orario, primaf, fasce, bonusc, presidente,listaSquadrePartecipanti,true,1);
     }
 
     public CreaCampionato getFrame() {

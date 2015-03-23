@@ -11,6 +11,7 @@ public class Campionato {
     private boolean astaLive;
     private int giornataInizio;
     private int giornataFine;
+    private int prossimaGiornata;
     private int creditiIniziali;
     private int orarioConsegna;
     private int primaFascia;
@@ -21,6 +22,7 @@ public class Campionato {
     private Persona presidente;
     private ArrayList<Classifica> classifica;
     private ArrayList<Giornata> calendario;
+    private Giornata prossimaGiorn;
 
     public ArrayList<Giornata> getCalendario() {
         return calendario;
@@ -58,7 +60,7 @@ public class Campionato {
         this.classifica = classifica;
     }
 
-    public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente,ArrayList<Squadra> listaSquadrePartecipanti,boolean giocatoriDaInserire ){
+    public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente,ArrayList<Squadra> listaSquadrePartecipanti,boolean giocatoriDaInserire, int prossimaGiornata ){
         this.nome = nome;
         this.numeroPartecipanti = numerop;
         this.astaLive = asta;
@@ -72,6 +74,7 @@ public class Campionato {
         this.presidente = presidente;
         this.listaSquadrePartecipanti = listaSquadrePartecipanti;
         this.giocatoriDaInserire = giocatoriDaInserire;
+        this.prossimaGiornata = prossimaGiornata;
     }
 
     public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente ){
@@ -195,5 +198,29 @@ public class Campionato {
 
     public void setGiocatoriDaInserire(boolean giocatoriDaInserire) {
         this.giocatoriDaInserire = giocatoriDaInserire;
+    }
+
+    public int getProssimaGiornata() {
+        return prossimaGiornata;
+    }
+
+    public void setProssimaGiornata(int prossimaGiornata) {
+        this.prossimaGiornata = prossimaGiornata;
+    }
+
+    public Giornata prossimaGiornata(){
+        Giornata prossima = null;
+        for(Giornata giorn:calendario){
+            if(giorn.getNumGiornata()==prossimaGiornata) prossima = giorn;
+        }
+        return prossima;
+    }
+
+    public Giornata ultimaGiornata(){
+        Giornata ultima = null;
+        for(Giornata giorn:calendario){
+            if(giorn.getNumGiornata()==(prossimaGiornata-1)) ultima =giorn;
+        }
+        return ultima;
     }
 }

@@ -259,7 +259,7 @@ public class Mysql{
                 while(rspartecipanti.next()){
                     listaSquadrePartecipanti.add(new Squadra(rspartecipanti.getInt("ID"),rspartecipanti.getString("Nome"),new Persona(rspartecipanti.getString("NickUt"))));
                 }
-                Squadra squadra = new Squadra(rs.getInt("ID"),rs.getString("Nome"),utente,new Campionato(rs.getString("Campionato"),rs.getInt("NrPartecipanti"),rs.getBoolean("Asta"),rs.getInt("GiornataInizio"),rs.getInt("GiornataFine"),rs.getInt("CreditiIniziali"),rs.getInt("OrarioConsegna"),rs.getInt("PrimaFascia"),rs.getInt("LargFascia"),rs.getInt("BonusCasa"),new Persona(rs.getString("Presidente")),listaSquadrePartecipanti,rs.getBoolean("GiocatoriDaInserire")),rs.getInt("CreditiDisponibili"));
+                Squadra squadra = new Squadra(rs.getInt("ID"),rs.getString("Nome"),utente,new Campionato(rs.getString("Campionato"),rs.getInt("NrPartecipanti"),rs.getBoolean("Asta"),rs.getInt("GiornataInizio"),rs.getInt("GiornataFine"),rs.getInt("CreditiIniziali"),rs.getInt("OrarioConsegna"),rs.getInt("PrimaFascia"),rs.getInt("LargFascia"),rs.getInt("BonusCasa"),new Persona(rs.getString("Presidente")),listaSquadrePartecipanti,rs.getBoolean("GiocatoriDaInserire"),rs.getInt("ProssimaGiornata")),rs.getInt("CreditiDisponibili"));
                 listaSquadre.add(squadra);
                 i++;
             }

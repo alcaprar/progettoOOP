@@ -78,7 +78,7 @@ public class Giornata {
     }
 
     public Object[][] partiteToArray(){
-        Object[][] listaObject = new Object[this.partite.size()][10];
+        Object[][] listaObject = new Object[this.partite.size()][7];
 
         for(int i=0;i<this.partite.size();i++){
             listaObject[i][0] = String.valueOf(this.partite.get(i).getCasa().getNome());
@@ -89,8 +89,16 @@ public class Giornata {
             listaObject[i][5] = String.valueOf(this.partite.get(i).getPuntiFuori());
             listaObject[i][6] = String.valueOf(this.partite.get(i).getOspite().getNome());
         }
-
         return listaObject;
+    }
 
+    public Object[][] prossimaGiornataToArray(){
+        Object[][] listaObject = new Object[this.partite.size()][2];
+
+        for(int i=0; i<this.partite.size();i++){
+            listaObject[i][0] = this.partite.get(i).getCasa().getNome();
+            listaObject[i][1] = this.partite.get(i).getOspite().getNome();
+        }
+        return listaObject;
     }
 }

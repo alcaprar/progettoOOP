@@ -20,7 +20,7 @@ public class TabellaGiornata extends JPanel {
 
     private Giornata giornata;
 
-    public TabellaGiornata(Giornata giorn){
+    public TabellaGiornata(Giornata giorn, int prossimaGiornata){
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         giornata = giorn;
@@ -29,9 +29,23 @@ public class TabellaGiornata extends JPanel {
         numeroGiornata = new JLabel(String.valueOf(giornata.getNumGiornata()));
         //creo e setto la tabella della giornata
         giornataTable = new JTable();
-        //Object[] nomeColonne = {"Casa", "Punti", "Gol", "Gol", "Punti", "Ospite"};
-        Object[] nomeColonne ={"","","","","","",""};
-        Object[][] righeGiornata = giornata.partiteToArray();
+        Object[] nomeColonne ;
+        Object[][] righeGiornata;
+        if(giorn.getNumGiornata()>=prossimaGiornata) {
+            nomeColonne= new Object[2];
+            nomeColonne[0]="Casa";
+            nomeColonne[1]="Trasfert";
+            righeGiornata = giornata.prossimaGiornataToArray();
+        } else{
+            nomeColonne = new Object[6];
+            nomeColonne[0] = "Casa";
+            nomeColonne[1]="";
+            nomeColonne[2]="";
+            nomeColonne[3]="";
+            nomeColonne[4]="";
+            nomeColonne[5]="Trasferta";
+            righeGiornata = giornata.partiteToArray();
+        }
 
         DefaultTableModel classificaModel = new DefaultTableModel(righeGiornata, nomeColonne) {
             //rende non modificabili le celle

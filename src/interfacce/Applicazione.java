@@ -4,6 +4,8 @@ import classi.*;
 import db.Mysql;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
 
 /**
@@ -28,7 +30,7 @@ public class Applicazione extends JFrame {
 
     final Mysql db = new Mysql();
 
-    public Applicazione(Squadra squadra) {
+    public Applicazione(final Squadra squadra) {
         super("Gestore Fantacalcio");
 
         sqr = squadra;
@@ -76,6 +78,19 @@ public class Applicazione extends JFrame {
             tabbedPane1.remove(tabbedPane1.indexOfTab("Gestione Giocatori"));
 
         }
+        //se ancora non sono stati inseriti i giocatori e si va sulla tab
+        //della formazione, invia un avviso
+        tabbedPane1.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JTabbedPane tabbedpane = (JTabbedPane)e.getSource();
+                int formazione = tabbedpane.indexOfTab("Formazione");
+                int tab = tabbedpane.getSelectedIndex();
+                if(formazione==tab && squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Ancora non sono stati inseriti i giocatori. Non puoi inviare la formazione.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
 
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
