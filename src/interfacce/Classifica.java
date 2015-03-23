@@ -12,7 +12,7 @@ import java.awt.*;
 /**
  * Created by Giacomo on 12/03/15.
  */
-public class Classifica {
+public class Classifica extends JPanel {
     private JPanel mainPanel;
     private JTable tableClassifica;
 

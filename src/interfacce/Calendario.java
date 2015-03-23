@@ -19,10 +19,16 @@ public class Calendario extends JPanel {
 
     private Squadra squadra;
 
+    private Applicazione applicazione;
+
     private ArrayList<TabellaGiornata> giornata = new ArrayList<TabellaGiornata>();
 
     public void setSquadra(Squadra sqr){
         this.squadra=sqr;
+    }
+
+    public void setApplicazione(Applicazione app){
+        this.applicazione = app;
     }
 
     public void refresh(){
@@ -31,13 +37,26 @@ public class Calendario extends JPanel {
     }
 
     private void setCalendario(){
-        int i=0;
+        calendarioPanel.setLayout(new BoxLayout(calendarioPanel,BoxLayout.Y_AXIS));
+        /*int i=0;
         for(Giornata giorn:squadra.getCampionato().getCalendario()){
             TabellaGiornata giornatai = new TabellaGiornata(giorn);
             giornata.add(i,giornatai);
-            giornata.get(i).setVisible(true);
+            //giornata.get(i).setVisible(true);
             calendarioPanel.add(giornata.get(i));
             i++;
+        }*/
+        int j=0;
+        while(j<squadra.getCampionato().getCalendario().size()){
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+            for(int i=0;i<3 && j<squadra.getCampionato().getCalendario().size();i++){
+                TabellaGiornata giornatai = new TabellaGiornata(squadra.getCampionato().getCalendario().get(j));
+                giornata.add(j,giornatai);
+                panel.add(giornata.get(j));
+                j++;
+            }
+            calendarioPanel.add(panel);
         }
     }
 }

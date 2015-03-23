@@ -1,33 +1,36 @@
 package interfacce;
 
-import classi.*;
+import classi.Giornata;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.*;
 import java.awt.*;
 
 /**
  * Created by alessandro on 23/03/15.
  */
-public class TabellaGiornata extends JPanel{
+public class TabellaGiornata extends JPanel {
+
+    private JLabel label1;
+    private JLabel numeroGiornata;
+
+    private JPanel panel;
+
+    private JTable giornataTable;
 
     private Giornata giornata;
 
-    private JLabel numeroGiornatalbl;
-    private JTable giornataTable;
-    private JPanel mainPanel;
-
-
-    public TabellaGiornata(Giornata gior){
-        this.giornata = gior;
-        numeroGiornatalbl.setText(String.valueOf(giornata.getNumGiornata()));
-        setTabella();
-
-    }
-
-    public void setTabella(){
-        Object[] nomeColonne = {"Casa", "Punti", "Gol", "Gol", "Punti", "Ospite"};
+    public TabellaGiornata(Giornata giorn){
+        setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        giornata = giorn;
+        //creo e setto le etichette
+        label1 = new JLabel("Giornata nr: ");
+        numeroGiornata = new JLabel(String.valueOf(giornata.getNumGiornata()));
+        //creo e setto la tabella della giornata
+        giornataTable = new JTable();
+        //Object[] nomeColonne = {"Casa", "Punti", "Gol", "Gol", "Punti", "Ospite"};
+        Object[] nomeColonne ={"","","","","","",""};
         Object[][] righeGiornata = giornata.partiteToArray();
 
         DefaultTableModel classificaModel = new DefaultTableModel(righeGiornata, nomeColonne) {
@@ -49,6 +52,44 @@ public class TabellaGiornata extends JPanel{
                 return c;
             }
         });
+
+        giornataTable.setShowHorizontalLines(false);
+
+        giornataTable.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
+
+        for (int column = 0; column < giornataTable.getColumnCount(); column++)
+        {
+            TableColumn tableColumn = giornataTable.getColumnModel().getColumn(column);
+            int preferredWidth = tableColumn.getMinWidth();
+            int maxWidth = tableColumn.getMaxWidth();
+
+            for (int row = 0; row < giornataTable.getRowCount(); row++)
+            {
+                TableCellRenderer cellRenderer = giornataTable.getCellRenderer(row, column);
+                Component c = giornataTable.prepareRenderer(cellRenderer, row, column);
+                int width = c.getPreferredSize().width + giornataTable.getIntercellSpacing().width;
+                preferredWidth = Math.max(preferredWidth, width);
+
+                //  We've exceeded the maximum width, no need to check other rows
+
+                if (preferredWidth >= maxWidth)
+                {
+                    preferredWidth = maxWidth;
+                    break;
+                }
+            }
+
+            tableColumn.setPreferredWidth( preferredWidth );
+        }
+
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.add(label1);
+        panel.add(numeroGiornata);
+
+
+        add(panel);
+        add(giornataTable);
 
     }
 }
