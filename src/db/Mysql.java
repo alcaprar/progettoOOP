@@ -265,7 +265,6 @@ public class Mysql{
                 i++;
             }
 
-
             return  listaSquadre;
 
         }catch(SQLException se){
