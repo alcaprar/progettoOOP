@@ -6,19 +6,19 @@ import java.util.ArrayList;
  * Created by alessandro on 14/03/15.
  */
 public class Campionato {
-    private String Nome;
-    private int NumeroPartecipanti;
-    private boolean AstaLive;
-    private int GiornataInizio;
-    private int GiornataFine;
-    private int CreditiIniziali;
-    private int OrarioConsegna;
-    private int PrimaFascia;
-    private int LargFascia;
-    private int BonusCasa;
+    private String nome;
+    private int numeroPartecipanti;
+    private boolean astaLive;
+    private int giornataInizio;
+    private int giornataFine;
+    private int creditiIniziali;
+    private int orarioConsegna;
+    private int primaFascia;
+    private int largFascia;
+    private int bonusCasa;
     private boolean giocatoriDaInserire;
     private ArrayList<Squadra> listaSquadrePartecipanti;
-    private Persona Presidente;
+    private Persona presidente;
     private ArrayList<Classifica> classifica;
     private ArrayList<Giornata> calendario;
 
@@ -39,15 +39,15 @@ public class Campionato {
     }
 
     public Persona getPresidente() {
-        return Presidente;
+        return presidente;
     }
 
     public void setPresidente(Persona presidente) {
-        Presidente = presidente;
+        presidente = presidente;
     }
 
     public Campionato(String nome){
-        this.Nome = nome;
+        this.nome = nome;
     }
 
     public ArrayList<Classifica> getClassifica() {
@@ -59,117 +59,117 @@ public class Campionato {
     }
 
     public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente,ArrayList<Squadra> listaSquadrePartecipanti,boolean giocatoriDaInserire ){
-        this.Nome = nome;
-        this.NumeroPartecipanti = numerop;
-        this.AstaLive = asta;
-        this.GiornataInizio = inizio;
-        this.GiornataFine = fine;
-        this.CreditiIniziali = crediti;
-        this.OrarioConsegna = orario;
-        this.PrimaFascia = primaf;
-        this.LargFascia = fasce;
-        this.BonusCasa = bonusc;
-        this.Presidente = presidente;
+        this.nome = nome;
+        this.numeroPartecipanti = numerop;
+        this.astaLive = asta;
+        this.giornataInizio = inizio;
+        this.giornataFine = fine;
+        this.creditiIniziali = crediti;
+        this.orarioConsegna = orario;
+        this.primaFascia = primaf;
+        this.largFascia = fasce;
+        this.bonusCasa = bonusc;
+        this.presidente = presidente;
         this.listaSquadrePartecipanti = listaSquadrePartecipanti;
         this.giocatoriDaInserire = giocatoriDaInserire;
     }
 
     public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente ){
-        this.Nome = nome;
-        this.NumeroPartecipanti = numerop;
-        this.AstaLive = asta;
+        this.nome = nome;
+        this.numeroPartecipanti = numerop;
+        this.astaLive = asta;
 
-        this.GiornataInizio = inizio;
-        this.GiornataFine = fine;
-        this.CreditiIniziali = crediti;
+        this.giornataInizio = inizio;
+        this.giornataFine = fine;
+        this.creditiIniziali = crediti;
 
-        this.OrarioConsegna = orario;
-        this.PrimaFascia = primaf;
-        this.LargFascia = fasce;
-        this.BonusCasa = bonusc;
-        this.Presidente = presidente;
+        this.orarioConsegna = orario;
+        this.primaFascia = primaf;
+        this.largFascia = fasce;
+        this.bonusCasa = bonusc;
+        this.presidente = presidente;
 
 
     }
 
     public int getNumeroPartecipanti() {
-        return NumeroPartecipanti;
+        return numeroPartecipanti;
     }
 
     public void setNumeroPartecipanti(int numeroPartecipanti) {
-        NumeroPartecipanti = numeroPartecipanti;
+        numeroPartecipanti = numeroPartecipanti;
     }
 
     public boolean isAstaLive() {
-        return AstaLive;
+        return astaLive;
     }
 
     public void setAstaLive(boolean astaLive) {
-        AstaLive = astaLive;
+        astaLive = astaLive;
     }
 
     public int getGiornataInizio() {
-        return GiornataInizio;
+        return giornataInizio;
     }
 
     public void setGiornataInizio(int giornataInizio) {
-        GiornataInizio = giornataInizio;
+        giornataInizio = giornataInizio;
     }
 
     public int getGiornataFine() {
-        return GiornataFine;
+        return giornataFine;
     }
 
     public void setGiornataFine(int giornataFine) {
-        GiornataFine = giornataFine;
+        giornataFine = giornataFine;
     }
 
     public int getCreditiIniziali() {
-        return CreditiIniziali;
+        return creditiIniziali;
     }
 
     public void setCreditiIniziali(int creditiIniziali) {
-        CreditiIniziali = creditiIniziali;
+        creditiIniziali = creditiIniziali;
     }
 
     public int getOrarioConsegna() {
-        return OrarioConsegna;
+        return orarioConsegna;
     }
 
     public void setOrarioConsegna(int orarioConsegna) {
-        OrarioConsegna = orarioConsegna;
+        orarioConsegna = orarioConsegna;
     }
 
     public int getPrimaFascia() {
-        return PrimaFascia;
+        return primaFascia;
     }
 
     public void setPrimaFascia(int primaFascia) {
-        PrimaFascia = primaFascia;
+        primaFascia = primaFascia;
     }
 
     public int getLargFascia() {
-        return LargFascia;
+        return largFascia;
     }
 
     public void setLargFascia(int largFascia) {
-        LargFascia = largFascia;
+        largFascia = largFascia;
     }
 
     public int getBonusCasa() {
-        return BonusCasa;
+        return bonusCasa;
     }
 
     public void setBonusCasa(int bonusCasa) {
-        BonusCasa = bonusCasa;
+        bonusCasa = bonusCasa;
     }
 
     public String getNome() {
-        return Nome;
+        return nome;
     }
 
     public void setNome(String nome) {
-        Nome = nome;
+        nome = nome;
     }
 
     /*public ArrayList<Persona> getPartecipanti() {

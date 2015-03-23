@@ -12,6 +12,8 @@ public class Squadra {
     private ArrayList<Giocatore> giocatori;
     private Campionato campionato;
     private int soldiDisponibili;
+    //formazione per il prossimo incontro
+    private Formazione formazione;
 
     public int getID() {
         return ID;
@@ -87,6 +89,14 @@ public class Squadra {
 
     public int getSoldiDisponibili() {
         return soldiDisponibili;
+    }
+
+    public Formazione getFormazione() {
+        return formazione;
+    }
+
+    public void setFormazione(Formazione formazione) {
+        this.formazione = formazione;
     }
 
     public void setSoldiDisponibili(int soldiDisponibili) {

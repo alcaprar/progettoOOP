@@ -55,9 +55,10 @@ public class Giornata {
 
     }
 
-    //calcola i risultati della giornata
-    public void calcolaGiornata(Campionato c) {
-        for (Partita i : partite ) i.calcolaPartita(c); //chiama il metodo calcola partita su ogni partita della giornata
+    //calcola i risultati della giornata, prende i parametri di cui ha bisogno
+    public void calcolaGiornata(int primaFascia, int largFascia, int bonusCasa, Classifica c) {
+        for (Partita i : partite ) i.calcolaPartita(primaFascia, largFascia, bonusCasa); //chiama il metodo calcola partita su ogni partita della giornata
+        for (Partita i : partite ) i.aggClassifica(c); //chiama il metodo aggiorna classifica su ogni partita della giornata
     }
 
     public int getNumGiornata() {
