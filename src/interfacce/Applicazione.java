@@ -21,6 +21,8 @@ public class Applicazione extends JFrame {
     private Formazione formazionePanel;
     private JPanel calendarioTab;
     private Calendario calendarioPanel;
+    private JPanel infoTab;
+    private Info infoPanel;
 
     private Squadra sqr;
 
@@ -59,6 +61,9 @@ public class Applicazione extends JFrame {
         homePanel.refresh();
         classificaPanel.refresh();
         calendarioPanel.refresh();
+
+        infoPanel.setSquadra(sqr);
+        infoPanel.refresh();
 
         //se l'utente loggato è il presidente, il tipo di asta è offline e i giocatori sono da inserire popolo le tabelle
         //del pannello gestione giocatori
