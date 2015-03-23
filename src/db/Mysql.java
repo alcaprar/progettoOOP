@@ -44,8 +44,6 @@ public class Mysql{
 
         }
 
-
-
     public boolean registra(Persona utente)throws SQLException, ClassNotFoundException{
         Connection conn = null ;
         PreparedStatement registra = null;
@@ -380,7 +378,7 @@ public class Mysql{
 
     }
 
-    public ArrayList<GiornataReale> selectGiornate(){
+    public ArrayList<GiornataReale> selectGiornateAdmin(){
         Connection conn = null;
         PreparedStatement giocatoristmt = null;
         String giocatoriSql ="SELECT * from GiornataAnno";
@@ -431,6 +429,57 @@ public class Mysql{
         }
 
     }
+/*
+    public ArrayList<Giornata> selectGiornate(Campionato campionato) throws SQLException,ClassNotFoundException{
+        Connection conn = null;
+        PreparedStatement giornatastmt = null;
+        String giornataSql = "SELECT * from Giornata JOIN GiornataAnno on Giornata.NrGioReale=GiornataAnno.NrGioReale where NomeCampionato=?";
+
+        PreparedStatement partitastmt = null;
+        String partitaSql = "SELECT * FROM Partita JOIN Fantasquadra on Partita.IDFantasquadraCasa=Fantasquadra.ID JOIN Fantasquadra on Parita.IDFantasquadraOspite=Fantasquadra.ID where IDgiorn=?";
+
+        ArrayList<Giornata> listaGiornate = new ArrayList<Giornata>();
+        try {
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            giornatastmt = conn.prepareStatement(giornataSql);
+            giornatastmt.setString(1,campionato.getNome());
+            ResultSet rsgiornata = giornatastmt.executeQuery();
+            while(rsgiornata.next()){
+                Giornata giornata = new Giornata(rsgiornata.getInt("ID"),rsgiornata.getInt("Nrgio"),new GiornataReale(rsgiornata.getInt("NrGioReale")));
+
+                partitastmt = conn.prepareStatement(partitaSql);
+                partitastmt.setInt(1,giornata.getID());
+
+                ResultSet rspartita = partitastmt.executeQuery();
+
+                ArrayList<Partita> listaPartite = new ArrayList<Partita>();
+                while(rspartita.next()){
+                    Squadra squadraCasa =new Squadra(rspartita.getInt("IDFantasquadraCasa"), rspartita.getString(""))
+                    Partita partita = new Partita(rspartita.getInt("ID"),rspartita.getInt("NrPart"),rspartita.getInt("IDFantasquadraCasa"),rspartita.getInt("IDFantasquadraOspite"),rspartita.getInt("GolCasa"),rspartita.getInt("GolOspite"),rspartita.getFloat("PunteggioCasa"),rspartita.getFloat("PunteggioOspite"));
+                    listaPartite.add(partita);
+
+                }
+
+                giornata.setPartite(listaPartite);
+
+            }
+
+            return listaGiornate;
+
+        }finally {
+                if(conn!=null) {
+                    try {
+                        conn.close();
+                    } catch (Exception e) {
+                        //ignored
+                    }
+                }
+        }
+    }*/
 
     //crea il campionato
     public boolean creaCampionato(Campionato campionato){
@@ -525,8 +574,8 @@ public class Mysql{
                         partitastmt = conn.prepareStatement(partitaSql);
                         partitastmt.setInt(1,giornata.getID());
                         partitastmt.setInt(2,partita.getNumeroPartita());
-                        partitastmt.setInt(3,partita.getIDcasa());
-                        partitastmt.setInt(4,partita.getIDospite());
+                        partitastmt.setInt(3,partita.getCasa().getID());
+                        partitastmt.setInt(4,partita.getOspite().getID());
 
                         partitastmt.executeUpdate();
                     }

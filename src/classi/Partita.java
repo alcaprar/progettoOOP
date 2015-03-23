@@ -4,7 +4,10 @@ package classi;
  * Created by Giacomo on 18/03/15.
  */
 public class Partita {
+    private int ID;
     private int numeroPartita;
+    private Squadra casa;
+    private Squadra ospite;
     private int IDcasa;
     private int IDospite;
     private Formazione formCasa;
@@ -14,9 +17,20 @@ public class Partita {
     private float puntiCasa;
     private float puntiFuori;
 
-    public Partita(int casa, int ospite,int numeroPartita){
-        this.IDcasa = casa;
-        this.IDospite = ospite;
+    public Partita(int ID, int numeroPartita,Squadra casa,Squadra ospite,int golCasa,int golFuori,float puntiCasa,float puntiFuori){
+        this.ID = ID;
+        this.numeroPartita = numeroPartita;
+        this.casa = casa;
+        this.ospite = ospite;
+        this.golCasa = golCasa;
+        this.golFuori = golFuori;
+        this.puntiCasa = puntiCasa;
+        this.puntiFuori = puntiFuori;
+    }
+
+    public Partita(Squadra casa, Squadra ospite,int numeroPartita){
+        this.casa = casa;
+        this.ospite = ospite;
         this.numeroPartita = numeroPartita;
     }
 
@@ -115,5 +129,29 @@ public class Partita {
 
     public void setNumeroPartita(int numeroPartita) {
         this.numeroPartita = numeroPartita;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public Squadra getCasa() {
+        return casa;
+    }
+
+    public void setCasa(Squadra casa) {
+        this.casa = casa;
+    }
+
+    public Squadra getOspite() {
+        return ospite;
+    }
+
+    public void setOspite(Squadra ospite) {
+        this.ospite = ospite;
     }
 }

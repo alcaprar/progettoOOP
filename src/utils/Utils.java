@@ -132,13 +132,8 @@ public class Utils {
 
     //crea il calendario
     public  void creaCalendario(int primaGiornata, int ultimaGiornata, Campionato campionato){
-        //int primaGiornata = 2;
-        //int ultimaGiornata = 35;
         ArrayList<Giornata> listaGiornate = new ArrayList<Giornata>();
 
-
-
-        //String[] squadre = {"1","2","3","4","5","6","7","8","9","10"};
 
         //numero partecipanti
         int n = campionato.getNumeroPartecipanti();
@@ -149,19 +144,20 @@ public class Utils {
         //inizializzo il contatore delle giornate
         int k=1;
 
-        //creo due array di stringhe per creare il calendario
-        //String[] casa = new String[n/2];
-        //String[] trasferta = new String[n/2];
+        //int[] casa = new int[n/2];
+        //int[] trasferta = new int[n/2];
 
-        int[] casa = new int[n/2];
-        int[] trasferta = new int[n/2];
+        ArrayList<Squadra> squadreCasa = new ArrayList<Squadra>();
+        ArrayList<Squadra> squadreTrasferta = new ArrayList<Squadra>();
+
 
         for(int i =0;i<n/2;i++){
-            casa[i] =campionato.getListaSquadrePartecipanti().get(i).getID();
-            trasferta[i]= campionato.getListaSquadrePartecipanti().get(n-1-i).getID();
-            //casa[i] = squadre[i];
-            //trasferta[i] = squadre[n-1-i];
 
+            squadreCasa.add(new Squadra(campionato.getListaSquadrePartecipanti().get(i).getID(),campionato.getListaSquadrePartecipanti().get(i).getNome()));
+            squadreTrasferta.add(new Squadra(campionato.getListaSquadrePartecipanti().get(n-1-i).getID(),campionato.getListaSquadrePartecipanti().get(n-1-i).getNome()));
+
+            //casa[i] =campionato.getListaSquadrePartecipanti().get(i).getID();
+            //trasferta[i]= campionato.getListaSquadrePartecipanti().get(n-1-i).getID();
         }
 
         while (primaGiornata<=ultimaGiornata) {
@@ -172,23 +168,24 @@ public class Utils {
 
                 if (i % 2 == 0) {
                     for (int j = 0; j < n / 2; j++) {
-                        listaPartite.add(new Partita(trasferta[j], casa[j],j+1));
+                        listaPartite.add(new Partita(squadreTrasferta.get(j), squadreCasa.get(j),j+1));
                     }
                 } else {
                     for (int j = 0; j < n / 2; j++) {
-                        listaPartite.add(new Partita(casa[j], trasferta[j],j+1));
+                        listaPartite.add(new Partita(squadreCasa.get(j), squadreTrasferta.get(j),j+1));
                     }
                 }
                 listaGiornate.add(new Giornata(k, new GiornataReale(primaGiornata), listaPartite));
-                //System.out.println("");
 
-                int pivot = casa[0];
+                Squadra pivot = squadreCasa.get(0);
 
-                int riporto = spostaDestra(trasferta, casa[1],n);
+                //int pivot = casa[0];
 
-                spostaSinistra(casa, riporto,n);
+                Squadra riporto = spostaDestra(squadreTrasferta, squadreCasa.get(1),n);
 
-                casa[0] = pivot;
+                spostaSinistra(squadreCasa, riporto,n);
+
+                squadreCasa.set(0,pivot);
 
                 k++;
                 primaGiornata++;
@@ -201,7 +198,7 @@ public class Utils {
                 ArrayList<Partita> listaPartite = new ArrayList<Partita>();
 
                 for (int j = 0; j < n / 2; j++) {
-                    listaPartite.add(new Partita(listaGiornate.get(i).getPartite().get(j).getIDospite(), listaGiornate.get(i).getPartite().get(j).getIDcasa(),j+1));
+                    listaPartite.add(new Partita(listaGiornate.get(i).getPartite().get(j).getOspite(), listaGiornate.get(i).getPartite().get(j).getCasa(),j+1));
                 }
                 listaGiornate.add(new Giornata(k, new GiornataReale(primaGiornata), listaPartite));
 
@@ -216,7 +213,7 @@ public class Utils {
         for(Giornata giornata:listaGiornate){
             System.out.println("Giornata: " + giornata.getNumGiornata()+" Giornata reale: "+giornata.getNumGioReale().getNumeroGiornata());
             for(Partita partita:giornata.getPartite()){
-                System.out.println(partita.getIDcasa() + "-" + partita.getIDospite());
+                System.out.println(partita.getCasa().getID() + "-" + partita.getOspite().getID());
             }
             System.out.println("");
 
@@ -229,20 +226,24 @@ public class Utils {
 
     }
 
-    private int spostaDestra(int[] trasferta, int casaUno, int n){
-        int riporto =trasferta[n/2-1];
+    private Squadra spostaDestra(ArrayList<Squadra> trasferta, Squadra casaUno, int n){
+        Squadra riporto = trasferta.get(n/2-1);
+        //int riporto =trasferta[n/2-1];
         for(int i=n/2-1;i>0;i--){
-            trasferta[i] = trasferta[i-1];
+            trasferta.set(i,trasferta.get(i-1));
+            //trasferta[i] = trasferta[i-1];
         }
-        trasferta[0] = casaUno;
+        trasferta.set(0,casaUno);
 
         return riporto;
     }
 
-    private void spostaSinistra(int[] casa, int riporto, int n){
+    private void spostaSinistra(ArrayList<Squadra> casa, Squadra riporto, int n){
         for(int i=0;i<n/2-1;i++){
-            casa[i] = casa[i+1];
+            casa.set(i,casa.get(i+1));
+            //casa[i] = casa[i+1];
         }
-        casa[n/2-1] = riporto;
+        //casa[n/2-1] = riporto;
+        casa.set(n/2-1,riporto);
     }
 }

@@ -47,6 +47,14 @@ public class Giornata {
 
     }
 
+    public Giornata(int ID, int numGiornata,GiornataReale giornataReale){
+        this.ID = ID;
+        this.numGiornata = numGiornata;
+        this.gioReale = giornataReale;
+
+
+    }
+
     //calcola i risultati della giornata
     public void calcolaGiornata(Campionato c) {
         for (Partita i : partite ) i.calcolaPartita(c); //chiama il metodo calcola partita su ogni partita della giornata

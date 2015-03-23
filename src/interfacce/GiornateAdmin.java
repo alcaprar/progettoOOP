@@ -24,7 +24,7 @@ public class GiornateAdmin extends JPanel {
 
     public GiornateAdmin() {
 
-        listaGiornate = db.selectGiornate();
+        listaGiornate = db.selectGiornateAdmin();
 
         //se non sono mai state inserite creo le 38 giornate
         //che poi verranno mostrate nella tabella
