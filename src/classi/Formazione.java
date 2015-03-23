@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Formazione {
 
     private String modulo;
-    private Squadra squadra;
+    private Squadra squadra;// da togliere?
     private ArrayList<Giocatore> formazione;
 
     public Formazione(ArrayList<Giocatore> g, String modulo, Squadra squadra){

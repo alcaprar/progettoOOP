@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import classi.*;
 import classi.Classifica;
+import classi.Giornata;
 import interfacce.*;
 import utils.*;
 
@@ -429,14 +430,16 @@ public class Mysql{
         }
 
     }
-/*
-    public ArrayList<Giornata> selectGiornate(Campionato campionato) throws SQLException,ClassNotFoundException{
+
+    public ArrayList<Giornata> selectGiornate(Campionato campionato)
+    {
         Connection conn = null;
         PreparedStatement giornatastmt = null;
-        String giornataSql = "SELECT * from Giornata JOIN GiornataAnno on Giornata.NrGioReale=GiornataAnno.NrGioReale where NomeCampionato=?";
+        //String giornataSql = "SELECT * from Giornata JOIN GiornataAnno on Giornata.NrGioReale=GiornataAnno.NrGioReale where NomeCampionato=?";
+        String giornataSql = "SELECT * from Giornata where NomeCampionato=?";
 
         PreparedStatement partitastmt = null;
-        String partitaSql = "SELECT * FROM Partita JOIN Fantasquadra on Partita.IDFantasquadraCasa=Fantasquadra.ID JOIN Fantasquadra on Parita.IDFantasquadraOspite=Fantasquadra.ID where IDgiorn=?";
+        String partitaSql = "SELECT P.ID, P.NrPart, P.PunteggioCasa,P.PunteggioOspite,P.GolCasa,P.GolOspite,FC.ID as FCID,FO.ID as FOID,FC.Nome as FCNome, FO.Nome as FONome FROM Partita as P JOIN Fantasquadra as FC on P.IDFantasquadraCasa=FC.ID JOIN Fantasquadra as FO on P.IDFantasquadraOspite=FO.ID where IDgiorn=?";
 
         ArrayList<Giornata> listaGiornate = new ArrayList<Giornata>();
         try {
@@ -458,16 +461,27 @@ public class Mysql{
 
                 ArrayList<Partita> listaPartite = new ArrayList<Partita>();
                 while(rspartita.next()){
-                    Squadra squadraCasa =new Squadra(rspartita.getInt("IDFantasquadraCasa"), rspartita.getString(""))
-                    Partita partita = new Partita(rspartita.getInt("ID"),rspartita.getInt("NrPart"),rspartita.getInt("IDFantasquadraCasa"),rspartita.getInt("IDFantasquadraOspite"),rspartita.getInt("GolCasa"),rspartita.getInt("GolOspite"),rspartita.getFloat("PunteggioCasa"),rspartita.getFloat("PunteggioOspite"));
+                    Squadra squadraCasa =new Squadra(rspartita.getInt("FCID"), rspartita.getString("FCNome"));
+                    Squadra squadraOspite = new Squadra(rspartita.getInt("FOID"),rspartita.getString("FONome"));
+                    Partita partita = new Partita(rspartita.getInt("ID"),rspartita.getInt("NrPart"),squadraCasa,squadraOspite,rspartita.getInt("GolCasa"),rspartita.getInt("GolOspite"),rspartita.getFloat("PunteggioCasa"),rspartita.getFloat("PunteggioOspite"));
                     listaPartite.add(partita);
 
                 }
 
                 giornata.setPartite(listaPartite);
 
+                listaGiornate.add(giornata);
+
             }
 
+            return listaGiornate;
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return listaGiornate;
+
+        }catch(Exception e){
+            e.printStackTrace();
             return listaGiornate;
 
         }finally {
@@ -479,7 +493,7 @@ public class Mysql{
                     }
                 }
         }
-    }*/
+    }
 
     //crea il campionato
     public boolean creaCampionato(Campionato campionato){

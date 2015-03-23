@@ -13,7 +13,7 @@ import java.awt.*;
  * Created by Giacomo on 12/03/15.
  */
 public class Classifica {
-    private JPanel panel1;
+    private JPanel mainPanel;
     private JTable tableClassifica;
 
     private Squadra squadra;
@@ -53,6 +53,8 @@ public class Classifica {
                 return c;
             }
         });
+
+        tableClassifica.setRowHeight(50);
     }
 
 }

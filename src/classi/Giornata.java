@@ -75,4 +75,20 @@ public class Giornata {
     public void setNumGioReale(GiornataReale numGioReale) {
         this.gioReale = numGioReale;
     }
+
+    public Object[][] partiteToArray(){
+        Object[][] listaObject = new Object[this.partite.size()][10];
+
+        for(int i=0;i<this.partite.size();i++){
+            listaObject[i][0] = String.valueOf(this.partite.get(i).getCasa().getID())+" - "+ String.valueOf(this.partite.get(i).getCasa().getNome());
+            listaObject[i][1] = String.valueOf(this.partite.get(i).getPuntiCasa());
+            listaObject[i][2] = String.valueOf(this.partite.get(i).getGolCasa());
+            listaObject[i][3] = String.valueOf(this.partite.get(i).getGolFuori());
+            listaObject[i][4] = String.valueOf(this.partite.get(i).getPuntiFuori());
+            listaObject[i][5] = String.valueOf(this.partite.get(i).getOspite().getID())+" - "+ String.valueOf(this.partite.get(i).getOspite().getNome());
+        }
+
+        return listaObject;
+
+    }
 }

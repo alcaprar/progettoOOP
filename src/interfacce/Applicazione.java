@@ -36,6 +36,12 @@ public class Applicazione extends JFrame {
         classifica = db.selectClassifica(sqr.getCampionato());
         sqr.getCampionato().setClassifica(classifica);
 
+        //scarico il calendario e lo inserisco nel campionato
+        ArrayList<Giornata> listaGiornate = new ArrayList<Giornata>();
+        listaGiornate = db.selectGiornate(sqr.getCampionato());
+        sqr.getCampionato().setCalendario(listaGiornate);
+
+
         //se sono stati inseriti i giocatori nell squadre
         //scarico la lista dei giocatori della squadra appena loggata
         ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
