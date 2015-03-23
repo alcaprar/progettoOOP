@@ -136,18 +136,15 @@ public class Formazione extends JPanel implements ItemListener {
     private ArrayList<Giocatore> giocatori;
     private ArrayList<Giocatore> formazione;
     private Squadra squadra;
+    private int counter;
+
 
     public Formazione() {
 
-        //array che punta al vettore di giocatori che compongono la rosa della squadra
-        //giocatori = sqr.getGiocatori();
-        //nuovo riferimento per la squadra
-        //squadra = sqr;
-        //inizializzo il vettore di formazione
-        //formazione = new ArrayList<Giocatore>(18);
-        //viene generato il codice di setup dell'UI e richiamato il metodo $$$setupUI$$$() come prima istruzione
-        //gestisciListe(squadra);
         setVisible(true);
+
+        //inizializza il counter per il check sulla formazione
+        counter = 1;
 
         //metodo per popolare le liste di giocatori
         creaListe();
@@ -183,6 +180,7 @@ public class Formazione extends JPanel implements ItemListener {
         listModelA.clear();
         creaListe();
         resetLabel();
+        counter = 1;
     }
 
     //metodo per la creazione delle liste
@@ -190,14 +188,6 @@ public class Formazione extends JPanel implements ItemListener {
     //inserisce poi le stringhe dei cognomi dei giocatori nelle differenti liste in base al ruolo che coprono
     private void creaListe(){
         String[] gioc = {"Por1", "Por2", "Por3", "Dif1", "Dif2", "Dif3", "Dif4", "Dif5", "Dif6", "Dif7", "Dif8", "Cen1", "Cen2", "Cen3", "Cen4", "Cen5", "Cen6", "Cen7", "Cen8", "Att1", "Att2", "Att3", "Att4", "Att5", "Att6"};
-        /*lPortieri.setModel(listModelP);
-        for(int i = 0; i < 3; i++) listModelP.addElement(giocatori.get(i).getCognome());
-        lDifensori.setModel(listModelD);
-        for(int i = 3; i < 11; i++) listModelD.addElement(giocatori.get(i).getCognome());
-        lCentrocampisti.setModel(listModelC);
-        for(int i = 11; i < 19; i++) listModelC.addElement(giocatori.get(i).getCognome());
-        lAttaccanti.setModel(listModelA);
-        for(int i = 19; i < 25; i++) listModelA.addElement(giocatori.get(i).getCognome());*/
         lPortieri.setModel(listModelP);
         for(int i = 0; i < 3; i++) listModelP.addElement(gioc[i]);
         lDifensori.setModel(listModelD);
@@ -313,6 +303,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lPortieri.isSelectionEmpty()){
                     if(p343PorLabel.getText().equals("Portiere")){
                         p343PorLabel.setText((String) lPortieri.getSelectedValue());
+                        counter++;
                     }
                     else {
                         listModelP.add(0, p343PorLabel.getText());
@@ -323,6 +314,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p343PorLabel.getText().equals("Portiere")){
                     listModelP.add(0, p343PorLabel.getText());
                     p343PorLabel.setText("Portiere");
+                    counter--;
                 }
                 lPortieri.clearSelection();
             }
@@ -335,6 +327,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p343DifLabel1.getText().equals("Difensore")){
                         p343DifLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p343DifLabel1.getText());
@@ -345,6 +338,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p343DifLabel1.getText().equals("Difensore")){
                     listModelD.add(0, p343DifLabel1.getText());
                     p343DifLabel1.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -357,6 +351,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p343DifLabel2.getText().equals("Difensore")){
                         p343DifLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p343DifLabel2.getText());
@@ -367,6 +362,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p343DifLabel2.getText().equals("Difensore")){
                     listModelD.add(0, p343DifLabel2.getText());
                     p343DifLabel2.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -379,6 +375,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p343DifLabel3.getText().equals("Difensore")){
                         p343DifLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p343DifLabel3.getText());
@@ -389,6 +386,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p343DifLabel3.getText().equals("Difensore")){
                     listModelD.add(0, p343DifLabel3.getText());
                     p343DifLabel3.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -401,6 +399,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p343CenLabel1.getText().equals("Centrocampista")){
                         p343CenLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p343CenLabel1.getText());
@@ -411,6 +410,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if (!p343CenLabel1.getText().equals("Centrocampista")) {
                     listModelC.add(0, p343CenLabel1.getText());
                     p343CenLabel1.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -423,6 +423,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p343CenLabel2.getText().equals("Centrocampista")){
                         p343CenLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p343CenLabel2.getText());
@@ -432,6 +433,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p343CenLabel2.getText().equals("Centrocampista")) {
                     listModelC.add(0, p343CenLabel2.getText());
                     p343CenLabel2.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -444,6 +446,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p343CenLabel3.getText().equals("Centrocampista")){
                         p343CenLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p343CenLabel3.getText());
@@ -453,6 +456,7 @@ public class Formazione extends JPanel implements ItemListener {
                 }  else if (!p343CenLabel3.getText().equals("Centrocampista")) {
                     listModelC.add(0, p343CenLabel3.getText());
                     p343CenLabel3.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -465,6 +469,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p343CenLabel4.getText().equals("Centrocampista")){
                         p343CenLabel4.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p343CenLabel4.getText());
@@ -474,6 +479,7 @@ public class Formazione extends JPanel implements ItemListener {
                 }  else if (!p343CenLabel4.getText().equals("Centrocampista")) {
                     listModelC.add(0, p343CenLabel4.getText());
                     p343CenLabel4.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -486,6 +492,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(p343AttLabel1.getText().equals("Attaccante")){
                         p343AttLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, p343AttLabel1.getText());
@@ -495,6 +502,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p343AttLabel1.getText().equals("Attaccante")) {
                     listModelA.add(0, p343AttLabel1.getText());
                     p343AttLabel1.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
@@ -507,6 +515,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(p343AttLabel2.getText().equals("Attaccante")){
                         p343AttLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, p343AttLabel2.getText());
@@ -516,6 +525,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p343AttLabel2.getText().equals("Attaccante")) {
                     listModelA.add(0, p343AttLabel2.getText());
                     p343AttLabel2.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
@@ -528,6 +538,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(p343AttLabel3.getText().equals("Attaccante")){
                         p343AttLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, p343AttLabel3.getText());
@@ -537,43 +548,68 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p343AttLabel3.getText().equals("Attaccante")) {
                     listModelA.add(0, p343AttLabel3.getText());
                     p343AttLabel3.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
         });
-        /*p343Button.addActionListener(new ActionListener() {
+        p343Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for(int i = 0; i<3; i++){
-                    if(giocatori.get(i).getCognome().equals(p343PorLabel.getText())) formazione.add(0, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panPorLabel.getText())) formazione.add(11, giocatori.get(i));
+                if (counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
+                    for (int i = 0; i < 3; i++) {
+                        if (giocatori.get(i).getCognome().equals(p343PorLabel.getText()))
+                            formazione.add(0, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panPorLabel.getText()))
+                            formazione.add(11, giocatori.get(i));
+                    }
+                    for (int i = 3; i < 11; i++) {
+                        if (giocatori.get(i).getCognome().equals(p343DifLabel1.getText()))
+                            formazione.add(1, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p343DifLabel2.getText()))
+                            formazione.add(2, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p343DifLabel3.getText()))
+                            formazione.add(3, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panDifLabel1.getText()))
+                            formazione.add(12, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panDifLabel2.getText()))
+                            formazione.add(13, giocatori.get(i));
+                    }
+                    for (int i = 11; i < 19; i++) {
+                        if (giocatori.get(i).getCognome().equals(p343CenLabel1.getText()))
+                            formazione.add(4, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p343CenLabel2.getText()))
+                            formazione.add(5, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p343CenLabel3.getText()))
+                            formazione.add(6, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p343CenLabel4.getText()))
+                            formazione.add(7, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panCenLabel1.getText()))
+                            formazione.add(14, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panCenLabel2.getText()))
+                            formazione.add(15, giocatori.get(i));
+                    }
+                    for (int i = 19; i < 25; i++) {
+                        if (giocatori.get(i).getCognome().equals(p343AttLabel1.getText()))
+                            formazione.add(8, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p343AttLabel2.getText()))
+                            formazione.add(9, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p343AttLabel3.getText()))
+                            formazione.add(10, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panAttLabel1.getText()))
+                            formazione.add(16, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panAttLabel2.getText()))
+                            formazione.add(17, giocatori.get(i));
+                    }
+                    classi.Formazione form = new classi.Formazione(formazione, "3-4-3", squadra);
+                    squadra.setFormazione(form);
+                } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
-                for(int i = 3; i < 11; i++){
-                    if(giocatori.get(i).getCognome().equals(p343DifLabel1.getText())) formazione.add(1, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p343DifLabel2.getText())) formazione.add(2, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p343DifLabel3.getText())) formazione.add(3, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panDifLabel1.getText())) formazione.add(12, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panDifLabel2.getText())) formazione.add(13, giocatori.get(i));
-                }
-                for(int i = 11; i < 19; i++){
-                    if(giocatori.get(i).getCognome().equals(p343CenLabel1.getText())) formazione.add(4, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p343CenLabel2.getText())) formazione.add(5, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p343CenLabel3.getText())) formazione.add(6, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p343CenLabel4.getText())) formazione.add(7, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panCenLabel1.getText())) formazione.add(14, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panCenLabel2.getText())) formazione.add(15, giocatori.get(i));
-                }
-                for (int i = 19; i < 25; i++){
-                    if(giocatori.get(i).getCognome().equals(p343AttLabel1.getText())) formazione.add(8, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p343AttLabel2.getText())) formazione.add(9, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p343AttLabel3.getText())) formazione.add(10, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panAttLabel1.getText())) formazione.add(16, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panAttLabel2.getText())) formazione.add(17, giocatori.get(i));
-                }
-
-                classi.Formazione form = new classi.Formazione(formazione, "3-4-3", squadra);
             }
-        });*/
+        });
     }
 
     private void ins352(){
@@ -583,6 +619,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lPortieri.isSelectionEmpty()){
                     if(p352PorLabel.getText().equals("Portiere")){
                         p352PorLabel.setText((String) lPortieri.getSelectedValue());
+                        counter++;
                     }
                     else {
                         listModelP.add(0, p352PorLabel.getText());
@@ -593,6 +630,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p352PorLabel.getText().equals("Portiere")){
                     listModelP.add(0, p352PorLabel.getText());
                     p352PorLabel.setText("Portiere");
+                    counter--;
                 }
                 lPortieri.clearSelection();
             }
@@ -605,6 +643,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p352DifLabel1.getText().equals("Difensore")){
                         p352DifLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p352DifLabel1.getText());
@@ -615,6 +654,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p352DifLabel1.getText().equals("Difensore")){
                     listModelD.add(0, p352DifLabel1.getText());
                     p352DifLabel1.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -627,6 +667,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p352DifLabel2.getText().equals("Difensore")){
                         p352DifLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p352DifLabel2.getText());
@@ -637,6 +678,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p352DifLabel2.getText().equals("Difensore")){
                     listModelD.add(0, p352DifLabel2.getText());
                     p352DifLabel2.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -649,6 +691,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p352DifLabel3.getText().equals("Difensore")){
                         p352DifLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p352DifLabel3.getText());
@@ -659,6 +702,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p352DifLabel1.getText().equals("Difensore")){
                     listModelD.add(0, p352DifLabel3.getText());
                     p352DifLabel3.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -671,6 +715,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p352CenLabel1.getText().equals("Centrocampista")){
                         p352CenLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p352CenLabel1.getText());
@@ -680,6 +725,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p352CenLabel1.getText().equals("Centrocampista")) {
                     listModelC.add(0, p352CenLabel1.getText());
                     p352CenLabel1.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -692,6 +738,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p352CenLabel2.getText().equals("Centrocampista")){
                         p352CenLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p352CenLabel2.getText());
@@ -701,6 +748,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p352CenLabel2.getText().equals("Centrocampista")) {
                     listModelC.add(0, p352CenLabel2.getText());
                     p352CenLabel2.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -713,6 +761,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p352CenLabel3.getText().equals("Centrocampista")){
                         p352CenLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p352CenLabel3.getText());
@@ -722,6 +771,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p352CenLabel3.getText().equals("Centrocampista")) {
                     listModelC.add(0, p352CenLabel3.getText());
                     p352CenLabel3.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -734,6 +784,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p352CenLabel4.getText().equals("Centrocampista")){
                         p352CenLabel4.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p352CenLabel4.getText());
@@ -743,6 +794,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p352CenLabel4.getText().equals("Centrocampista")) {
                     listModelC.add(0, p352CenLabel4.getText());
                     p352CenLabel4.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -755,6 +807,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p352CenLabel5.getText().equals("Centrocampista")){
                         p352CenLabel5.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p352CenLabel5.getText());
@@ -764,6 +817,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p352CenLabel5.getText().equals("Centrocampista")) {
                     listModelC.add(0, p352CenLabel5.getText());
                     p352CenLabel5.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -776,6 +830,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(p352AttLabel1.getText().equals("Attaccante")){
                         p352AttLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, p352AttLabel1.getText());
@@ -785,6 +840,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p352AttLabel1.getText().equals("Attaccante")) {
                     listModelA.add(0, p352AttLabel1.getText());
                     p352AttLabel1.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
@@ -797,6 +853,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(p352AttLabel2.getText().equals("Attaccante")){
                         p352AttLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, p352AttLabel2.getText());
@@ -806,42 +863,68 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p352AttLabel2.getText().equals("Attaccante")) {
                     listModelA.add(0, p352AttLabel2.getText());
                     p352AttLabel2.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
         });
-        /*p352Button.addActionListener(new ActionListener() {
+        p352Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for(int i = 0; i<3; i++){
-                    if(giocatori.get(i).getCognome().equals(p352PorLabel.getText())) formazione.add(0, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panPorLabel.getText())) formazione.add(11, giocatori.get(i));
+                if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
+                    for (int i = 0; i < 3; i++) {
+                        if (giocatori.get(i).getCognome().equals(p352PorLabel.getText()))
+                            formazione.add(0, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panPorLabel.getText()))
+                            formazione.add(11, giocatori.get(i));
+                    }
+                    for (int i = 3; i < 11; i++) {
+                        if (giocatori.get(i).getCognome().equals(p352DifLabel1.getText()))
+                            formazione.add(1, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p352DifLabel2.getText()))
+                            formazione.add(2, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p352DifLabel3.getText()))
+                            formazione.add(3, giocatori.get(i));
+                        if(giocatori.get(i).getCognome().equals(panDifLabel1.getText()))
+                            formazione.add(12, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panDifLabel2.getText()))
+                            formazione.add(13, giocatori.get(i));
+                    }
+                    for (int i = 11; i < 19; i++) {
+                        if (giocatori.get(i).getCognome().equals(p352CenLabel1.getText()))
+                            formazione.add(4, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p352CenLabel2.getText()))
+                            formazione.add(5, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p352CenLabel3.getText()))
+                            formazione.add(6, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p352CenLabel4.getText()))
+                            formazione.add(7, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p352CenLabel5.getText()))
+                            formazione.add(8, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panCenLabel1.getText()))
+                            formazione.add(14, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panCenLabel2.getText()))
+                            formazione.add(15, giocatori.get(i));
+                    }
+                    for (int i = 19; i < 25; i++) {
+                        if (giocatori.get(i).getCognome().equals(p352AttLabel1.getText()))
+                            formazione.add(9, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p352AttLabel2.getText()))
+                            formazione.add(10, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panAttLabel1.getText()))
+                            formazione.add(16, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panAttLabel2.getText()))
+                            formazione.add(17, giocatori.get(i));
+                    }
+                    classi.Formazione form = new classi.Formazione(formazione, "3-5-2", squadra);
+                    squadra.setFormazione(form);
+                } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
-                for(int i = 3; i < 11; i++){
-                    if(giocatori.get(i).getCognome().equals(p352DifLabel1.getText())) formazione.add(1, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p352DifLabel2.getText())) formazione.add(2, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p352DifLabel3.getText())) formazione.add(3, giocatori.get(i));
-                    f(giocatori.get(i).getCognome().equals(panDifLabel1.getText())) formazione.add(12, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panDifLabel2.getText())) formazione.add(13, giocatori.get(i));
-                }
-                for(int i = 11; i < 19; i++){
-                    if(giocatori.get(i).getCognome().equals(p352CenLabel1.getText())) formazione.add(4, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p352CenLabel2.getText())) formazione.add(5, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p352CenLabel3.getText())) formazione.add(6, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p352CenLabel4.getText())) formazione.add(7, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p352CenLabel5.getText())) formazione.add(8, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panCenLabel1.getText())) formazione.add(14, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panCenLabel2.getText())) formazione.add(15, giocatori.get(i));
-                }
-                for (int i = 19; i < 25; i++){
-                    if(giocatori.get(i).getCognome().equals(p352AttLabel1.getText())) formazione.add(9, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p352AttLabel2.getText())) formazione.add(10, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panAttLabel1.getText())) formazione.add(16, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panAttLabel2.getText())) formazione.add(17, giocatori.get(i));
-                }
-                classi.Formazione form = new classi.Formazione(formazione, "3-5-2", squadra);
             }
-        });*/
+        });
     }
 
     private void ins433(){
@@ -851,6 +934,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lPortieri.isSelectionEmpty()){
                     if(p433PorLabel.getText().equals("Portiere")){
                         p433PorLabel.setText((String) lPortieri.getSelectedValue());
+                        counter++;
                     }
                     else {
                         listModelP.add(0, p433PorLabel.getText());
@@ -861,6 +945,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p433PorLabel.getText().equals("Portiere")){
                     listModelP.add(0, p433PorLabel.getText());
                     p433PorLabel.setText("Portiere");
+                    counter--;
                 }
                 lPortieri.clearSelection();
             }
@@ -873,6 +958,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p433DifLabel1.getText().equals("Difensore")){
                         p433DifLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p433DifLabel1.getText());
@@ -883,6 +969,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p433DifLabel1.getText().equals("Difensore")){
                     listModelD.add(0, p433DifLabel1.getText());
                     p433DifLabel1.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -895,6 +982,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p433DifLabel2.getText().equals("Difensore")){
                         p433DifLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p433DifLabel2.getText());
@@ -905,6 +993,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p433DifLabel2.getText().equals("Difensore")){
                     listModelD.add(0, p433DifLabel2.getText());
                     p433DifLabel2.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -917,6 +1006,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p433DifLabel3.getText().equals("Difensore")){
                         p433DifLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p433DifLabel3.getText());
@@ -927,6 +1017,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p433DifLabel3.getText().equals("Difensore")){
                     listModelD.add(0, p433DifLabel3.getText());
                     p433DifLabel3.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -939,6 +1030,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p433DifLabel4.getText().equals("Difensore")){
                         p433DifLabel4.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p433DifLabel4.getText());
@@ -949,6 +1041,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p433DifLabel4.getText().equals("Difensore")){
                     listModelD.add(0, p433DifLabel4.getText());
                     p433DifLabel4.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -961,6 +1054,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p433CenLabel1.getText().equals("Centrocampista")){
                         p433CenLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p433CenLabel1.getText());
@@ -970,6 +1064,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p433CenLabel1.getText().equals("Centrocampista")) {
                     listModelC.add(0, p433CenLabel1.getText());
                     p433CenLabel1.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -982,6 +1077,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p433CenLabel2.getText().equals("Centrocampista")){
                         p433CenLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p433CenLabel2.getText());
@@ -991,6 +1087,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p433CenLabel2.getText().equals("Centrocampista")) {
                     listModelC.add(0, p433CenLabel2.getText());
                     p433CenLabel2.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -1003,6 +1100,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p433CenLabel3.getText().equals("Centrocampista")){
                         p433CenLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p433CenLabel3.getText());
@@ -1012,6 +1110,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p433CenLabel3.getText().equals("Centrocampista")) {
                     listModelC.add(0, p433CenLabel3.getText());
                     p433CenLabel3.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -1024,6 +1123,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(p433AttLabel1.getText().equals("Attaccante")){
                         p433AttLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, p433AttLabel1.getText());
@@ -1033,6 +1133,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p433AttLabel1.getText().equals("Attaccante")) {
                     listModelA.add(0, p433AttLabel1.getText());
                     p433AttLabel1.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
@@ -1045,6 +1146,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(p433AttLabel2.getText().equals("Attaccante")){
                         p433AttLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, p433AttLabel2.getText());
@@ -1054,6 +1156,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p433AttLabel2.getText().equals("Attaccante")) {
                     listModelA.add(0, p433AttLabel2.getText());
                     p433AttLabel2.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
@@ -1066,6 +1169,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(p433AttLabel3.getText().equals("Attaccante")){
                         p433AttLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, p433AttLabel3.getText());
@@ -1075,42 +1179,68 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p433AttLabel3.getText().equals("Attaccante")) {
                     listModelA.add(0, p433AttLabel3.getText());
                     p433AttLabel3.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
         });
-        /*p433Button.addActionListener(new ActionListener() {
+        p433Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for(int i = 0; i<3; i++){
-                    if(giocatori.get(i).getCognome().equals(p433PorLabel.getText())) formazione.add(0, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panPorLabel.getText())) formazione.add(11, giocatori.get(i));
+                if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
+                    for (int i = 0; i < 3; i++) {
+                        if (giocatori.get(i).getCognome().equals(p433PorLabel.getText()))
+                            formazione.add(0, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panPorLabel.getText()))
+                            formazione.add(11, giocatori.get(i));
+                    }
+                    for (int i = 3; i < 11; i++) {
+                        if (giocatori.get(i).getCognome().equals(p433DifLabel1.getText()))
+                            formazione.add(1, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p433DifLabel2.getText()))
+                            formazione.add(2, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p433DifLabel3.getText()))
+                            formazione.add(3, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p433DifLabel4.getText()))
+                            formazione.add(4, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panDifLabel1.getText()))
+                            formazione.add(12, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panDifLabel2.getText()))
+                            formazione.add(13, giocatori.get(i));
+                    }
+                    for (int i = 11; i < 19; i++) {
+                        if (giocatori.get(i).getCognome().equals(p433CenLabel1.getText()))
+                            formazione.add(5, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p433CenLabel2.getText()))
+                            formazione.add(6, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p433CenLabel3.getText()))
+                            formazione.add(7, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panCenLabel1.getText()))
+                            formazione.add(14, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panCenLabel2.getText()))
+                            formazione.add(15, giocatori.get(i));
+                    }
+                    for (int i = 19; i < 25; i++) {
+                        if (giocatori.get(i).getCognome().equals(p433AttLabel1.getText()))
+                            formazione.add(8, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p433AttLabel2.getText()))
+                            formazione.add(9, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p433AttLabel3.getText()))
+                            formazione.add(10, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panAttLabel1.getText()))
+                            formazione.add(16, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panAttLabel2.getText()))
+                            formazione.add(17, giocatori.get(i));
+                    }
+                    classi.Formazione form = new classi.Formazione(formazione, "4-3-3", squadra);
+                    squadra.setFormazione(form);
+                } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
-                for(int i = 3; i < 11; i++){
-                    if(giocatori.get(i).getCognome().equals(p433DifLabel1.getText())) formazione.add(1, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p433DifLabel2.getText())) formazione.add(2, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p433DifLabel3.getText())) formazione.add(3, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p433DifLabel4.getText())) formazione.add(4, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panDifLabel1.getText())) formazione.add(12, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panDifLabel2.getText())) formazione.add(13, giocatori.get(i));
-                }
-                for(int i = 11; i < 19; i++){
-                    if(giocatori.get(i).getCognome().equals(p433CenLabel1.getText())) formazione.add(5, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p433CenLabel2.getText())) formazione.add(6, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p433CenLabel3.getText())) formazione.add(7, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panCenLabel1.getText())) formazione.add(14, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panCenLabel2.getText())) formazione.add(15, giocatori.get(i));
-                }
-                for (int i = 19; i < 25; i++){
-                    if(giocatori.get(i).getCognome().equals(p433AttLabel1.getText())) formazione.add(8, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p433AttLabel2.getText())) formazione.add(9, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p433AttLabel3.getText())) formazione.add(10, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panAttLabel1.getText())) formazione.add(16, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panAttLabel2.getText())) formazione.add(17, giocatori.get(i));
-                }
-                classi.Formazione form = new classi.Formazione(formazione, "4-3-3", squadra);
             }
-        });*/
+        });
     }
 
     private void ins442(){
@@ -1120,6 +1250,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lPortieri.isSelectionEmpty()){
                     if(p442PorLabel.getText().equals("Portiere")){
                         p442PorLabel.setText((String) lPortieri.getSelectedValue());
+                        counter++;
                     }
                     else {
                         listModelP.add(0, p442PorLabel.getText());
@@ -1130,6 +1261,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p442PorLabel.getText().equals("Portiere")){
                     listModelP.add(0, p442PorLabel.getText());
                     p442PorLabel.setText("Portiere");
+                    counter--;
                 }
                 lPortieri.clearSelection();
             }
@@ -1142,6 +1274,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p442DifLabel1.getText().equals("Difensore")){
                         p442DifLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p442DifLabel1.getText());
@@ -1152,6 +1285,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p442DifLabel1.getText().equals("Difensore")){
                     listModelD.add(0, p442DifLabel1.getText());
                     p442DifLabel1.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1164,6 +1298,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p442DifLabel2.getText().equals("Difensore")){
                         p442DifLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p442DifLabel2.getText());
@@ -1174,6 +1309,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p442DifLabel2.getText().equals("Difensore")){
                     listModelD.add(0, p442DifLabel2.getText());
                     p442DifLabel2.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1186,6 +1322,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p442DifLabel3.getText().equals("Difensore")){
                         p442DifLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p442DifLabel3.getText());
@@ -1196,6 +1333,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p442DifLabel3.getText().equals("Difensore")){
                     listModelD.add(0, p442DifLabel3.getText());
                     p442DifLabel3.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1208,6 +1346,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p442DifLabel4.getText().equals("Difensore")){
                         p442DifLabel4.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p442DifLabel4.getText());
@@ -1218,6 +1357,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p442DifLabel4.getText().equals("Difensore")){
                     listModelD.add(0, p442DifLabel4.getText());
                     p442DifLabel4.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1230,6 +1370,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p442CenLabel1.getText().equals("Centrocampista")){
                         p442CenLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p442CenLabel1.getText());
@@ -1239,6 +1380,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p442CenLabel1.getText().equals("Centrocampista")) {
                     listModelC.add(0, p442CenLabel1.getText());
                     p442CenLabel1.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -1251,6 +1393,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p442CenLabel2.getText().equals("Centrocampista")){
                         p442CenLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p442CenLabel2.getText());
@@ -1260,6 +1403,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p442CenLabel2.getText().equals("Centrocampista")) {
                     listModelC.add(0, p442CenLabel2.getText());
                     p442CenLabel2.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -1272,6 +1416,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p442CenLabel3.getText().equals("Centrocampista")){
                         p442CenLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p442CenLabel3.getText());
@@ -1281,6 +1426,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p442CenLabel1.getText().equals("Centrocampista")) {
                     listModelC.add(0, p442CenLabel1.getText());
                     p442CenLabel1.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -1293,6 +1439,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p442CenLabel4.getText().equals("Centrocampista")){
                         p442CenLabel4.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p442CenLabel4.getText());
@@ -1302,6 +1449,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p442CenLabel4.getText().equals("Centrocampista")) {
                     listModelC.add(0, p442CenLabel4.getText());
                     p442CenLabel4.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -1314,6 +1462,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(p442AttLabel1.getText().equals("Attaccante")){
                         p442AttLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, p442AttLabel1.getText());
@@ -1323,6 +1472,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p442AttLabel1.getText().equals("Attaccante")) {
                     listModelA.add(0, p442AttLabel1.getText());
                     p442AttLabel1.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
@@ -1335,6 +1485,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(p442AttLabel2.getText().equals("Attaccante")){
                         p442AttLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, p442AttLabel2.getText());
@@ -1344,42 +1495,68 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p442AttLabel2.getText().equals("Attaccante")) {
                     listModelA.add(0, p442AttLabel2.getText());
                     p442AttLabel2.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
         });
-        /*p442Button.addActionListener(new ActionListener() {
+        p442Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for(int i = 0; i<3; i++){
-                    if(giocatori.get(i).getCognome().equals(p442PorLabel.getText())) formazione.add(0, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panPorLabel.getText())) formazione.add(11, giocatori.get(i));
+                if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
+                    for (int i = 0; i < 3; i++) {
+                        if (giocatori.get(i).getCognome().equals(p442PorLabel.getText()))
+                            formazione.add(0, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panPorLabel.getText()))
+                            formazione.add(11, giocatori.get(i));
+                    }
+                    for (int i = 3; i < 11; i++) {
+                        if (giocatori.get(i).getCognome().equals(p442DifLabel1.getText()))
+                            formazione.add(1, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p442DifLabel2.getText()))
+                            formazione.add(2, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p442DifLabel3.getText()))
+                            formazione.add(3, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p442DifLabel4.getText()))
+                            formazione.add(4, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panDifLabel1.getText()))
+                            formazione.add(12, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panDifLabel2.getText()))
+                            formazione.add(13, giocatori.get(i));
+                    }
+                    for (int i = 11; i < 19; i++) {
+                        if (giocatori.get(i).getCognome().equals(p442CenLabel1.getText()))
+                            formazione.add(5, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p442CenLabel2.getText()))
+                            formazione.add(6, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p442CenLabel3.getText()))
+                            formazione.add(7, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p442CenLabel4.getText()))
+                            formazione.add(8, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panCenLabel1.getText()))
+                            formazione.add(14, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panCenLabel2.getText()))
+                            formazione.add(15, giocatori.get(i));
+                    }
+                    for (int i = 19; i < 25; i++) {
+                        if (giocatori.get(i).getCognome().equals(p442AttLabel1.getText()))
+                            formazione.add(9, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p442AttLabel2.getText()))
+                            formazione.add(10, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panAttLabel1.getText()))
+                            formazione.add(16, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panAttLabel2.getText()))
+                            formazione.add(17, giocatori.get(i));
+                    }
+                    classi.Formazione form = new classi.Formazione(formazione, "4-4-2", squadra);
+                    squadra.setFormazione(form);
+                } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
-                for(int i = 3; i < 11; i++){
-                    if(giocatori.get(i).getCognome().equals(p442DifLabel1.getText())) formazione.add(1, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p442DifLabel2.getText())) formazione.add(2, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p442DifLabel3.getText())) formazione.add(3, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p442DifLabel4.getText())) formazione.add(4, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panDifLabel1.getText())) formazione.add(12, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panDifLabel2.getText())) formazione.add(13, giocatori.get(i));
-                }
-                for(int i = 11; i < 19; i++){
-                    if(giocatori.get(i).getCognome().equals(p442CenLabel1.getText())) formazione.add(5, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p442CenLabel2.getText())) formazione.add(6, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p442CenLabel3.getText())) formazione.add(7, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p442CenLabel4.getText())) formazione.add(8, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panCenLabel1.getText())) formazione.add(14, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panCenLabel2.getText())) formazione.add(15, giocatori.get(i));
-                }
-                for (int i = 19; i < 25; i++){
-                    if(giocatori.get(i).getCognome().equals(p442AttLabel1.getText())) formazione.add(9, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p442AttLabel2.getText())) formazione.add(10, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panAttLabel1.getText())) formazione.add(16, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panAttLabel2.getText())) formazione.add(17, giocatori.get(i));
-                }
-                classi.Formazione form = new classi.Formazione(formazione, "4-4-2", squadra);
             }
-        });*/
+        });
     }
 
     private void ins451(){
@@ -1389,6 +1566,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lPortieri.isSelectionEmpty()){
                     if(p451PorLabel.getText().equals("Portiere")){
                         p451PorLabel.setText((String) lPortieri.getSelectedValue());
+                        counter++;
                     }
                     else {
                         listModelP.add(0, p451PorLabel.getText());
@@ -1399,6 +1577,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p451PorLabel.getText().equals("Portiere")){
                     listModelP.add(0, p451PorLabel.getText());
                     p451PorLabel.setText("Portiere");
+                    counter--;
                 }
                 lPortieri.clearSelection();
             }
@@ -1411,6 +1590,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p451DifLabel1.getText().equals("Difensore")){
                         p451DifLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p451DifLabel1.getText());
@@ -1421,6 +1601,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p451DifLabel1.getText().equals("Difensore")){
                     listModelD.add(0, p451DifLabel1.getText());
                     p451DifLabel1.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1433,6 +1614,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p451DifLabel2.getText().equals("Difensore")){
                         p451DifLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p451DifLabel2.getText());
@@ -1443,6 +1625,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p451DifLabel2.getText().equals("Difensore")){
                     listModelD.add(0, p451DifLabel2.getText());
                     p451DifLabel2.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1455,6 +1638,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p451DifLabel3.getText().equals("Difensore")){
                         p451DifLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p451DifLabel3.getText());
@@ -1465,6 +1649,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p451DifLabel3.getText().equals("Difensore")){
                     listModelD.add(0, p451DifLabel3.getText());
                     p451DifLabel3.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1477,6 +1662,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p451DifLabel4.getText().equals("Difensore")){
                         p451DifLabel4.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p451DifLabel4.getText());
@@ -1487,6 +1673,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p451DifLabel4.getText().equals("Difensore")){
                     listModelD.add(0, p451DifLabel4.getText());
                     p451DifLabel4.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1499,6 +1686,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p451CenLabel1.getText().equals("Centrocampista")){
                         p451CenLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p451CenLabel1.getText());
@@ -1508,6 +1696,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p451CenLabel1.getText().equals("Centrocampista")) {
                     listModelC.add(0, p451CenLabel1.getText());
                     p451CenLabel1.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -1520,6 +1709,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p451CenLabel2.getText().equals("Centrocampista")){
                         p451CenLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p451CenLabel2.getText());
@@ -1529,6 +1719,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p451CenLabel2.getText().equals("Centrocampista")) {
                     listModelC.add(0, p442CenLabel2.getText());
                     p451CenLabel2.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -1541,6 +1732,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p451CenLabel3.getText().equals("Centrocampista")){
                         p451CenLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p451CenLabel3.getText());
@@ -1550,6 +1742,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p451CenLabel3.getText().equals("Centrocampista")) {
                     listModelC.add(0, p451CenLabel3.getText());
                     p451CenLabel3.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -1562,6 +1755,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p451CenLabel4.getText().equals("Centrocampista")){
                         p451CenLabel4.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p451CenLabel4.getText());
@@ -1571,6 +1765,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p451CenLabel4.getText().equals("Centrocampista")) {
                     listModelC.add(0, p451CenLabel4.getText());
                     p451CenLabel4.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -1583,6 +1778,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p451CenLabel5.getText().equals("Centrocampista")){
                         p451CenLabel5.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p451CenLabel5.getText());
@@ -1592,6 +1788,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p451CenLabel5.getText().equals("Centrocampista")) {
                     listModelC.add(0, p451CenLabel5.getText());
                     p451CenLabel5.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -1604,6 +1801,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(p451AttLabel.getText().equals("Attaccante")){
                         p451AttLabel.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, p451AttLabel.getText());
@@ -1613,42 +1811,68 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p451AttLabel.getText().equals("Attaccante")) {
                     listModelA.add(0, p451AttLabel.getText());
                     p451AttLabel.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
         });
-        /*p451Button.addActionListener(new ActionListener() {
+        p451Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for(int i = 0; i<3; i++){
-                    if(giocatori.get(i).getCognome().equals(p451PorLabel.getText())) formazione.add(0, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panPorLabel.getText())) formazione.add(11, giocatori.get(i));
+                if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
+                    for (int i = 0; i < 3; i++) {
+                        if (giocatori.get(i).getCognome().equals(p451PorLabel.getText()))
+                            formazione.add(0, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panPorLabel.getText()))
+                            formazione.add(11, giocatori.get(i));
+                    }
+                    for (int i = 3; i < 11; i++) {
+                        if (giocatori.get(i).getCognome().equals(p451DifLabel1.getText()))
+                            formazione.add(1, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p451DifLabel2.getText()))
+                            formazione.add(2, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p451DifLabel3.getText()))
+                            formazione.add(3, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p451DifLabel4.getText()))
+                            formazione.add(4, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panDifLabel1.getText()))
+                            formazione.add(12, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panDifLabel2.getText()))
+                            formazione.add(13, giocatori.get(i));
+                    }
+                    for (int i = 11; i < 19; i++) {
+                        if (giocatori.get(i).getCognome().equals(p451CenLabel1.getText()))
+                            formazione.add(5, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p451CenLabel2.getText()))
+                            formazione.add(6, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p451CenLabel3.getText()))
+                            formazione.add(7, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p451CenLabel4.getText()))
+                            formazione.add(8, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p451CenLabel5.getText()))
+                            formazione.add(9, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panCenLabel1.getText()))
+                            formazione.add(14, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panCenLabel2.getText()))
+                            formazione.add(15, giocatori.get(i));
+                    }
+                    for (int i = 19; i < 25; i++) {
+                        if (giocatori.get(i).getCognome().equals(p451AttLabel.getText()))
+                            formazione.add(10, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panAttLabel1.getText()))
+                            formazione.add(16, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panAttLabel2.getText()))
+                            formazione.add(17, giocatori.get(i));
+                    }
+                    classi.Formazione form = new classi.Formazione(formazione, "4-5-1", squadra);
+                    squadra.setFormazione(form);
+                } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
-                for(int i = 3; i < 11; i++){
-                    if(giocatori.get(i).getCognome().equals(p451DifLabel1.getText())) formazione.add(1, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p451DifLabel2.getText())) formazione.add(2, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p451DifLabel3.getText())) formazione.add(3, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p451DifLabel4.getText())) formazione.add(4, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panDifLabel1.getText())) formazione.add(12, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panDifLabel2.getText())) formazione.add(13, giocatori.get(i));
-                }
-                for(int i = 11; i < 19; i++){
-                    if(giocatori.get(i).getCognome().equals(p451CenLabel1.getText())) formazione.add(5, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p451CenLabel2.getText())) formazione.add(6, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p451CenLabel3.getText())) formazione.add(7, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p451CenLabel4.getText())) formazione.add(8, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p451CenLabel5.getText())) formazione.add(9, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panCenLabel1.getText())) formazione.add(14, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panCenLabel2.getText())) formazione.add(15, giocatori.get(i));
-                }
-                for (int i = 19; i < 25; i++){
-                    if(giocatori.get(i).getCognome().equals(p451AttLabel.getText())) formazione.add(10, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panAttLabel1.getText())) formazione.add(16, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panAttLabel2.getText())) formazione.add(17, giocatori.get(i));
-                }
-                classi.Formazione form = new classi.Formazione(formazione, "4-5-1", squadra);
             }
-        });*/
+        });
     }
 
     private void ins532(){
@@ -1658,6 +1882,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lPortieri.isSelectionEmpty()){
                     if(p532PorLabel.getText().equals("Portiere")){
                         p532PorLabel.setText((String) lPortieri.getSelectedValue());
+                        counter++;
                     }
                     else {
                         listModelP.add(0, p532PorLabel.getText());
@@ -1668,6 +1893,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p532PorLabel.getText().equals("Portiere")){
                     listModelP.add(0, p532PorLabel.getText());
                     p532PorLabel.setText("Portiere");
+                    counter--;
                 }
                 lPortieri.clearSelection();
             }
@@ -1680,6 +1906,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p532DifLabel1.getText().equals("Difensore")){
                         p532DifLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p532DifLabel1.getText());
@@ -1690,6 +1917,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p532DifLabel1.getText().equals("Difensore")){
                     listModelD.add(0, p532DifLabel1.getText());
                     p532DifLabel1.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1702,6 +1930,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p532DifLabel2.getText().equals("Difensore")){
                         p532DifLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p532DifLabel2.getText());
@@ -1712,6 +1941,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p532DifLabel2.getText().equals("Difensore")){
                     listModelD.add(0, p532DifLabel2.getText());
                     p532DifLabel2.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1724,6 +1954,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p532DifLabel3.getText().equals("Difensore")){
                         p532DifLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p532DifLabel3.getText());
@@ -1734,6 +1965,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p532DifLabel3.getText().equals("Difensore")){
                     listModelD.add(0, p532DifLabel3.getText());
                     p532DifLabel3.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1746,6 +1978,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p532DifLabel4.getText().equals("Difensore")){
                         p532DifLabel4.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p532DifLabel4.getText());
@@ -1756,6 +1989,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p532DifLabel4.getText().equals("Difensore")){
                     listModelD.add(0, p532DifLabel4.getText());
                     p532DifLabel4.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1768,6 +2002,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p532DifLabel5.getText().equals("Difensore")){
                         p532DifLabel5.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p532DifLabel5.getText());
@@ -1778,6 +2013,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p532DifLabel5.getText().equals("Difensore")){
                     listModelD.add(0, p532DifLabel5.getText());
                     p532DifLabel5.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1790,6 +2026,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p532CenLabel1.getText().equals("Centrocampista")){
                         p532CenLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p532CenLabel1.getText());
@@ -1799,6 +2036,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p532CenLabel1.getText().equals("Centrocampista")) {
                     listModelC.add(0, p532CenLabel1.getText());
                     p532CenLabel1.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -1811,6 +2049,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p532CenLabel2.getText().equals("Centrocampista")){
                         p532CenLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p532CenLabel2.getText());
@@ -1820,6 +2059,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p532CenLabel2.getText().equals("Centrocampista")) {
                     listModelC.add(0, p532CenLabel2.getText());
                     p532CenLabel2.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -1832,6 +2072,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p532CenLabel3.getText().equals("Centrocampista")){
                         p532CenLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p532CenLabel3.getText());
@@ -1841,6 +2082,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p532CenLabel3.getText().equals("Centrocampista")) {
                     listModelC.add(0, p532CenLabel3.getText());
                     p532CenLabel3.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -1853,6 +2095,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(p532AttLabel1.getText().equals("Attaccante")){
                         p532AttLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, p532AttLabel1.getText());
@@ -1862,6 +2105,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p532AttLabel1.getText().equals("Attaccante")) {
                     listModelA.add(0, p532AttLabel1.getText());
                     p532AttLabel1.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
@@ -1874,6 +2118,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(p532AttLabel2.getText().equals("Attaccante")){
                         p532AttLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, p532AttLabel2.getText());
@@ -1883,42 +2128,68 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p532AttLabel2.getText().equals("Attaccante")) {
                     listModelA.add(0, p532AttLabel2.getText());
                     p532AttLabel2.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
         });
-        /*p532Button.addActionListener(new ActionListener() {
+        p532Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for(int i = 0; i<3; i++){
-                    if(giocatori.get(i).getCognome().equals(p532PorLabel.getText())) formazione.add(0, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panPorLabel.getText())) formazione.add(11, giocatori.get(i));
+                if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
+                    for (int i = 0; i < 3; i++) {
+                        if (giocatori.get(i).getCognome().equals(p532PorLabel.getText()))
+                            formazione.add(0, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panPorLabel.getText()))
+                            formazione.add(11, giocatori.get(i));
+                    }
+                    for (int i = 3; i < 11; i++) {
+                        if (giocatori.get(i).getCognome().equals(p532DifLabel1.getText()))
+                            formazione.add(1, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p532DifLabel2.getText()))
+                            formazione.add(2, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p532DifLabel3.getText()))
+                            formazione.add(3, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p532DifLabel4.getText()))
+                            formazione.add(4, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p532DifLabel5.getText()))
+                            formazione.add(5, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panDifLabel1.getText()))
+                            formazione.add(12, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panDifLabel2.getText()))
+                            formazione.add(13, giocatori.get(i));
+                    }
+                    for (int i = 11; i < 19; i++) {
+                        if (giocatori.get(i).getCognome().equals(p532CenLabel1.getText()))
+                            formazione.add(6, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p532CenLabel2.getText()))
+                            formazione.add(7, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p532CenLabel3.getText()))
+                            formazione.add(8, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panCenLabel1.getText()))
+                            formazione.add(14, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panCenLabel2.getText()))
+                            formazione.add(15, giocatori.get(i));
+                    }
+                    for (int i = 19; i < 25; i++) {
+                        if (giocatori.get(i).getCognome().equals(p532AttLabel1.getText()))
+                            formazione.add(9, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p532AttLabel2.getText()))
+                            formazione.add(10, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panAttLabel1.getText()))
+                            formazione.add(16, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panAttLabel2.getText()))
+                            formazione.add(17, giocatori.get(i));
+                    }
+                    classi.Formazione form = new classi.Formazione(formazione, "5-3-2", squadra);
+                    squadra.setFormazione(form);
+                } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
-                for(int i = 3; i < 11; i++){
-                    if(giocatori.get(i).getCognome().equals(p532DifLabel1.getText())) formazione.add(1, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p532DifLabel2.getText())) formazione.add(2, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p532DifLabel3.getText())) formazione.add(3, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p532DifLabel4.getText())) formazione.add(4, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p532DifLabel5.getText())) formazione.add(5, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panDifLabel1.getText())) formazione.add(12, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panDifLabel2.getText())) formazione.add(13, giocatori.get(i));
-                }
-                for(int i = 11; i < 19; i++){
-                    if(giocatori.get(i).getCognome().equals(p532CenLabel1.getText())) formazione.add(6, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p532CenLabel2.getText())) formazione.add(7, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p532CenLabel3.getText())) formazione.add(8, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panCenLabel1.getText())) formazione.add(14, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panCenLabel2.getText())) formazione.add(15, giocatori.get(i));
-                }
-                for (int i = 19; i < 25; i++){
-                    if(giocatori.get(i).getCognome().equals(p532AttLabel1.getText())) formazione.add(9, giocatori.get(i));
-                    if(ggiocatori.get(i).getCognome().equals(p532AttLabel2.getText())) formazione.add(10, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panAttLabel1.getText())) formazione.add(16, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panAttLabel2.getText())) formazione.add(17, giocatori.get(i));
-                }
-                classi.Formazione form = new classi.Formazione(formazione, "5-3-2", squadra);
             }
-        });*/
+        });
     }
 
     private void ins541(){
@@ -1928,6 +2199,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lPortieri.isSelectionEmpty()){
                     if(p541PorLabel.getText().equals("Portiere")){
                         p541PorLabel.setText((String) lPortieri.getSelectedValue());
+                        counter++;
                     }
                     else {
                         listModelP.add(0, p541PorLabel.getText());
@@ -1938,6 +2210,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p541PorLabel.getText().equals("Portiere")){
                     listModelP.add(0, p541PorLabel.getText());
                     p541PorLabel.setText("Portiere");
+                    counter--;
                 }
                 lPortieri.clearSelection();
             }
@@ -1950,6 +2223,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p541DifLabel1.getText().equals("Difensore")){
                         p541DifLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p541DifLabel1.getText());
@@ -1959,6 +2233,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p541DifLabel1.getText().equals("Difensore")) {
                     listModelD.add(0, p541DifLabel1.getText());
                     p541DifLabel1.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1971,6 +2246,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p541DifLabel2.getText().equals("Difensore")){
                         p541DifLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p541DifLabel2.getText());
@@ -1981,6 +2257,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p541DifLabel2.getText().equals("Difensore")){
                     listModelD.add(0, p541DifLabel2.getText());
                     p541DifLabel2.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -1993,6 +2270,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p541DifLabel3.getText().equals("Difensore")){
                         p541DifLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p541DifLabel3.getText());
@@ -2003,6 +2281,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p541DifLabel3.getText().equals("Difensore")){
                     listModelD.add(0, p541DifLabel3.getText());
                     p541DifLabel3.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -2015,6 +2294,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p541DifLabel4.getText().equals("Difensore")){
                         p541DifLabel4.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p541DifLabel4.getText());
@@ -2025,6 +2305,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p541DifLabel4.getText().equals("Difensore")){
                     listModelD.add(0, p541DifLabel4.getText());
                     p541DifLabel4.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -2037,6 +2318,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(p541DifLabel5.getText().equals("Difensore")){
                         p541DifLabel5.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, p541DifLabel5.getText());
@@ -2047,6 +2329,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!p541DifLabel5.getText().equals("Difensore")){
                     listModelD.add(0, p541DifLabel5.getText());
                     p541DifLabel5.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -2059,6 +2342,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p541CenLabel1.getText().equals("Centrocampista")){
                         p541CenLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p541CenLabel1.getText());
@@ -2068,6 +2352,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p541CenLabel1.getText().equals("Centrocampista")) {
                     listModelC.add(0, p541CenLabel1.getText());
                     p541CenLabel1.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -2080,6 +2365,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p541CenLabel2.getText().equals("Centrocampista")){
                         p541CenLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p541CenLabel2.getText());
@@ -2089,6 +2375,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p541CenLabel2.getText().equals("Centrocampista")) {
                     listModelC.add(0, p541CenLabel2.getText());
                     p541CenLabel2.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -2101,6 +2388,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p541CenLabel3.getText().equals("Centrocampista")){
                         p541CenLabel3.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p541CenLabel3.getText());
@@ -2110,6 +2398,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p541CenLabel3.getText().equals("Centrocampista")) {
                     listModelC.add(0, p541CenLabel3.getText());
                     p541CenLabel3.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -2122,6 +2411,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(p541CenLabel4.getText().equals("Centrocampista")){
                         p541CenLabel4.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, p541CenLabel4.getText());
@@ -2131,6 +2421,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p541CenLabel4.getText().equals("Centrocampista")) {
                     listModelC.add(0, p541CenLabel4.getText());
                     p541CenLabel4.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -2143,6 +2434,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(p541AttLabel.getText().equals("Attaccante")){
                         p541AttLabel.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, p541AttLabel.getText());
@@ -2152,42 +2444,68 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!p541AttLabel.getText().equals("Attaccante")) {
                     listModelA.add(0, p541AttLabel.getText());
                     p541AttLabel.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
         });
-        /*p541Button.addActionListener(new ActionListener() {
+        p541Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for(int i = 0; i<3; i++){
-                    if(giocatori.get(i).getCognome().equals(p541PorLabel.getText())) formazione.add(0, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panPorLabel.getText())) formazione.add(11, giocatori.get(i));
+                if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
+                    for (int i = 0; i < 3; i++) {
+                        if (giocatori.get(i).getCognome().equals(p541PorLabel.getText()))
+                            formazione.add(0, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panPorLabel.getText()))
+                            formazione.add(11, giocatori.get(i));
+                    }
+                    for (int i = 3; i < 11; i++) {
+                        if (giocatori.get(i).getCognome().equals(p541DifLabel1.getText()))
+                            formazione.add(1, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p541DifLabel2.getText()))
+                            formazione.add(2, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p541DifLabel3.getText()))
+                            formazione.add(3, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p541DifLabel4.getText()))
+                            formazione.add(4, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p541DifLabel5.getText()))
+                            formazione.add(5, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panDifLabel1.getText()))
+                            formazione.add(12, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panDifLabel2.getText()))
+                            formazione.add(13, giocatori.get(i));
+                    }
+                    for (int i = 11; i < 19; i++) {
+                        if (giocatori.get(i).getCognome().equals(p541CenLabel1.getText()))
+                            formazione.add(6, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p541CenLabel2.getText()))
+                            formazione.add(7, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p541CenLabel3.getText()))
+                            formazione.add(8, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(p541CenLabel3.getText()))
+                            formazione.add(9, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panCenLabel1.getText()))
+                            formazione.add(14, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panCenLabel2.getText()))
+                            formazione.add(15, giocatori.get(i));
+                    }
+                    for (int i = 19; i < 25; i++) {
+                        if (giocatori.get(i).getCognome().equals(p541AttLabel.getText()))
+                            formazione.add(10, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panAttLabel1.getText()))
+                            formazione.add(16, giocatori.get(i));
+                        if (giocatori.get(i).getCognome().equals(panAttLabel2.getText()))
+                            formazione.add(17, giocatori.get(i));
+                    }
+                    classi.Formazione form = new classi.Formazione(formazione, "5-4-1", squadra);
+                    squadra.setFormazione(form);
+                } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
-                for(int i = 3; i < 11; i++){
-                    if(giocatori.get(i).getCognome().equals(p541DifLabel1.getText())) formazione.add(1, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p541DifLabel2.getText())) formazione.add(2, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p541DifLabel3.getText())) formazione.add(3, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p541DifLabel4.getText())) formazione.add(4, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p541DifLabel5.getText())) formazione.add(5, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panDifLabel1.getText())) formazione.add(12, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panDifLabel2.getText())) formazione.add(13, giocatori.get(i));
-                }
-                for(int i = 11; i < 19; i++){
-                    if(giocatori.get(i).getCognome().equals(p541CenLabel1.getText())) formazione.add(6, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p541CenLabel2.getText())) formazione.add(7, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p541CenLabel3.getText())) formazione.add(8, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(p541CenLabel3.getText())) formazione.add(9, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panCenLabel1.getText())) formazione.add(14, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panCenLabel2.getText())) formazione.add(15, giocatori.get(i));
-                }
-                for (int i = 19; i < 25; i++){
-                    if(giocatori.get(i).getCognome().equals(p541AttLabel.getText())) formazione.add(10, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panAttLabel1.getText())) formazione.add(16, giocatori.get(i));
-                    if(giocatori.get(i).getCognome().equals(panAttLabel2.getText())) formazione.add(17, giocatori.get(i));
-                }
-                classi.Formazione form = new classi.Formazione(formazione, "5-4-1", squadra);
             }
-        });*/
+        });
     }
 
     private void inspan(){
@@ -2197,6 +2515,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lPortieri.isSelectionEmpty()){
                     if(panPorLabel.getText().equals("Portiere")){
                         panPorLabel.setText((String) lPortieri.getSelectedValue());
+                        counter++;
                     }
                     else {
                         listModelP.add(0, panPorLabel.getText());
@@ -2207,6 +2526,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!panPorLabel.getText().equals("Portiere")){
                     listModelP.add(0, panPorLabel.getText());
                     panPorLabel.setText("Portiere");
+                    counter--;
                 }
                 lPortieri.clearSelection();
             }
@@ -2219,6 +2539,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(panDifLabel1.getText().equals("Difensore")){
                         panDifLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, panDifLabel1.getText());
@@ -2229,6 +2550,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!panDifLabel1.getText().equals("Difensore")){
                     listModelD.add(0, panDifLabel1.getText());
                     panDifLabel1.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -2241,6 +2563,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lDifensori.isSelectionEmpty()){
                     if(panDifLabel2.getText().equals("Difensore")){
                         panDifLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelD.add(0, panDifLabel2.getText());
@@ -2251,6 +2574,7 @@ public class Formazione extends JPanel implements ItemListener {
                 else if(!panDifLabel2.getText().equals("Difensore")){
                     listModelD.add(0, panDifLabel2.getText());
                     panDifLabel2.setText("Difensore");
+                    counter--;
                 }
                 lDifensori.clearSelection();
             }
@@ -2263,6 +2587,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(panCenLabel1.getText().equals("Centrocampista")){
                         panCenLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, panCenLabel1.getText());
@@ -2272,6 +2597,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!panCenLabel1.getText().equals("Centrocampista")) {
                     listModelC.add(0, panCenLabel1.getText());
                     panCenLabel1.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -2284,6 +2610,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lCentrocampisti.isSelectionEmpty()) {
                     if(panCenLabel2.getText().equals("Centrocampista")){
                         panCenLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelC.add(0, panCenLabel2.getText());
@@ -2293,6 +2620,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!panCenLabel2.getText().equals("Centrocampista")) {
                     listModelC.add(0, panCenLabel2.getText());
                     panCenLabel2.setText("Centrocampista");
+                    counter--;
                 }
                 lCentrocampisti.clearSelection();
             }
@@ -2305,6 +2633,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(panAttLabel1.getText().equals("Attaccante")){
                         panAttLabel1.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, panAttLabel1.getText());
@@ -2314,6 +2643,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!panAttLabel1.getText().equals("Attaccante")) {
                     listModelA.add(0, panAttLabel1.getText());
                     panAttLabel1.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
@@ -2326,6 +2656,7 @@ public class Formazione extends JPanel implements ItemListener {
                 if (!lAttaccanti.isSelectionEmpty()) {
                     if(panAttLabel2.getText().equals("Attaccante")){
                         panAttLabel2.setText(temp);
+                        counter++;
                     }
                     else {
                         listModelA.add(0, panAttLabel2.getText());
@@ -2335,6 +2666,7 @@ public class Formazione extends JPanel implements ItemListener {
                 } else if (!panAttLabel2.getText().equals("Attaccante")) {
                     listModelA.add(0, panAttLabel2.getText());
                     panAttLabel2.setText("Attaccante");
+                    counter--;
                 }
                 lAttaccanti.clearSelection();
             }
@@ -2343,6 +2675,7 @@ public class Formazione extends JPanel implements ItemListener {
 
     public void setSquadra(Squadra sqr){
         this.squadra = sqr;
+        this.giocatori = sqr.getGiocatori();
     }
 
     public void refresh(){
@@ -2351,7 +2684,7 @@ public class Formazione extends JPanel implements ItemListener {
         listModelC.removeAllElements();
         listModelA.removeAllElements();
 
-        for(Giocatore giocatore : squadra.getGiocatori()){
+        for(Giocatore giocatore : giocatori){
             if(giocatore.getRuolo()=='P') listModelP.addElement(giocatore.getCognome());
             if(giocatore.getRuolo()=='D') listModelD.addElement(giocatore.getCognome());
             if(giocatore.getRuolo()=='C') listModelC.addElement(giocatore.getCognome());
