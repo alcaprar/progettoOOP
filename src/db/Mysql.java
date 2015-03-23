@@ -57,9 +57,9 @@ public class Mysql{
             registra = conn.prepareStatement(registraSql);
             registra.setString(1,utente.getNickname());
             registra.setString(2,utente.getPassword());
-            registra.setString(3,utente.getEmail());
-            registra.setString(4,utente.getNome());
-            registra.setString(5,utente.getCognome());
+            registra.setString(3,utente.getNome());
+            registra.setString(4,utente.getCognome());
+            registra.setString(5,utente.getEmail());
             registra.setString(6,"u");  //tipo: utente
             int rs = registra.executeUpdate();
             if(rs==1){
