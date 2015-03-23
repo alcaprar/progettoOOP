@@ -338,6 +338,7 @@ public class CreaCampionato extends JFrame {
         //icona di info
         ImageIcon icon = (ImageIcon) UIManager.getIcon("OptionPane.informationIcon");
 
+
         //è un label senza testo, con solo l'icona di info
         nomeInfo = new JLabel(icon);
 

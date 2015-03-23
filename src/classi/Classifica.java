@@ -28,6 +28,18 @@ public class Classifica {
         this.punti = punti;
     }
 
+    public void aggiornaClassifica(Squadra s, int golf, int gols, float p) {
+        if (s.getID()==squadra.getID()){
+        giocate++;
+        if (golf>gols) {vinte++; punti+=3;}
+        else if (gols==golf) {pareggiate++; punti++;}
+        else perse++;
+        golFatti+=golf;
+        golSubiti+=gols;
+        diffReti=golFatti-golSubiti;
+        punteggio+=p;}
+    }
+
     public Squadra getSquadra() {
         return squadra;
     }

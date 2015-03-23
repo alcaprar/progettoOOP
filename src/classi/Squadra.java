@@ -41,22 +41,22 @@ public class Squadra {
         this.campionato = campionato;
     }
 
-    public Squadra(Persona proprietario){
+    public Squadra(Persona proprietario) {
         this.proprietario = proprietario;
     }
 
-    public Squadra(int ID, String nome){
+    public Squadra(int ID, String nome) {
         this.ID = ID;
         this.nome = nome;
     }
 
-    public Squadra(int ID,  String nome,Persona proprietario){
+    public Squadra(int ID, String nome, Persona proprietario) {
         this.ID = ID;
         this.proprietario = proprietario;
         this.nome = nome;
     }
 
-    public Squadra(int ID, String nome, Persona proprietario , Campionato campionato,int soldiDisponibili){
+    public Squadra(int ID, String nome, Persona proprietario, Campionato campionato, int soldiDisponibili) {
         this.ID = ID;
         this.nome = nome;
         this.proprietario = proprietario;
@@ -71,7 +71,6 @@ public class Squadra {
     }
 
 
-
     public String getNome() {
         return this.nome;
     }
@@ -81,7 +80,7 @@ public class Squadra {
     }
 
 
-    public ArrayList<Giocatore> getGiocatori(){
+    public ArrayList<Giocatore> getGiocatori() {
         return giocatori;
     }
 

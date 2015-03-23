@@ -1,5 +1,7 @@
 package classi;
 
+import java.util.ArrayList;
+
 /**
  * Created by Giacomo on 18/03/15.
  */
@@ -8,8 +10,6 @@ public class Partita {
     private int numeroPartita;
     private Squadra casa;
     private Squadra ospite;
-    private int IDcasa;
-    private int IDospite;
     private Formazione formCasa;
     private Formazione formOspite;
     private int golCasa;
@@ -44,19 +44,25 @@ public class Partita {
     }
 
     //calcola il risultato della partita e lo mette negli appositi attributi
-    public void calcolaPartita (Campionato c) {
-        puntiCasa=formCasa.calcola()+c.getBonusCasa(); //calcola il punteggio della squadra di casa aggiungendo bonus casa al punteggio dei giocatori
+    public void calcolaPartita (int primaFascia, int largFascia, int bonusCasa) {
+        puntiCasa=formCasa.calcola()+bonusCasa; //calcola il punteggio della squadra di casa aggiungendo bonus casa al punteggio dei giocatori
         puntiFuori=formOspite.calcola(); //calcola il punteggio della squadra ospite
-        golCasa=numGol(puntiCasa, c); //calcola i gol che corrispondono al punteggio della squadra di casa
-        golFuori=numGol(puntiFuori, c); //calcola i gol che corrispondono al punteggio della squadra ospite
+        golCasa=numGol(puntiCasa, primaFascia, largFascia); //calcola i gol che corrispondono al punteggio della squadra di casa
+        golFuori=numGol(puntiFuori, primaFascia, largFascia); //calcola i gol che corrispondono al punteggio della squadra ospite
     }
 
     //questo metodo calcola i gol dato il punteggio
-    private int numGol (float p, Campionato c) {
+    private int numGol (float p, int primaFascia, int largFascia) {
         int g=0; //inizializza i gol a 0
-        //si entra nel ciclo solo se il punteggio è superiore al punteggio del primo gol, ogni iterazione alza la condizione per rientrare della larghezza di una fascia
-        for (int i=c.getPrimaFascia(); i>p; i+=c.getLargFascia())  g++;
+        //si entra nel ciclo solo se il punteggio è superiore al punteggio del primo gol,
+        // ogni iterazione alza la condizione per rientrare della larghezza di una fascia
+        for (int i=primaFascia; i>p; i+=largFascia)  g++;
         return g;
+    }
+
+    public void aggClassifica(Classifica c) {
+        c.aggiornaClassifica(casa, golCasa, golFuori, puntiCasa);
+        c.aggiornaClassifica(ospite, golFuori, golCasa, puntiFuori);
     }
 
     public Formazione getFormCasa() {
@@ -105,22 +111,6 @@ public class Partita {
 
     public void setPuntiFuori(float puntiFuori) {
         this.puntiFuori = puntiFuori;
-    }
-
-    public int getIDcasa() {
-        return IDcasa;
-    }
-
-    public void setIDcasa(int IDcasa) {
-        this.IDcasa = IDcasa;
-    }
-
-    public int getIDospite() {
-        return IDospite;
-    }
-
-    public void setIDospite(int IDospite) {
-        this.IDospite = IDospite;
     }
 
     public int getNumeroPartita() {
