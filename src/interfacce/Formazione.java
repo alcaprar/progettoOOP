@@ -556,7 +556,7 @@ public class Formazione extends JPanel implements ItemListener {
         p343Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (counter == 18) {
+                if (counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
                     for (int i = 0; i < 3; i++) {
                         if (giocatori.get(i).getCognome().equals(p343PorLabel.getText()))
                             formazione.add(0, giocatori.get(i));
@@ -603,6 +603,8 @@ public class Formazione extends JPanel implements ItemListener {
                     }
                     classi.Formazione form = new classi.Formazione(formazione, "3-4-3", squadra);
                     squadra.setFormazione(form);
+                } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -869,7 +871,7 @@ public class Formazione extends JPanel implements ItemListener {
         p352Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(counter == 18) {
+                if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
                     for (int i = 0; i < 3; i++) {
                         if (giocatori.get(i).getCognome().equals(p352PorLabel.getText()))
                             formazione.add(0, giocatori.get(i));
@@ -916,6 +918,8 @@ public class Formazione extends JPanel implements ItemListener {
                     }
                     classi.Formazione form = new classi.Formazione(formazione, "3-5-2", squadra);
                     squadra.setFormazione(form);
+                } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1183,7 +1187,7 @@ public class Formazione extends JPanel implements ItemListener {
         p433Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(counter == 18) {
+                if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
                     for (int i = 0; i < 3; i++) {
                         if (giocatori.get(i).getCognome().equals(p433PorLabel.getText()))
                             formazione.add(0, giocatori.get(i));
@@ -1230,6 +1234,8 @@ public class Formazione extends JPanel implements ItemListener {
                     }
                     classi.Formazione form = new classi.Formazione(formazione, "4-3-3", squadra);
                     squadra.setFormazione(form);
+                } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1497,7 +1503,7 @@ public class Formazione extends JPanel implements ItemListener {
         p442Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(counter == 18) {
+                if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
                     for (int i = 0; i < 3; i++) {
                         if (giocatori.get(i).getCognome().equals(p442PorLabel.getText()))
                             formazione.add(0, giocatori.get(i));
@@ -1544,6 +1550,8 @@ public class Formazione extends JPanel implements ItemListener {
                     }
                     classi.Formazione form = new classi.Formazione(formazione, "4-4-2", squadra);
                     squadra.setFormazione(form);
+                } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1811,7 +1819,7 @@ public class Formazione extends JPanel implements ItemListener {
         p451Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(counter == 18) {
+                if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
                     for (int i = 0; i < 3; i++) {
                         if (giocatori.get(i).getCognome().equals(p451PorLabel.getText()))
                             formazione.add(0, giocatori.get(i));
@@ -1858,6 +1866,8 @@ public class Formazione extends JPanel implements ItemListener {
                     }
                     classi.Formazione form = new classi.Formazione(formazione, "4-5-1", squadra);
                     squadra.setFormazione(form);
+                } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -2126,7 +2136,7 @@ public class Formazione extends JPanel implements ItemListener {
         p532Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(counter == 18) {
+                if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
                     for (int i = 0; i < 3; i++) {
                         if (giocatori.get(i).getCognome().equals(p532PorLabel.getText()))
                             formazione.add(0, giocatori.get(i));
@@ -2173,6 +2183,8 @@ public class Formazione extends JPanel implements ItemListener {
                     }
                     classi.Formazione form = new classi.Formazione(formazione, "5-3-2", squadra);
                     squadra.setFormazione(form);
+                } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -2440,7 +2452,7 @@ public class Formazione extends JPanel implements ItemListener {
         p541Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(counter == 18) {
+                if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
                     for (int i = 0; i < 3; i++) {
                         if (giocatori.get(i).getCognome().equals(p541PorLabel.getText()))
                             formazione.add(0, giocatori.get(i));
@@ -2487,6 +2499,8 @@ public class Formazione extends JPanel implements ItemListener {
                     }
                     classi.Formazione form = new classi.Formazione(formazione, "5-4-1", squadra);
                     squadra.setFormazione(form);
+                } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
