@@ -8,12 +8,15 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by alessandro on 19/03/15.
@@ -344,6 +347,16 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
         tabellaGiocatori.setSelectionModel(giocatoriListModel);
 
         tabellaGiocatori.setModel(giocatoriModel);
+
+        //Ordina la tabella dei giocatori in base alla squadra di appartenenza nella realtà
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tabellaGiocatori.getModel());
+        tabellaGiocatori.setRowSorter(sorter);
+        java.util.List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
+
+        int columnIndexSort = 3;
+        sortKeys.add(new RowSorter.SortKey(columnIndexSort, SortOrder.ASCENDING));
+        sorter.setSortKeys(sortKeys);
+        sorter.sort();
 
     }
 
