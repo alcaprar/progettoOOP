@@ -181,9 +181,10 @@ public class Campionato {
     }*/
 
     public Object[] squadreToArray(){
+        System.out.println(this.listaSquadrePartecipanti.size());
         Object[] arrayObject = new Object[this.listaSquadrePartecipanti.size()];
-        for(int i=0;i<listaSquadrePartecipanti.size();i++){
-            arrayObject[i] = listaSquadrePartecipanti.get(i).getID()+" - "+listaSquadrePartecipanti.get(i).getNome()+" - " + listaSquadrePartecipanti.get(i).getProprietario().getNickname();
+        for(int i=0;i<this.listaSquadrePartecipanti.size();i++){
+            arrayObject[i] = this.listaSquadrePartecipanti.get(i).getID()+" - "+this.listaSquadrePartecipanti.get(i).getNome()+" - " + listaSquadrePartecipanti.get(i).getProprietario().getNickname();
         }
         return arrayObject;
     }

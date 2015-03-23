@@ -239,7 +239,6 @@ public class Mysql{
         String partecipantiSql ="SELECT Fantasquadra.ID, Fantasquadra.Nome, Fantasquadra.NickUt from Iscrizione JOIN Fantasquadra on Iscrizione.IDsq=Fantasquadra.ID JOIN Campionato on Iscrizione.Campionato = Campionato.Nome JOIN Regolamento on Campionato.Nome=Regolamento.NomeCampionato where Campionato=?";
 
         ArrayList<Squadra> listaSquadre = new ArrayList<Squadra>();
-        ArrayList<Squadra> listaSquadrePartecipanti = new ArrayList<Squadra>();
         try{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
@@ -255,12 +254,12 @@ public class Mysql{
                 partecipantistmt.setString(1,rs.getString("Campionato"));
                 ResultSet rspartecipanti = partecipantistmt.executeQuery();
 
+                ArrayList<Squadra> listaSquadrePartecipanti = new ArrayList<Squadra>();
+
                 while(rspartecipanti.next()){
                     listaSquadrePartecipanti.add(new Squadra(rspartecipanti.getInt("ID"),rspartecipanti.getString("Nome"),new Persona(rspartecipanti.getString("NickUt"))));
                 }
-
-                Campionato campionato = new Campionato(rs.getString("Campionato"),rs.getInt("NrPartecipanti"),rs.getBoolean("Asta"),rs.getInt("GiornataInizio"),rs.getInt("GiornataFine"),rs.getInt("CreditiIniziali"),rs.getInt("OrarioConsegna"),rs.getInt("PrimaFascia"),rs.getInt("LargFascia"),rs.getInt("BonusCasa"),new Persona(rs.getString("Presidente")),listaSquadrePartecipanti,rs.getBoolean("GiocatoriDaInserire"));
-                Squadra squadra = new Squadra(rs.getInt("ID"),rs.getString("Nome"),utente,campionato,rs.getInt("CreditiDisponibili"));
+                Squadra squadra = new Squadra(rs.getInt("ID"),rs.getString("Nome"),utente,new Campionato(rs.getString("Campionato"),rs.getInt("NrPartecipanti"),rs.getBoolean("Asta"),rs.getInt("GiornataInizio"),rs.getInt("GiornataFine"),rs.getInt("CreditiIniziali"),rs.getInt("OrarioConsegna"),rs.getInt("PrimaFascia"),rs.getInt("LargFascia"),rs.getInt("BonusCasa"),new Persona(rs.getString("Presidente")),listaSquadrePartecipanti,rs.getBoolean("GiocatoriDaInserire")),rs.getInt("CreditiDisponibili"));
                 listaSquadre.add(squadra);
                 i++;
             }
