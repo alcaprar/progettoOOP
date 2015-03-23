@@ -602,6 +602,7 @@ public class Formazione extends JPanel implements ItemListener {
                             formazione.add(17, giocatori.get(i));
                     }
                     classi.Formazione form = new classi.Formazione(formazione, "3-4-3", squadra);
+                    squadra.setFormazione(form);
                 } else {
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -914,6 +915,7 @@ public class Formazione extends JPanel implements ItemListener {
                             formazione.add(17, giocatori.get(i));
                     }
                     classi.Formazione form = new classi.Formazione(formazione, "3-5-2", squadra);
+                    squadra.setFormazione(form);
                 } else {
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1227,6 +1229,7 @@ public class Formazione extends JPanel implements ItemListener {
                             formazione.add(17, giocatori.get(i));
                     }
                     classi.Formazione form = new classi.Formazione(formazione, "4-3-3", squadra);
+                    squadra.setFormazione(form);
                 } else {
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1540,6 +1543,7 @@ public class Formazione extends JPanel implements ItemListener {
                             formazione.add(17, giocatori.get(i));
                     }
                     classi.Formazione form = new classi.Formazione(formazione, "4-4-2", squadra);
+                    squadra.setFormazione(form);
                 } else {
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1853,6 +1857,7 @@ public class Formazione extends JPanel implements ItemListener {
                             formazione.add(17, giocatori.get(i));
                     }
                     classi.Formazione form = new classi.Formazione(formazione, "4-5-1", squadra);
+                    squadra.setFormazione(form);
                 } else {
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -2167,6 +2172,7 @@ public class Formazione extends JPanel implements ItemListener {
                             formazione.add(17, giocatori.get(i));
                     }
                     classi.Formazione form = new classi.Formazione(formazione, "5-3-2", squadra);
+                    squadra.setFormazione(form);
                 } else {
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -2480,6 +2486,7 @@ public class Formazione extends JPanel implements ItemListener {
                             formazione.add(17, giocatori.get(i));
                     }
                     classi.Formazione form = new classi.Formazione(formazione, "5-4-1", squadra);
+                    squadra.setFormazione(form);
                 } else {
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -2663,7 +2670,7 @@ public class Formazione extends JPanel implements ItemListener {
         listModelC.removeAllElements();
         listModelA.removeAllElements();
 
-        for(Giocatore giocatore : squadra.getGiocatori()){
+        for(Giocatore giocatore : giocatori){
             if(giocatore.getRuolo()=='P') listModelP.addElement(giocatore.getCognome());
             if(giocatore.getRuolo()=='D') listModelD.addElement(giocatore.getCognome());
             if(giocatore.getRuolo()=='C') listModelC.addElement(giocatore.getCognome());
