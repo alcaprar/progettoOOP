@@ -79,6 +79,7 @@ public class Applicazione extends JFrame {
 
     private void createUIComponents() {
         gestioneGiocatoriPanel = new GestioneGiocatori(getFrame());
+        homePanel = new Home(getFrame());
     }
 
     private Applicazione getFrame(){

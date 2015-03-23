@@ -29,11 +29,24 @@ public class Home extends JPanel {
 
     private Squadra squadra;
 
+    private Applicazione applicazione;
+
     public void setSquadre(Squadra squadra){
         this.squadra = squadra;
     }
 
     private Utils utils = new Utils();
+
+    public Home(Applicazione app){
+        applicazione = app;
+
+        inviaLaFormazioneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                applicazione.getTabbedPane().setSelectedIndex(1);
+            }
+        });
+    }
 
     public void refresh(){
         nomeSquadra.setText(squadra.getNome());
@@ -67,5 +80,7 @@ public class Home extends JPanel {
             }
         });
     }
+
+
 
 }
