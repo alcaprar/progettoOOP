@@ -174,11 +174,7 @@ public class Formazione extends JPanel implements ItemListener {
     public void itemStateChanged(ItemEvent itemEvent) {
         CardLayout c1 = (CardLayout) (cards.getLayout());
         c1.show(cards, (String) itemEvent.getItem());
-        listModelP.clear();
-        listModelD.clear();
-        listModelC.clear();
-        listModelA.clear();
-        creaListe();
+        refresh();
         resetLabel();
         counter = 1;
     }
