@@ -2679,16 +2679,18 @@ public class Formazione extends JPanel implements ItemListener {
     }
 
     public void refresh(){
-        listModelP.removeAllElements();
-        listModelD.removeAllElements();
-        listModelC.removeAllElements();
-        listModelA.removeAllElements();
+        if(!squadra.getCampionato().isGiocatoriDaInserire()) {
+            listModelP.removeAllElements();
+            listModelD.removeAllElements();
+            listModelC.removeAllElements();
+            listModelA.removeAllElements();
 
-        for(Giocatore giocatore : giocatori){
-            if(giocatore.getRuolo()=='P') listModelP.addElement(giocatore.getCognome());
-            if(giocatore.getRuolo()=='D') listModelD.addElement(giocatore.getCognome());
-            if(giocatore.getRuolo()=='C') listModelC.addElement(giocatore.getCognome());
-            if(giocatore.getRuolo()=='A') listModelA.addElement(giocatore.getCognome());
+            for (Giocatore giocatore : giocatori) {
+                if (giocatore.getRuolo() == 'P') listModelP.addElement(giocatore.getCognome());
+                if (giocatore.getRuolo() == 'D') listModelD.addElement(giocatore.getCognome());
+                if (giocatore.getRuolo() == 'C') listModelC.addElement(giocatore.getCognome());
+                if (giocatore.getRuolo() == 'A') listModelA.addElement(giocatore.getCognome());
+            }
         }
 
     }

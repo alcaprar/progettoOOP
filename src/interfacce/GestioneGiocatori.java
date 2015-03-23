@@ -66,7 +66,7 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
     }
 
 
-    public GestioneGiocatori(Applicazione app){
+    public GestioneGiocatori(final Applicazione app){
         applicazione = app;
 
         listaGiocatori = db.selectGiocatoriAdmin();
@@ -213,7 +213,8 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
                         JOptionPane.showMessageDialog(null, "Le rose sono state inserite con successo!", "Avviso", JOptionPane.INFORMATION_MESSAGE);
                         applicazione.getTabbedPane().remove(applicazione.getTabbedPane().indexOfTab("Gestione Giocatori"));
                         applicazione.getTabbedPane().setSelectedIndex(0);
-                    };
+                        applicazione.getFormazionePanel().refresh();
+                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "La rosa di qualche squadre non è completa.\nPrima di confermare è necessario completare tutte le rose.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }

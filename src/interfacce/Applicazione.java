@@ -40,11 +40,11 @@ public class Applicazione extends JFrame {
         //scarico la lista dei giocatori della squadra appena loggata
         ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
         listaGiocatori = db.selectGiocatori(sqr);
-        if(!listaGiocatori.isEmpty()) {
-            sqr.setGiocatori(listaGiocatori);
-            formazionePanel.setSquadra(sqr);
-            formazionePanel.refresh();
-        }
+
+        sqr.setGiocatori(listaGiocatori);
+
+        formazionePanel.setSquadra(sqr);
+        formazionePanel.refresh();
 
         homePanel.setSquadre(sqr);
         classificaPanel.setSquadre(sqr);
@@ -85,4 +85,9 @@ public class Applicazione extends JFrame {
     private Applicazione getFrame(){
         return this;
     }
+
+    public Formazione getFormazionePanel(){
+        return formazionePanel;
+    }
 }
+
