@@ -467,7 +467,9 @@
                     <children>
                       <component id="89062" class="javax.swing.JList" binding="partecipantiList">
                         <constraints/>
-                        <properties/>
+                        <properties>
+                          <visibleRowCount value="4"/>
+                        </properties>
                       </component>
                     </children>
                   </scrollpane>
@@ -514,36 +516,26 @@
                   </hspacer>
                 </children>
               </grid>
-              <grid id="69c70" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="e91a5" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="5" left="5" bottom="5" right="5"/>
                 <constraints>
                   <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
-                <border type="line" title="Utenti disponibili">
-                  <font/>
-                  <title-color color="-7566196"/>
+                <border type="line" title="Avvisi">
                   <color color="-7566196"/>
                 </border>
                 <children>
-                  <scrollpane id="fb9ab">
+                  <scrollpane id="f08f1">
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="1" use-parent-layout="false">
-                        <preferred-size width="150" height="150"/>
-                      </grid>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
-                    <properties>
-                      <verticalScrollBarPolicy value="22"/>
-                    </properties>
-                    <border type="none">
-                      <title-color color="-7566196"/>
-                      <color color="-7566196"/>
-                    </border>
+                    <properties/>
+                    <border type="none"/>
                     <children>
-                      <component id="f57dc" class="javax.swing.JList" binding="utentiList">
+                      <component id="6e0f1" class="javax.swing.JList" binding="utentiList">
                         <constraints/>
                         <properties>
-                          <preferredSize width="-1" height="-1"/>
                           <visibleRowCount value="4"/>
                         </properties>
                       </component>
