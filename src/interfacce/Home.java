@@ -26,6 +26,7 @@ public class Home extends JPanel {
     private JLabel nomeUtente;
     private JTable tableClassifica;
     private JScrollPane scrollpaneClassifica;
+    private JLabel nomeCampionato;
 
     private Squadra squadra;
 
@@ -51,6 +52,7 @@ public class Home extends JPanel {
     public void refresh(){
         nomeSquadra.setText(squadra.getNome());
         nomeUtente.setText(squadra.getProprietario().getNickname());
+        nomeCampionato.setText(squadra.getCampionato().getNome());
         setTableClassifica();
     }
 
