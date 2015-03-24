@@ -553,50 +553,24 @@ public class Formazione extends JPanel implements ItemListener {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
-                    for (int i = 0; i < 3; i++) {
-                        if (giocatori.get(i).getCognome().equals(p343PorLabel.getText()))
-                            formazione.add(0, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panPorLabel.getText()))
-                            formazione.add(11, giocatori.get(i));
-                    }
-                    for (int i = 3; i < 11; i++) {
-                        if (giocatori.get(i).getCognome().equals(p343DifLabel1.getText()))
-                            formazione.add(1, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p343DifLabel2.getText()))
-                            formazione.add(2, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p343DifLabel3.getText()))
-                            formazione.add(3, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panDifLabel1.getText()))
-                            formazione.add(12, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panDifLabel2.getText()))
-                            formazione.add(13, giocatori.get(i));
-                    }
-                    for (int i = 11; i < 19; i++) {
-                        if (giocatori.get(i).getCognome().equals(p343CenLabel1.getText()))
-                            formazione.add(4, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p343CenLabel2.getText()))
-                            formazione.add(5, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p343CenLabel3.getText()))
-                            formazione.add(6, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p343CenLabel4.getText()))
-                            formazione.add(7, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panCenLabel1.getText()))
-                            formazione.add(14, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panCenLabel2.getText()))
-                            formazione.add(15, giocatori.get(i));
-                    }
-                    for (int i = 19; i < 25; i++) {
-                        if (giocatori.get(i).getCognome().equals(p343AttLabel1.getText()))
-                            formazione.add(8, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p343AttLabel2.getText()))
-                            formazione.add(9, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p343AttLabel3.getText()))
-                            formazione.add(10, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panAttLabel1.getText()))
-                            formazione.add(16, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panAttLabel2.getText()))
-                            formazione.add(17, giocatori.get(i));
-                    }
+                    formazione.add(0, cercaGiocatore(p343PorLabel.getText()));
+                    formazione.add(1, cercaGiocatore(p343DifLabel1.getText()));
+                    formazione.add(2, cercaGiocatore(p343DifLabel2.getText()));
+                    formazione.add(3, cercaGiocatore(p343DifLabel3.getText()));
+                    formazione.add(4, cercaGiocatore(p343CenLabel1.getText()));
+                    formazione.add(5, cercaGiocatore(p343CenLabel2.getText()));
+                    formazione.add(6, cercaGiocatore(p343CenLabel3.getText()));
+                    formazione.add(7, cercaGiocatore(p343CenLabel4.getText()));
+                    formazione.add(8, cercaGiocatore(p343AttLabel1.getText()));
+                    formazione.add(9, cercaGiocatore(p343AttLabel2.getText()));
+                    formazione.add(10, cercaGiocatore(p343AttLabel3.getText()));
+                    formazione.add(11, cercaGiocatore(panPorLabel.getText()));
+                    formazione.add(12, cercaGiocatore(panDifLabel1.getText()));
+                    formazione.add(13, cercaGiocatore(panDifLabel2.getText()));
+                    formazione.add(14, cercaGiocatore(panCenLabel1.getText()));
+                    formazione.add(15, cercaGiocatore(panCenLabel2.getText()));
+                    formazione.add(16, cercaGiocatore(panAttLabel1.getText()));
+                    formazione.add(17, cercaGiocatore(panAttLabel2.getText()));
                     classi.Formazione form = new classi.Formazione(formazione, "3-4-3");
                     squadra.setFormazione(form);
                 } else if(squadra.getCampionato().isGiocatoriDaInserire()){
@@ -868,50 +842,24 @@ public class Formazione extends JPanel implements ItemListener {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
-                    for (int i = 0; i < 3; i++) {
-                        if (giocatori.get(i).getCognome().equals(p352PorLabel.getText()))
-                            formazione.add(0, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panPorLabel.getText()))
-                            formazione.add(11, giocatori.get(i));
-                    }
-                    for (int i = 3; i < 11; i++) {
-                        if (giocatori.get(i).getCognome().equals(p352DifLabel1.getText()))
-                            formazione.add(1, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p352DifLabel2.getText()))
-                            formazione.add(2, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p352DifLabel3.getText()))
-                            formazione.add(3, giocatori.get(i));
-                        if(giocatori.get(i).getCognome().equals(panDifLabel1.getText()))
-                            formazione.add(12, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panDifLabel2.getText()))
-                            formazione.add(13, giocatori.get(i));
-                    }
-                    for (int i = 11; i < 19; i++) {
-                        if (giocatori.get(i).getCognome().equals(p352CenLabel1.getText()))
-                            formazione.add(4, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p352CenLabel2.getText()))
-                            formazione.add(5, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p352CenLabel3.getText()))
-                            formazione.add(6, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p352CenLabel4.getText()))
-                            formazione.add(7, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p352CenLabel5.getText()))
-                            formazione.add(8, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panCenLabel1.getText()))
-                            formazione.add(14, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panCenLabel2.getText()))
-                            formazione.add(15, giocatori.get(i));
-                    }
-                    for (int i = 19; i < 25; i++) {
-                        if (giocatori.get(i).getCognome().equals(p352AttLabel1.getText()))
-                            formazione.add(9, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p352AttLabel2.getText()))
-                            formazione.add(10, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panAttLabel1.getText()))
-                            formazione.add(16, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panAttLabel2.getText()))
-                            formazione.add(17, giocatori.get(i));
-                    }
+                    formazione.add(0, cercaGiocatore(p352PorLabel.getText()));
+                    formazione.add(1, cercaGiocatore(p352DifLabel1.getText()));
+                    formazione.add(2, cercaGiocatore(p352DifLabel2.getText()));
+                    formazione.add(3, cercaGiocatore(p352DifLabel3.getText()));
+                    formazione.add(4, cercaGiocatore(p352CenLabel1.getText()));
+                    formazione.add(5, cercaGiocatore(p352CenLabel2.getText()));
+                    formazione.add(6, cercaGiocatore(p352CenLabel3.getText()));
+                    formazione.add(7, cercaGiocatore(p352CenLabel4.getText()));
+                    formazione.add(8, cercaGiocatore(p352CenLabel5.getText()));
+                    formazione.add(9, cercaGiocatore(p352AttLabel1.getText()));
+                    formazione.add(10, cercaGiocatore(p352AttLabel2.getText()));
+                    formazione.add(11, cercaGiocatore(panPorLabel.getText()));
+                    formazione.add(12, cercaGiocatore(panDifLabel1.getText()));
+                    formazione.add(13, cercaGiocatore(panDifLabel2.getText()));
+                    formazione.add(14, cercaGiocatore(panCenLabel1.getText()));
+                    formazione.add(15, cercaGiocatore(panCenLabel2.getText()));
+                    formazione.add(16, cercaGiocatore(panAttLabel1.getText()));
+                    formazione.add(17, cercaGiocatore(panAttLabel2.getText()));
                     classi.Formazione form = new classi.Formazione(formazione, "3-5-2");
                     squadra.setFormazione(form);
                 } else if(squadra.getCampionato().isGiocatoriDaInserire()){
@@ -1184,50 +1132,24 @@ public class Formazione extends JPanel implements ItemListener {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
-                    for (int i = 0; i < 3; i++) {
-                        if (giocatori.get(i).getCognome().equals(p433PorLabel.getText()))
-                            formazione.add(0, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panPorLabel.getText()))
-                            formazione.add(11, giocatori.get(i));
-                    }
-                    for (int i = 3; i < 11; i++) {
-                        if (giocatori.get(i).getCognome().equals(p433DifLabel1.getText()))
-                            formazione.add(1, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p433DifLabel2.getText()))
-                            formazione.add(2, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p433DifLabel3.getText()))
-                            formazione.add(3, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p433DifLabel4.getText()))
-                            formazione.add(4, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panDifLabel1.getText()))
-                            formazione.add(12, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panDifLabel2.getText()))
-                            formazione.add(13, giocatori.get(i));
-                    }
-                    for (int i = 11; i < 19; i++) {
-                        if (giocatori.get(i).getCognome().equals(p433CenLabel1.getText()))
-                            formazione.add(5, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p433CenLabel2.getText()))
-                            formazione.add(6, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p433CenLabel3.getText()))
-                            formazione.add(7, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panCenLabel1.getText()))
-                            formazione.add(14, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panCenLabel2.getText()))
-                            formazione.add(15, giocatori.get(i));
-                    }
-                    for (int i = 19; i < 25; i++) {
-                        if (giocatori.get(i).getCognome().equals(p433AttLabel1.getText()))
-                            formazione.add(8, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p433AttLabel2.getText()))
-                            formazione.add(9, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p433AttLabel3.getText()))
-                            formazione.add(10, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panAttLabel1.getText()))
-                            formazione.add(16, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panAttLabel2.getText()))
-                            formazione.add(17, giocatori.get(i));
-                    }
+                    formazione.add(0, cercaGiocatore(p433PorLabel.getText()));
+                    formazione.add(1, cercaGiocatore(p433DifLabel1.getText()));
+                    formazione.add(2, cercaGiocatore(p433DifLabel2.getText()));
+                    formazione.add(3, cercaGiocatore(p433DifLabel3.getText()));
+                    formazione.add(4, cercaGiocatore(p433DifLabel4.getText()));
+                    formazione.add(5, cercaGiocatore(p433CenLabel1.getText()));
+                    formazione.add(6, cercaGiocatore(p433CenLabel2.getText()));
+                    formazione.add(7, cercaGiocatore(p433CenLabel3.getText()));
+                    formazione.add(8, cercaGiocatore(p433AttLabel1.getText()));
+                    formazione.add(9, cercaGiocatore(p433AttLabel2.getText()));
+                    formazione.add(10, cercaGiocatore(p433AttLabel3.getText()));
+                    formazione.add(11, cercaGiocatore(panPorLabel.getText()));
+                    formazione.add(12, cercaGiocatore(panDifLabel1.getText()));
+                    formazione.add(13, cercaGiocatore(panDifLabel2.getText()));
+                    formazione.add(14, cercaGiocatore(panCenLabel1.getText()));
+                    formazione.add(15, cercaGiocatore(panCenLabel2.getText()));
+                    formazione.add(16, cercaGiocatore(panAttLabel1.getText()));
+                    formazione.add(17, cercaGiocatore(panAttLabel2.getText()));
                     classi.Formazione form = new classi.Formazione(formazione, "4-3-3");
                     squadra.setFormazione(form);
                 } else if(squadra.getCampionato().isGiocatoriDaInserire()){
@@ -1500,50 +1422,24 @@ public class Formazione extends JPanel implements ItemListener {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
-                    for (int i = 0; i < 3; i++) {
-                        if (giocatori.get(i).getCognome().equals(p442PorLabel.getText()))
-                            formazione.add(0, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panPorLabel.getText()))
-                            formazione.add(11, giocatori.get(i));
-                    }
-                    for (int i = 3; i < 11; i++) {
-                        if (giocatori.get(i).getCognome().equals(p442DifLabel1.getText()))
-                            formazione.add(1, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p442DifLabel2.getText()))
-                            formazione.add(2, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p442DifLabel3.getText()))
-                            formazione.add(3, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p442DifLabel4.getText()))
-                            formazione.add(4, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panDifLabel1.getText()))
-                            formazione.add(12, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panDifLabel2.getText()))
-                            formazione.add(13, giocatori.get(i));
-                    }
-                    for (int i = 11; i < 19; i++) {
-                        if (giocatori.get(i).getCognome().equals(p442CenLabel1.getText()))
-                            formazione.add(5, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p442CenLabel2.getText()))
-                            formazione.add(6, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p442CenLabel3.getText()))
-                            formazione.add(7, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p442CenLabel4.getText()))
-                            formazione.add(8, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panCenLabel1.getText()))
-                            formazione.add(14, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panCenLabel2.getText()))
-                            formazione.add(15, giocatori.get(i));
-                    }
-                    for (int i = 19; i < 25; i++) {
-                        if (giocatori.get(i).getCognome().equals(p442AttLabel1.getText()))
-                            formazione.add(9, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p442AttLabel2.getText()))
-                            formazione.add(10, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panAttLabel1.getText()))
-                            formazione.add(16, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panAttLabel2.getText()))
-                            formazione.add(17, giocatori.get(i));
-                    }
+                    formazione.add(0, cercaGiocatore(p442PorLabel.getText()));
+                    formazione.add(1, cercaGiocatore(p442DifLabel1.getText()));
+                    formazione.add(2, cercaGiocatore(p442DifLabel2.getText()));
+                    formazione.add(3, cercaGiocatore(p442DifLabel3.getText()));
+                    formazione.add(4, cercaGiocatore(p442DifLabel4.getText()));
+                    formazione.add(5, cercaGiocatore(p442CenLabel1.getText()));
+                    formazione.add(6, cercaGiocatore(p442CenLabel2.getText()));
+                    formazione.add(7, cercaGiocatore(p442CenLabel3.getText()));
+                    formazione.add(8, cercaGiocatore(p442CenLabel4.getText()));
+                    formazione.add(9, cercaGiocatore(p442AttLabel1.getText()));
+                    formazione.add(10, cercaGiocatore(p442AttLabel2.getText()));
+                    formazione.add(11, cercaGiocatore(panPorLabel.getText()));
+                    formazione.add(12, cercaGiocatore(panDifLabel1.getText()));
+                    formazione.add(13, cercaGiocatore(panDifLabel2.getText()));
+                    formazione.add(14, cercaGiocatore(panCenLabel1.getText()));
+                    formazione.add(15, cercaGiocatore(panCenLabel2.getText()));
+                    formazione.add(16, cercaGiocatore(panAttLabel1.getText()));
+                    formazione.add(17, cercaGiocatore(panAttLabel2.getText()));
                     classi.Formazione form = new classi.Formazione(formazione, "4-4-2");
                     squadra.setFormazione(form);
                 } else if(squadra.getCampionato().isGiocatoriDaInserire()){
@@ -1816,50 +1712,24 @@ public class Formazione extends JPanel implements ItemListener {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
-                    for (int i = 0; i < 3; i++) {
-                        if (giocatori.get(i).getCognome().equals(p451PorLabel.getText()))
-                            formazione.add(0, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panPorLabel.getText()))
-                            formazione.add(11, giocatori.get(i));
-                    }
-                    for (int i = 3; i < 11; i++) {
-                        if (giocatori.get(i).getCognome().equals(p451DifLabel1.getText()))
-                            formazione.add(1, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p451DifLabel2.getText()))
-                            formazione.add(2, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p451DifLabel3.getText()))
-                            formazione.add(3, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p451DifLabel4.getText()))
-                            formazione.add(4, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panDifLabel1.getText()))
-                            formazione.add(12, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panDifLabel2.getText()))
-                            formazione.add(13, giocatori.get(i));
-                    }
-                    for (int i = 11; i < 19; i++) {
-                        if (giocatori.get(i).getCognome().equals(p451CenLabel1.getText()))
-                            formazione.add(5, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p451CenLabel2.getText()))
-                            formazione.add(6, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p451CenLabel3.getText()))
-                            formazione.add(7, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p451CenLabel4.getText()))
-                            formazione.add(8, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(p451CenLabel5.getText()))
-                            formazione.add(9, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panCenLabel1.getText()))
-                            formazione.add(14, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panCenLabel2.getText()))
-                            formazione.add(15, giocatori.get(i));
-                    }
-                    for (int i = 19; i < 25; i++) {
-                        if (giocatori.get(i).getCognome().equals(p451AttLabel.getText()))
-                            formazione.add(10, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panAttLabel1.getText()))
-                            formazione.add(16, giocatori.get(i));
-                        if (giocatori.get(i).getCognome().equals(panAttLabel2.getText()))
-                            formazione.add(17, giocatori.get(i));
-                    }
+                    formazione.add(0, cercaGiocatore(p343PorLabel.getText()));
+                    formazione.add(1, cercaGiocatore(p343DifLabel1.getText()));
+                    formazione.add(2, cercaGiocatore(p343DifLabel2.getText()));
+                    formazione.add(3, cercaGiocatore(p343DifLabel3.getText()));
+                    formazione.add(4, cercaGiocatore(p343CenLabel1.getText()));
+                    formazione.add(5, cercaGiocatore(p343CenLabel2.getText()));
+                    formazione.add(6, cercaGiocatore(p343CenLabel3.getText()));
+                    formazione.add(7, cercaGiocatore(p343CenLabel4.getText()));
+                    formazione.add(8, cercaGiocatore(p343AttLabel1.getText()));
+                    formazione.add(9, cercaGiocatore(p343AttLabel2.getText()));
+                    formazione.add(10, cercaGiocatore(p343AttLabel3.getText()));
+                    formazione.add(11, cercaGiocatore(panPorLabel.getText()));
+                    formazione.add(12, cercaGiocatore(panDifLabel1.getText()));
+                    formazione.add(13, cercaGiocatore(panDifLabel2.getText()));
+                    formazione.add(14, cercaGiocatore(panCenLabel1.getText()));
+                    formazione.add(15, cercaGiocatore(panCenLabel2.getText()));
+                    formazione.add(16, cercaGiocatore(panAttLabel1.getText()));
+                    formazione.add(17, cercaGiocatore(panAttLabel2.getText()));
                     classi.Formazione form = new classi.Formazione(formazione, "4-5-1");
                     squadra.setFormazione(form);
                 } else if(squadra.getCampionato().isGiocatoriDaInserire()){
