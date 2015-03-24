@@ -2,6 +2,7 @@ package interfacce;
 
 import classi.Giocatore;
 import classi.Squadra;
+import db.Mysql;
 import utils.*;
 
 import javax.swing.*;
@@ -22,31 +23,21 @@ public class Info extends JPanel{
     private JLabel mailL;
     private JTable tableRosa;
     private JButton modificaName;
-    private JButton modificaNick;
     private JButton modificaCog;
-    private JButton modificaMail;
 
     private Squadra squadra;
     private DefaultListModel<String> listModel;
-    private Utils utils;
     private String[] colonne;
+    final private Mysql db = new Mysql();
 
     public Info(){
-
-        /*modificaNick.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                String nick = JOptionPane.showInputDialog("Inserisci il nuovo nickname");
-                squadra.getProprietario().setNickname(nick);
-                miniRefresh();
-            }
-        });
 
         modificaName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String nome = JOptionPane.showInputDialog("Inserisci il nuovo nome");
                 squadra.getProprietario().setNome(nome);
+                db.aggiornaNomeUtente(squadra.getProprietario());
                 miniRefresh();
             }
         });
@@ -56,18 +47,10 @@ public class Info extends JPanel{
             public void actionPerformed(ActionEvent actionEvent) {
                 String cognome = JOptionPane.showInputDialog("Inserisci il nuovo cognome");
                 squadra.getProprietario().setCognome(cognome);
+                db.aggiornaCognomeUtente(squadra.getProprietario());
                 miniRefresh();
             }
         });
-
-        modificaMail.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                String mail = JOptionPane.showInputDialog("Inserisci la nuova mail");
-                squadra.getProprietario().setEmail(mail);
-                miniRefresh();
-            }
-        });*/
 
     }
 
@@ -85,10 +68,8 @@ public class Info extends JPanel{
     }
 
     public void miniRefresh(){
-        nomeUtente.setText(squadra.getProprietario().getNickname());
         nomeL.setText(squadra.getProprietario().getNome());
         cognomeL.setText(squadra.getProprietario().getCognome());
-        mailL.setText(squadra.getProprietario().getEmail());
     }
 
     private void setTableRosa(){

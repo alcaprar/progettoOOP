@@ -87,7 +87,7 @@ public class Applicazione extends JFrame {
                 int formazione = tabbedpane.indexOfTab("Formazione");
                 int tab = tabbedpane.getSelectedIndex();
                 if(formazione==tab && squadra.getCampionato().isGiocatoriDaInserire()){
-                    JOptionPane.showMessageDialog(null, "Ancora non sono stati inseriti i giocatori. Non puoi inviare la formazione.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ancora non sono stati inseriti i giocatori. Non potrai inviare la formazione.", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
