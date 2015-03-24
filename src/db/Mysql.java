@@ -378,6 +378,78 @@ public class Mysql{
 
     }
 
+    public void aggiornaNomeUtente(Persona utente){
+            Connection conn = null;
+            PreparedStatement aggiornastmt = null;
+            String aggiornaSql = "UPDATE Utente set Nome =? where Nickname=?";
+
+            try{
+                //registra il JBCD driver
+                Class.forName(JDBC_DRIVER);
+                //apre la connessionename
+                conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+                aggiornastmt = conn.prepareStatement(aggiornaSql);
+                aggiornastmt.setString(1,utente.getNome());
+                aggiornastmt.setString(2,utente.getNickname());
+                int rs = aggiornastmt.executeUpdate();
+
+
+            }catch(SQLException se){
+                se.printStackTrace();
+
+
+            }catch(Exception e){
+                e.printStackTrace();
+
+
+            }finally {
+                if(conn!=null) {
+                    try {
+                        conn.close();
+                    } catch (Exception e) {
+                        //ignored
+                    }
+                }
+            }
+    }
+
+    public void aggiornaCognomeUtente(Persona utente){
+        Connection conn = null;
+        PreparedStatement aggiornastmt = null;
+        String aggiornaSql = "UPDATE Utente set Cognome =? where Nickname=?";
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessionename
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            aggiornastmt = conn.prepareStatement(aggiornaSql);
+            aggiornastmt.setString(1,utente.getCognome());
+            aggiornastmt.setString(2,utente.getNickname());
+            int rs = aggiornastmt.executeUpdate();
+
+
+        }catch(SQLException se){
+            se.printStackTrace();
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
+                }
+            }
+        }
+    }
+
     public ArrayList<GiornataReale> selectGiornateAdmin(){
         Connection conn = null;
         PreparedStatement giocatoristmt = null;
