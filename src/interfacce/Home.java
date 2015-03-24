@@ -28,6 +28,10 @@ public class Home extends JPanel {
     private JLabel nomeCampionato;
     private JTable ultimaGiornataTable;
     private JTable prossimaGiornataTable;
+    private JLabel campionatoFinitolbl;
+    private JLabel campionatoIniziolbl;
+    private JScrollPane ultimaGiornataScrollPane;
+    private JScrollPane prossimaGiornataScrollPane;
 
     private Squadra squadra;
 
@@ -56,9 +60,13 @@ public class Home extends JPanel {
         nomeCampionato.setText(squadra.getCampionato().getNome());
         setTableClassifica();
         if(squadra.getCampionato().getProssimaGiornata()<squadra.getCampionato().getGiornataFine()){
+            campionatoFinitolbl.setVisible(false);
+            ultimaGiornataScrollPane.setVisible(false);
             setTableProssimaG();
         }
         if(squadra.getCampionato().getProssimaGiornata()>squadra.getCampionato().getGiornataInizio()){
+            campionatoIniziolbl.setVisible(false);
+            prossimaGiornataScrollPane.setVisible(false);
             setTableUltimaG();
         }
     }

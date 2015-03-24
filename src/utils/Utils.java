@@ -4,11 +4,19 @@ import classi.*;
 import com.sun.corba.se.spi.ior.ObjectKey;
 import db.Mysql;
 
+import java.io.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import jxl.Cell;
+import jxl.CellType;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
 
 /**
  * Created by alessandro on 04/03/15.
@@ -39,13 +47,102 @@ public class Utils {
 
             }
 
-            if(listaGiocatori.isEmpty()) System.out.print("vuota");
-            else System.out.print("piena");
-
             return db.inserisciGiocatoriAnno(listaGiocatori);
 
 
 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    public boolean xlsvoti(String pathFile, int numeroGiornata){
+        File inputWorkbook = new File(pathFile);
+        Workbook w;
+
+        final Mysql db = new Mysql();
+        try {
+            w = Workbook.getWorkbook(inputWorkbook);
+            // prendo il primo foglio
+            Sheet sheet = w.getSheet(0);
+
+            ArrayList<ArrayList<String>> listaVoti = new ArrayList<ArrayList<String>>();
+
+            //scorro le righe
+            for(int i=0;i<sheet.getRows();i++) {
+                //controllo che la prima cella della riga sia un numero, cioè è una riga con i voti e non
+                //una riga con le intestazioni o altre scritte
+                if(sheet.getCell(0,i).getType()==CellType.NUMBER){
+                    //se è una riga con i voti la aggiungo all'arraylist
+                    ArrayList<String> voto = new ArrayList<String>();
+                    voto.add(sheet.getCell(0, i).getContents());
+                    voto.add(sheet.getCell(3, i).getContents().replace("\"","").replace("*","").replace(",","."));
+                    voto.add(sheet.getCell(4, i).getContents());
+                    voto.add(sheet.getCell(5, i).getContents());
+                    voto.add(sheet.getCell(6, i).getContents());
+                    voto.add(sheet.getCell(7, i).getContents());
+                    voto.add(sheet.getCell(8, i).getContents());
+                    voto.add(sheet.getCell(9, i).getContents());
+                    voto.add(sheet.getCell(10, i).getContents());
+                    voto.add(sheet.getCell(11, i).getContents());
+                    voto.add(sheet.getCell(12, i).getContents());
+                    voto.add(sheet.getCell(13, i).getContents());
+                    listaVoti.add(voto);
+                }
+            }
+
+
+            return db.inserisciVoti(listaVoti,numeroGiornata) ;
+        } catch (BiffException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException ioe){
+            ioe.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public boolean csvVoti(String pathFile,  String csvSplitBy,int numeroGiornata){
+        BufferedReader br = null;
+        final Mysql db = new Mysql();
+
+        String line = "";
+
+        ArrayList<String[]> listaVoti = new ArrayList<String[]>();
+        try {
+
+            br = new BufferedReader(new FileReader(pathFile));
+            String squadra;
+
+            while ((line = br.readLine()) != null) {
+                String[] riga = line.split(csvSplitBy);
+                if(riga[0].equals("Cod.")) System.out.println("Intestazione");
+                else if(riga[0].toLowerCase().contains("Voti gentilmente".toLowerCase())){
+                    squadra = new String(riga[0].split(" ",2)[0].replace("\"",""));
+                    System.out.println("Squadra "+squadra);
+                } else {
+                    String [] voto = line.split(csvSplitBy);
+                    listaVoti.add(voto);
+                    System.out.println("Cod: "+voto[0]+" Voto: "+String.format("%.1f",Float.parseFloat(voto[3].replace("\"","")))+" Gol: "+voto[4]);
+                }
+            }
+
+            return true;
+            //return db.inserisciVoti(listaVoti,numeroGiornata);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return false;

@@ -494,6 +494,46 @@ public class Mysql{
         }
     }
 
+    public int selectGiornateVotiInseriti(){
+        Connection conn = null;
+        PreparedStatement votistmt = null;
+        String votiSql = "select NrGioReale from Voto group by NrGioReale order by NrGioReale desc limit 1";
+
+        int giornata=0;
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            votistmt = conn.prepareStatement(votiSql);
+            ResultSet rs = votistmt.executeQuery();
+
+            if(rs.next()) giornata = rs.getInt("NrGioReale");
+
+
+            return giornata;
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return giornata;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return giornata;
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
+                }
+            }
+        }
+    }
+
     //crea il campionato
     public boolean creaCampionato(Campionato campionato){
         Connection conn = null ;
@@ -712,6 +752,66 @@ public class Mysql{
 
         }finally {
         try { conn.close(); } catch (Exception e) { /* ignored */ }
+        }
+
+    }
+
+    public boolean inserisciVoti(ArrayList<ArrayList<String>> listaVoti, int numeroGiornta){
+        Connection conn = null;
+        PreparedStatement votostmt=null;
+        String votoSql ="INSERT into Voto value(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            int rs=0;
+
+            for(ArrayList<String> voto: listaVoti){
+                votostmt = conn.prepareStatement(votoSql);
+                votostmt.setInt(1,Integer.parseInt(voto.get(0)));
+                System.out.println(numeroGiornta);
+                votostmt.setInt(2,numeroGiornta);
+                //voto
+                votostmt.setFloat(3,Float.valueOf(voto.get(1)));
+                //gol fatto
+                votostmt.setInt(4, Integer.parseInt(voto.get(2)));
+                //gol subito
+                votostmt.setInt(5,Integer.parseInt(voto.get(3)));
+                //autogol
+                votostmt.setInt(6,Integer.parseInt(voto.get(7)));
+                //rigore fatto
+                votostmt.setInt(7,Integer.parseInt(voto.get(6)));
+                //rigore subito
+                votostmt.setInt(8,Integer.parseInt(voto.get(5)));
+                //rigore parato
+                votostmt.setInt(9,Integer.parseInt(voto.get(4)));
+                //assist
+                votostmt.setInt(10,Integer.parseInt(voto.get(10)));
+                //ammonizione
+                votostmt.setInt(11,Integer.parseInt(voto.get(8)));
+                //espulsione
+                votostmt.setInt(12,Integer.parseInt(voto.get(9)));
+                //assist da fermo
+                votostmt.setInt(13,Integer.parseInt(voto.get(11)));
+
+                rs = votostmt.executeUpdate();
+            }
+
+            return (rs==1);
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return false;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+
+        }finally {
+            try { conn.close(); } catch (Exception e) {  }
         }
 
     }

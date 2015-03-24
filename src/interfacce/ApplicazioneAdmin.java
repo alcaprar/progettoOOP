@@ -12,6 +12,7 @@ public class ApplicazioneAdmin extends JFrame {
     private JTabbedPane tabbedAdmin;
     private JPanel panel1;
     private GiocatoriAdmin giocatoriAdmin;
+    private VotiAdmin votiAdmin1;
 
     final Mysql db = new Mysql();
 
@@ -29,6 +30,7 @@ public class ApplicazioneAdmin extends JFrame {
 
     private void createUIComponents() {
         giocatoriAdmin = new GiocatoriAdmin(getFrame());
+        votiAdmin1 = new VotiAdmin(getFrame());
     }
 
     private ApplicazioneAdmin getFrame() {
