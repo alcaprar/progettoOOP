@@ -36,9 +36,11 @@ public class Info extends JPanel{
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String nome = JOptionPane.showInputDialog("Inserisci il nuovo nome");
-                squadra.getProprietario().setNome(nome);
-                db.aggiornaNomeUtente(squadra.getProprietario());
-                miniRefresh();
+                if(!nome.equals("")) {
+                    squadra.getProprietario().setNome(nome);
+                    db.aggiornaNomeUtente(squadra.getProprietario());
+                    miniRefresh();
+                }
             }
         });
 
@@ -46,9 +48,11 @@ public class Info extends JPanel{
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String cognome = JOptionPane.showInputDialog("Inserisci il nuovo cognome");
-                squadra.getProprietario().setCognome(cognome);
-                db.aggiornaCognomeUtente(squadra.getProprietario());
-                miniRefresh();
+                if(!cognome.equals("")) {
+                    squadra.getProprietario().setCognome(cognome);
+                    db.aggiornaCognomeUtente(squadra.getProprietario());
+                    miniRefresh();
+                }
             }
         });
 
@@ -61,8 +65,12 @@ public class Info extends JPanel{
     public void refresh(){
         nomeSquadra.setText(squadra.getNome());
         nomeUtente.setText(squadra.getProprietario().getNickname());
-        nomeL.setText(squadra.getProprietario().getNome());
-        cognomeL.setText(squadra.getProprietario().getCognome());
+        if(!squadra.getProprietario().getNome().equals("")){
+            nomeL.setText(squadra.getProprietario().getNome());
+        } else nomeL.setText("Nome non inserito");
+        if(!squadra.getProprietario().getCognome().equals("")) {
+            cognomeL.setText(squadra.getProprietario().getCognome());
+        } else cognomeL.setText("Cognome non inserito");
         mailL.setText(squadra.getProprietario().getEmail());
         setTableRosa();
     }
