@@ -48,6 +48,9 @@ public class Applicazione extends JFrame {
         listaGiornate = db.selectGiornate(sqr.getCampionato());
         sqr.getCampionato().setCalendario(listaGiornate);
 
+        //scarico la lista dei giocatori delle squadre del mio campionato
+        setListaGiocatori();
+
         refreshFormazione();
 
         homePanel.setSquadre(sqr);
@@ -122,6 +125,12 @@ public class Applicazione extends JFrame {
         formazionePanel.setSquadra(sqr);
         formazionePanel.refresh();
 
+    }
+
+    private void setListaGiocatori(){
+        for(Squadra squadre: sqr.getCampionato().getListaSquadrePartecipanti()){
+            squadre.setGiocatori(db.selectGiocatori(squadre));
+        }
     }
 }
 
