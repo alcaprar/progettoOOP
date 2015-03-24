@@ -350,9 +350,6 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
 
         tabellaGiocatori.setModel(giocatoriModel);
 
-        //Ordina la tabella dei giocatori in base alla squadra di appartenenza nella realtà
-        tabellaGiocatori.setAutoCreateRowSorter(true);
-
     }
 
     private void aggiornaSoldi(Integer soldi){
