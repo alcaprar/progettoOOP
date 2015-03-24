@@ -16,11 +16,7 @@ import java.awt.event.ActionListener;
 public class Info extends JPanel{
     private JPanel mainPanel;
     private JPanel infoUtente;
-    private JLabel nomeUtente;
     private JLabel nomeSquadra;
-    private JLabel nomeL;
-    private JLabel cognomeL;
-    private JLabel mailL;
     private JTable tableRosa;
     private JButton modificaName;
     private JButton modificaCog;
@@ -28,6 +24,10 @@ public class Info extends JPanel{
     private JLabel numeroPartL;
     private JLabel numeroGiornL;
     private JLabel giornataAttL;
+    private JTextField nickText;
+    private JTextField mailText;
+    private JTextField nomeText;
+    private JTextField cognomeText;
 
     private Squadra squadra;
     private DefaultListModel<String> listModel;
@@ -39,24 +39,26 @@ public class Info extends JPanel{
         modificaName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String nome = JOptionPane.showInputDialog("Inserisci il nuovo nome");
-                if(!nome.equals("")) {
-                    squadra.getProprietario().setNome(nome);
+                if(!nomeText.equals("")) {
+                    squadra.getProprietario().setNome(nomeText.getText());
                     db.aggiornaNomeUtente(squadra.getProprietario());
                     miniRefresh();
-                }
+                } else if(!squadra.getProprietario().getNome().equals("")){
+                    nomeText.setText(squadra.getProprietario().getNome());
+                } else nomeText.setText("Nome non inserito");
             }
         });
 
         modificaCog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String cognome = JOptionPane.showInputDialog("Inserisci il nuovo cognome");
-                if(!cognome.equals("")) {
-                    squadra.getProprietario().setCognome(cognome);
+                if(!cognomeText.equals("")) {
+                    squadra.getProprietario().setCognome(cognomeText.getText());
                     db.aggiornaCognomeUtente(squadra.getProprietario());
                     miniRefresh();
-                }
+                } else if(!squadra.getProprietario().getNome().equals("")){
+                    cognomeText.setText(squadra.getProprietario().getCognome());
+                } else cognomeText.setText("Nome non inserito");
             }
         });
 
@@ -68,14 +70,16 @@ public class Info extends JPanel{
 
     public void refresh(){
         nomeSquadra.setText(squadra.getNome());
-        nomeUtente.setText(squadra.getProprietario().getNickname());
+        nickText.setEditable(false);
+        nickText.setText(squadra.getProprietario().getNickname());
         if(!squadra.getProprietario().getNome().equals("")){
-            nomeL.setText(squadra.getProprietario().getNome());
-        } else nomeL.setText("Nome non inserito");
+            nomeText.setText(squadra.getProprietario().getNome());
+        } else nomeText.setText("Nome non inserito");
         if(!squadra.getProprietario().getCognome().equals("")) {
-            cognomeL.setText(squadra.getProprietario().getCognome());
-        } else cognomeL.setText("Cognome non inserito");
-        mailL.setText(squadra.getProprietario().getEmail());
+            cognomeText.setText(squadra.getProprietario().getCognome());
+        } else cognomeText.setText("Cognome non inserito");
+        mailText.setText(squadra.getProprietario().getEmail());
+        mailText.setEditable(false);
         nomeCampL.setText(squadra.getCampionato().getNome());
         numeroPartL.setText(String.valueOf(squadra.getCampionato().getNumeroPartecipanti()));
         numeroGiornL.setText(String.valueOf(squadra.getCampionato().getGiornataFine()-squadra.getCampionato().getGiornataInizio()));
@@ -84,8 +88,8 @@ public class Info extends JPanel{
     }
 
     public void miniRefresh(){
-        nomeL.setText(squadra.getProprietario().getNome());
-        cognomeL.setText(squadra.getProprietario().getCognome());
+        nomeText.setText(squadra.getProprietario().getNome());
+        cognomeText.setText(squadra.getProprietario().getCognome());
     }
 
     private void setTableRosa(){
