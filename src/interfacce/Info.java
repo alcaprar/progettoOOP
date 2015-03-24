@@ -24,6 +24,10 @@ public class Info extends JPanel{
     private JTable tableRosa;
     private JButton modificaName;
     private JButton modificaCog;
+    private JLabel nomeCampL;
+    private JLabel numeroPartL;
+    private JLabel numeroGiornL;
+    private JLabel giornataAttL;
 
     private Squadra squadra;
     private DefaultListModel<String> listModel;
@@ -72,6 +76,10 @@ public class Info extends JPanel{
             cognomeL.setText(squadra.getProprietario().getCognome());
         } else cognomeL.setText("Cognome non inserito");
         mailL.setText(squadra.getProprietario().getEmail());
+        nomeCampL.setText(squadra.getCampionato().getNome());
+        numeroPartL.setText(String.valueOf(squadra.getCampionato().getNumeroPartecipanti()));
+        numeroGiornL.setText(String.valueOf(squadra.getCampionato().getGiornataFine()-squadra.getCampionato().getGiornataInizio()));
+        giornataAttL.setText(String.valueOf(squadra.getCampionato().getProssimaGiornata()-1));
         setTableRosa();
     }
 
