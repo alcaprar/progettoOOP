@@ -15,6 +15,12 @@ public class Squadra {
     //formazione per il prossimo incontro
     private Formazione formazione;
 
+    public boolean equals(Squadra s){
+        if(s.getNome().equals(this.getNome()))return true;
+        else if(s.getID()==this.getID()) return true;
+        else return false;
+    }
+
     public int getID() {
         return ID;
     }
@@ -101,5 +107,13 @@ public class Squadra {
 
     public void setSoldiDisponibili(int soldiDisponibili) {
         this.soldiDisponibili = soldiDisponibili;
+    }
+
+    public Partita prossimaPartita(){
+        Partita partita=null;
+        for(Partita part : this.getCampionato().prossimaGiornata().getPartite()){
+            if(part.getCasa().equals(this)||part.getOspite().equals(this)) partita=part;
+        }
+        return partita;
     }
 }

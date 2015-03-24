@@ -9,6 +9,7 @@ import classi.*;
 import classi.Classifica;
 import classi.Giornata;
 import interfacce.*;
+import interfacce.Formazione;
 import utils.*;
 
 public class Mysql{
@@ -502,8 +503,7 @@ public class Mysql{
 
     }
 
-    public ArrayList<Giornata> selectGiornate(Campionato campionato)
-    {
+    public ArrayList<Giornata> selectGiornate(Campionato campionato){
         Connection conn = null;
         PreparedStatement giornatastmt = null;
         //String giornataSql = "SELECT * from Giornata JOIN GiornataAnno on Giornata.NrGioReale=GiornataAnno.NrGioReale where NomeCampionato=?";
@@ -604,6 +604,47 @@ public class Mysql{
                 }
             }
         }
+    }
+
+    public boolean selectFormazioneInserita(Squadra squadra){
+        Connection conn = null;
+        PreparedStatement formazioneInseritastmt = null;
+        String formazioneInseritaSql = "select * from Formazione where IDpart=? and NomeSq=? group by NomeSq";
+        boolean flag = false;
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            formazioneInseritastmt = conn.prepareStatement(formazioneInseritaSql);
+            formazioneInseritastmt.setInt(1,squadra.prossimaPartita().getID());
+            formazioneInseritastmt.setString(2,squadra.getNome());
+
+            ResultSet rs = formazioneInseritastmt.executeQuery();
+
+            if(rs.next()) flag = true;
+            return flag;
+
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return false;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
+                }
+            }
+        }
+
     }
 
     //crea il campionato
@@ -870,6 +911,45 @@ public class Mysql{
                 votostmt.setInt(13,Integer.parseInt(voto.get(11)));
 
                 rs = votostmt.executeUpdate();
+            }
+
+            return (rs==1);
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return false;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+
+        }finally {
+            try { conn.close(); } catch (Exception e) {  }
+        }
+
+    }
+
+    public boolean inserisciFormazione(Squadra squadra, Partita partita){
+        Connection conn = null;
+        PreparedStatement formazionestmt = null;
+        String formazioneSql = "INSERT into Formazione value(?,?,?,?)";
+
+        int rs=0;
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            int i=1;
+            for(Giocatore gioc :squadra.getFormazione().getFormazione()) {
+                formazionestmt = conn.prepareStatement(formazioneSql);
+                formazionestmt.setInt(1, gioc.getID());
+                formazionestmt.setInt(2,partita.getID());
+                formazionestmt.setString(3,squadra.getNome());
+                formazionestmt.setInt(4,i);
+                i++;
+                rs = formazionestmt.executeUpdate();
             }
 
             return (rs==1);

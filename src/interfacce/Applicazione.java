@@ -33,6 +33,8 @@ public class Applicazione extends JFrame {
 
     final Mysql db = new Mysql();
 
+    private boolean formazioneInserita;
+
     public Applicazione(final Squadra squadra) {
         super("Gestore Fantacalcio");
 
@@ -51,6 +53,10 @@ public class Applicazione extends JFrame {
         //scarico la lista dei giocatori delle squadre del mio campionato
         setListaGiocatori();
 
+        //controllo se è già stata inserita la formazione
+        formazioneInserita = db.selectFormazioneInserita(squadra);
+
+        //aggiorno il pannello formazione
         refreshFormazione();
 
         homePanel.setSquadre(sqr);
@@ -85,6 +91,8 @@ public class Applicazione extends JFrame {
                 int tab = tabbedpane.getSelectedIndex();
                 if(formazione==tab && squadra.getCampionato().isGiocatoriDaInserire()){
                     JOptionPane.showMessageDialog(null, "Ancora non sono stati inseriti i giocatori. Non potrai inviare la formazione.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                } else if(formazione==tab && formazioneInserita){
+                    JOptionPane.showMessageDialog(null, "Hai già inviato la formazione per questa partita.\nSe invii un'altra formazione, questa sostituirà quella vecchia.", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
