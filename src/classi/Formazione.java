@@ -8,21 +8,18 @@ import java.util.ArrayList;
 public class Formazione {
 
     private String modulo;
-    private Squadra squadra;// da togliere?
     private ArrayList<Giocatore> formazione;
 
-    public Formazione(ArrayList<Giocatore> g, String modulo, Squadra squadra){
+    public Formazione(ArrayList<Giocatore> g, String modulo){
         this.modulo = new String(modulo);
-        this.squadra = squadra;
         for (Giocatore i : g) {
             formazione = g;
         }
     }
 
     //funzione per la dichiarazione della formazione, tramite gui si sceglie il modulo e si compone il vettore con le giuste posizioni
-    public void setFormazione(ArrayList<Giocatore> g, String modulo, Squadra squadra) {
+    public void setFormazione(ArrayList<Giocatore> g, String modulo) {
         this.modulo = new String(modulo);
-        this.squadra = squadra;
         for (Giocatore i : g) {
             formazione= g;
         }
@@ -174,4 +171,15 @@ public class Formazione {
         return p;
     }
 
+    public String getModulo() {
+        return modulo;
+    }
+
+    public void setModulo(String modulo) {
+        this.modulo = modulo;
+    }
+
+    public void setFormazione(ArrayList<Giocatore> formazione) {
+        this.formazione = formazione;
+    }
 }

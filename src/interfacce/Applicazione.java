@@ -45,17 +45,7 @@ public class Applicazione extends JFrame {
         listaGiornate = db.selectGiornate(sqr.getCampionato());
         sqr.getCampionato().setCalendario(listaGiornate);
 
-
-
-        //se sono stati inseriti i giocatori nell squadre
-        //scarico la lista dei giocatori della squadra appena loggata
-        ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
-        listaGiocatori = db.selectGiocatori(sqr);
-
-        sqr.setGiocatori(listaGiocatori);
-
-        formazionePanel.setSquadra(sqr);
-        formazionePanel.refresh();
+        refreshFormazione();
 
         homePanel.setSquadre(sqr);
         classificaPanel.setSquadre(sqr);
@@ -118,5 +108,16 @@ public class Applicazione extends JFrame {
     }
 
     public Info getInfoPanel(){ return infoPanel;}
+
+    public void refreshFormazione(){
+        ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
+        listaGiocatori = db.selectGiocatori(sqr);
+
+        sqr.setGiocatori(listaGiocatori);
+
+        formazionePanel.setSquadra(sqr);
+        formazionePanel.refresh();
+
+    }
 }
 

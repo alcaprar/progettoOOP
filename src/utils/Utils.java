@@ -171,7 +171,6 @@ public class Utils {
             listaObject[i][2] = listaGiocatori.get(i).getRuolo();
             listaObject[i][3] = listaGiocatori.get(i).getSquadraReale();
             listaObject[i][4 ]=listaGiocatori.get(i).getPrezzoBase();
-
         }
 
         return listaObject;
