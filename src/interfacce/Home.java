@@ -2,11 +2,14 @@ package interfacce;
 
 import classi.*;
 import com.sun.org.apache.bcel.internal.classfile.LineNumberTable;
+import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory;
 import utils.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -20,7 +23,7 @@ import java.util.Arrays;
 public class Home extends JPanel {
     private JPanel panel1;
     private JButton inviaLaFormazioneButton;
-    private JList list1;
+    private JList listaAvvisi;
     private JLabel nomeSquadra;
     private JLabel nomeUtente;
     private JTable tableClassifica;
@@ -32,6 +35,7 @@ public class Home extends JPanel {
     private JLabel campionatoIniziolbl;
     private JScrollPane ultimaGiornataScrollPane;
     private JScrollPane prossimaGiornataScrollPane;
+    private JTextArea testoAvvisi;
 
     private Squadra squadra;
 
@@ -52,6 +56,19 @@ public class Home extends JPanel {
                 applicazione.getTabbedPane().setSelectedIndex(1);
             }
         });
+
+        listaAvvisi.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if(!e.getValueIsAdjusting()){
+                    JList source = (JList)e.getSource();
+                    int numeroAvviso = source.getSelectedIndex();
+                    testoAvvisi.setText(squadra.getCampionato().getListaAvvisi().get(numeroAvviso)[1]);
+
+                }
+
+            }
+        });
     }
 
     public void refresh(){
@@ -59,6 +76,7 @@ public class Home extends JPanel {
         nomeUtente.setText(squadra.getProprietario().getNickname());
         nomeCampionato.setText(squadra.getCampionato().getNome());
         setTableClassifica();
+        setListaAvvisi();
         if(squadra.getCampionato().getProssimaGiornata()<squadra.getCampionato().getGiornataFine()){
             campionatoFinitolbl.setVisible(false);
             ultimaGiornataScrollPane.setVisible(false);
@@ -144,6 +162,15 @@ public class Home extends JPanel {
                 return c;
             }
         });
+    }
+
+    private void setListaAvvisi(){
+        DefaultListModel listaAvvisiModel = new DefaultListModel();
+        for(String[] avviso:squadra.getCampionato().getListaAvvisi()){
+            listaAvvisiModel.addElement(avviso[0]);
+        }
+        listaAvvisi.setModel(listaAvvisiModel);
+        testoAvvisi.setLineWrap(true);
     }
 
 

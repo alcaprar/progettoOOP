@@ -28,6 +28,8 @@ public class Applicazione extends JFrame {
     private Info infoPanel;
     private JPanel squadreTab;
     private Squadre squadrePanel;
+    private GestioneLega gestioneLegaPanel;
+    private JPanel gestioneLegaTab;
 
     private Squadra sqr;
 
@@ -54,7 +56,10 @@ public class Applicazione extends JFrame {
         setListaGiocatori();
 
         //controllo se è già stata inserita la formazione
-        formazioneInserita = db.selectFormazioneInserita(squadra);
+        formazioneInserita = db.selectFormazioneInserita(sqr);
+
+        //scarico la lista degli avvisi
+        sqr.getCampionato().setListaAvvisi(db.selectAvvisi(sqr));
 
         //aggiorno il pannello formazione
         refreshFormazione();
@@ -64,6 +69,8 @@ public class Applicazione extends JFrame {
         calendarioPanel.setSquadra(sqr);
         squadrePanel.setSquadre(sqr);
         infoPanel.setSquadra(sqr);
+        gestioneLegaPanel.setSquadra(sqr);
+
 
         homePanel.refresh();
         classificaPanel.refresh();
@@ -80,6 +87,11 @@ public class Applicazione extends JFrame {
         } else{
             tabbedPane1.remove(tabbedPane1.indexOfTab("Gestione Giocatori"));
 
+        }
+
+        //se l'utente non è il presidente di lega tolto gestione lega
+        if(!squadra.getProprietario().isPresidenteLega()){
+            tabbedPane1.remove(tabbedPane1.indexOfTab("Gestione Lega"));
         }
         //se ancora non sono stati inseriti i giocatori e si va sulla tab
         //della formazione, invia un avviso
@@ -140,5 +152,6 @@ public class Applicazione extends JFrame {
             squadre.setGiocatori(db.selectGiocatori(squadre));
         }
     }
+
 }
 

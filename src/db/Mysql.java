@@ -618,7 +618,7 @@ public class Mysql{
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
             formazioneInseritastmt = conn.prepareStatement(formazioneInseritaSql);
-            formazioneInseritastmt.setInt(1,squadra.prossimaPartita().getID());
+            formazioneInseritastmt.setInt(1, squadra.prossimaPartita().getID());
             formazioneInseritastmt.setString(2,squadra.getNome());
 
             ResultSet rs = formazioneInseritastmt.executeQuery();
@@ -634,6 +634,51 @@ public class Mysql{
         }catch(Exception e){
             e.printStackTrace();
             return false;
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
+                }
+            }
+        }
+
+    }
+
+    public ArrayList<String[]> selectAvvisi(Squadra squadra){
+        Connection conn = null;
+        PreparedStatement avvisistmt = null;
+        String avvisiSql = "SELECT * from Avvisi where NomeCampionato=?";
+
+        ArrayList<String[]> listaAvvisi = new ArrayList<String[]>();
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            avvisistmt = conn.prepareStatement(avvisiSql);
+            avvisistmt.setString(1,squadra.getCampionato().getNome());
+
+            ResultSet rs = avvisistmt.executeQuery();
+
+            while (rs.next()){
+                String[] avviso ={rs.getString("Titolo"),rs.getString("Testo")};
+                listaAvvisi.add(avviso);
+            }
+
+            return listaAvvisi;
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return listaAvvisi;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return listaAvvisi;
 
         }finally {
             if(conn!=null) {
@@ -965,6 +1010,43 @@ public class Mysql{
         }finally {
             try { conn.close(); } catch (Exception e) {  }
         }
+
+    }
+
+    public boolean inserisciAvviso(Campionato campionato, String titolo, String testo){
+        Connection conn = null;
+        PreparedStatement avvisostmt = null;
+        String avvisoSql = "INSERT into Avvisi(NomeCampionato, Titolo, Testo) value(?,?,?)";
+
+        int rs=0;
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            avvisostmt = conn.prepareStatement(avvisoSql);
+            avvisostmt.setString(1,campionato.getNome());
+            avvisostmt.setString(2,titolo);
+            avvisostmt.setString(3,testo);
+
+            rs = avvisostmt.executeUpdate();
+
+            return (rs==1);
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return false;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+
+        }finally {
+            try { conn.close(); } catch (Exception e) {  }
+        }
+
+
 
     }
 

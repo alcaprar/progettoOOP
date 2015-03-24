@@ -23,6 +23,7 @@ public class Campionato {
     private ArrayList<Classifica> classifica;
     private ArrayList<Giornata> calendario;
     private Giornata prossimaGiorn;
+    private ArrayList<String[]> listaAvvisi;
 
     public ArrayList<Giornata> getCalendario() {
         return calendario;
@@ -173,6 +174,22 @@ public class Campionato {
 
     public void setNome(String nome) {
         nome = nome;
+    }
+
+    public Giornata getProssimaGiorn() {
+        return prossimaGiorn;
+    }
+
+    public void setProssimaGiorn(Giornata prossimaGiorn) {
+        this.prossimaGiorn = prossimaGiorn;
+    }
+
+    public ArrayList<String[]> getListaAvvisi() {
+        return listaAvvisi;
+    }
+
+    public void setListaAvvisi(ArrayList<String[]> listaAvvisi) {
+        this.listaAvvisi = listaAvvisi;
     }
 
     /*public ArrayList<Persona> getPartecipanti() {
