@@ -176,6 +176,21 @@ public class Utils {
         return listaObject;
     }
 
+    public Object[][] listaGiocatoriToArraySquadre(ArrayList<Giocatore> listaGiocatori){
+
+        Object[][] listaObject = new Object[listaGiocatori.size()][4];
+
+        for(int i=0;i<listaGiocatori.size();i++){
+            listaObject[i][0] = listaGiocatori.get(i).getCognome();
+            listaObject[i][1] = listaGiocatori.get(i).getRuolo();
+            listaObject[i][2] = listaGiocatori.get(i).getSquadraReale();
+            listaObject[i][3] = listaGiocatori.get(i).getPrezzoAcquisto();
+
+        }
+
+        return listaObject;
+    }
+
     public Object[][] listaGiornateToArray(ArrayList<GiornataReale> listaGiornate){
         Object[][] listaObject = new Object[listaGiornate.size()][5];
 

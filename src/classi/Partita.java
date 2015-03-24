@@ -10,8 +10,6 @@ public class Partita {
     private int numeroPartita;
     private Squadra casa;
     private Squadra ospite;
-    private Formazione formCasa;
-    private Formazione formOspite;
     private int golCasa;
     private int golFuori;
     private float puntiCasa;
@@ -34,19 +32,10 @@ public class Partita {
         this.numeroPartita = numeroPartita;
     }
 
-    public Partita(Formazione formCasa, Formazione formOspite) {
-        this.formCasa = formCasa;
-        this.formOspite = formOspite;
-        this.golCasa = 0;
-        this.golFuori = 0;
-        this.puntiCasa = 0;
-        this.puntiFuori = 0;
-    }
-
     //calcola il risultato della partita e lo mette negli appositi attributi
     public void calcolaPartita (int primaFascia, int largFascia, int bonusCasa) {
-        puntiCasa=formCasa.calcola()+bonusCasa; //calcola il punteggio della squadra di casa aggiungendo bonus casa al punteggio dei giocatori
-        puntiFuori=formOspite.calcola(); //calcola il punteggio della squadra ospite
+        puntiCasa=casa.getFormazione().calcola()+bonusCasa; //calcola il punteggio della squadra di casa aggiungendo bonus casa al punteggio dei giocatori
+        puntiFuori=ospite.getFormazione().calcola(); //calcola il punteggio della squadra ospite
         golCasa=numGol(puntiCasa, primaFascia, largFascia); //calcola i gol che corrispondono al punteggio della squadra di casa
         golFuori=numGol(puntiFuori, primaFascia, largFascia); //calcola i gol che corrispondono al punteggio della squadra ospite
     }
@@ -63,22 +52,6 @@ public class Partita {
     public void aggClassifica(Classifica c) {
         c.aggiornaClassifica(casa, golCasa, golFuori, puntiCasa);
         c.aggiornaClassifica(ospite, golFuori, golCasa, puntiFuori);
-    }
-
-    public Formazione getFormCasa() {
-        return formCasa;
-    }
-
-    public void setFormCasa(Formazione formCasa) {
-        this.formCasa = formCasa;
-    }
-
-    public Formazione getFormOspite() {
-        return formOspite;
-    }
-
-    public void setFormOspite(Formazione formOspite) {
-        this.formOspite = formOspite;
     }
 
     public int getGolCasa() {
