@@ -134,7 +134,7 @@ public class Formazione extends JPanel implements ItemListener {
     private DefaultListModel listModelA = new DefaultListModel<String>();
 
     private ArrayList<Giocatore> giocatori;
-    private ArrayList<Giocatore> formazione;
+    private ArrayList<Giocatore> formazione = new ArrayList<Giocatore>();
     private Squadra squadra;
     private int counter;
 
@@ -2449,17 +2449,17 @@ public class Formazione extends JPanel implements ItemListener {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
-                            formazione.add(0, cercaGiocatore(p343PorLabel.getText()));
-                            formazione.add(1, cercaGiocatore(p343DifLabel1.getText()));
-                            formazione.add(2, cercaGiocatore(p343DifLabel2.getText()));
-                            formazione.add(3, cercaGiocatore(p343DifLabel3.getText()));
-                            formazione.add(4, cercaGiocatore(p343CenLabel1.getText()));
-                            formazione.add(5, cercaGiocatore(p343CenLabel2.getText()));
-                            formazione.add(6, cercaGiocatore(p343CenLabel3.getText()));
-                            formazione.add(7, cercaGiocatore(p343CenLabel4.getText()));
-                            formazione.add(8, cercaGiocatore(p343AttLabel1.getText()));
-                            formazione.add(9, cercaGiocatore(p343AttLabel2.getText()));
-                            formazione.add(10, cercaGiocatore(p343AttLabel3.getText()));
+                            formazione.add(0, cercaGiocatore(p541PorLabel.getText()));
+                            formazione.add(1, cercaGiocatore(p541DifLabel1.getText()));
+                            formazione.add(2, cercaGiocatore(p541DifLabel2.getText()));
+                            formazione.add(3, cercaGiocatore(p541DifLabel3.getText()));
+                            formazione.add(4, cercaGiocatore(p541DifLabel4.getText()));
+                            formazione.add(5, cercaGiocatore(p541DifLabel5.getText()));
+                            formazione.add(6, cercaGiocatore(p541CenLabel1.getText()));
+                            formazione.add(7, cercaGiocatore(p541CenLabel2.getText()));
+                            formazione.add(8, cercaGiocatore(p541CenLabel3.getText()));
+                            formazione.add(9, cercaGiocatore(p541CenLabel4.getText()));
+                            formazione.add(10, cercaGiocatore(p541AttLabel.getText()));
                             formazione.add(11, cercaGiocatore(panPorLabel.getText()));
                             formazione.add(12, cercaGiocatore(panDifLabel1.getText()));
                             formazione.add(13, cercaGiocatore(panDifLabel2.getText()));
@@ -2469,9 +2469,6 @@ public class Formazione extends JPanel implements ItemListener {
                             formazione.add(17, cercaGiocatore(panAttLabel2.getText()));
                     classi.Formazione form = new classi.Formazione(formazione, "5-4-1");
                     squadra.setFormazione(form);
-
-                    System.out.println(squadra.getFormazione().getModulo());
-                    System.out.println(squadra.getFormazione().getFormazione().get(1));
                 } else if(squadra.getCampionato().isGiocatoriDaInserire()){
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else {
