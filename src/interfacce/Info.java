@@ -58,7 +58,7 @@ public class Info extends JPanel{
                     miniRefresh();
                 } else if(!squadra.getProprietario().getNome().equals("")){
                     cognomeText.setText(squadra.getProprietario().getCognome());
-                } else cognomeText.setText("Nome non inserito");
+                } else cognomeText.setText("Cognome non inserito");
             }
         });
 
