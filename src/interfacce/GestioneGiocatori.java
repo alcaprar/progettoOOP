@@ -349,16 +349,9 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
         tabellaGiocatori.setSelectionModel(giocatoriListModel);
 
         tabellaGiocatori.setModel(giocatoriModel);
-/*
-        //Ordina la tabella dei giocatori in base alla squadra di appartenenza nella realtà
-        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tabellaGiocatori.getModel());
-        tabellaGiocatori.setRowSorter(sorter);
-        java.util.List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
 
-        int columnIndexSort = 3;
-        sortKeys.add(new RowSorter.SortKey(columnIndexSort, SortOrder.ASCENDING));
-        sorter.setSortKeys(sortKeys);
-        sorter.sort();*/
+        //Ordina la tabella dei giocatori in base alla squadra di appartenenza nella realtà
+        tabellaGiocatori.setAutoCreateRowSorter(true);
 
     }
 

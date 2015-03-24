@@ -144,7 +144,7 @@ public class Formazione extends JPanel implements ItemListener {
         setVisible(true);
 
         //inizializza il counter per il check sulla formazione
-        counter = 1;
+        counter = 0;
 
         //metodo per popolare le liste di giocatori
         creaListe();
@@ -176,7 +176,7 @@ public class Formazione extends JPanel implements ItemListener {
         c1.show(cards, (String) itemEvent.getItem());
         refresh();
         resetLabel();
-        counter = 1;
+        counter = 0;
     }
 
     //metodo per la creazione delle liste
