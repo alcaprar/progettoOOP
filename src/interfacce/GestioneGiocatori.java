@@ -214,6 +214,7 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
                         applicazione.getTabbedPane().remove(applicazione.getTabbedPane().indexOfTab("Gestione Giocatori"));
                         applicazione.getTabbedPane().setSelectedIndex(0);
                         applicazione.getFormazionePanel().refresh();
+                        applicazione.getInfoPanel().refresh();
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "La rosa di qualche squadre non è completa.\nPrima di confermare è necessario completare tutte le rose.", "Errore", JOptionPane.ERROR_MESSAGE);

@@ -116,5 +116,7 @@ public class Applicazione extends JFrame {
     public Formazione getFormazionePanel(){
         return formazionePanel;
     }
+
+    public Info getInfoPanel(){ return infoPanel;}
 }
 
