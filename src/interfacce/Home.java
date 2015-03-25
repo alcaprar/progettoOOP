@@ -103,14 +103,7 @@ public class Home extends JPanel {
         };
         prossimaGiornataTable.setModel(prossimaGiornataModel);
         //setta il colore delle righe alternato
-        prossimaGiornataTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.CYAN);
-                return c;
-            }
-        });
+        prossimaGiornataTable.setDefaultRenderer(Object.class, new RenderTableAlternate());
     }
 
     private void setTableUltimaG(){
@@ -126,16 +119,7 @@ public class Home extends JPanel {
         };
         ultimaGiornataTable.setModel(prossimaGiornataModel);
         //setta il colore delle righe alternato
-        ultimaGiornataTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
-        {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-            {
-                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.CYAN);
-                return c;
-            }
-        });
+        ultimaGiornataTable.setDefaultRenderer(Object.class, new RenderTableAlternate());
     }
 
     private void setTableClassifica(){
@@ -153,16 +137,7 @@ public class Home extends JPanel {
         tableClassifica.setModel(classificaModel);
 
         //setta il colore delle righe alternato
-        tableClassifica.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
-        {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-            {
-                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.CYAN);
-                return c;
-            }
-        });
+        tableClassifica.setDefaultRenderer(Object.class, new RenderTableAlternate());
     }
 
     private void setListaAvvisi(){

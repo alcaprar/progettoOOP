@@ -1,6 +1,7 @@
 package interfacce;
 
 import classi.Giornata;
+import utils.RenderTableAlternate;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -58,16 +59,9 @@ public class TabellaGiornata extends JPanel {
         giornataTable.setModel(classificaModel);
 
         //setta il colore delle righe alternato
-        giornataTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.CYAN);
-                return c;
-            }
-        });
+        giornataTable.setDefaultRenderer(Object.class, new RenderTableAlternate());
 
-        giornataTable.setShowHorizontalLines(false);
+                giornataTable.setShowHorizontalLines(false);
 
         giornataTable.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
 

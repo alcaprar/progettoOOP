@@ -2,11 +2,13 @@ package interfacce;
 
 
 import classi.Squadra;
+import utils.RenderTableAlternate;
 import utils.Utils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 
 /**
@@ -43,16 +45,8 @@ public class Classifica extends JPanel {
         tableClassifica.setModel(classificaModel);
 
         //setta il colore delle righe alternato
-        tableClassifica.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
-        {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-            {
-                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.CYAN);
-                return c;
-            }
-        });
+
+        tableClassifica.setDefaultRenderer(Object.class, new RenderTableAlternate());
 
         tableClassifica.setRowHeight(50);
     }

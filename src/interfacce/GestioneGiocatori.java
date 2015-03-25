@@ -279,6 +279,7 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
         tabellaSquadra.setSelectionModel(squadreListModel);
 
         tabellaSquadra.setModel(tabellaSquadraModel.get(0));
+        tabellaSquadra.setDefaultRenderer(Object.class, new RenderTableAlternate());
 
         aggiornaSoldi(soldiSpesi.get(0));
 
@@ -349,6 +350,7 @@ public class GestioneGiocatori extends JPanel implements ItemListener{
         tabellaGiocatori.setSelectionModel(giocatoriListModel);
 
         tabellaGiocatori.setModel(giocatoriModel);
+        tabellaGiocatori.setDefaultRenderer(Object.class, new RenderTableAlternate());
 
     }
 
