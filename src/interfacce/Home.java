@@ -36,6 +36,7 @@ public class Home extends JPanel {
     private JScrollPane ultimaGiornataScrollPane;
     private JScrollPane prossimaGiornataScrollPane;
     private JTextArea testoAvvisi;
+    private JPanel panelClassifica;
 
     private Squadra squadra;
 

@@ -82,8 +82,8 @@ public class Info extends JPanel{
         mailText.setEditable(false);
         nomeCampL.setText(squadra.getCampionato().getNome());
         numeroPartL.setText(String.valueOf(squadra.getCampionato().getNumeroPartecipanti()));
-        numeroGiornL.setText(String.valueOf(squadra.getCampionato().getGiornataFine()-squadra.getCampionato().getGiornataInizio()));
-        giornataAttL.setText(String.valueOf(squadra.getCampionato().getProssimaGiornata()-1));
+        numeroGiornL.setText(String.valueOf(squadra.getCampionato().getGiornataFine()-squadra.getCampionato().getGiornataInizio() + 1));
+        giornataAttL.setText(String.valueOf(squadra.getCampionato().getProssimaGiornata() - 1));
         setTableRosa();
     }
 
