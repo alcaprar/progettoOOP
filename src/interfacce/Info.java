@@ -113,6 +113,7 @@ public class Info extends JPanel{
             tableModel.setColumnIdentifiers(new String[]{"Attenzione"});
             tableModel.addRow(new String[]{"Ancora non sono stati inseriti giocatori nella squadra."});
         }
+        tableRosa.setDefaultRenderer(Object.class, new RenderTableAlternate());
         tableRosa.setModel(tableModel);
     }
 
