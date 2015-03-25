@@ -617,6 +617,9 @@ public class Mysql{
             //apre la connessione
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
+            if(squadra.isFormazioneInserita()){
+                deleteFormazioneInserita(squadra);
+            }
             formazioneInseritastmt = conn.prepareStatement(formazioneInseritaSql);
             formazioneInseritastmt.setInt(1, squadra.prossimaPartita().getID());
             formazioneInseritastmt.setString(2,squadra.getNome());
@@ -644,6 +647,43 @@ public class Mysql{
                 }
             }
         }
+
+    }
+
+    public boolean deleteFormazioneInserita(Squadra squadra){
+        Connection conn = null;
+        PreparedStatement deleteFormazioneInseritastmt = null;
+        String deleteFormazioneInseritaSql = "delete from Formazione where IDpart=? and NomeSq=?";
+
+        int rs  =0;
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            int i =0;
+
+            deleteFormazioneInseritastmt = conn.prepareStatement(deleteFormazioneInseritaSql);
+            deleteFormazioneInseritastmt.setInt(1,squadra.prossimaPartita().getID());
+            deleteFormazioneInseritastmt.setString(2,squadra.getNome());
+
+            i = deleteFormazioneInseritastmt.executeUpdate();
+
+            return (i!=0);
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return false;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+
+        }finally {
+            try { conn.close(); } catch (Exception e) { /* ignored */ }
+        }
+
 
     }
 

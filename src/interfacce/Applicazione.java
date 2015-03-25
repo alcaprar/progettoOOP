@@ -56,7 +56,7 @@ public class Applicazione extends JFrame {
         setListaGiocatori();
 
         //controllo se è già stata inserita la formazione
-        formazioneInserita = db.selectFormazioneInserita(sqr);
+        sqr.setFormazioneInserita(db.selectFormazioneInserita(sqr));
 
         //scarico la lista degli avvisi
         sqr.getCampionato().setListaAvvisi(db.selectAvvisi(sqr));
@@ -103,7 +103,7 @@ public class Applicazione extends JFrame {
                 int tab = tabbedpane.getSelectedIndex();
                 if(formazione==tab && squadra.getCampionato().isGiocatoriDaInserire()){
                     JOptionPane.showMessageDialog(null, "Ancora non sono stati inseriti i giocatori. Non potrai inviare la formazione.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                } else if(formazione==tab && formazioneInserita){
+                } else if(formazione==tab && sqr.isFormazioneInserita()){
                     JOptionPane.showMessageDialog(null, "Hai già inviato la formazione per questa partita.\nSe invii un'altra formazione, questa sostituirà quella vecchia.", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
             }

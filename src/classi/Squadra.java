@@ -14,6 +14,8 @@ public class Squadra {
     private int soldiDisponibili;
     //formazione per il prossimo incontro
     private Formazione formazione;
+    //se è stata inserita la formazione per il prossimo incontro
+    private boolean formazioneInserita;
 
     public boolean equals(Squadra s){
         if(s.getNome().equals(this.getNome()))return true;
@@ -115,5 +117,13 @@ public class Squadra {
             if(part.getCasa().equals(this)||part.getOspite().equals(this)) partita=part;
         }
         return partita;
+    }
+
+    public boolean isFormazioneInserita() {
+        return formazioneInserita;
+    }
+
+    public void setFormazioneInserita(boolean formazioneInserita) {
+        this.formazioneInserita = formazioneInserita;
     }
 }
