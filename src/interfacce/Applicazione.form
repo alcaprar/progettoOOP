@@ -15,6 +15,7 @@
         <properties>
           <minimumSize width="800" height="500"/>
           <preferredSize width="800" height="500"/>
+          <tabLayoutPolicy value="0"/>
         </properties>
         <border type="none"/>
         <children>
