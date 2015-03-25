@@ -167,6 +167,7 @@ public class Formazione extends JPanel implements ItemListener {
 
     //creazione custom dei componenti
     private void createUIComponents() {
+        //inizializzazione del combobox con i moduli permessi ed itemListener
         scegliModulo = new JComboBox();
         scegliModulo.addItemListener(this);
     }
@@ -174,6 +175,9 @@ public class Formazione extends JPanel implements ItemListener {
     //override del metodo itemStateChanged
     @Override
     public void itemStateChanged(ItemEvent itemEvent) {
+        //quando viene cambiato l'oggetto selezionato nel combobox viene visualizzato il relativo pannello
+        //e vengono resettate le liste giocatori, le etichette ed il counter per la verifica della corretta
+        //immissione della formazione
         CardLayout c1 = (CardLayout) (cards.getLayout());
         c1.show(cards, (String) itemEvent.getItem());
         refresh();
@@ -181,10 +185,12 @@ public class Formazione extends JPanel implements ItemListener {
         counter = 0;
     }
 
-    //metodo per la creazione delle liste
-    //prende come parametro la squadra di cui si vuole stabilire la formazione da schierare
-    //inserisce poi le stringhe dei cognomi dei giocatori nelle differenti liste in base al ruolo che coprono
+    /*metodo per la creazione delle liste
+    prende come parametro la squadra di cui si vuole stabilire la formazione da schierare
+    inserisce poi le stringhe dei cognomi dei giocatori nelle differenti liste in base al ruolo che coprono*/
     private void creaListe(){
+        //inizializza le liste dei giocatori a valori di default nel caso in cui non siano stati inseriti
+        //i giocatori nelle squadre dal presidente di lega
         String[] gioc = {"Por1", "Por2", "Por3", "Dif1", "Dif2", "Dif3", "Dif4", "Dif5", "Dif6", "Dif7", "Dif8", "Cen1", "Cen2", "Cen3", "Cen4", "Cen5", "Cen6", "Cen7", "Cen8", "Att1", "Att2", "Att3", "Att4", "Att5", "Att6"};
         lPortieri.setModel(listModelP);
         for(int i = 0; i < 3; i++) listModelP.addElement(gioc[i]);
@@ -292,28 +298,42 @@ public class Formazione extends JPanel implements ItemListener {
         panAttLabel2.setText("Attaccante");
     }
 
-    //gestori dell'inserimento dei giocatori
-
+    //gestori dell'inserimento dei giocatori, viene commentato solo un giocatore, il procedimento è il medesimo per
+    //ogni etichetta
     private void ins343(){
+        //azione al click del mouse
         p343PorLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
+                //controlla che sia selezionato un portiere nella lista dei giocatori della rosa
                 if (!lPortieri.isSelectionEmpty()){
+                    //controlla se l'etichetta è quella di default oppure c'è già stato un inserimento
                     if(p343PorLabel.getText().equals("Portiere")){
+                        //imposta l'etichetta per visualizzare il cognome del giocatore scelto
                         p343PorLabel.setText((String) lPortieri.getSelectedValue());
+                        //aumenta il counter poichè si è inserito un giocatore
                         counter++;
                     }
                     else {
+                        //se l'etichetta non è quella di default aggiunge nuovamente alla lista il giocatore che si
+                        //sta sostituendo
                         listModelP.add(0, p343PorLabel.getText());
+                        //inserisce il nuovo giocatore(imposta la label)
                         p343PorLabel.setText((String) lPortieri.getSelectedValue());
                     }
+                    //rimuove il giocatore inserito dalla lista
                     listModelP.removeElement(lPortieri.getSelectedValue());
                 }
+                //se non è selezionato un portiere nella lista e l'etichetta è quella di default non fa nulla
                 else if(!p343PorLabel.getText().equals("Portiere")){
+                    //se non è quella di default aggiunge nuovamente il giocatore già inserito nella lista di appartenenza
                     listModelP.add(0, p343PorLabel.getText());
+                    //reimposta a default l'etichetta
                     p343PorLabel.setText("Portiere");
+                    //decrementa il contatore poichè è stato eliminato un giocatore dalla formazione
                     counter--;
                 }
+                //annulla la selezione nella lista
                 lPortieri.clearSelection();
             }
         });
@@ -551,10 +571,14 @@ public class Formazione extends JPanel implements ItemListener {
                 lAttaccanti.clearSelection();
             }
         });
+        //pulsante per confermare la formazione per la prossima giornata
         p343Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                //controlla che i giocatori siano stati inseriti nelle squadre (ovver che il presidente di lega abbia
+                //popolato le rose) e che siano stati inseriti 18 giocatori nella formazione
                 if (counter == 18 && !squadra.getCampionato().isGiocatoriDaInserire()) {
+                    //per ogni label cerca la corrispondenza ed inserisce il giocatore nel vettore della formazione
                     formazione.add(0, cercaGiocatore(p343PorLabel.getText()));
                     formazione.add(1, cercaGiocatore(p343DifLabel1.getText()));
                     formazione.add(2, cercaGiocatore(p343DifLabel2.getText()));
@@ -573,12 +597,17 @@ public class Formazione extends JPanel implements ItemListener {
                     formazione.add(15, cercaGiocatore(panCenLabel2.getText()));
                     formazione.add(16, cercaGiocatore(panAttLabel1.getText()));
                     formazione.add(17, cercaGiocatore(panAttLabel2.getText()));
+                    //crea l'oggetto formazione che contiene il vettore di giocatori ed il modulo scelto
                     classi.Formazione form = new classi.Formazione(formazione, "3-4-3");
+                    //associa la formazione appena creata alla squadra
                     squadra.setFormazione(form);
+                    //salva sul database la formazione
                     System.out.print(db.inserisciFormazione(squadra, partita));
                 } else if(squadra.getCampionato().isGiocatoriDaInserire()){
+                    //se non sono ancora stati inseriti i giocatori nelle squadre visualizza un errore
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devono essere inseriti i giocatori nella squadra.", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else {
+                    //ugualmente se counter non è uguale a 18 visualizza un errore
                     JOptionPane.showMessageDialog(null, "Prima di confermare la formazione devi inserire tutti i giocatori.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -2503,6 +2532,7 @@ public class Formazione extends JPanel implements ItemListener {
     }
 
     public void refresh(){
+        //se la squadra è stata popolata riempie le liste con i giocatori reali sostituendo quelli di default
         if(!squadra.getCampionato().isGiocatoriDaInserire()) {
             listModelP.removeAllElements();
             listModelD.removeAllElements();
@@ -2520,6 +2550,8 @@ public class Formazione extends JPanel implements ItemListener {
     }
 
     private Giocatore cercaGiocatore(String label){
+        //dato il cognome del giocatore inserito nella formazione, cerca il giocatore corrispondente e restituisce
+        //l'oggetto giocatore associato
         Giocatore giocatore = null;
         for(Giocatore g : giocatori){
             if(label.equals(g.getCognome())) giocatore = g;
