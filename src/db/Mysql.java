@@ -453,11 +453,14 @@ public class Mysql{
 
     public ArrayList<GiornataReale> selectGiornateAdmin(){
         Connection conn = null;
-        PreparedStatement giocatoristmt = null;
-        String giocatoriSql ="SELECT * from GiornataAnno";
+        PreparedStatement giornatestmt = null;
+        String giornateSql ="SELECT * from GiornataAnno";
 
         PreparedStatement contastmt = null;
         String contaSql ="SELECT count(*) from GiornataAnno";
+
+        PreparedStatement giornateDefaultstmt=null;
+        String giornateDefaultSql = "INSERT into GiornataAnno(NrGioReale) value(?)";
 
         ArrayList<GiornataReale> giornate = new ArrayList<GiornataReale>();
         try{
@@ -473,12 +476,19 @@ public class Mysql{
 
 
             if(numeroGiornate!=0) {
-                giocatoristmt = conn.prepareStatement(giocatoriSql);
-                ResultSet rs = giocatoristmt.executeQuery();
+                giornatestmt = conn.prepareStatement(giornateSql);
+                ResultSet rs = giornatestmt.executeQuery();
                 int i = 0;
                 while (rs.next()) {
                     giornate.add(new GiornataReale(rs.getInt("NrGioReale"),rs.getDate("DataInizio"),rs.getDate("OraInizio"),rs.getDate("DataFine"),rs.getDate("OraFine")));
                     i++;
+                }
+            } else{
+                for(int i =1; i<=38;i++){
+                    giornate.add(new GiornataReale(i));
+                    giornateDefaultstmt = conn.prepareStatement(giornateDefaultSql);
+                    giornateDefaultstmt.setInt(1,i);
+                    giornateDefaultstmt.executeUpdate();
                 }
             }
             return  giornate;
@@ -617,9 +627,12 @@ public class Mysql{
             //apre la connessione
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
+            //se la formazione era già stata inserito la cancello per reinserirla
             if(squadra.isFormazioneInserita()){
                 deleteFormazioneInserita(squadra);
             }
+
+            //preparo lo statemant e inserisco la formazione
             formazioneInseritastmt = conn.prepareStatement(formazioneInseritaSql);
             formazioneInseritastmt.setInt(1, squadra.prossimaPartita().getID());
             formazioneInseritastmt.setString(2,squadra.getNome());

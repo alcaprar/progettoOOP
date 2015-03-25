@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class GiornateAdmin extends JPanel {
     private JTable tabellaGiornate;
     private JPanel giornatePanel;
+    private JTextField textField1;
 
     private ArrayList<GiornataReale> listaGiornate = new ArrayList<GiornataReale>();
 
@@ -26,13 +27,6 @@ public class GiornateAdmin extends JPanel {
 
         listaGiornate = db.selectGiornateAdmin();
 
-        //se non sono mai state inserite creo le 38 giornate
-        //che poi verranno mostrate nella tabella
-        if (listaGiornate.isEmpty()) {
-            for (int i = 1; i <= 38; i++) {
-                listaGiornate.add(new GiornataReale(i));
-            }
-        }
 
         setTabella();
 
