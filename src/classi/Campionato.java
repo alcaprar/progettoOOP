@@ -22,7 +22,6 @@ public class Campionato {
     private Persona presidente;
     private ArrayList<Classifica> classifica;
     private ArrayList<Giornata> calendario;
-    private Giornata prossimaGiorn;
     private ArrayList<String[]> listaAvvisi;
 
     public ArrayList<Giornata> getCalendario() {
@@ -176,14 +175,6 @@ public class Campionato {
         nome = nome;
     }
 
-    public Giornata getProssimaGiorn() {
-        return prossimaGiorn;
-    }
-
-    public void setProssimaGiorn(Giornata prossimaGiorn) {
-        this.prossimaGiorn = prossimaGiorn;
-    }
-
     public ArrayList<String[]> getListaAvvisi() {
         return listaAvvisi;
     }
@@ -228,7 +219,7 @@ public class Campionato {
     public Giornata prossimaGiornata(){
         Giornata prossima = null;
         for(Giornata giorn:calendario){
-            if(giorn.getNumGiornata()==prossimaGiornata) prossima = giorn;
+            if(giorn.getNumGiornata()==this.prossimaGiornata) prossima = giorn;
         }
         return prossima;
     }

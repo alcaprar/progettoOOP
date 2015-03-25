@@ -376,6 +376,8 @@
                   <component id="d7cb8" class="javax.swing.JTextArea" binding="testoAvvisi">
                     <constraints/>
                     <properties>
+                      <editable value="false"/>
+                      <rows value="4"/>
                       <text value=""/>
                     </properties>
                   </component>

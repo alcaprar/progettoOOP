@@ -1,5 +1,7 @@
 package classi;
 
+import jxl.write.DateTime;
+
 import java.util.Date;
 
 /**
@@ -7,61 +9,40 @@ import java.util.Date;
  */
 public class GiornataReale {
     private int NumeroGiornata;
-    private Date DataInizio;
-    private Date OraInizio;
-    private Date DataFine;
-    private Date OraFine;
+    private Date DataOraInizio;
+    private Date DataOraFine;
 
     public GiornataReale(int numeroGiornata){
         NumeroGiornata = numeroGiornata;
     }
 
-    public GiornataReale(int numeroGiornata, Date dataInizio, Date oraInizio, Date dataFine, Date oraFine) {
+    public GiornataReale(int numeroGiornata, Date dataOraInizio, Date dataOraFine) {
         NumeroGiornata = numeroGiornata;
-        DataInizio = dataInizio;
-        OraInizio = oraInizio;
-        DataFine = dataFine;
-        OraFine = oraFine;
-    }
-
-    public Date getDataInizio() {
-        return DataInizio;
-    }
-
-    public void setDataInizio(Date dataInizio) {
-        DataInizio = dataInizio;
-    }
-
-    public Date getOraInizio() {
-        return OraInizio;
-    }
-
-    public void setOraInizio(Date oraInizio) {
-        OraInizio = oraInizio;
-    }
-
-    public Date getDataFine() {
-        return DataFine;
-    }
-
-    public void setDataFine(Date dataFine) {
-        DataFine = dataFine;
-    }
-
-    public Date getOraFine() {
-        return OraFine;
-    }
-
-    public void setOraFine(Date oraFine) {
-        OraFine = oraFine;
+        DataOraInizio = dataOraInizio;
+        DataOraFine = dataOraFine;
     }
 
     public int getNumeroGiornata() {
-
         return NumeroGiornata;
     }
 
     public void setNumeroGiornata(int numeroGiornata) {
         NumeroGiornata = numeroGiornata;
+    }
+
+    public Date getDataOraInizio() {
+        return DataOraInizio;
+    }
+
+    public void setDataOraInizio(Date dataOraInizio) {
+        DataOraInizio = dataOraInizio;
+    }
+
+    public Date getDataOraFine() {
+        return DataOraFine;
+    }
+
+    public void setDataOraFine(Date dataOraFine) {
+        DataOraFine = dataOraFine;
     }
 }

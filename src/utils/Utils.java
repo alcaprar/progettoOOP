@@ -9,8 +9,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import jxl.Cell;
 import jxl.CellType;
@@ -192,15 +194,16 @@ public class Utils {
     }
 
     public Object[][] listaGiornateToArray(ArrayList<GiornataReale> listaGiornate){
-        Object[][] listaObject = new Object[listaGiornate.size()][5];
+        Object[][] listaObject = new Object[listaGiornate.size()][3];
 
         for(int i=0; i<listaGiornate.size();i++){
             listaObject[i][0]= listaGiornate.get(i).getNumeroGiornata();
-            listaObject[i][1] = listaGiornate.get(i).getDataInizio();
-            listaObject[i][2] = listaGiornate.get(i).getOraInizio();
-            listaObject[i][3] = listaGiornate.get(i).getDataFine();
-            listaObject[i][4] = listaGiornate.get(i).getOraFine();
-
+            if(listaGiornate.get(i).getDataOraInizio()!=null){
+                listaObject[i][1] = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(listaGiornate.get(i).getDataOraInizio());
+            }
+            if(listaGiornate.get(i).getDataOraFine()!=null){
+                listaObject[i][2] = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(listaGiornate.get(i).getDataOraFine());
+            }
         }
 
         return listaObject;

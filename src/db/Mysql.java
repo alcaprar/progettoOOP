@@ -3,6 +3,7 @@ package db;
 
 import javax.swing.*;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import classi.*;
@@ -30,7 +31,7 @@ public class Mysql{
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
             login = conn.prepareStatement(loginSql);
             login.setString(1,utente.getNickname());
-            login.setString(2,utente.getPassword());
+            login.setString(2, utente.getPassword());
             ResultSet rs = login.executeQuery();
             if(rs.next()){
                 utente.setNome(rs.getString("Nome"));
@@ -56,8 +57,8 @@ public class Mysql{
             //apre la connessione
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
             registra = conn.prepareStatement(registraSql);
-            registra.setString(1,utente.getNickname());
-            registra.setString(2,utente.getPassword());
+            registra.setString(1, utente.getNickname());
+            registra.setString(2, utente.getPassword());
             registra.setString(3,utente.getNome());
             registra.setString(4,utente.getCognome());
             registra.setString(5,utente.getEmail());
@@ -87,7 +88,7 @@ public class Mysql{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.prepareStatement(contaString);
 
             ResultSet rscount = stmt.executeQuery();
@@ -194,7 +195,7 @@ public class Mysql{
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
             listaGiocatoristmt = conn.prepareStatement(listaGiocatoriSql);
-            listaGiocatoristmt.setInt(1,IDsq);
+            listaGiocatoristmt.setInt(1, IDsq);
 
             ResultSet rs = listaGiocatoristmt.executeQuery();
 
@@ -247,7 +248,7 @@ public class Mysql{
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
             squadrestmt = conn.prepareStatement(squadreSql);
-            squadrestmt.setString(1,utente.getNickname());
+            squadrestmt.setString(1, utente.getNickname());
             ResultSet rs = squadrestmt.executeQuery();
             int i = 0;
             while (rs.next()) {
@@ -260,6 +261,7 @@ public class Mysql{
                 while(rspartecipanti.next()){
                     listaSquadrePartecipanti.add(new Squadra(rspartecipanti.getInt("ID"),rspartecipanti.getString("Nome"),new Persona(rspartecipanti.getString("NickUt"))));
                 }
+                System.out.println(rs.getInt("ProssimaGiornata"));
                 Squadra squadra = new Squadra(rs.getInt("ID"),rs.getString("Nome"),utente,new Campionato(rs.getString("Campionato"),rs.getInt("NrPartecipanti"),rs.getBoolean("Asta"),rs.getInt("GiornataInizio"),rs.getInt("GiornataFine"),rs.getInt("CreditiIniziali"),rs.getInt("OrarioConsegna"),rs.getInt("PrimaFascia"),rs.getInt("LargFascia"),rs.getInt("BonusCasa"),new Persona(rs.getString("Presidente")),listaSquadrePartecipanti,rs.getBoolean("GiocatoriDaInserire"),rs.getInt("ProssimaGiornata")),rs.getInt("CreditiDisponibili"));
                 listaSquadre.add(squadra);
                 i++;
@@ -302,7 +304,7 @@ public class Mysql{
 
 
             classificastmt = conn.prepareStatement(classificaSql);
-            classificastmt.setString(1,campionato.getNome());
+            classificastmt.setString(1, campionato.getNome());
             ResultSet rs = classificastmt.executeQuery();
             int i = 0;
             while (rs.next()) {
@@ -391,8 +393,8 @@ public class Mysql{
                 conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
                 aggiornastmt = conn.prepareStatement(aggiornaSql);
-                aggiornastmt.setString(1,utente.getNome());
-                aggiornastmt.setString(2,utente.getNickname());
+                aggiornastmt.setString(1, utente.getNome());
+                aggiornastmt.setString(2, utente.getNickname());
                 int rs = aggiornastmt.executeUpdate();
 
 
@@ -428,9 +430,48 @@ public class Mysql{
 
             aggiornastmt = conn.prepareStatement(aggiornaSql);
             aggiornastmt.setString(1,utente.getCognome());
-            aggiornastmt.setString(2,utente.getNickname());
+            aggiornastmt.setString(2, utente.getNickname());
             int rs = aggiornastmt.executeUpdate();
 
+
+        }catch(SQLException se){
+            se.printStackTrace();
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
+                }
+            }
+        }
+    }
+
+    public void aggiornaGiornataReale(GiornataReale giornata){
+        Connection conn=null;
+        PreparedStatement giornatastmt = null;
+        String giornataSql = "UPDATE GiornataAnno set DataOraInizio=?, DataOraFine=? where NrGioReale=?";
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessionename
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            giornatastmt = conn.prepareStatement(giornataSql);
+            giornatastmt.setTimestamp(1, new Timestamp(giornata.getDataOraInizio().getTime()));
+            giornatastmt.setTimestamp(2, new Timestamp(giornata.getDataOraFine().getTime()));
+            giornatastmt.setInt(3, giornata.getNumeroGiornata());
+
+            System.out.print(giornata.getDataOraInizio().getTime());
+
+            giornatastmt.executeUpdate();
 
         }catch(SQLException se){
             se.printStackTrace();
@@ -480,7 +521,7 @@ public class Mysql{
                 ResultSet rs = giornatestmt.executeQuery();
                 int i = 0;
                 while (rs.next()) {
-                    giornate.add(new GiornataReale(rs.getInt("NrGioReale"),rs.getDate("DataInizio"),rs.getDate("OraInizio"),rs.getDate("DataFine"),rs.getDate("OraFine")));
+                    giornate.add(new GiornataReale(rs.getInt("NrGioReale"),rs.getTimestamp("DataOraInizio"),rs.getTimestamp("DataOraFine")));
                     i++;
                 }
             } else{
@@ -516,8 +557,8 @@ public class Mysql{
     public ArrayList<Giornata> selectGiornate(Campionato campionato){
         Connection conn = null;
         PreparedStatement giornatastmt = null;
-        //String giornataSql = "SELECT * from Giornata JOIN GiornataAnno on Giornata.NrGioReale=GiornataAnno.NrGioReale where NomeCampionato=?";
-        String giornataSql = "SELECT * from Giornata where NomeCampionato=?";
+        String giornataSql = "SELECT * from Giornata JOIN GiornataAnno on Giornata.NrGioReale=GiornataAnno.NrGioReale where NomeCampionato=?";
+        //String giornataSql = "SELECT * from Giornata where NomeCampionato=?";
 
         PreparedStatement partitastmt = null;
         String partitaSql = "SELECT P.ID, P.NrPart, P.PunteggioCasa,P.PunteggioOspite,P.GolCasa,P.GolOspite,FC.ID as FCID,FO.ID as FOID,FC.Nome as FCNome, FO.Nome as FONome FROM Partita as P JOIN Fantasquadra as FC on P.IDFantasquadraCasa=FC.ID JOIN Fantasquadra as FO on P.IDFantasquadraOspite=FO.ID where IDgiorn=?";
@@ -533,7 +574,7 @@ public class Mysql{
             giornatastmt.setString(1,campionato.getNome());
             ResultSet rsgiornata = giornatastmt.executeQuery();
             while(rsgiornata.next()){
-                Giornata giornata = new Giornata(rsgiornata.getInt("ID"),rsgiornata.getInt("Nrgio"),new GiornataReale(rsgiornata.getInt("NrGioReale")));
+                Giornata giornata = new Giornata(rsgiornata.getInt("ID"),rsgiornata.getInt("Nrgio"),new GiornataReale(rsgiornata.getInt("NrGioReale"),rsgiornata.getTimestamp("DataOraInizio"),rsgiornata.getTimestamp("DataOraFine")));
 
                 partitastmt = conn.prepareStatement(partitaSql);
                 partitastmt.setInt(1,giornata.getID());
