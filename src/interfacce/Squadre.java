@@ -51,7 +51,7 @@ public class Squadre extends JPanel{
         DefaultComboBoxModel comboBoxModel;
         comboBoxModel = new DefaultComboBoxModel(squadra.getCampionato().squadreToArray());
         selSqua.setModel(comboBoxModel);
-        selSqua.setToolTipText("ID-Nome Squadra-Nick Proprietario");
+        selSqua.setToolTipText("Scegli la squadra da visualizzare");
     }
 
     private void setTabellaGiocatori() {

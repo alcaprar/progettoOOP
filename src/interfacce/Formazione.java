@@ -4,11 +4,8 @@ import classi.*;
 import db.*;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.text.Normalizer;
 import java.util.ArrayList;
 
 /**

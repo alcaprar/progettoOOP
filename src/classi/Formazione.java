@@ -182,4 +182,18 @@ public class Formazione {
     public void setFormazione(ArrayList<Giocatore> formazione) {
         this.formazione = formazione;
     }
+
+
+    public Object[][] listaFormToArray(){
+
+        Object[][] listaObject = new Object[formazione.size()][2];
+
+        for(int i=0;i<formazione.size();i++){
+            listaObject[i][0] = formazione.get(i).getCognome();
+            listaObject[i][1] = formazione.get(i).getVoti().getMagicVoto();
+
+        }
+
+        return listaObject;
+    }
 }
