@@ -2,6 +2,8 @@ package interfacce;
 
 import classi.Partita;
 import classi.Squadra;
+import utils.RenderTableAlternate;
+import utils.TableNotEditableModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -24,61 +26,44 @@ public class Partitagug extends JPanel{
     private JLabel utenteOspite;
 
     private Partita p;
+    private int bc;
+
+    public Partitagug(int bc) {
+        this.bc=bc;
+    }
 
     public void refresh(){
+        //inserisce i campi voluti nei vari label
         utenteCasa.setText(p.getCasa().getProprietario().getNickname());
         utenteOspite.setText(p.getOspite().getProprietario().getNickname());
         squadraCasa.setText(p.getCasa().getNome());
         squadraOspite.setText(p.getOspite().getNome());
         puntiCasa.setText(String.valueOf(p.getPuntiCasa()));
         puntiOspite.setText(String.valueOf(p.getPuntiFuori()));
+        bonusCasa.setText(String.valueOf(bc));
+        //chiama la funzione che crea la tabella
         setTable();
     }
 
     private void setTable(){
+        //definisce le intestazioni delle colonne
         Object[] nomeColonne = {"Giocatore", "Voto"};
+
+        //prende il contenuto da inserire nelle due tabelle
         Object[][] righeFormCasa = p.getCasa().getFormazione().listaFormToArray();
         Object[][] righeFormOspite = p.getOspite().getFormazione().listaFormToArray();
 
-        DefaultTableModel formCasaModel = new DefaultTableModel(righeFormCasa, nomeColonne) {
-            //rende non modificabili le celle
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        //chiama la funzione che crea una tabella non modificabile passandogli il contenuto e l'intestazione delle colonne
+        TableNotEditableModel formCasaModel = new TableNotEditableModel(righeFormCasa, nomeColonne);
+        TableNotEditableModel formOspiteModel = new TableNotEditableModel(righeFormOspite, nomeColonne);
 
-        DefaultTableModel formOspiteModel = new DefaultTableModel(righeFormOspite, nomeColonne) {
-            //rende non modificabili le celle
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
+        //assegna alla tabella formCasa il la tabella che ha creato
         formCasa.setModel(formCasaModel);
         formOspite.setModel(formOspiteModel);
 
-        //setta il colore delle righe alternato
-        formCasa.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.CYAN);
-                return c;
-            }
-        });
-
-        formOspite.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
-        {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-            {
-                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.CYAN);
-                return c;
-            }
-        });
+        //chiama la funzione che setta il colore delle righe alternato
+        formCasa.setDefaultRenderer(Object.class, new RenderTableAlternate());
+        formOspite.setDefaultRenderer(Object.class, new RenderTableAlternate());
 
     }
 }

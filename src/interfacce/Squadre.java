@@ -2,6 +2,7 @@ package interfacce;
 
 import classi.Squadra;
 import utils.RenderTableAlternate;
+import utils.TableNotEditableModel;
 import utils.Utils;
 
 import javax.swing.*;
@@ -58,12 +59,7 @@ public class Squadre extends JPanel{
         for(Squadra squadre : squadra.getCampionato().getListaSquadrePartecipanti()){
             Object[][] righeGiocatori = utils.listaGiocatoriToArraySquadre(squadre.getGiocatori());
             Object[] nomeColonne = {"Cognome", "Ruolo", "Squadra Reale", "Prezzo Pagato"};
-            DefaultTableModel giocatoriModel = new DefaultTableModel(righeGiocatori, nomeColonne) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return false;
-                }
-            };
+            TableNotEditableModel giocatoriModel = new TableNotEditableModel(righeGiocatori, nomeColonne);
             listaTableModel.add(giocatoriModel);
         }
 

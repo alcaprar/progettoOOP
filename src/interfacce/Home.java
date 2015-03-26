@@ -94,13 +94,7 @@ public class Home extends JPanel {
         Object[] nomeColonne = {"Casa","Trasferta"};
         Object[][] righeProssimaGiornata = squadra.getCampionato().prossimaGiornata().prossimaGiornataToArray();
 
-        DefaultTableModel prossimaGiornataModel = new DefaultTableModel(righeProssimaGiornata, nomeColonne) {
-            //rende non modificabili le celle
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        TableNotEditableModel prossimaGiornataModel = new TableNotEditableModel(righeProssimaGiornata, nomeColonne);
         prossimaGiornataTable.setModel(prossimaGiornataModel);
         //setta il colore delle righe alternato
         prossimaGiornataTable.setDefaultRenderer(Object.class, new RenderTableAlternate());
@@ -110,13 +104,7 @@ public class Home extends JPanel {
         Object[] nomeColonne = {"","","","","","",""};
         Object[][] righeUltimaGiornata = squadra.getCampionato().ultimaGiornata().partiteToArray();
 
-        DefaultTableModel prossimaGiornataModel = new DefaultTableModel(righeUltimaGiornata, nomeColonne) {
-            //rende non modificabili le celle
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        TableNotEditableModel prossimaGiornataModel = new TableNotEditableModel(righeUltimaGiornata, nomeColonne);
         ultimaGiornataTable.setModel(prossimaGiornataModel);
         //setta il colore delle righe alternato
         ultimaGiornataTable.setDefaultRenderer(Object.class, new RenderTableAlternate());
@@ -126,13 +114,7 @@ public class Home extends JPanel {
         Object[] nomeColonne = {"Squadra", "Punti"};
         Object[][] righeClassifica = utils.listaClassificaToArrayPiccola(squadra.getCampionato().getClassifica());
 
-        DefaultTableModel classificaModel = new DefaultTableModel(righeClassifica, nomeColonne) {
-            //rende non modificabili le celle
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        TableNotEditableModel classificaModel = new TableNotEditableModel(righeClassifica, nomeColonne);
 
         tableClassifica.setModel(classificaModel);
 
