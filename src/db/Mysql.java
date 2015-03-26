@@ -710,6 +710,13 @@ public class Mysql{
 
     }
 
+    /**
+     * La funzione scarica dal database la formazione della squadra per la partita in questione.
+     * Viene ritornato un arraylist di giocatori in ordine di schieramento.
+     * @param IDpart
+     * @param squadra
+     * @return formazione
+     */
     public ArrayList<Giocatore> selectFormazioni(int IDpart, Squadra squadra){
         Connection conn = null;
         PreparedStatement formazionestmt = null;

@@ -55,7 +55,7 @@ public class Applicazione extends JFrame {
         //scarico la lista dei giocatori delle squadre del mio campionato
         setListaGiocatori();
 
-        //scarico le formazione della prossima giornata
+        //scarico le formazioni di tutte le giornate
         for(Giornata giorn :sqr.getCampionato().getCalendario()){
             if(giorn.getNumGiornata()<=sqr.getCampionato().getProssimaGiornata()) {
                 for (Partita part : giorn.getPartite()) {
