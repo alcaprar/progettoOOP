@@ -267,7 +267,7 @@ public class Utils {
                 ArrayList<Partita> listaPartite = new ArrayList<Partita>();
 
                 for (int j = 0; j < n / 2; j++) {
-                    listaPartite.add(new Partita(listaGiornate.get(i).getPartite().get(j).getOspite(), listaGiornate.get(i).getPartite().get(j).getCasa(),j+1));
+                    listaPartite.add(new Partita(listaGiornate.get(i).getPartite().get(j).getFormOspite().getSquadra(), listaGiornate.get(i).getPartite().get(j).getFormCasa().getSquadra(),j+1));
                 }
                 listaGiornate.add(new Giornata(k, new GiornataReale(primaGiornata), listaPartite));
 
@@ -282,7 +282,7 @@ public class Utils {
         for(Giornata giornata:listaGiornate){
             System.out.println("Giornata: " + giornata.getNumGiornata()+" Giornata reale: "+giornata.getNumGioReale().getNumeroGiornata());
             for(Partita partita:giornata.getPartite()){
-                System.out.println(partita.getCasa().getID() + "-" + partita.getOspite().getID());
+                System.out.println(partita.getFormCasa().getSquadra().getID() + "-" + partita.getFormOspite().getSquadra().getID());
             }
             System.out.println("");
 

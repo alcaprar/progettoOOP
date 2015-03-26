@@ -57,8 +57,19 @@ public class Giornata {
 
     //calcola i risultati della giornata, prende i parametri di cui ha bisogno
     public void calcolaGiornata(int primaFascia, int largFascia, int bonusCasa, Classifica c) {
-        for (Partita i : partite ) i.calcolaPartita(primaFascia, largFascia, bonusCasa); //chiama il metodo calcola partita su ogni partita della giornata
-        for (Partita i : partite ) i.aggClassifica(c); //chiama il metodo aggiorna classifica su ogni partita della giornata
+        for (Partita i : partite ){
+            i.calcolaPartita(primaFascia, largFascia, bonusCasa); //chiama il metodo calcola partita su ogni partita della giornata
+        }
+        for (Partita i : partite ){
+            i.aggClassifica(c); //chiama il metodo aggiorna classifica su ogni partita della giornata
+        }
+    }
+
+    public void calcolaGiornataNew(int primaFascia, int largFascia, int bonusCasa){
+        for(Partita part:partite){
+            System.out.println(part.getFormCasa().getSquadra().getNome() +" - "+part.getFormOspite().getSquadra().getNome());
+            part.calcolaPartitaNew(primaFascia,largFascia,bonusCasa);
+        }
     }
 
     public int getNumGiornata() {
@@ -81,13 +92,13 @@ public class Giornata {
         Object[][] listaObject = new Object[this.partite.size()][7];
 
         for(int i=0;i<this.partite.size();i++){
-            listaObject[i][0] = String.valueOf(this.partite.get(i).getCasa().getNome());
+            listaObject[i][0] = String.valueOf(this.partite.get(i).getFormCasa().getSquadra().getNome());
             listaObject[i][1] = String.valueOf(this.partite.get(i).getPuntiCasa());
             listaObject[i][2] = String.valueOf(this.partite.get(i).getGolCasa());
             listaObject[i][3] = "-";
             listaObject[i][4] = String.valueOf(this.partite.get(i).getGolFuori());
             listaObject[i][5] = String.valueOf(this.partite.get(i).getPuntiFuori());
-            listaObject[i][6] = String.valueOf(this.partite.get(i).getOspite().getNome());
+            listaObject[i][6] = String.valueOf(this.partite.get(i).getFormOspite().getSquadra().getNome());
         }
         return listaObject;
     }
@@ -96,8 +107,8 @@ public class Giornata {
         Object[][] listaObject = new Object[this.partite.size()][2];
 
         for(int i=0; i<this.partite.size();i++){
-            listaObject[i][0] = this.partite.get(i).getCasa().getNome();
-            listaObject[i][1] = this.partite.get(i).getOspite().getNome();
+            listaObject[i][0] = this.partite.get(i).getFormCasa().getSquadra().getNome();
+            listaObject[i][1] = this.partite.get(i).getFormOspite().getSquadra().getNome();
         }
         return listaObject;
     }

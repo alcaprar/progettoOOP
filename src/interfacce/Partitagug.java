@@ -34,10 +34,10 @@ public class Partitagug extends JPanel{
 
     public void refresh(){
         //inserisce i campi voluti nei vari label
-        utenteCasa.setText(p.getCasa().getProprietario().getNickname());
-        utenteOspite.setText(p.getOspite().getProprietario().getNickname());
-        squadraCasa.setText(p.getCasa().getNome());
-        squadraOspite.setText(p.getOspite().getNome());
+        utenteCasa.setText(p.getFormCasa().getSquadra().getProprietario().getNickname());
+        utenteOspite.setText(p.getFormOspite().getSquadra().getProprietario().getNickname());
+        squadraCasa.setText(p.getFormCasa().getSquadra().getNome());
+        squadraOspite.setText(p.getFormOspite().getSquadra().getNome());
         puntiCasa.setText(String.valueOf(p.getPuntiCasa()));
         puntiOspite.setText(String.valueOf(p.getPuntiFuori()));
         bonusCasa.setText(String.valueOf(bc));
@@ -50,8 +50,8 @@ public class Partitagug extends JPanel{
         Object[] nomeColonne = {"Giocatore", "Voto"};
 
         //prende il contenuto da inserire nelle due tabelle
-        Object[][] righeFormCasa = p.getCasa().getFormazione().listaFormToArray();
-        Object[][] righeFormOspite = p.getOspite().getFormazione().listaFormToArray();
+        Object[][] righeFormCasa = p.getFormCasa().getSquadra().getFormazione().listaFormToArray();
+        Object[][] righeFormOspite = p.getFormOspite().getSquadra().getFormazione().listaFormToArray();
 
         //chiama la funzione che crea una tabella non modificabile passandogli il contenuto e l'intestazione delle colonne
         TableNotEditableModel formCasaModel = new TableNotEditableModel(righeFormCasa, nomeColonne);

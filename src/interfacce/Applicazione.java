@@ -59,10 +59,11 @@ public class Applicazione extends JFrame {
         for(Giornata giorn :sqr.getCampionato().getCalendario()){
             if(giorn.getNumGiornata()<=sqr.getCampionato().getProssimaGiornata()) {
                 for (Partita part : giorn.getPartite()) {
-                    classi.Formazione formCasa = new classi.Formazione(db.selectFormazioni(part.getID(), part.getCasa()));
-                    part.getCasa().setFormazione(formCasa);
-                    classi.Formazione formOspite = new classi.Formazione(db.selectFormazioni(part.getID(), part.getOspite()));
-                    part.getOspite().setFormazione(formOspite);
+                    ArrayList<Voto> formCasa = db.selectFormazioni(part.getID(), part.getFormCasa().getSquadra());
+                    //part.getFormCasa().setFormazione(formCasa);
+                    part.getFormCasa().setListaGiocatori(formCasa);
+                    ArrayList<Voto> formOspite = db.selectFormazioni(part.getID(), part.getFormOspite().getSquadra());
+                    part.getFormOspite().setListaGiocatori(formOspite);
                 }
             }
         }

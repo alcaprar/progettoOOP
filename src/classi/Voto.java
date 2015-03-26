@@ -4,6 +4,7 @@ package classi;
  * Created by Giacomo on 18/03/15.
  */
 public class Voto {
+    private Giocatore giocatore;
     private float voto;
     private int gol;
     private int golSubito;
@@ -17,8 +18,13 @@ public class Voto {
     private int assistFermo;
     private float magicVoto;
 
+    public Voto(Giocatore gioc){
+        this.giocatore=gioc;
+    }
 
-    public Voto(int gol, float voto, int golSubito, int rigParato, int rigSbagliato, int rigSegnato, int autogol, int ammonizione, int espulsione, int assist, int assistFermo) {
+
+    public Voto(Giocatore giocatore, int gol, float voto, int golSubito, int rigParato, int rigSbagliato, int rigSegnato, int autogol, int ammonizione, int espulsione, int assist, int assistFermo) {
+        this.giocatore = giocatore;
         this.voto = voto;
         this.gol = gol;
         this.golSubito = golSubito;
@@ -134,5 +140,13 @@ public class Voto {
 
     public void setMagicVoto(float magicVoto) {
         this.magicVoto = magicVoto;
+    }
+
+    public Giocatore getGiocatore(){
+        return this.giocatore;
+    }
+
+    public void setGiocatore(Giocatore giocatore){
+        this.giocatore = giocatore;
     }
 }

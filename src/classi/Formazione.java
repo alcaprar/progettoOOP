@@ -7,7 +7,9 @@ import java.util.ArrayList;
  */
 public class Formazione {
 
+    private Squadra squadra;
     private String modulo;
+    private ArrayList<Voto> listaGiocatori;
     private ArrayList<Giocatore> formazione;
 
     public Formazione(ArrayList<Giocatore> g, String modulo){
@@ -17,7 +19,11 @@ public class Formazione {
         }
     }
 
-    public Formazione(ArrayList<Giocatore> form){
+    public Formazione(Squadra  squadra){
+        this.squadra = squadra;
+    }
+
+    /*public Formazione(ArrayList<Giocatore> form){
         this.formazione = form;
         if(!formazione.isEmpty()) {
             int d=0;
@@ -27,6 +33,20 @@ public class Formazione {
                 if (formazione.get(i).getRuolo() == 'D') d++;
                 else if (formazione.get(i).getRuolo() == 'C') c++;
                 else if (formazione.get(i).getRuolo() == 'A') a++;
+            }
+            this.modulo = d + "-" + c + "-" + a;
+        }
+    }*/
+    public Formazione(ArrayList<Voto> form){
+        this.listaGiocatori = form;
+        if(!listaGiocatori.isEmpty()) {
+            int d=0;
+            int c=0;
+            int a=0;
+            for (int i = 0; i < 11; i++) {
+                if (listaGiocatori.get(i).getGiocatore().getRuolo() == 'D') d++;
+                else if (listaGiocatori.get(i).getGiocatore().getRuolo() == 'C') c++;
+                else if (listaGiocatori.get(i).getGiocatore().getRuolo() == 'A') a++;
             }
             this.modulo = d + "-" + c + "-" + a;
         }
@@ -42,6 +62,67 @@ public class Formazione {
 
     public ArrayList<Giocatore> getFormazione() {
         return formazione;
+    }
+
+    //funzione calcola aggiornata
+    public float calcolaNew(){
+        float p=0;
+        int n=0;
+        int d=0,c=0,a=0;
+        int dGiocato=0,cGiocato=0,aGiocato=0;
+        for(int i=0;i<11;i++){
+            if(listaGiocatori.get(i).getGiocatore().getRuolo()=='D'){
+                d++;
+                if(listaGiocatori.get(i).getVoto()!=0){
+                    p+=listaGiocatori.get(i).getMagicVoto();
+                    dGiocato++;
+                }
+            }
+            else if(listaGiocatori.get(i).getGiocatore().getRuolo()=='C'){
+                c++;
+                if(listaGiocatori.get(i).getVoto()!=0){
+                    p+=listaGiocatori.get(i).getMagicVoto();
+                    cGiocato++;
+                }
+            }
+            else if(listaGiocatori.get(i).getGiocatore().getRuolo()=='A'){
+                a++;
+                if (listaGiocatori.get(i).getVoto()!=0){
+                    p+=listaGiocatori.get(i).getMagicVoto();
+                    aGiocato++;
+                }
+            }
+        }
+        //entra il portiere
+        if(listaGiocatori.get(0).getVoto()==0) p+= listaGiocatori.get(11).getMagicVoto();
+
+        //entrano i difensori
+        if(dGiocato<d){
+            p+=listaGiocatori.get(12).getMagicVoto();
+            dGiocato++;
+        }
+        if(dGiocato<d){
+            p+=listaGiocatori.get(13).getMagicVoto();
+        }
+        //entrano i centrocampisti
+        if(cGiocato<c){
+            p+=listaGiocatori.get(14).getMagicVoto();
+            cGiocato++;
+        }
+        if(cGiocato<c){
+            p+=listaGiocatori.get(15).getMagicVoto();
+        }
+        //entrano gli attaccanti
+        if(aGiocato<a){
+            p+=listaGiocatori.get(16).getMagicVoto();
+            aGiocato++;
+        }
+        if(aGiocato<a){
+            p+=listaGiocatori.get(17).getMagicVoto();
+        }
+
+        return p;
+
     }
 
     //calcola il punteggio della formazione
@@ -210,5 +291,21 @@ public class Formazione {
         }
 
         return listaObject;
+    }
+
+    public Squadra getSquadra() {
+        return squadra;
+    }
+
+    public void setSquadra(Squadra squadra) {
+        this.squadra = squadra;
+    }
+
+    public ArrayList<Voto> getListaGiocatori() {
+        return listaGiocatori;
+    }
+
+    public void setListaGiocatori(ArrayList<Voto> listaGiocatori) {
+        this.listaGiocatori = listaGiocatori;
     }
 }

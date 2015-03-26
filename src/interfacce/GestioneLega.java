@@ -59,5 +59,16 @@ public class GestioneLega extends JPanel{
 
             }
         });
+
+        calcolaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(squadra.getCampionato().prossimaGiornata().getNumGiornata());
+                int primaFascia = squadra.getCampionato().getPrimaFascia();
+                int largFascia= squadra.getCampionato().getLargFascia();
+                int bonusCasa = squadra.getCampionato().getBonusCasa();
+                squadra.getCampionato().prossimaGiornata().calcolaGiornataNew(primaFascia,largFascia,bonusCasa);
+            }
+        });
     }
 }

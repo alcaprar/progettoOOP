@@ -261,7 +261,6 @@ public class Mysql{
                 while(rspartecipanti.next()){
                     listaSquadrePartecipanti.add(new Squadra(rspartecipanti.getInt("ID"),rspartecipanti.getString("Nome"),new Persona(rspartecipanti.getString("NickUt"))));
                 }
-                System.out.println(rs.getInt("ProssimaGiornata"));
                 Persona presidente;
                 if(utente.getNome().equals(rs.getString("Presidente"))) presidente=utente;
                 else presidente=new Persona(rs.getString("Presidente"));
@@ -682,7 +681,7 @@ public class Mysql{
             //preparo lo statemant e inserisco la formazione
             formazioneInseritastmt = conn.prepareStatement(formazioneInseritaSql);
             formazioneInseritastmt.setInt(1, squadra.prossimaPartita().getID());
-            formazioneInseritastmt.setString(2,squadra.getNome());
+            formazioneInseritastmt.setString(2, squadra.getNome());
 
             ResultSet rs = formazioneInseritastmt.executeQuery();
 
@@ -717,30 +716,59 @@ public class Mysql{
      * @param squadra
      * @return formazione
      */
-    public ArrayList<Giocatore> selectFormazioni(int IDpart, Squadra squadra){
+    public ArrayList<Voto> selectFormazioni(int IDpart, Squadra squadra){
         Connection conn = null;
         PreparedStatement formazionestmt = null;
+        //String formazioneSql ="select Formazione.IDcalcAnno from Formazione Join Partita on Formazione.IDpart=Partita.ID join Giornata on Partita.IDgiorn=Giornata.ID Join Voto on Formazione.IDcalcAnno=Voto.IDcalcAnno where IDpart=? and NomeSq=? and Voto.NrGioReale=(select NrGioReale from Partita join Giornata on Partita.IDgiorn=Giornata.ID where Partita.ID=?)";
         String formazioneSql ="SELECT * from Formazione where IDpart=? and NomeSq=? order by Pos";
 
-        ArrayList<Giocatore> formazione = new ArrayList<Giocatore>();
+        PreparedStatement votostmt = null;
+        String votoSql = "select * from Formazione as F left join Voto as V on F.IDcalcAnno=V.IDcalcAnno where IDpart=? and F.IDcalcAnno=? and V.NrGioReale=(select NrGioReale from Partita as P join Giornata as G on P.IDgiorn=G.ID where P.ID=?)";
+        ArrayList<Voto> formazione = new ArrayList<Voto>();
         try {
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 
             //formazione
             formazionestmt = conn.prepareStatement(formazioneSql);
             formazionestmt.setInt(1, IDpart);
             formazionestmt.setString(2, squadra.getNome());
-            ResultSet rscasa = formazionestmt.executeQuery();
+            //formazionestmt.setInt(3,IDpart);
+            ResultSet rs = formazionestmt.executeQuery();
 
 
-            while(rscasa.next()) {
+            while(rs.next()) {
                 for (Giocatore giocatore : squadra.getGiocatori()) {
-                    if(giocatore.getID()==rscasa.getInt("IDcalcAnno")){
-                        formazione.add(giocatore);
+                    if(giocatore.getID()==rs.getInt("IDcalcAnno")){
+                        votostmt = conn.prepareStatement(votoSql);
+                        votostmt.setInt(1,IDpart);
+                        votostmt.setInt(2,giocatore.getID());
+                        votostmt.setInt(3,IDpart);
+                        ResultSet rsvoto = votostmt.executeQuery();
+                        Voto votoG = null;
+                        if(rsvoto.next()){
+                            int golF = rsvoto.getInt("GolF");
+                            int golS = rsvoto.getInt("GolS");
+                            int autoG = rsvoto.getInt("AutoG");
+                            int rigF = rsvoto.getInt("RigF");
+                            int rigS = rsvoto.getInt("RigS");
+                            int rigP = rsvoto.getInt("RigP");
+                            int ass = rsvoto.getInt("Ass");
+                            int amm = rsvoto.getInt("Amm");
+                            int esp = rsvoto.getInt("Esp");
+                            int assFermo = rsvoto.getInt("AssFermo");
+                            float voto = rsvoto.getFloat("Voto");
+                            votoG = new Voto(giocatore,golF, voto,golS,rigP,rigS,rigF,autoG,amm,esp,ass,assFermo);
+
+                            giocatore.setVoti(votoG);
+                        }else{
+                            votoG = new Voto(giocatore);
+                        }
+
+                        formazione.add(votoG);
                     }
                 }
             }
@@ -930,8 +958,8 @@ public class Mysql{
                         partitastmt = conn.prepareStatement(partitaSql);
                         partitastmt.setInt(1,giornata.getID());
                         partitastmt.setInt(2,partita.getNumeroPartita());
-                        partitastmt.setInt(3,partita.getCasa().getID());
-                        partitastmt.setInt(4,partita.getOspite().getID());
+                        partitastmt.setInt(3,partita.getFormCasa().getSquadra().getID());
+                        partitastmt.setInt(4,partita.getFormOspite().getSquadra().getID());
 
                         partitastmt.executeUpdate();
                     }

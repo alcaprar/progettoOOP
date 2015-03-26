@@ -114,7 +114,7 @@ public class Squadra {
     public Partita prossimaPartita(){
         Partita partita=null;
         for(Partita part : this.getCampionato().prossimaGiornata().getPartite()){
-            if(part.getCasa().equals(this)||part.getOspite().equals(this)) partita=part;
+            if(part.getFormCasa().getSquadra().equals(this)||part.getFormOspite().getSquadra().equals(this)) partita=part;
         }
         return partita;
     }

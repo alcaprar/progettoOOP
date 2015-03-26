@@ -201,14 +201,11 @@ public class Login extends JFrame {
             //catturo le eccezioni sql e le gestisco
             catch (SQLException se) {
                 //se ci sono state eccezioni mostro un Dialog con il codice degli errori
-                Object[] options = {"OK"};
-                JOptionPane.showOptionDialog(getContentPane(), "Ci sono dei problemi con il database.\n Codice errore MySQL:" + se.getErrorCode(),
-                        "Problemi db",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.ERROR_MESSAGE,
-                        null,
-                        options,
-                        options[0]);
+                if(se.getErrorCode()==0){
+                    JOptionPane.showMessageDialog(getContentPane(),"Ci sono dei problemi con la tua connessione internet!","Manca la connessione",JOptionPane.INFORMATION_MESSAGE);
+                } else{
+                    JOptionPane.showMessageDialog(getContentPane(),"Ci sono dei problemi con il database.\nCodice errore database: "+se.getErrorCode()+"\nSe il problema persiste contattare l'amministratore.","Problemi con il db",JOptionPane.INFORMATION_MESSAGE);
+                }
 
             } catch (ClassNotFoundException ce) {
 

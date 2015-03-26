@@ -13,21 +13,32 @@ import java.awt.*;
 public class TabellaGiornata extends JPanel {
 
     private JLabel label1;
+    private JLabel label2;
     private JLabel numeroGiornata;
+    private JLabel data;
 
     private JPanel panel;
+
+    private JPanel panel1;
 
     private JTable giornataTable;
 
     private Giornata giornata;
 
     public TabellaGiornata(Giornata giorn, int prossimaGiornata){
-        setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         giornata = giorn;
         //creo e setto le etichette
         label1 = new JLabel("Giornata nr: ");
         numeroGiornata = new JLabel(String.valueOf(giornata.getNumGiornata()));
+        label2 = new JLabel("Data: ");
+        if(giorn.getGioReale().getDataOraInizio()!=null){
+            data = new JLabel(giorn.getGioReale().getDataOraInizio().toString());
+        } else {
+            data = new JLabel("DATA MANCANTE");
+        }
+
         //creo e setto la tabella della giornata
         giornataTable = new JTable();
         Object[] nomeColonne ;
@@ -35,7 +46,7 @@ public class TabellaGiornata extends JPanel {
         if(giorn.getNumGiornata()>=prossimaGiornata) {
             nomeColonne= new Object[2];
             nomeColonne[0]="Casa";
-            nomeColonne[1]="Trasfert";
+            nomeColonne[1]="Trasferta";
             righeGiornata = giornata.prossimaGiornataToArray();
         } else{
             nomeColonne = new Object[6];
@@ -61,8 +72,10 @@ public class TabellaGiornata extends JPanel {
         //setta il colore delle righe alternato
         giornataTable.setDefaultRenderer(Object.class, new RenderTableAlternate());
 
-                giornataTable.setShowHorizontalLines(false);
+        //non fa visualizzare le righe orizzontali
+        giornataTable.setShowHorizontalLines(false);
 
+        //stringe le colonne della tabella in base al contenuto
         giornataTable.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
 
         for (int column = 0; column < giornataTable.getColumnCount(); column++)
@@ -78,7 +91,6 @@ public class TabellaGiornata extends JPanel {
                 int width = c.getPreferredSize().width + giornataTable.getIntercellSpacing().width;
                 preferredWidth = Math.max(preferredWidth, width);
 
-                //  We've exceeded the maximum width, no need to check other rows
 
                 if (preferredWidth >= maxWidth)
                 {
@@ -95,8 +107,13 @@ public class TabellaGiornata extends JPanel {
         panel.add(label1);
         panel.add(numeroGiornata);
 
+        panel1 = new JPanel();
+        panel1.setLayout(new BoxLayout(panel1, BoxLayout.X_AXIS));
+        panel1.add(label2);
+        panel1.add(data);
 
         add(panel);
+        add(panel1);
         add(giornataTable);
 
     }
