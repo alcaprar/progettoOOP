@@ -127,7 +127,7 @@ public class Applicazione extends JFrame {
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
-        setSize(800, 600);
+        setSize(800, 650);
         setLocationRelativeTo(null);
         setVisible(true);
     }
