@@ -118,51 +118,6 @@ public class Utils {
     }
 
 
-    public boolean csvVoti(String pathFile,  String csvSplitBy,int numeroGiornata){
-        BufferedReader br = null;
-        final Mysql db = new Mysql();
-
-        String line = "";
-
-        ArrayList<String[]> listaVoti = new ArrayList<String[]>();
-        try {
-
-            br = new BufferedReader(new FileReader(pathFile));
-            String squadra;
-
-            while ((line = br.readLine()) != null) {
-                String[] riga = line.split(csvSplitBy);
-                if(riga[0].equals("Cod.")) System.out.println("Intestazione");
-                else if(riga[0].toLowerCase().contains("Voti gentilmente".toLowerCase())){
-                    squadra = new String(riga[0].split(" ",2)[0].replace("\"",""));
-                    System.out.println("Squadra "+squadra);
-                } else {
-                    String [] voto = line.split(csvSplitBy);
-                    listaVoti.add(voto);
-                    System.out.println("Cod: "+voto[0]+" Voto: "+String.format("%.1f",Float.parseFloat(voto[3].replace("\"","")))+" Gol: "+voto[4]);
-                }
-            }
-
-            return true;
-            //return db.inserisciVoti(listaVoti,numeroGiornata);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-    }
-
     public Object[][] listaGiocatoriToArray(ArrayList<Giocatore> listaGiocatori){
 
         Object[][] listaObject = new Object[listaGiocatori.size()][5];

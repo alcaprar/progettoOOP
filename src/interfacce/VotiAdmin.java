@@ -49,9 +49,9 @@ public class VotiAdmin extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(utils.xlsvoti(pathFile, (Integer)spinnerGiornata.getValue())){
-                    JOptionPane.showMessageDialog(null, "Voti della giornata "+ ultimaGiornataInserita+1+" inseriti correttamente", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Voti della giornata "+ String.valueOf(ultimaGiornataInserita+1)+" inseriti correttamente", "Success", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Voti della giornata "+ ultimaGiornataInserita+1+" non sono stati inseriti correttamente", "Errore", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Voti della giornata "+ String.valueOf(ultimaGiornataInserita+1)+" non sono stati inseriti correttamente", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
 
             }

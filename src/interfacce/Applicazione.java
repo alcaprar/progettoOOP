@@ -55,6 +55,19 @@ public class Applicazione extends JFrame {
         //scarico la lista dei giocatori delle squadre del mio campionato
         setListaGiocatori();
 
+        //scarico le formazione della prossima giornata
+        for(Giornata giorn :sqr.getCampionato().getCalendario()){
+            if(giorn.getNumGiornata()<=sqr.getCampionato().getProssimaGiornata()) {
+                for (Partita part : giorn.getPartite()) {
+                    classi.Formazione formCasa = new classi.Formazione(db.selectFormazioni(part.getID(), part.getCasa()));
+                    part.getCasa().setFormazione(formCasa);
+                    classi.Formazione formOspite = new classi.Formazione(db.selectFormazioni(part.getID(), part.getOspite()));
+                    part.getOspite().setFormazione(formOspite);
+                }
+            }
+        }
+
+
         //controllo se è già stata inserita la formazione
         sqr.setFormazioneInserita(db.selectFormazioneInserita(sqr));
 
@@ -77,6 +90,7 @@ public class Applicazione extends JFrame {
         calendarioPanel.refresh();
         squadrePanel.refresh();
         infoPanel.refresh();
+        gestioneLegaPanel.refresh();
 
         //se l'utente loggato è il presidente, il tipo di asta è offline e i giocatori sono da inserire popolo le tabelle
         //del pannello gestione giocatori
@@ -152,6 +166,12 @@ public class Applicazione extends JFrame {
             squadre.setGiocatori(db.selectGiocatori(squadre));
         }
     }
+
+   /* private void setFormazioni(){
+        for(Squadra squadre : sqr.getCampionato().getListaSquadrePartecipanti()){
+            squadre.setFormazione(db.selectFormazioni(sqr.getCampionato()));
+        }
+    }*/
 
 }
 

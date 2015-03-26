@@ -16,20 +16,31 @@ public class GestioneLega extends JPanel{
     private JTextField titoloAvviso;
     private JPanel mainPanel;
     private JLabel abilitatolbl;
-    private JLabel nonAbilitatolbl;
     private JButton calcolaButton;
+    private JLabel nrGiolbl;
+    private JLabel nonAbilitatolbl;
+    private JPanel calcolaPanel;
 
     private Squadra squadra;
 
     private final Mysql db = new Mysql();
 
     private int giornataVotiInseriti;
+    private int ultimaGiornataReale;
 
     public void setSquadra(Squadra sqr){
         this.squadra = sqr;
     }
 
-
+    public void refresh(){
+        ultimaGiornataReale = squadra.getCampionato().prossimaGiornata().getGioReale().getNumeroGiornata();
+        if(giornataVotiInseriti!=ultimaGiornataReale){
+            calcolaPanel.setVisible(false);
+        } else {
+            nonAbilitatolbl.setVisible(false);
+            nrGiolbl.setText(String.valueOf(squadra.getCampionato().prossimaGiornata().getNumGiornata()));
+        }
+    }
 
     public GestioneLega(){
 

@@ -17,6 +17,21 @@ public class Formazione {
         }
     }
 
+    public Formazione(ArrayList<Giocatore> form){
+        this.formazione = form;
+        if(!formazione.isEmpty()) {
+            int d=0;
+            int c=0;
+            int a=0;
+            for (int i = 0; i < 11; i++) {
+                if (formazione.get(i).getRuolo() == 'D') d++;
+                else if (formazione.get(i).getRuolo() == 'C') c++;
+                else if (formazione.get(i).getRuolo() == 'A') a++;
+            }
+            this.modulo = d + "-" + c + "-" + a;
+        }
+    }
+
     //funzione per la dichiarazione della formazione, tramite gui si sceglie il modulo e si compone il vettore con le giuste posizioni
     public void setFormazione(ArrayList<Giocatore> g, String modulo) {
         this.modulo = new String(modulo);
