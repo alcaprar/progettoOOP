@@ -11,6 +11,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ public class AstaLiveClient extends JFrame implements ItemListener{
     private JLabel inizialeL;
     private JLabel attualeL;
     private JLabel soldiSpesiL;
+    private JButton startStopButton;
 
     private Object[] colonne1 = {"ID", "Cognome", "Ruolo", "Squadra Reale", "Prezzo Iniziale"};
     private String[] colonne2 = {"Cognome", "Prezzo d'Acquisto"};
@@ -68,6 +71,17 @@ public class AstaLiveClient extends JFrame implements ItemListener{
         squadraRealeL.setText("Attendi");
         inizialeL.setText("Attendi");
         attualeL.setText("Attendi");
+
+        if(squadra.getProprietario().isPresidenteLega()){
+            startStopButton.setVisible(true);
+        } else startStopButton.setVisible(false);
+
+        startStopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
 
         setContentPane(mainPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
