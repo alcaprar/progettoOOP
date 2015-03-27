@@ -1,9 +1,11 @@
 package classi;
 
+import java.io.Serializable;
+
 /**
  * Created by Christian on 03/03/2015.
  */
-public class Giocatore {
+public class Giocatore implements Serializable{
     private String cognome;
     private int ID;
     private int prezzoBase;
