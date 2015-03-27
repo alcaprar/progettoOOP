@@ -1,4 +1,4 @@
-package interfacce;
+package AstaLive;
 
 import classi.Giocatore;
 import classi.Squadra;
@@ -6,17 +6,15 @@ import utils.RenderTableAlternate;
 import utils.Utils;
 
 import javax.swing.*;
-import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.net.Socket;
 import java.util.ArrayList;
-import java.util.jar.JarFile;
+import java.util.Scanner;
 
 /**
  * Created by Christian on 25/03/2015.
@@ -40,6 +38,9 @@ public class AstaLiveClient extends JFrame implements ItemListener{
     private JLabel attualeL;
     private JLabel soldiSpesiL;
     private JButton startStopButton;
+    private JTextArea serverConsole;
+    private JSpinner spinnerPorta;
+    private JLabel serverL;
 
     private Object[] colonne1 = {"ID", "Cognome", "Ruolo", "Squadra Reale", "Prezzo Iniziale"};
     private String[] colonne2 = {"Cognome", "Prezzo d'Acquisto"};
@@ -49,6 +50,9 @@ public class AstaLiveClient extends JFrame implements ItemListener{
     private ArrayList<DefaultTableModel> tabellaSquadraModel;
     private ArrayList<Integer> soldiSpesi = new ArrayList<Integer>();
     private DefaultComboBoxModel comboBoxModel;
+    private SpinnerModel spinnerModel;
+    private SpinnerModel spinnerModel1;
+    private Client client;
 
     public void setSquadra(Squadra sqr) {
         this.squadra = sqr;
@@ -72,11 +76,59 @@ public class AstaLiveClient extends JFrame implements ItemListener{
         inizialeL.setText("Attendi");
         attualeL.setText("Attendi");
 
+        serverConsole = new JTextArea(80,80);
+        serverConsole.setEditable(false);
+        serverConsole.append("Console degli eventi server");
+
+        spinnerModel = new SpinnerNumberModel(0, 0, 6000, 1);
+        spinnerPorta.setModel(spinnerModel);
+
+        spinnerModel1 = new SpinnerNumberModel(1,1,1000,1);
+        spinnerOfferta.setModel(spinnerModel1);
+
         if(squadra.getProprietario().isPresidenteLega()){
             startStopButton.setVisible(true);
-        } else startStopButton.setVisible(false);
+            serverL.setVisible(true);
+            spinnerPorta.setVisible(true);
+        } else {
+            startStopButton.setVisible(false);
+            serverL.setVisible(false);
+            spinnerPorta.setVisible(false);
+            // default values
+            int portNumber = 1500;
+            String serverAddress = "192.168.1.50";
+            String userName = squadra.getProprietario().getNickname();
+            boolean ok = false;
+            while(true){
+                try {
+                    Socket socket = new Socket(serverAddress, portNumber);
+                    ok = true;
+                }
+                catch (Exception e){ok = false;}
+                if(ok){
+                    client = new Client(serverAddress, portNumber, userName, AstaLiveClient.this);
+                    if(!client.start()) {
+                        JOptionPane.showMessageDialog(null, "Il client ha fallito durante l'avvio.", "Errore", JOptionPane.ERROR_MESSAGE);
+                        System.exit(-1);
+                    } else client.run();
+                }
+            }
+        }
 
         startStopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int port;
+                port = (Integer) spinnerPorta.getValue();
+                if(port == 0){
+                    port = 1500;
+                }
+                Server server = new Server(port, AstaLiveClient.this);
+                server.start();
+            }
+        });
+
+        buttonOfferta.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
 
@@ -185,5 +237,20 @@ public class AstaLiveClient extends JFrame implements ItemListener{
             JOptionPane.showMessageDialog(null, "Questa squadra ha superato il budget consentito.", "Errore", JOptionPane.ERROR_MESSAGE);
         }
 
+    }
+
+    public void eventoServer(String s){
+        serverConsole.append(s);
+        serverConsole.setCaretPosition(serverConsole.getText().length() - 1);
+    }
+
+    public void displayMessage(ChatMessage chatMessage){
+        cognomeL.setText(chatMessage.getGiocatore().getCognome());
+        ruoloL.setText(String.valueOf(chatMessage.getGiocatore().getRuolo()));
+        squadraRealeL.setText(chatMessage.getGiocatore().getSquadraReale());
+        inizialeL.setText(String.valueOf(chatMessage.getGiocatore().getPrezzoBase()));
+        attualeL.setText(String.valueOf(chatMessage.getGiocatore().getPrezzoAcquisto()));
+
+        spinnerModel1.setValue((Integer)chatMessage.getGiocatore().getPrezzoAcquisto());
     }
 }
