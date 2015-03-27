@@ -49,13 +49,14 @@ public class TabellaGiornata extends JPanel {
             nomeColonne[1]="Trasferta";
             righeGiornata = giornata.prossimaGiornataToArray();
         } else{
-            nomeColonne = new Object[6];
+            nomeColonne = new Object[7];
             nomeColonne[0] = "Casa";
             nomeColonne[1]="";
             nomeColonne[2]="";
-            nomeColonne[3]="";
+            nomeColonne[3]="-";
             nomeColonne[4]="";
-            nomeColonne[5]="Trasferta";
+            nomeColonne[5]="";
+            nomeColonne[6]="Trasferta";
             righeGiornata = giornata.partiteToArray();
         }
 

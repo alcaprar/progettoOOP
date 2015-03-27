@@ -60,7 +60,6 @@ public class Applicazione extends JFrame {
             if(giorn.getNumGiornata()<=sqr.getCampionato().getProssimaGiornata()) {
                 for (Partita part : giorn.getPartite()) {
                     ArrayList<Voto> formCasa = db.selectFormazioni(part.getID(), part.getFormCasa().getSquadra());
-                    //part.getFormCasa().setFormazione(formCasa);
                     part.getFormCasa().setListaGiocatori(formCasa);
                     ArrayList<Voto> formOspite = db.selectFormazioni(part.getID(), part.getFormOspite().getSquadra());
                     part.getFormOspite().setListaGiocatori(formOspite);
@@ -84,6 +83,9 @@ public class Applicazione extends JFrame {
         squadrePanel.setSquadre(sqr);
         infoPanel.setSquadra(sqr);
         gestioneLegaPanel.setSquadra(sqr);
+        gestioneLegaPanel.setCalendario(calendarioPanel);
+        gestioneLegaPanel.setHome(homePanel);
+        gestioneLegaPanel.setClassifica(classificaPanel);
 
 
         homePanel.refresh();
@@ -104,21 +106,23 @@ public class Applicazione extends JFrame {
 
         }
 
-        //se l'utente non è il presidente di lega tolto gestione lega
+        //se l'utente non è il presidente di lega tolgo gestione lega
         if(!squadra.getProprietario().isPresidenteLega()){
             tabbedPane1.remove(tabbedPane1.indexOfTab("Gestione Lega"));
         }
-        //se ancora non sono stati inseriti i giocatori e si va sulla tab
-        //della formazione, invia un avviso
+
         tabbedPane1.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 JTabbedPane tabbedpane = (JTabbedPane)e.getSource();
                 int formazione = tabbedpane.indexOfTab("Formazione");
                 int tab = tabbedpane.getSelectedIndex();
+                //se ancora non sono state create le rose invia un popup di avviso
                 if(formazione==tab && squadra.getCampionato().isGiocatoriDaInserire()){
                     JOptionPane.showMessageDialog(null, "Ancora non sono stati inseriti i giocatori. Non potrai inviare la formazione.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                } else if(formazione==tab && sqr.isFormazioneInserita()){
+                }
+                //se è già stata inviata la formazione per questa giornata invia un popup di avviso
+                else if(formazione==tab && sqr.isFormazioneInserita()){
                     JOptionPane.showMessageDialog(null, "Hai già inviato la formazione per questa partita.\nSe invii un'altra formazione, questa sostituirà quella vecchia.", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -168,11 +172,6 @@ public class Applicazione extends JFrame {
         }
     }
 
-   /* private void setFormazioni(){
-        for(Squadra squadre : sqr.getCampionato().getListaSquadrePartecipanti()){
-            squadre.setFormazione(db.selectFormazioni(sqr.getCampionato()));
-        }
-    }*/
 
 }
 

@@ -231,4 +231,49 @@ public class Campionato {
         }
         return ultima;
     }
+
+    public void aggiornaClassifica(Giornata giornata){
+        for(Partita partita : giornata.getPartite()){
+            boolean vittoriaCasa=false,  vittoriaOspite=false;
+            if(partita.getGolCasa()>partita.getGolFuori()){
+                vittoriaCasa=true;
+            } else if( partita.getGolCasa()<partita.getGolFuori()){
+                vittoriaOspite=true;
+            }
+            for(classi.Classifica rigaClassifica : this.classifica){
+                if(rigaClassifica.getSquadra().equals(partita.getFormCasa().getSquadra())){
+                    rigaClassifica.setGiocate(rigaClassifica.getGiocate()+1);
+                    if(vittoriaCasa){
+                        rigaClassifica.setVinte(rigaClassifica.getVinte()+1);
+                        rigaClassifica.setPunti(rigaClassifica.getPunti()+3);
+                    } else if(vittoriaOspite){
+                        rigaClassifica.setPerse(rigaClassifica.getPerse()+1);
+                    } else{
+                        rigaClassifica.setPareggiate(rigaClassifica.getPareggiate()+1);
+                        rigaClassifica.setPunti(rigaClassifica.getPunti()+1);
+                    }
+                    rigaClassifica.setGolFatti(rigaClassifica.getGolFatti()+partita.getGolCasa());
+                    rigaClassifica.setGolSubiti(rigaClassifica.getGolSubiti()+partita.getGolFuori());
+                    rigaClassifica.setPunteggio(rigaClassifica.getPunteggio()+partita.getPuntiCasa());
+                    rigaClassifica.setDiffReti(rigaClassifica.getGolFatti()-rigaClassifica.getGolSubiti());
+                } else if(rigaClassifica.getSquadra().equals(partita.getFormOspite().getSquadra())){
+                    rigaClassifica.setGiocate(rigaClassifica.getGiocate()+1);
+                    if(vittoriaCasa){
+                        rigaClassifica.setPerse(rigaClassifica.getPerse()+1);
+                    } else if(vittoriaOspite){
+                        rigaClassifica.setVinte(rigaClassifica.getVinte()+1);
+                        rigaClassifica.setPunti(rigaClassifica.getPunti()+3);
+                    } else{
+                        rigaClassifica.setPareggiate(rigaClassifica.getPareggiate()+1);
+                        rigaClassifica.setPunti(rigaClassifica.getPunti()+1);
+                    }
+                    rigaClassifica.setGolFatti(rigaClassifica.getGolFatti()+partita.getGolFuori());
+                    rigaClassifica.setGolSubiti(rigaClassifica.getGolSubiti()+partita.getGolCasa());
+                    rigaClassifica.setPunteggio(rigaClassifica.getPunteggio()+partita.getPuntiFuori());
+                    rigaClassifica.setDiffReti(rigaClassifica.getGolFatti()-rigaClassifica.getGolSubiti());
+                }
+            }
+        }
+
+    }
 }

@@ -797,7 +797,7 @@ public class Mysql{
             int i =0;
 
             deleteFormazioneInseritastmt = conn.prepareStatement(deleteFormazioneInseritaSql);
-            deleteFormazioneInseritastmt.setInt(1,squadra.prossimaPartita().getID());
+            deleteFormazioneInseritastmt.setInt(1, squadra.prossimaPartita().getID());
             deleteFormazioneInseritastmt.setString(2,squadra.getNome());
 
             i = deleteFormazioneInseritastmt.executeUpdate();
@@ -813,6 +813,89 @@ public class Mysql{
             return false;
 
         }finally {
+            try { conn.close(); } catch (Exception e) { /* ignored */ }
+        }
+
+
+    }
+
+    public boolean inserisciRisultatiGiornata(Campionato campionato){
+        Connection conn = null;
+        PreparedStatement partitastmt = null;
+        String partitaSql="UPDATE Partita set PunteggioCasa=?, PunteggioOspite=?, GolCasa=?, GolOspite=? where ID=?";
+
+        PreparedStatement prossimaGiornatastmt = null;
+        String prossimaGiornataSql = "UPDATE Campionato set ProssimaGiornata=? where Nome=?";
+
+        PreparedStatement classificastmt = null;
+        String classificaSql = "UPDATE Classifica set Vinte=?, Pareggiate=?,Perse=?,Punti=?,GolF=?,GolS=?,SommaPunteggi=? where IDsq=?";
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            int rsp =0;
+            int rsc = 0;
+
+            //inserisco i risultati delle singole partite
+            for(Partita partita : campionato.prossimaGiornata().getPartite()){
+                partitastmt = conn.prepareStatement(partitaSql);
+                //punti casa
+                partitastmt.setFloat(1,partita.getPuntiCasa());
+                //punti ospite
+                partitastmt.setFloat(2, partita.getPuntiFuori());
+                //gol casa
+                partitastmt.setInt(3, partita.getGolCasa());
+                //gol fuori
+                partitastmt.setInt(4,partita.getGolFuori());
+                //ID partita
+                partitastmt.setInt(5,partita.getID());
+
+                rsp =partitastmt.executeUpdate();
+
+            }
+
+            //aggiorno il contatore della prossima giornata
+            prossimaGiornatastmt = conn.prepareStatement(prossimaGiornataSql);
+            prossimaGiornatastmt.setInt(1,campionato.getProssimaGiornata()+1);
+            prossimaGiornatastmt.setString(2, campionato.getNome());
+            rsc = prossimaGiornatastmt.executeUpdate();
+
+            //aggiorno la classifica
+            for(Classifica rigaClassifica : campionato.getClassifica()){
+                classificastmt = conn.prepareStatement(classificaSql);
+                //partite vinte
+                classificastmt.setInt(1,rigaClassifica.getVinte());
+                //partite pareggiate
+                classificastmt.setInt(2,rigaClassifica.getPareggiate());
+                //partite perse
+                classificastmt.setInt(3,rigaClassifica.getPerse());
+                //punti
+                classificastmt.setInt(4,rigaClassifica.getPunti());
+                //gol fatti
+                classificastmt.setInt(5,rigaClassifica.getGolFatti());
+                //gol subiti
+                classificastmt.setInt(6,rigaClassifica.getGolSubiti());
+                //somma punteggi
+                classificastmt.setFloat(7,rigaClassifica.getPunteggio());
+                //IDsquadra
+                classificastmt.setInt(8,rigaClassifica.getSquadra().getID());
+
+                classificastmt.executeUpdate();
+            }
+
+
+
+            return (rsp==1 && rsc==1);
+        } catch (SQLException se){
+            se.printStackTrace();
+            return false;
+        } catch (ClassNotFoundException e){
+            e.printStackTrace();
+            return false;
+        } finally {
             try { conn.close(); } catch (Exception e) { /* ignored */ }
         }
 
