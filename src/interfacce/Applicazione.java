@@ -87,6 +87,8 @@ public class Applicazione extends JFrame {
         gestioneLegaPanel.setHome(homePanel);
         gestioneLegaPanel.setClassifica(classificaPanel);
 
+        homePanel.startCountDown();
+
 
         homePanel.refresh();
         classificaPanel.refresh();

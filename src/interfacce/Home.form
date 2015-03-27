@@ -289,7 +289,7 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="9e8a7" class="javax.swing.JLabel">
+                  <component id="9e8a7" class="javax.swing.JLabel" binding="giornilbl">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -307,7 +307,7 @@
                       <text value="Giorni"/>
                     </properties>
                   </component>
-                  <component id="bace" class="javax.swing.JLabel">
+                  <component id="bace" class="javax.swing.JLabel" binding="secondilbl">
                     <constraints>
                       <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -316,7 +316,7 @@
                       <text value="00"/>
                     </properties>
                   </component>
-                  <component id="4534b" class="javax.swing.JLabel">
+                  <component id="4534b" class="javax.swing.JLabel" binding="minutilbl">
                     <constraints>
                       <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -325,7 +325,7 @@
                       <text value="00"/>
                     </properties>
                   </component>
-                  <component id="591ae" class="javax.swing.JLabel">
+                  <component id="591ae" class="javax.swing.JLabel" binding="orelbl">
                     <constraints>
                       <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>

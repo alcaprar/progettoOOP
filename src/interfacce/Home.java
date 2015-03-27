@@ -3,6 +3,7 @@ package interfacce;
 import classi.*;
 import com.sun.org.apache.bcel.internal.classfile.LineNumberTable;
 import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory;
+import org.joda.time.*;
 import utils.*;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Created by alessandro on 11/03/15.
@@ -41,6 +43,10 @@ public class Home extends JPanel {
     private JLabel giornataProssimalbl;
     private JLabel giornataUltimalbl;
     private JLabel dataUltimalbl;
+    private JLabel giornilbl;
+    private JLabel orelbl;
+    private JLabel minutilbl;
+    private JLabel secondilbl;
 
     private Squadra squadra;
 
@@ -48,9 +54,43 @@ public class Home extends JPanel {
 
     public void setSquadre(Squadra squadra){
         this.squadra = squadra;
+        long prossima = squadra.getCampionato().prossimaGiornata().getGioReale().getDataOraInizio().getTime();
+        long orarioConsegna = squadra.getCampionato().getOrarioConsegna() * 60 * 1000;
+        this.prossimaGiornata = new DateTime(prossima-orarioConsegna);
     }
 
     private Utils utils = new Utils();
+
+    private DateTime prossimaGiornata;
+
+    private void setProssimaGiornata(DateTime prossimaGiornata){
+        this.prossimaGiornata = prossimaGiornata;
+    }
+
+    private DateTime getProssimaGiornata(){
+        return this.prossimaGiornata;
+    }
+
+
+    public void startCountDown(){
+        final Timer t = new Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (prossimaGiornata.isAfter(new DateTime())) {
+                    DateTime adesso = new DateTime();
+                    //int d = Days.daysBetween(adesso,getProssimaGiornata()).getDays();
+                    //int h = Hours.hoursBetween(adesso, getProssimaGiornata()).getHours();
+                    //int m = Minutes.minutesBetween(adesso, getProssimaGiornata()).getMinutes();
+                    int secondiTotali = Seconds.secondsBetween(adesso,getProssimaGiornata()).getSeconds();
+                    int d = secondiTotali/60/60/24;
+                    int h = secondiTotali/60/60%24;
+                    int m = secondiTotali/60%60;
+                    int s = secondiTotali%60;
+                    aggiornaCountdown(d,h,m,s);
+                }
+            }
+        });
+        t.start();
+    }
 
     public Home(Applicazione app){
         applicazione = app;
@@ -65,8 +105,8 @@ public class Home extends JPanel {
         listaAvvisi.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(!e.getValueIsAdjusting()){
-                    JList source = (JList)e.getSource();
+                if (!e.getValueIsAdjusting()) {
+                    JList source = (JList) e.getSource();
                     int numeroAvviso = source.getSelectedIndex();
                     testoAvvisi.setText(squadra.getCampionato().getListaAvvisi().get(numeroAvviso)[1]);
 
@@ -74,6 +114,9 @@ public class Home extends JPanel {
 
             }
         });
+
+
+
     }
 
     public void refresh(){
@@ -91,7 +134,7 @@ public class Home extends JPanel {
             setTableUltimaG();
             campionatoIniziolbl.setVisible(false);
             giornataUltimalbl.setText(String.valueOf(squadra.getCampionato().getProssimaGiornata()-1));
-            dataUltimalbl.setText(String.valueOf(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata() - 1).getGioReale().getDataOraInizio()));
+            dataUltimalbl.setText(String.valueOf(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata() - 2).getGioReale().getDataOraInizio()));
         }
 
         if(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata()-1).getGioReale().getNumeroGiornata()==squadra.getCampionato().getGiornataFine()){
@@ -103,7 +146,7 @@ public class Home extends JPanel {
             setTableProssimaG();
             campionatoFinitolbl.setVisible(false);
             giornataProssimalbl.setText(String.valueOf(squadra.getCampionato().getProssimaGiornata()));
-            dataProssimalbl.setText(String.valueOf(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata()).getGioReale().getDataOraInizio()));
+            dataProssimalbl.setText(String.valueOf(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata()-1).getGioReale().getDataOraInizio()));
         }/*
         if(squadra.getCampionato().getProssimaGiornata()<squadra.getCampionato().getGiornataFine()){
             campionatoFinitolbl.setVisible(false);
@@ -157,6 +200,13 @@ public class Home extends JPanel {
         }
         listaAvvisi.setModel(listaAvvisiModel);
         testoAvvisi.setLineWrap(true);
+    }
+
+    public void aggiornaCountdown(long giorni, long ore, long minuti, long secondi){
+        this.giornilbl.setText(String.valueOf(giorni));
+        this.orelbl.setText(String.valueOf(ore));
+        this.minutilbl.setText(String.valueOf(minuti));
+        this.secondilbl.setText(String.valueOf(secondi));
     }
 
 
