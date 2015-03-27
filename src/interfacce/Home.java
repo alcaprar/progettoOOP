@@ -185,12 +185,26 @@ public class Home extends JPanel {
         Object[] nomeColonne = {"Squadra", "Punti"};
         Object[][] righeClassifica = utils.listaClassificaToArrayPiccola(squadra.getCampionato().getClassifica());
 
-        TableNotEditableModel classificaModel = new TableNotEditableModel(righeClassifica, nomeColonne);
+        TableNotEditableModel classificaModel = new TableNotEditableModel(righeClassifica, nomeColonne){
+            @Override
+            public Class getColumnClass(int column) {
+                switch (column) {
+                    case 0:
+                        return String.class;
+                    case 1:
+                        return Integer.class;
+                    default:
+                        return String.class;
+                }
+            }
+        };
 
         tableClassifica.setModel(classificaModel);
 
         //setta il colore delle righe alternato
         tableClassifica.setDefaultRenderer(Object.class, new RenderTableAlternate());
+
+        tableClassifica.setAutoCreateRowSorter(true);
     }
 
     private void setListaAvvisi(){

@@ -31,9 +31,17 @@ public class Classifica extends JPanel {
         Object[] nomeColonne = {"Squadra", "Partite", "V", "N", "P", "DiffReti", "GolF", "GolS", "Punteggio", "Punti"};
         Object[][] righeClassifica = utils.listaClassificaToArray(squadra.getCampionato().getClassifica());
 
-        TableNotEditableModel classificaModel = new TableNotEditableModel(righeClassifica, nomeColonne);
+        TableNotEditableModel classificaModel = new TableNotEditableModel(righeClassifica, nomeColonne){
+            @Override
+            public Class getColumnClass(int column) {
+                return column==0 ? String.class : Integer.class;
+
+            }
+        };
 
         tableClassifica.setModel(classificaModel);
+
+        tableClassifica.setAutoCreateRowSorter(true);
 
         //setta il colore delle righe alternato
 
