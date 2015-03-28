@@ -1294,9 +1294,9 @@ public class Mysql{
             //apre la connessione
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
             int i=1;
-            for(Giocatore gioc :squadra.getFormazione().getFormazione()) {
+            for(Voto gioc :squadra.getFormazione().getListaGiocatori()) {
                 formazionestmt = conn.prepareStatement(formazioneSql);
-                formazionestmt.setInt(1, gioc.getID());
+                formazionestmt.setInt(1, gioc.getGiocatore().getID());
                 formazionestmt.setInt(2,partita.getID());
                 formazionestmt.setString(3,squadra.getNome());
                 formazionestmt.setInt(4,i);

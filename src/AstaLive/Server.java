@@ -8,6 +8,9 @@ import java.util.*;
 /**
  * Created by Christian on 26/03/2015.
  * Il server è eseguito esclusivamente in background, tutti gli utenti utilizzano il client
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Server {
 

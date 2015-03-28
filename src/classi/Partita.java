@@ -34,13 +34,6 @@ public class Partita {
         this.numeroPartita = numeroPartita;
     }
 
-    //calcola il risultato della partita e lo mette negli appositi attributi
-    public void calcolaPartita (int primaFascia, int largFascia, int bonusCasa) {
-        puntiCasa=formCasa.calcola()+bonusCasa; //calcola il punteggio della squadra di casa aggiungendo bonus casa al punteggio dei giocatori
-        puntiFuori=formOspite.calcola(); //calcola il punteggio della squadra ospite
-        golCasa=numGol(puntiCasa, primaFascia, largFascia); //calcola i gol che corrispondono al punteggio della squadra di casa
-        golFuori=numGol(puntiFuori, primaFascia, largFascia); //calcola i gol che corrispondono al punteggio della squadra ospite
-    }
 
     public void calcolaPartitaNew(int primaFascia, int largFascia, int bonusCasa){
         puntiCasa = formCasa.calcolaNew()+bonusCasa;

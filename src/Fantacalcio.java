@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-import interfacce.*;
+import interfacce.Login.Login;
 
 
 /**
