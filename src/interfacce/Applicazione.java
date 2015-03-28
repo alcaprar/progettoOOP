@@ -88,7 +88,7 @@ public class Applicazione extends JFrame {
         //setto in tutti i pannelli il riferimento a squadra
         homePanel.setSquadra(sqr);
         formazionePanel.setSquadra(sqr);
-        classificaPanel.setSquadre(sqr);
+        classificaPanel.setSquadra(sqr);
         calendarioPanel.setSquadra(sqr);
         squadrePanel.setSquadre(sqr);
         infoPanel.setSquadra(sqr);

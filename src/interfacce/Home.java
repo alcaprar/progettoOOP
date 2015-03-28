@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Pagina principale dell'applicazione. Mostra le informazioni
+ * Pagina home dell'applicazione. Mostra le informazioni
  * sul campionato più importanti.
  * Estende un JPanel.
  * @author Alessandro Caprarelli
@@ -176,6 +176,11 @@ public class Home extends JPanel {
         prossimaGiornataTable.setDefaultRenderer(Object.class, new RenderTableAlternate());
     }
 
+    /**
+     * Setta la tabella della scorsa giornata.
+     * Viene utilizzato un modello modificato per rendere le celle non modificabili.
+     * Viene utilizzato un render modificato per far mostrare il colore delle righe alternato.
+     */
     private void setTableUltimaG(){
         Object[] nomeColonne = {"","","","","","",""};
         Object[][] righeUltimaGiornata = squadra.getCampionato().ultimaGiornata().partiteToArray();
@@ -186,6 +191,13 @@ public class Home extends JPanel {
         ultimaGiornataTable.setDefaultRenderer(Object.class, new RenderTableAlternate());
     }
 
+    /**
+     * Setta la tabella della classifica.
+     * Nella classifica viene mostrato solo il nome della squadra e i punti.
+     * Viene utilizzato un modello modificato per rendere le celle non modificabili.
+     * Inoltre viene fatto l'override del metodo getColumnClass che serve per l'ordinamento delle righe.
+     * Viene utilizzato un render modificato per far mostrare il colore delle righe alternato.
+     */
     private void setTableClassifica(){
         Object[] nomeColonne = {"Squadra", "Punti"};
         Object[][] righeClassifica = utils.listaClassificaToArrayPiccola(squadra.getCampionato().getClassifica());
@@ -206,28 +218,37 @@ public class Home extends JPanel {
 
         tableClassifica.setModel(classificaModel);
 
+        tableClassifica.setAutoCreateRowSorter(true);
+
         //setta il colore delle righe alternato
         tableClassifica.setDefaultRenderer(Object.class, new RenderTableAlternate());
-
-        tableClassifica.setAutoCreateRowSorter(true);
     }
 
+    /**
+     * Viene popolata la Jlist con il titolo degli avvisi del campionato.
+     */
     private void setListaAvvisi(){
         DefaultListModel listaAvvisiModel = new DefaultListModel();
         for(String[] avviso:squadra.getCampionato().getListaAvvisi()){
             listaAvvisiModel.addElement(avviso[0]);
         }
         listaAvvisi.setModel(listaAvvisiModel);
+        //il testo nella JtextArea va a capo da solo
         testoAvvisi.setLineWrap(true);
     }
 
+    /**
+     * Aggiorna le label del Countdown in base ai parametri passati.
+     * Viene utilizzato dal timer per aggiornare ogni secondo il countdown.
+     * @param giorni
+     * @param ore
+     * @param minuti
+     * @param secondi
+     */
     public void aggiornaCountdown(long giorni, long ore, long minuti, long secondi){
         this.giornilbl.setText(String.valueOf(giorni));
         this.orelbl.setText(String.valueOf(ore));
         this.minutilbl.setText(String.valueOf(minuti));
         this.secondilbl.setText(String.valueOf(secondi));
     }
-
-
-
 }

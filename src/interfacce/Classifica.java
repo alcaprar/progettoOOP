@@ -9,7 +9,11 @@ import utils.Utils;
 import javax.swing.*;
 
 /**
- * Created by Giacomo on 12/03/15.
+ * Pagina della classifica. Mostra la classifica dettagliata del campionato.
+ * Estende un JPanel.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Mattioli
  */
 public class Classifica extends JPanel {
     private JPanel mainPanel;
@@ -18,15 +22,29 @@ public class Classifica extends JPanel {
     private Squadra squadra;
 
     Utils utils = new Utils();
-
-    public void setSquadre(Squadra squadra){
+    /**
+     * Setta il riferimento alla squadra loggato.
+     * Viene utilizzato da Applicazione.
+     * @param squadra
+     */
+    public void setSquadra(Squadra squadra){
         this.squadra = squadra;
     }
-
+    /**
+     * Aggiorna il panel con i dati della squadra e del campionato.
+     * Viene chiamata da Applicazione dopo che è stato settato il riferimento
+     * interno a squadra.
+     */
     public void refresh(){
         setTableClassifica();
     }
 
+    /**
+     * Setta la tabella della classifica dettagliata.
+     * Viene utilizzato un modello modificato per rendere le celle non modificabili.
+     * Inoltre viene fatto l'override del metodo getColumnClass che serve per l'ordinamento delle righe.
+     * Viene utilizzato un render modificato per far mostrare il colore delle righe alternato.
+     */
     private void setTableClassifica(){
         Object[] nomeColonne = {"Squadra", "Partite", "V", "N", "P", "DiffReti", "GolF", "GolS", "Punteggio", "Punti"};
         Object[][] righeClassifica = utils.listaClassificaToArray(squadra.getCampionato().getClassifica());
@@ -37,7 +55,6 @@ public class Classifica extends JPanel {
             @Override
             public Class getColumnClass(int column) {
                 return column==0 ? String.class : Integer.class;
-
             }
         };
 
@@ -49,6 +66,7 @@ public class Classifica extends JPanel {
         //setta il colore delle righe alternato
         tableClassifica.setDefaultRenderer(Object.class, new RenderTableAlternate());
 
+        //setta l'altezza delle righe
         tableClassifica.setRowHeight(50);
     }
 
