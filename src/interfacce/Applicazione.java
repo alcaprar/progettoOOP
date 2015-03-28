@@ -7,9 +7,7 @@ import org.joda.time.DateTime;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Applicazione principale del gestore.
@@ -144,7 +142,6 @@ public class Applicazione extends JFrame {
                 }
                 //se è scaduto il tempo per inserire la formazione mostra un avviso e cambia la tab
                 else if(formazione==tab && new DateTime().isAfter(homePanel.getProssimaGiornata())){
-                    System.out.println("tempo passato");
                     JOptionPane.showMessageDialog(null, "Non è più possibile inserire la formazione perchè è scaduto il tempo.","Tempo scaduto", JOptionPane.INFORMATION_MESSAGE);
                     tabbedpane.setSelectedIndex(0);
                 }

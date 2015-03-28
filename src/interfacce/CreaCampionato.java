@@ -1,24 +1,26 @@
 package interfacce;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import classi.*;
-import db.Mysql;
-
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
+import classi.*;
+import db.Mysql;
+
+
+
+
 /**
- * Created by alessandro on 14/03/15.
+ * Pagina per la creazione di un nuovo campionato.
+ * Estende un JFrame.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class CreaCampionato extends JFrame {
     private JTextField nometxt;
@@ -50,8 +52,6 @@ public class CreaCampionato extends JFrame {
     private JButton rimuoviButton;
     private JButton annullaButton;
 
-    //private String[] listaUtenti;
-
     private ArrayList<Persona> listaUtenti = new ArrayList<Persona>();
     private ArrayList<Squadra> listaSquadrePartecipanti = new ArrayList<Squadra>();
 
@@ -63,29 +63,29 @@ public class CreaCampionato extends JFrame {
 
     final private Mysql db = new Mysql();
 
+    /**
+     * Costruttore dell'oggetto CreaCampionato.
+     * @param utente utente loggato
+     * @param loginForm login frame
+     */
     public CreaCampionato(Persona utente, final Login loginForm) {
         //titolo del frame
         super("Crea Campionato - Gestore fantacalcio");
 
         presidente = utente;
 
-        //System.out.println(presidente.getNickname());
-
-        setJlist();
-
-        setContentPane(panel);
+        //richiama i metodi per settare le liste degli utenti,
+        //gli spinner, e le info icon
+        refresh();
 
         nomePresidente.setText(utente.getNickname());
 
+        setContentPane(panel);
         pack();
-
         //centra il frame
         setLocationRelativeTo(null);
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         setVisible(true);
-
         setResizable(false);
 
 
@@ -193,30 +193,10 @@ public class CreaCampionato extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if ("".equals(nometxt.getText())) {
-                    Object[] options = {"OK"};
-                    int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Inserire il nome del campionato.",
-                            "Nome vuoto",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            options,
-                            options[0]);
-
+                    JOptionPane.showMessageDialog(getContentPane(), "Inserire il nome del campionato.","Nome mancante",JOptionPane.ERROR_MESSAGE);
                 } else if(partecipantiModel.size()!=Integer.parseInt((String) numeroBox.getSelectedItem())){
-                    Object[] options = {"OK"};
-                    int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Inserisci tutti i partecipanti",
-                            "Mancano dei partecipanti",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            options,
-                            options[0]);
-
-                }
-
-
-
-                else  {
+                    JOptionPane.showMessageDialog(getContentPane(),"Inserisci tutti i partecipanti","Partecipanti mancanti",JOptionPane.ERROR_MESSAGE);
+                }else  {
                     campionato = creaCampionato();
                     if (db.creaCampionato(campionato)) {
                         Object[] options = {"OK"};
@@ -234,14 +214,7 @@ public class CreaCampionato extends JFrame {
                         }
 
                     } else {
-                        Object[] options = {"OK"};
-                        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Ci sono stati degli errori nella creazione del campionato!",
-                                "Risposta",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                options,
-                                options[0]);
+                        JOptionPane.showMessageDialog(getContentPane(),"Ci sono stati degli errori nella creazione del campionato!","Errore",JOptionPane.ERROR_MESSAGE);
                     }
                 }
 
@@ -253,27 +226,30 @@ public class CreaCampionato extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 loginForm.setVisible(true);
                 getFrame().dispose();
-
-
             }
         });
 
     }
 
-
-    private void createUIComponents() {
-
+    /**
+     * Richiama i metodi che settano la lista degli utenti disponibili,
+     * gli spinner e le info icon.
+     */
+    private void refresh(){
+        setJlist();
         setInfoIcon();
-
         setSpinner();
-
-
-
     }
 
     //crea le liste dai modelli
     //il modello partecipanti è vuoto
     //il modello utenti disponibili viene scaricato dal db
+
+    /**
+     * Setta la lista degli utenti disponibili.
+     * Popola il model degli utenti disponibili prendendo i nickname dal database.
+     * Aggiunge il presidente di lega(colui che sta creando il campionato) al model dei partecipanti.
+     */
     private void setJlist() {
         //db
         final Mysql db = new Mysql();
@@ -307,76 +283,85 @@ public class CreaCampionato extends JFrame {
 
     }
 
-    //crea gli spinner dai modelli
+    /**
+     * Setta gli spinner. Vengono settati in base ai valori ammissibili per ogni regola.
+     */
     private void setSpinner() {
         //costruttore spinnermodel-->(valore da visualizzare, min, max, incremento)
         SpinnerNumberModel inizioModel = new SpinnerNumberModel(1, 1, 37, 1);
         //creo il jspinner dal modello
-        inizioSpinner = new JSpinner(inizioModel);
+        inizioSpinner.setModel(inizioModel);
 
         SpinnerNumberModel fineModel = new SpinnerNumberModel(38, 2, 38, 1);
-        fineSpinner = new JSpinner(fineModel);
+        fineSpinner.setModel(fineModel);
 
         SpinnerNumberModel creditiModel = new SpinnerNumberModel(800, 1, 2000, 10);
-        creditiSpinner = new JSpinner(creditiModel);
+        creditiSpinner.setModel(creditiModel);
 
         SpinnerNumberModel limiteModel = new SpinnerNumberModel(30, 0, 360, 1);
-        limiteSpinner = new JSpinner(limiteModel);
+        limiteSpinner.setModel(limiteModel);
 
         SpinnerNumberModel primafModel = new SpinnerNumberModel(66, 50, 80, 1);
-        primafSpinner = new JSpinner(primafModel);
+        primafSpinner.setModel(primafModel);
 
         SpinnerNumberModel fasceModel = new SpinnerNumberModel(6, 1, 10, 1);
-        fasceSpinner = new JSpinner(fasceModel);
+        fasceSpinner.setModel(fasceModel);
 
         SpinnerNumberModel bonuscModel = new SpinnerNumberModel(0, 0, 5, 1);
-        bonuscSpinner = new JSpinner(bonuscModel);
+        bonuscSpinner.setModel(bonuscModel);
     }
 
-    //aggiunge l'icona e la descrizione
+    /**
+     * Setta le icone in fondo ad ogni riga.
+     * Sono dei label senza testo ma con un icon.
+     * Inoltre viene aggiungo un tooltip text con le informazioni per la riga.
+     */
     private void setInfoIcon() {
         //icona di info
         ImageIcon icon = (ImageIcon) UIManager.getIcon("OptionPane.informationIcon");
-
-
         //è un label senza testo, con solo l'icona di info
-        nomeInfo = new JLabel(icon);
-
+        nomeInfo.setIcon(icon);
         //quando il mouse è sopra l'icona spiega cosa bisogna fare
         nomeInfo.setToolTipText("Nome del campionato");
 
 
-        numeroInfo = new JLabel(icon);
+        numeroInfo.setIcon(icon);
         numeroInfo.setToolTipText("Numero dei partecipanti al campionato");
 
-        astaInfo = new JLabel(icon);
+        astaInfo.setIcon(icon);
         astaInfo.setToolTipText("<html>Se si sceglie live l'asta verrà fatta tramite l'applicazione.<br> Se si sceglie offline bisogna inserire manualmente le singole rose</html>");
 
-        inizioInfo = new JLabel(icon);
+        inizioInfo.setIcon(icon);
         inizioInfo.setToolTipText("Giornata di inizio del fantacampionato rispetto alla giornata del campionato di Serie A");
 
         //int fineConsigliata = 38 - (38 % ((Integer) numeroBox.getSelectedItem()-1)) - ((Integer) inizioSpinner.getValue()-1);
 
-        fineInfo = new JLabel(icon);
+        fineInfo.setIcon(icon);
         fineInfo.setToolTipText("<html>Giornata di fine consigliata per far giocare ad ogni giocatore<br> lo stesso numero di volte contro gli altri giocatori:</html>");
 
-        creditiInfo = new JLabel(icon);
+        creditiInfo.setIcon(icon);
         creditiInfo.setToolTipText("Crediti Iniziali");
 
-        limiteInfo = new JLabel(icon);
+        limiteInfo.setIcon(icon);
         limiteInfo.setToolTipText("<html>Numero di minuti prima della prima partita di <br>ogni giornata entro cui bisogna inviare la formazione.</html>");
 
-        primafInfo = new JLabel(icon);
+        primafInfo.setIcon(icon);
         primafInfo.setToolTipText("Valore prima fascia gol. Consigliato: 66");
 
-        fasceInfo = new JLabel(icon);
+        fasceInfo.setIcon(icon);
         fasceInfo.setToolTipText("Valore larghezza fasce gol. Consigliato: 4 o 6");
 
-        bcasaInfo = new JLabel(icon);
+        bcasaInfo.setIcon(icon);
         bcasaInfo.setToolTipText("Lasciare a zero se non si vuole il bonus casa.");
 
     }
 
+    /**
+     * Crea l'oggetto Campionato, che poi verrà passato al db,
+     * dai valori inseriti nelle textfield, spinner e liste.
+     * @return Campionato campionato appena creato
+     * @see Campionato
+     */
     private Campionato creaCampionato() {
         String nome = nometxt.getText();
         int numeroPartecipanti = Integer.parseInt((String) numeroBox.getSelectedItem());
@@ -396,7 +381,11 @@ public class CreaCampionato extends JFrame {
         return new Campionato(nome, numeroPartecipanti, asta, inizio, fine, crediti, orario, primaf, fasce, bonusc, presidente,listaSquadrePartecipanti,true,1);
     }
 
-    public CreaCampionato getFrame() {
+    /**
+     * Restituisce l'oggeto principale CreaCampionato
+     * @return CreaCampionato creacampionato:this
+     */
+    private CreaCampionato getFrame() {
         return this;
     }
 

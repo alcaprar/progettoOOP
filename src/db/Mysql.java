@@ -1,18 +1,19 @@
 package db;
 
-
-import javax.swing.*;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import classi.*;
-import classi.Classifica;
-import classi.Giornata;
-import interfacce.*;
-import interfacce.Formazione;
 import utils.*;
 
+import javax.swing.*;
+
+/**
+ * Classe per la comunicazione col database
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
+ */
 public class Mysql{
     static final private String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final private String DB_URL = "jdbc:mysql://db4free.net/progogg";
@@ -20,62 +21,113 @@ public class Mysql{
     static final private String PASS = "pagliarecci";
     private Utils utils = new Utils();
 
+    /**
+     * Controlla nel database se le credenziali inserite e passate tramite
+     * l'oggetto Persona sono giuste.
+     * @param utente utente da loggare
+     * @return true se l'utente esiste e ha inserito la password giusta
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public boolean login(Persona utente) throws SQLException,ClassNotFoundException{
         Connection conn = null ;
-        PreparedStatement login = null;
+        PreparedStatement loginStmt = null;
         String loginSql = "SELECT * FROM Utente where Nickname=? and Password=?";
+        ResultSet loginRs = null;
         try{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
-            login = conn.prepareStatement(loginSql);
-            login.setString(1,utente.getNickname());
-            login.setString(2, utente.getPassword());
-            ResultSet rs = login.executeQuery();
-            if(rs.next()){
-                utente.setNome(rs.getString("Nome"));
-                utente.setCognome(rs.getString("Cognome"));
-                utente.setEmail(rs.getString("Email"));
+            loginStmt = conn.prepareStatement(loginSql);
+            loginStmt.setString(1,utente.getNickname());
+            loginStmt.setString(2, utente.getPassword());
+            loginRs = loginStmt.executeQuery();
+            if(loginRs.next()){
+                utente.setNome(loginRs.getString("Nome"));
+                utente.setCognome(loginRs.getString("Cognome"));
+                utente.setEmail(loginRs.getString("Email"));
                 return true;
             }
             else return false;
         }finally {
-            try { conn.close(); } catch (Exception e) { /* ignored */ }
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(loginStmt!=null){
+                try{
+                    loginStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(loginRs!=null){
+                try{
+                    loginRs.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
 
 
-        }
+    }
 
+    /**
+     * Registra un nuovo utente.
+     * @param utente utente da registrare
+     * @return true se la registrazione è andata a buon fine
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public boolean registra(Persona utente)throws SQLException, ClassNotFoundException{
         Connection conn = null ;
-        PreparedStatement registra = null;
+        PreparedStatement registraStmt = null;
         String registraSql ="INSERT into Utente value(?,?,?,?,?,?)";
         try{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
-            registra = conn.prepareStatement(registraSql);
-            registra.setString(1, utente.getNickname());
-            registra.setString(2, utente.getPassword());
-            registra.setString(3, utente.getNome());
-            registra.setString(4,utente.getCognome());
-            registra.setString(5,utente.getEmail());
-            registra.setString(6, "u");  //tipo: utente
-            int rs = registra.executeUpdate();
+
+            registraStmt = conn.prepareStatement(registraSql);
+            registraStmt.setString(1, utente.getNickname());
+            registraStmt.setString(2, utente.getPassword());
+            registraStmt.setString(3, utente.getNome());
+            registraStmt.setString(4,utente.getCognome());
+            registraStmt.setString(5,utente.getEmail());
+            registraStmt.setString(6, "u");  //tipo: utente
+
+            int rs = registraStmt.executeUpdate();
             if(rs==1){
-                //registraTrue(registraForm);
                 return true;
             }
-            else return false;
+            else{
+                return false;
+            }
         }finally {
-            try { conn.close(); } catch (Exception e) { /* ignored */ }
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(registraStmt!=null){
+                try{
+                    registraStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
 
     }
 
-    //trova tutti gli utenti disponibili
     public ArrayList<Persona> selectUtenti(){
         Connection conn=null ;
         PreparedStatement stmt = null ;
@@ -346,153 +398,6 @@ public class Mysql{
 
     }
 
-    public void aggiornaNomeSquadra(Squadra squadra){
-        Connection conn = null;
-        PreparedStatement aggiornaNome = null;
-        String aggiornaNomeSql = "UPDATE Fantasquadra set Nome =? where ID=?";
-
-        try{
-            //registra il JBCD driver
-            Class.forName(JDBC_DRIVER);
-            //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
-
-            aggiornaNome = conn.prepareStatement(aggiornaNomeSql);
-            aggiornaNome.setString(1,squadra.getNome());
-            aggiornaNome.setInt(2, squadra.getID());
-            int rs = aggiornaNome.executeUpdate();
-
-
-        }catch(SQLException se){
-            se.printStackTrace();
-
-
-        }catch(Exception e){
-            e.printStackTrace();
-
-
-        }finally {
-            if(conn!=null) {
-                try {
-                    conn.close();
-                } catch (Exception e) {
-                    //ignored
-                }
-            }
-        }
-
-    }
-
-    public void aggiornaNomeUtente(Persona utente){
-            Connection conn = null;
-            PreparedStatement aggiornastmt = null;
-            String aggiornaSql = "UPDATE Utente set Nome =? where Nickname=?";
-
-            try{
-                //registra il JBCD driver
-                Class.forName(JDBC_DRIVER);
-                //apre la connessionename
-                conn = DriverManager.getConnection(DB_URL,USER,PASS);
-
-                aggiornastmt = conn.prepareStatement(aggiornaSql);
-                aggiornastmt.setString(1, utente.getNome());
-                aggiornastmt.setString(2, utente.getNickname());
-                int rs = aggiornastmt.executeUpdate();
-
-
-            }catch(SQLException se){
-                se.printStackTrace();
-
-
-            }catch(Exception e){
-                e.printStackTrace();
-
-
-            }finally {
-                if(conn!=null) {
-                    try {
-                        conn.close();
-                    } catch (Exception e) {
-                        //ignored
-                    }
-                }
-            }
-    }
-
-    public void aggiornaCognomeUtente(Persona utente){
-        Connection conn = null;
-        PreparedStatement aggiornastmt = null;
-        String aggiornaSql = "UPDATE Utente set Cognome =? where Nickname=?";
-
-        try{
-            //registra il JBCD driver
-            Class.forName(JDBC_DRIVER);
-            //apre la connessionename
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
-
-            aggiornastmt = conn.prepareStatement(aggiornaSql);
-            aggiornastmt.setString(1, utente.getCognome());
-            aggiornastmt.setString(2, utente.getNickname());
-            int rs = aggiornastmt.executeUpdate();
-
-
-        }catch(SQLException se){
-            se.printStackTrace();
-
-
-        }catch(Exception e){
-            e.printStackTrace();
-
-
-        }finally {
-            if(conn!=null) {
-                try {
-                    conn.close();
-                } catch (Exception e) {
-                    //ignored
-                }
-            }
-        }
-    }
-
-    public void aggiornaGiornataReale(GiornataReale giornata){
-        Connection conn=null;
-        PreparedStatement giornatastmt = null;
-        String giornataSql = "UPDATE GiornataAnno set DataOraInizio=?, DataOraFine=? where NrGioReale=?";
-
-        try{
-            //registra il JBCD driver
-            Class.forName(JDBC_DRIVER);
-            //apre la connessionename
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-            giornatastmt = conn.prepareStatement(giornataSql);
-            giornatastmt.setTimestamp(1, new Timestamp(giornata.getDataOraInizio().getTime()));
-            giornatastmt.setTimestamp(2, new Timestamp(giornata.getDataOraFine().getTime()));
-            giornatastmt.setInt(3, giornata.getNumeroGiornata());
-
-
-            giornatastmt.executeUpdate();
-
-        }catch(SQLException se){
-            se.printStackTrace();
-
-
-        }catch(Exception e){
-            e.printStackTrace();
-
-
-        }finally {
-            if(conn!=null) {
-                try {
-                    conn.close();
-                } catch (Exception e) {
-                    //ignored
-                }
-            }
-        }
-    }
-
     public ArrayList<GiornataReale> selectGiornateAdmin(){
         Connection conn = null;
         PreparedStatement giornatestmt = null;
@@ -612,13 +517,13 @@ public class Mysql{
             return listaGiornate;
 
         }finally {
-                if(conn!=null) {
-                    try {
-                        conn.close();
-                    } catch (Exception e) {
-                        //ignored
-                    }
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
                 }
+            }
         }
     }
 
@@ -779,6 +684,153 @@ public class Mysql{
         } catch(ClassNotFoundException e){
             e.printStackTrace();
             return formazione;
+        }
+    }
+
+    public void aggiornaNomeSquadra(Squadra squadra){
+        Connection conn = null;
+        PreparedStatement aggiornaNome = null;
+        String aggiornaNomeSql = "UPDATE Fantasquadra set Nome =? where ID=?";
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            aggiornaNome = conn.prepareStatement(aggiornaNomeSql);
+            aggiornaNome.setString(1,squadra.getNome());
+            aggiornaNome.setInt(2, squadra.getID());
+            int rs = aggiornaNome.executeUpdate();
+
+
+        }catch(SQLException se){
+            se.printStackTrace();
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
+                }
+            }
+        }
+
+    }
+
+    public void aggiornaNomeUtente(Persona utente){
+            Connection conn = null;
+            PreparedStatement aggiornastmt = null;
+            String aggiornaSql = "UPDATE Utente set Nome =? where Nickname=?";
+
+            try{
+                //registra il JBCD driver
+                Class.forName(JDBC_DRIVER);
+                //apre la connessionename
+                conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+                aggiornastmt = conn.prepareStatement(aggiornaSql);
+                aggiornastmt.setString(1, utente.getNome());
+                aggiornastmt.setString(2, utente.getNickname());
+                int rs = aggiornastmt.executeUpdate();
+
+
+            }catch(SQLException se){
+                se.printStackTrace();
+
+
+            }catch(Exception e){
+                e.printStackTrace();
+
+
+            }finally {
+                if(conn!=null) {
+                    try {
+                        conn.close();
+                    } catch (Exception e) {
+                        //ignored
+                    }
+                }
+            }
+    }
+
+    public void aggiornaCognomeUtente(Persona utente){
+        Connection conn = null;
+        PreparedStatement aggiornastmt = null;
+        String aggiornaSql = "UPDATE Utente set Cognome =? where Nickname=?";
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessionename
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            aggiornastmt = conn.prepareStatement(aggiornaSql);
+            aggiornastmt.setString(1, utente.getCognome());
+            aggiornastmt.setString(2, utente.getNickname());
+            int rs = aggiornastmt.executeUpdate();
+
+
+        }catch(SQLException se){
+            se.printStackTrace();
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
+                }
+            }
+        }
+    }
+
+    public void aggiornaGiornataReale(GiornataReale giornata){
+        Connection conn=null;
+        PreparedStatement giornatastmt = null;
+        String giornataSql = "UPDATE GiornataAnno set DataOraInizio=?, DataOraFine=? where NrGioReale=?";
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessionename
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            giornatastmt = conn.prepareStatement(giornataSql);
+            giornatastmt.setTimestamp(1, new Timestamp(giornata.getDataOraInizio().getTime()));
+            giornatastmt.setTimestamp(2, new Timestamp(giornata.getDataOraFine().getTime()));
+            giornatastmt.setInt(3, giornata.getNumeroGiornata());
+
+
+            giornatastmt.executeUpdate();
+
+        }catch(SQLException se){
+            se.printStackTrace();
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    //ignored
+                }
+            }
         }
     }
 

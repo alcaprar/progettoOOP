@@ -1,10 +1,9 @@
 package interfacce;
 
 
-import classi.Squadra;
-import utils.TableNotEditableModel;
-import utils.RenderTableAlternate;
-import utils.Utils;
+import classi.*;
+import utils.*;
+
 
 import javax.swing.*;
 

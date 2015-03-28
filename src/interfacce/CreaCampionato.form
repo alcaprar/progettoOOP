@@ -85,7 +85,7 @@
                   </model>
                 </properties>
               </component>
-              <component id="e4d89" class="javax.swing.JLabel" binding="nomeInfo" custom-create="true">
+              <component id="e4d89" class="javax.swing.JLabel" binding="nomeInfo">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -93,7 +93,7 @@
                   <text value=""/>
                 </properties>
               </component>
-              <component id="c5539" class="javax.swing.JLabel" binding="numeroInfo" custom-create="true">
+              <component id="c5539" class="javax.swing.JLabel" binding="numeroInfo">
                 <constraints>
                   <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -101,7 +101,7 @@
                   <text value=""/>
                 </properties>
               </component>
-              <component id="f7db3" class="javax.swing.JLabel" binding="astaInfo" custom-create="true">
+              <component id="f7db3" class="javax.swing.JLabel" binding="astaInfo">
                 <constraints>
                   <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -178,7 +178,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="a0995" class="javax.swing.JSpinner" binding="bonuscSpinner" custom-create="true">
+                  <component id="a0995" class="javax.swing.JSpinner" binding="bonuscSpinner">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -191,7 +191,7 @@
                   </hspacer>
                 </children>
               </grid>
-              <component id="2f437" class="javax.swing.JLabel" binding="inizioInfo" custom-create="true">
+              <component id="2f437" class="javax.swing.JLabel" binding="inizioInfo">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -199,7 +199,7 @@
                   <text value=""/>
                 </properties>
               </component>
-              <component id="d17b9" class="javax.swing.JLabel" binding="fineInfo" custom-create="true">
+              <component id="d17b9" class="javax.swing.JLabel" binding="fineInfo">
                 <constraints>
                   <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -207,7 +207,7 @@
                   <text value=""/>
                 </properties>
               </component>
-              <component id="6615d" class="javax.swing.JLabel" binding="creditiInfo" custom-create="true">
+              <component id="6615d" class="javax.swing.JLabel" binding="creditiInfo">
                 <constraints>
                   <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -215,7 +215,7 @@
                   <text value=""/>
                 </properties>
               </component>
-              <component id="9a77e" class="javax.swing.JLabel" binding="limiteInfo" custom-create="true">
+              <component id="9a77e" class="javax.swing.JLabel" binding="limiteInfo">
                 <constraints>
                   <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -223,7 +223,7 @@
                   <text value=""/>
                 </properties>
               </component>
-              <component id="95732" class="javax.swing.JLabel" binding="primafInfo" custom-create="true">
+              <component id="95732" class="javax.swing.JLabel" binding="primafInfo">
                 <constraints>
                   <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -231,7 +231,7 @@
                   <text value=""/>
                 </properties>
               </component>
-              <component id="d19e8" class="javax.swing.JLabel" binding="fasceInfo" custom-create="true">
+              <component id="d19e8" class="javax.swing.JLabel" binding="fasceInfo">
                 <constraints>
                   <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -239,7 +239,7 @@
                   <text value=""/>
                 </properties>
               </component>
-              <component id="d1f0e" class="javax.swing.JLabel" binding="bcasaInfo" custom-create="true">
+              <component id="d1f0e" class="javax.swing.JLabel" binding="bcasaInfo">
                 <constraints>
                   <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -255,7 +255,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="b48ee" class="javax.swing.JSpinner" binding="inizioSpinner" custom-create="true">
+                  <component id="b48ee" class="javax.swing.JSpinner" binding="inizioSpinner">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -276,7 +276,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="5d255" class="javax.swing.JSpinner" binding="fineSpinner" custom-create="true">
+                  <component id="5d255" class="javax.swing.JSpinner" binding="fineSpinner">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -297,7 +297,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="dae91" class="javax.swing.JSpinner" binding="creditiSpinner" custom-create="true">
+                  <component id="dae91" class="javax.swing.JSpinner" binding="creditiSpinner">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -318,7 +318,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="392d5" class="javax.swing.JSpinner" binding="limiteSpinner" custom-create="true">
+                  <component id="392d5" class="javax.swing.JSpinner" binding="limiteSpinner">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -339,7 +339,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="6c4a" class="javax.swing.JSpinner" binding="primafSpinner" custom-create="true">
+                  <component id="6c4a" class="javax.swing.JSpinner" binding="primafSpinner">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -360,7 +360,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="ab22d" class="javax.swing.JSpinner" binding="fasceSpinner" custom-create="true">
+                  <component id="ab22d" class="javax.swing.JSpinner" binding="fasceSpinner">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
