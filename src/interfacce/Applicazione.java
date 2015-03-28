@@ -2,15 +2,22 @@ package interfacce;
 
 import classi.*;
 import db.Mysql;
+import org.joda.time.DateTime;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
- * Created by alessandro on 11/03/15.
+ * Applicazione principale del gestore.
+ * La classe estende un Jframe.
+ * All'interno c'è un JTabbedPane.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Applicazione extends JFrame {
     private JPanel panel1;
@@ -35,12 +42,10 @@ public class Applicazione extends JFrame {
 
     final Mysql db = new Mysql();
 
-    private boolean formazioneInserita;
-
     public Applicazione(final Squadra squadra) {
         super("Gestore Fantacalcio");
 
-        sqr = squadra;
+        this.sqr = squadra;
 
         //scarico la classifica e la inserisco nel campionato
         ArrayList<classi.Classifica> classifica = new ArrayList<classi.Classifica>();
@@ -74,23 +79,32 @@ public class Applicazione extends JFrame {
         //scarico la lista degli avvisi
         sqr.getCampionato().setListaAvvisi(db.selectAvvisi(sqr));
 
-        //aggiorno il pannello formazione
-        refreshFormazione();
+        //scarico la lista dei giocatori della squadra loggata
+        sqr.setGiocatori(db.selectGiocatori(sqr));
 
-        homePanel.setSquadre(sqr);
+        //aggiorno il pannello formazione
+        //refreshFormazione();
+
+        //setto in tutti i pannelli il riferimento a squadra
+        homePanel.setSquadra(sqr);
+        formazionePanel.setSquadra(sqr);
         classificaPanel.setSquadre(sqr);
         calendarioPanel.setSquadra(sqr);
         squadrePanel.setSquadre(sqr);
         infoPanel.setSquadra(sqr);
         gestioneLegaPanel.setSquadra(sqr);
+        //setto i riferimento a calendario, home e classifica che servono
+        //per fare il refresh dopo che è stata calcolata la giornata
         gestioneLegaPanel.setCalendario(calendarioPanel);
         gestioneLegaPanel.setHome(homePanel);
         gestioneLegaPanel.setClassifica(classificaPanel);
 
+        //fa partire il countdown per l'inserimento della formazione
         homePanel.startCountDown();
 
-
+        //aggiorno tutti i pannelli con i dati scaricati
         homePanel.refresh();
+        formazionePanel.refresh();
         classificaPanel.refresh();
         calendarioPanel.refresh();
         squadrePanel.refresh();
@@ -113,6 +127,7 @@ public class Applicazione extends JFrame {
             tabbedPane1.remove(tabbedPane1.indexOfTab("Gestione Lega"));
         }
 
+        //quando viene aperta la tab formazione bisogna fare alcuni controlli
         tabbedPane1.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -127,6 +142,12 @@ public class Applicazione extends JFrame {
                 else if(formazione==tab && sqr.isFormazioneInserita()){
                     JOptionPane.showMessageDialog(null, "Hai già inviato la formazione per questa partita.\nSe invii un'altra formazione, questa sostituirà quella vecchia.", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
+                //se è scaduto il tempo per inserire la formazione mostra un avviso e cambia la tab
+                else if(formazione==tab && new DateTime().isAfter(homePanel.getProssimaGiornata())){
+                    System.out.println("tempo passato");
+                    JOptionPane.showMessageDialog(null, "Non è più possibile inserire la formazione perchè è scaduto il tempo.","Tempo scaduto", JOptionPane.INFORMATION_MESSAGE);
+                    tabbedpane.setSelectedIndex(0);
+                }
             }
         });
 
@@ -138,36 +159,52 @@ public class Applicazione extends JFrame {
         setVisible(true);
     }
 
-    public JTabbedPane getTabbedPane(){
-        return this.tabbedPane1;
-    }
-
+    /**
+     * IMPORTANTE: NON RIMUOVERE!
+     * Funzione del UI designer di IntelliJ
+     * IMPORTANTE: NON RIMUOVERE!
+     */
     private void createUIComponents() {
         gestioneGiocatoriPanel = new GestioneGiocatori(getFrame());
         homePanel = new Home(getFrame());
     }
 
+    /**
+     * Restituisce il tabbedPane dell'applicazione principale.
+     * Serve per spostarsi tra le tab da un'altra classe.
+     * @return JTabbedPane
+     */
+    public JTabbedPane getTabbedPane(){
+        return this.tabbedPane1;
+    }
+
+    /**
+     * Restituisce l'oggetto Applicazione.
+     * Serve quando bisogna passarlo all'interno degli Actionlistener;
+     * @return Applicazione
+     */
     private Applicazione getFrame(){
         return this;
     }
 
+    /**
+     * Restituisce il pannello della formazione.
+     * @return Formazione
+     */
     public Formazione getFormazionePanel(){
         return formazionePanel;
     }
 
+    /**
+     * Restituisce il pannello delle informazioni del profilo e della lega.
+     * @return Info
+     */
     public Info getInfoPanel(){ return infoPanel;}
 
-    public void refreshFormazione(){
-        ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
-        listaGiocatori = db.selectGiocatori(sqr);
-
-        sqr.setGiocatori(listaGiocatori);
-
-        formazionePanel.setSquadra(sqr);
-        formazionePanel.refresh();
-
-    }
-
+    /**
+     * Scarico la lista dei giocatori per ogni squadra del campionato.
+     * Serve per il pannello squadre dove vengono mostrati tutti i giocatori.
+     */
     private void setListaGiocatori(){
         for(Squadra squadre: sqr.getCampionato().getListaSquadrePartecipanti()){
             squadre.setGiocatori(db.selectGiocatori(squadre));

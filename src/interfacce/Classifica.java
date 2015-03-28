@@ -32,6 +32,8 @@ public class Classifica extends JPanel {
         Object[][] righeClassifica = utils.listaClassificaToArray(squadra.getCampionato().getClassifica());
 
         TableNotEditableModel classificaModel = new TableNotEditableModel(righeClassifica, nomeColonne){
+            //restituisce la classe della colonna
+            //serve per il row sorter
             @Override
             public Class getColumnClass(int column) {
                 return column==0 ? String.class : Integer.class;
@@ -41,10 +43,10 @@ public class Classifica extends JPanel {
 
         tableClassifica.setModel(classificaModel);
 
+        //ordina le righe
         tableClassifica.setAutoCreateRowSorter(true);
 
         //setta il colore delle righe alternato
-
         tableClassifica.setDefaultRenderer(Object.class, new RenderTableAlternate());
 
         tableClassifica.setRowHeight(50);

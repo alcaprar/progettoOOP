@@ -1,26 +1,22 @@
 package interfacce;
 
 import classi.*;
-import com.sun.org.apache.bcel.internal.classfile.LineNumberTable;
-import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory;
 import org.joda.time.*;
 import utils.*;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.Date;
 
 /**
- * Created by alessandro on 11/03/15.
+ * Pagina principale dell'applicazione. Mostra le informazioni
+ * sul campionato più importanti.
+ * Estende un JPanel.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Mattioli
  */
 public class Home extends JPanel {
     private JPanel panel1;
@@ -48,49 +44,13 @@ public class Home extends JPanel {
     private JLabel minutilbl;
     private JLabel secondilbl;
 
-    private Squadra squadra;
-
-    private Applicazione applicazione;
-
-    public void setSquadre(Squadra squadra){
-        this.squadra = squadra;
-        long prossima = squadra.getCampionato().prossimaGiornata().getGioReale().getDataOraInizio().getTime();
-        long orarioConsegna = squadra.getCampionato().getOrarioConsegna() * 60 * 1000;
-        this.prossimaGiornata = new DateTime(prossima-orarioConsegna);
-    }
-
     private Utils utils = new Utils();
 
     private DateTime prossimaGiornata;
 
-    private void setProssimaGiornata(DateTime prossimaGiornata){
-        this.prossimaGiornata = prossimaGiornata;
-    }
+    private Squadra squadra;
 
-    private DateTime getProssimaGiornata(){
-        return this.prossimaGiornata;
-    }
-
-
-    public void startCountDown(){
-        final Timer t = new Timer(1000, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (prossimaGiornata.isAfter(new DateTime())) {
-                    DateTime adesso = new DateTime();
-                    //int d = Days.daysBetween(adesso,getProssimaGiornata()).getDays();
-                    //int h = Hours.hoursBetween(adesso, getProssimaGiornata()).getHours();
-                    //int m = Minutes.minutesBetween(adesso, getProssimaGiornata()).getMinutes();
-                    int secondiTotali = Seconds.secondsBetween(adesso,getProssimaGiornata()).getSeconds();
-                    int d = secondiTotali/60/60/24;
-                    int h = secondiTotali/60/60%24;
-                    int m = secondiTotali/60%60;
-                    int s = secondiTotali%60;
-                    aggiornaCountdown(d,h,m,s);
-                }
-            }
-        });
-        t.start();
-    }
+    private Applicazione applicazione;
 
     public Home(Applicazione app){
         applicazione = app;
@@ -119,6 +79,11 @@ public class Home extends JPanel {
 
     }
 
+    /**
+     * Aggiorna la pagina con i dati della squadra e del campionato.
+     * Viene chiamata da Applicazione dopo che è stato settato il riferimento
+     * interno a squadra.
+     */
     public void refresh(){
         nomeSquadra.setText(squadra.getNome());
         nomeUtente.setText(squadra.getProprietario().getNickname());
@@ -147,20 +112,60 @@ public class Home extends JPanel {
             campionatoFinitolbl.setVisible(false);
             giornataProssimalbl.setText(String.valueOf(squadra.getCampionato().getProssimaGiornata()));
             dataProssimalbl.setText(String.valueOf(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata()-1).getGioReale().getDataOraInizio()));
-        }/*
-        if(squadra.getCampionato().getProssimaGiornata()<squadra.getCampionato().getGiornataFine()){
-            campionatoFinitolbl.setVisible(false);
-            ultimaGiornataScrollPane.setVisible(false);
-            setTableProssimaG();
         }
-        if(squadra.getCampionato().getProssimaGiornata()>1){
-            campionatoIniziolbl.setVisible(false);
-            prossimaGiornataScrollPane.setVisible(false);
-            setTableUltimaG();
-        }*/
     }
 
+    /**
+     * Setta il riferimento alla squadra loggato.
+     * Viene utilizzato da Applicazione.
+     * @param squadra
+     */
+    public void setSquadra(Squadra squadra){
+        this.squadra = squadra;
+        long prossima = squadra.getCampionato().prossimaGiornata().getGioReale().getDataOraInizio().getTime();
+        long orarioConsegna = squadra.getCampionato().getOrarioConsegna() * 60 * 1000;
+        this.prossimaGiornata = new DateTime(prossima-orarioConsegna);
+    }
 
+    /**
+     * Fa partire il countdown per l'inserimento della prossima formazione.
+     * Viene utilizzato da applicazione.
+     */
+    public void startCountDown(){
+        final Timer t = new Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (prossimaGiornata.isAfter(new DateTime())) {
+                    //ora e tempo in questo momento
+                    DateTime adesso = new DateTime();
+                    //numero di secondi fino alla limite per l'inserimento della formazione
+                    int secondiTotali = Seconds.secondsBetween(adesso,prossimaGiornata).getSeconds();
+                    //calcolo dei giorni, ore, minuti e secondi
+                    int d = secondiTotali/60/60/24;
+                    int h = secondiTotali/60/60%24;
+                    int m = secondiTotali/60%60;
+                    int s = secondiTotali%60;
+                    //aggiorno i label del countdown
+                    aggiornaCountdown(d,h,m,s);
+                }
+            }
+        });
+        t.start();
+    }
+
+    /**
+     * Restituisce il l'oggetto prossima giornata.
+     * Serve in Applicazione per controllare se è ancora possibile inserire la formazione.
+     * @return
+     */
+    public DateTime getProssimaGiornata(){
+        return this.prossimaGiornata;
+    }
+
+    /**
+     * Setta la tabella della prossima giornata.
+     * Viene utilizzato un modello modificato per rendere le celle non modificabili.
+     * Viene utilizzato un render modificato per far mostrare il colore delle righe alternato.
+     */
     private void setTableProssimaG(){
         Object[] nomeColonne = {"Casa","Trasferta"};
         Object[][] righeProssimaGiornata = squadra.getCampionato().prossimaGiornata().prossimaGiornataToArray();
