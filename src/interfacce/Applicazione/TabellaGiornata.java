@@ -70,6 +70,7 @@ public class TabellaGiornata extends JPanel {
                     }
                 }
             });
+            giornataTable.setToolTipText("Doppio clic sulla partita per mostrare i dettagli.");
         }
 
         DefaultTableModel classificaModel = new DefaultTableModel(righeGiornata, nomeColonne) {
