@@ -234,8 +234,6 @@ public class Home extends JPanel {
             listaAvvisiModel.addElement(avviso[0]);
         }
         listaAvvisi.setModel(listaAvvisiModel);
-        //il testo nella JtextArea va a capo da solo
-        testoAvvisi.setLineWrap(true);
     }
 
     /**

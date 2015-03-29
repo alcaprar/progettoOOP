@@ -128,12 +128,22 @@ public class Mysql{
 
     }
 
+    /**
+     * Scarica dal database la lista degli utenti.
+     * Viene utilizzate per mostrare la lista degli utenti disponibili durante
+     * la creazione del campionato.
+     * @return lista degli utenti disponibili
+     */
     public ArrayList<Persona> selectUtenti(){
         Connection conn=null ;
-        PreparedStatement stmt = null ;
+        PreparedStatement contaStmt = null ;
+        PreparedStatement utentiStmt = null;
+
         String contaString = "SELECT count(*) from Utente where TipoUtente='u'";
         String utentiString = "SELECT * from Utente where TipoUtente='u'";
 
+        ResultSet rsCount =null;
+        ResultSet rsUtenti = null;
         //String[] utenti=null;
         ArrayList<Persona> listaUtenti = new ArrayList<Persona>();
         try{
@@ -141,23 +151,21 @@ public class Mysql{
             Class.forName(JDBC_DRIVER);
             //apre la connessione
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            stmt = conn.prepareStatement(contaString);
+            contaStmt = conn.prepareStatement(contaString);
 
-            ResultSet rscount = stmt.executeQuery();
-            rscount.next();
-            int numeroUtenti = rscount.getInt("count(*)");
-            //utenti = new String[numeroUtenti];
+            rsCount = contaStmt.executeQuery();
+            rsCount.next();
+            int numeroUtenti = rsCount.getInt("count(*)");
 
             if(numeroUtenti!=0){
-                stmt = conn.prepareStatement(utentiString);
-                ResultSet rs = stmt.executeQuery();
+                utentiStmt = conn.prepareStatement(utentiString);
+                rsUtenti = utentiStmt.executeQuery();
                 int i =0;
-                while(rs.next()){
-                    listaUtenti.add(new Persona(rs.getString("Nickname"),rs.getString("Nome"),rs.getString("Cognome"),rs.getString("Email")));
+                while(rsUtenti.next()){
+                    listaUtenti.add(new Persona(rsUtenti.getString("Nickname"),rsUtenti.getString("Nome"),rsUtenti.getString("Cognome"),rsUtenti.getString("Email")));
                     i++;
                 }
             }
-
 
             return  listaUtenti;
 
@@ -174,22 +182,58 @@ public class Mysql{
                 try {
                     conn.close();
                 } catch (Exception e) {
-                    //ignored
+                    e.printStackTrace();
+                }
+            }
+            if(contaStmt!=null){
+                try {
+                    contaStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(utentiStmt!=null){
+                try{
+                    utentiStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsCount!=null){
+                try{
+                    rsCount.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsUtenti!= null){
+                try{
+                    rsUtenti.close();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         }
 
     }
 
+    /**
+     * Scarica la lista completa dei giocatori.
+     * Serve al momento della creazione delle squadre
+     * @return lista di tutti i giocatori
+     */
     public ArrayList<Giocatore> selectGiocatoriAdmin(){
         Connection conn = null;
-        PreparedStatement giocatoristmt = null;
+        PreparedStatement giocatoriStmt = null;
         String giocatoriSql ="SELECT * from CalciatoreAnno";
 
-        PreparedStatement contastmt = null;
+        PreparedStatement contaStmt = null;
         String contaSql ="SELECT count(*) from CalciatoreAnno";
 
-        ArrayList<Giocatore> giocatori = new ArrayList<Giocatore>();
+        ResultSet rsGiocatori = null;
+        ResultSet rsConta =null;
+
+        ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
 
         try{
             //registra il JBCD driver
@@ -197,30 +241,30 @@ public class Mysql{
             //apre la connessione
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
-            contastmt = conn.prepareStatement(contaSql);
-            ResultSet rscount = contastmt.executeQuery();
-            rscount.next();
-            int numeroGiocaori = rscount.getInt("count(*)");
+            contaStmt = conn.prepareStatement(contaSql);
+            rsConta = contaStmt.executeQuery();
+            rsConta.next();
+            int numeroGiocaori = rsConta.getInt("count(*)");
 
 
             if(numeroGiocaori!=0) {
-                giocatoristmt = conn.prepareStatement(giocatoriSql);
-                ResultSet rs = giocatoristmt.executeQuery();
+                giocatoriStmt = conn.prepareStatement(giocatoriSql);
+                rsGiocatori = giocatoriStmt.executeQuery();
                 int i = 0;
-                while (rs.next()) {
-                    giocatori.add(new Giocatore(rs.getString("Cognome"), rs.getInt("ID"), rs.getInt("Costo"), rs.getString("SqReale"), rs.getString("Ruolo").charAt(0)));
+                while (rsGiocatori.next()) {
+                    listaGiocatori.add(new Giocatore(rsGiocatori.getString("Cognome"), rsGiocatori.getInt("ID"), rsGiocatori.getInt("Costo"), rsGiocatori.getString("SqReale"), rsGiocatori.getString("Ruolo").charAt(0)));
                     i++;
                 }
             }
-            return  giocatori;
+            return  listaGiocatori;
 
         }catch(SQLException se){
             se.printStackTrace();
-            return giocatori;
+            return listaGiocatori;
 
         }catch(Exception e){
             e.printStackTrace();
-            return giocatori;
+            return listaGiocatori;
 
         }finally {
             if(conn!=null) {
@@ -228,6 +272,34 @@ public class Mysql{
                     conn.close();
                 } catch (Exception e) {
                     //ignored
+                }
+            }
+            if(contaStmt!=null){
+                try{
+                    contaStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(giocatoriStmt!=null){
+                try{
+                    giocatoriStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsConta!=null){
+                try{
+                    rsConta.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsGiocatori!=null){
+                try{
+                    rsGiocatori.close();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         }
@@ -414,7 +486,7 @@ public class Mysql{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             contastmt = conn.prepareStatement(contaSql);
             ResultSet rscount = contastmt.executeQuery();
@@ -699,7 +771,7 @@ public class Mysql{
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
             aggiornaNome = conn.prepareStatement(aggiornaNomeSql);
-            aggiornaNome.setString(1,squadra.getNome());
+            aggiornaNome.setString(1, squadra.getNome());
             aggiornaNome.setInt(2, squadra.getID());
             int rs = aggiornaNome.executeUpdate();
 
@@ -844,13 +916,13 @@ public class Mysql{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             int i =0;
 
             deleteFormazioneInseritastmt = conn.prepareStatement(deleteFormazioneInseritaSql);
             deleteFormazioneInseritastmt.setInt(1, squadra.prossimaPartita().getID());
-            deleteFormazioneInseritastmt.setString(2,squadra.getNome());
+            deleteFormazioneInseritastmt.setString(2, squadra.getNome());
 
             i = deleteFormazioneInseritastmt.executeUpdate();
 
@@ -957,7 +1029,7 @@ public class Mysql{
     public ArrayList<String[]> selectAvvisi(Squadra squadra){
         Connection conn = null;
         PreparedStatement avvisistmt = null;
-        String avvisiSql = "SELECT * from Avvisi where NomeCampionato=?";
+        String avvisiSql = "SELECT * from Avvisi where NomeCampionato=? order by ID desc";
 
         ArrayList<String[]> listaAvvisi = new ArrayList<String[]>();
 
@@ -965,10 +1037,10 @@ public class Mysql{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             avvisistmt = conn.prepareStatement(avvisiSql);
-            avvisistmt.setString(1,squadra.getCampionato().getNome());
+            avvisistmt.setString(1, squadra.getCampionato().getNome());
 
             ResultSet rs = avvisistmt.executeQuery();
 
@@ -993,6 +1065,66 @@ public class Mysql{
                     conn.close();
                 } catch (Exception e) {
                     //ignored
+                }
+            }
+        }
+
+    }
+
+    public ArrayList<String[]> selectMessaggi(Squadra squadra){
+        Connection conn = null;
+        PreparedStatement messaggiStmt = null;
+        String messaggiSql = "SELECT M.Titolo, M.Testo, F.Nome from Messaggi as M JOIN Fantasquadra as F on F.ID=M.IDSquadra where NomeCampionato=? order by M.ID desc";
+        ResultSet rsMessaggi = null;
+
+        ArrayList<String[]> listaMessaggi = new ArrayList<String[]>();
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            messaggiStmt = conn.prepareStatement(messaggiSql);
+            messaggiStmt.setString(1, squadra.getCampionato().getNome());
+
+            rsMessaggi = messaggiStmt.executeQuery();
+
+            while (rsMessaggi.next()){
+                String[] avviso ={rsMessaggi.getString("Nome"),rsMessaggi.getString("Titolo"),rsMessaggi.getString("Testo")};
+                listaMessaggi.add(avviso);
+            }
+
+            return listaMessaggi;
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return listaMessaggi;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return listaMessaggi;
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if(messaggiStmt!=null){
+                try{
+                    messaggiStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsMessaggi!=null){
+                try{
+                    rsMessaggi.close();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         }
@@ -1033,7 +1165,7 @@ public class Mysql{
             campionatostmt.setBoolean(3, campionato.isAstaLive());
             campionatostmt.setString(4, campionato.getPresidente().getNickname());
             campionatostmt.setBoolean(5, campionato.isGiocatoriDaInserire());
-            campionatostmt.setInt(6,campionato.getProssimaGiornata());
+            campionatostmt.setInt(6, campionato.getProssimaGiornata());
             int rscampionato = campionatostmt.executeUpdate();
 
             if(rscampionato==1) {
@@ -1138,7 +1270,7 @@ public class Mysql{
                 giocatorestmt.setInt(1, listaGiocatori.get(i).getID());
                 giocatorestmt.setString(2,Character.toString(listaGiocatori.get(i).getRuolo()));
                 giocatorestmt.setString(3,listaGiocatori.get(i).getCognome());
-                giocatorestmt.setString(4,listaGiocatori.get(i).getSquadraReale());
+                giocatorestmt.setString(4, listaGiocatori.get(i).getSquadraReale());
                 giocatorestmt.setInt(5,listaGiocatori.get(i).getPrezzoBase());
 
                 rsgiocatore= giocatorestmt.executeUpdate();
@@ -1186,7 +1318,7 @@ public class Mysql{
             for(int i=0;i<campionato.getListaSquadrePartecipanti().size();i++){
                 int IDsq = campionato.getListaSquadrePartecipanti().get(i).getID();
                 soldiDisponibilistmt = conn.prepareStatement(soldiDisponibiliSql);
-                soldiDisponibilistmt.setInt(1,campionato.getListaSquadrePartecipanti().get(i).getSoldiDisponibili());
+                soldiDisponibilistmt.setInt(1, campionato.getListaSquadrePartecipanti().get(i).getSoldiDisponibili());
                 soldiDisponibilistmt.setInt(2,IDsq);
                 soldiDisponibilistmt.executeUpdate();
                 for(int k=0;k<25;k++){
@@ -1203,7 +1335,7 @@ public class Mysql{
                 }
             }
             aggiornaInfoCampionatostmt = conn.prepareStatement(aggiornaInfoCampionatoSql);
-            aggiornaInfoCampionatostmt.setBoolean(1,false);
+            aggiornaInfoCampionatostmt.setBoolean(1, false);
             aggiornaInfoCampionatostmt.executeUpdate();
 
             if(rs==1)return true;
@@ -1231,7 +1363,7 @@ public class Mysql{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             int rs=0;
 
@@ -1292,7 +1424,7 @@ public class Mysql{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
             int i=1;
             for(Voto gioc :squadra.getFormazione().getListaGiocatori()) {
                 formazionestmt = conn.prepareStatement(formazioneSql);
@@ -1331,9 +1463,9 @@ public class Mysql{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
             avvisostmt = conn.prepareStatement(avvisoSql);
-            avvisostmt.setString(1,campionato.getNome());
+            avvisostmt.setString(1, campionato.getNome());
             avvisostmt.setString(2,titolo);
             avvisostmt.setString(3,testo);
 
@@ -1351,6 +1483,64 @@ public class Mysql{
 
         }finally {
             try { conn.close(); } catch (Exception e) {  }
+        }
+
+
+
+    }
+
+    /**
+     * Inserisce un messaggio di una squadra per il presidente di lega nel database.
+     * @param squadra
+     * @param titolo
+     * @param testo
+     * @return true se l'inserimento è andato a buon fine
+     */
+    public boolean inserisciMessaggio(Squadra squadra, String titolo, String testo){
+        Connection conn = null;
+        PreparedStatement messaggioStmt = null;
+        String messaggioSql = "INSERT into Messaggi(NomeCampionato, IDSquadra, Titolo, Testo) value(?,?,?,?)";
+
+        int rs=0;
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            messaggioStmt = conn.prepareStatement(messaggioSql);
+            messaggioStmt.setString(1,squadra.getCampionato().getNome());
+            messaggioStmt.setInt(2,squadra.getID());
+            messaggioStmt.setString(3,titolo);
+            messaggioStmt.setString(4,testo);
+
+            rs = messaggioStmt.executeUpdate();
+
+            return (rs==1);
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return false;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+
+        }finally {
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(messaggioStmt!=null){
+                try{
+                    messaggioStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
 
 

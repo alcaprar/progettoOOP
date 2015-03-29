@@ -4,6 +4,8 @@ import classi.Squadra;
 import db.Mysql;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,6 +22,8 @@ public class GestioneLega extends JPanel{
     private JLabel nrGiolbl;
     private JLabel nonAbilitatolbl;
     private JPanel calcolaPanel;
+    private JList listaMessaggi;
+    private JTextArea testoMessaggi;
 
     private Squadra squadra;
 
@@ -109,5 +113,26 @@ public class GestioneLega extends JPanel{
 
             }
         });
+
+        listaMessaggi.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    JList source = (JList) e.getSource();
+                    int numeroMessaggio = source.getSelectedIndex();
+                    testoMessaggi.setText(squadra.getCampionato().getListaMessaggi().get(numeroMessaggio)[2]);
+
+                }
+
+            }
+        });
+    }
+
+    private void setListaMessaggi(){
+        DefaultListModel listaMessaggiModel = new DefaultListModel();
+        for(String[] messaggio:squadra.getCampionato().getListaMessaggi()){
+            listaMessaggiModel.addElement(messaggio[1] +" - "+messaggio[0]);
+        }
+        listaMessaggi.setModel(listaMessaggiModel);
     }
 }

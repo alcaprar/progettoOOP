@@ -2,6 +2,7 @@ package interfacce.Applicazione;
 
 import classi.Giornata;
 import utils.RenderTableAlternate;
+import utils.TableNotEditableModel;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -26,6 +27,13 @@ public class TabellaGiornata extends JPanel {
     private JTable giornataTable;
 
     private Giornata giornata;
+
+    /**
+     * Costruttore usato per la stagione corrente
+     * @param giorn
+     * @param prossimaGiornata
+     * @param bonusCasa
+     */
 
     public TabellaGiornata(final Giornata giorn, int prossimaGiornata, final int bonusCasa){
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -91,7 +99,6 @@ public class TabellaGiornata extends JPanel {
 
         //stringe le colonne della tabella in base al contenuto
         giornataTable.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
-
         for (int column = 0; column < giornataTable.getColumnCount(); column++)
         {
             TableColumn tableColumn = giornataTable.getColumnModel().getColumn(column);
@@ -128,6 +135,79 @@ public class TabellaGiornata extends JPanel {
 
         add(panel);
         add(panel1);
+        add(giornataTable);
+
+    }
+
+    /**
+     * Costruttore utilizzato per lo storico
+     * @param giorn
+     */
+    public TabellaGiornata(final Giornata giorn){
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        giornata = giorn;
+        //creo e setto le etichette
+        label1 = new JLabel("Giornata nr: ");
+        numeroGiornata = new JLabel(String.valueOf(giornata.getNumGiornata()));
+
+        //creo e setto la tabella della giornata
+        giornataTable = new JTable();
+        Object[] nomeColonne ;
+        Object[][] righeGiornata;
+
+        nomeColonne = new Object[7];
+        nomeColonne[0] = "Casa";
+        nomeColonne[1]="";
+        nomeColonne[2]="";
+        nomeColonne[3]="-";
+        nomeColonne[4]="";
+        nomeColonne[5]="";
+        nomeColonne[6]="Trasferta";
+        righeGiornata = giornata.partiteToArray();
+
+        TableNotEditableModel classificaModel = new TableNotEditableModel(righeGiornata, nomeColonne);
+
+        giornataTable.setModel(classificaModel);
+
+        //setta il colore delle righe alternato
+        giornataTable.setDefaultRenderer(Object.class, new RenderTableAlternate());
+
+        //non fa visualizzare le righe orizzontali
+        giornataTable.setShowHorizontalLines(false);
+
+        //stringe le colonne della tabella in base al contenuto
+        giornataTable.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
+        for (int column = 0; column < giornataTable.getColumnCount(); column++)
+        {
+            TableColumn tableColumn = giornataTable.getColumnModel().getColumn(column);
+            int preferredWidth = tableColumn.getMinWidth();
+            int maxWidth = tableColumn.getMaxWidth();
+
+            for (int row = 0; row < giornataTable.getRowCount(); row++)
+            {
+                TableCellRenderer cellRenderer = giornataTable.getCellRenderer(row, column);
+                Component c = giornataTable.prepareRenderer(cellRenderer, row, column);
+                int width = c.getPreferredSize().width + giornataTable.getIntercellSpacing().width;
+                preferredWidth = Math.max(preferredWidth, width);
+
+
+                if (preferredWidth >= maxWidth)
+                {
+                    preferredWidth = maxWidth;
+                    break;
+                }
+            }
+
+            tableColumn.setPreferredWidth( preferredWidth );
+        }
+
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.add(label1);
+        panel.add(numeroGiornata);
+
+        add(panel);
         add(giornataTable);
 
     }

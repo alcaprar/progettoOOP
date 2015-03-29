@@ -77,6 +77,11 @@ public class Applicazione extends JFrame {
         //scarico la lista degli avvisi
         sqr.getCampionato().setListaAvvisi(db.selectAvvisi(sqr));
 
+        //scarico la lista dei messaggi se è il presidente di lega
+        if(sqr.getProprietario().isPresidenteLega()){
+            sqr.getCampionato().setListaMessaggi(db.selectMessaggi(sqr));
+        }
+
         //scarico la lista dei giocatori della squadra loggata
         sqr.setGiocatori(db.selectGiocatori(sqr));
 

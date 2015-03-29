@@ -23,6 +23,7 @@ public class Campionato {
     private ArrayList<Classifica> classifica;
     private ArrayList<Giornata> calendario;
     private ArrayList<String[]> listaAvvisi;
+    private ArrayList<String []> listaMessaggi;
 
     public ArrayList<Giornata> getCalendario() {
         return calendario;
@@ -192,7 +193,6 @@ public class Campionato {
     }*/
 
     public Object[] squadreToArray(){
-        System.out.println(this.listaSquadrePartecipanti.size());
         Object[] arrayObject = new Object[this.listaSquadrePartecipanti.size()];
         for(int i=0;i<this.listaSquadrePartecipanti.size();i++){
             arrayObject[i] = this.listaSquadrePartecipanti.get(i).getID()+" - "+this.listaSquadrePartecipanti.get(i).getNome()+" - " + listaSquadrePartecipanti.get(i).getProprietario().getNickname();
@@ -275,5 +275,13 @@ public class Campionato {
             }
         }
 
+    }
+
+    public ArrayList<String[]> getListaMessaggi() {
+        return listaMessaggi;
+    }
+
+    public void setListaMessaggi(ArrayList<String[]> listaMessaggi) {
+        this.listaMessaggi = listaMessaggi;
     }
 }

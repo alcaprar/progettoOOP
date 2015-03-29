@@ -28,6 +28,9 @@ public class Info extends JPanel{
     private JTextField mailText;
     private JTextField nomeText;
     private JTextField cognomeText;
+    private JTextField titoloMessaggio;
+    private JTextArea testoMessaggio;
+    private JButton inviaButton;
 
     private Squadra squadra;
     private DefaultListModel<String> listModel;
@@ -59,6 +62,19 @@ public class Info extends JPanel{
                 } else if(!squadra.getProprietario().getNome().equals("")){
                     cognomeText.setText(squadra.getProprietario().getCognome());
                 } else cognomeText.setText("Cognome non inserito");
+            }
+        });
+
+        inviaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(db.inserisciMessaggio(squadra, titoloMessaggio.getText(), testoMessaggio.getText())){
+                    JOptionPane.showMessageDialog(null, "Avviso inserito con successo", "Successo", JOptionPane.INFORMATION_MESSAGE);
+                    titoloMessaggio.setText("");
+                    testoMessaggio.setText("");
+                }
+
             }
         });
 

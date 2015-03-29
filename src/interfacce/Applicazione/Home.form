@@ -430,8 +430,8 @@
                     <constraints/>
                     <properties>
                       <editable value="false"/>
+                      <lineWrap value="true"/>
                       <rows value="4"/>
-                      <text value=""/>
                     </properties>
                   </component>
                 </children>
