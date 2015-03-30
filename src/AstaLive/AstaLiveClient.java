@@ -97,7 +97,7 @@ public class AstaLiveClient extends JFrame implements ItemListener{
             spinnerPorta.setVisible(false);
             // default values
             int portNumber = 1500;
-            String serverAddress = "192.168.1.50";
+            String serverAddress = "192.168.43.178";
             String userName = squadra.getProprietario().getNickname();
             boolean ok = false;
             while(true){

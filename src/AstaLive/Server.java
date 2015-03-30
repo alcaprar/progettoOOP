@@ -53,7 +53,7 @@ public class Server {
                 while(continua)
                 {
                     // Visualizza un messaggio in console per rendere noto che sta ascoltando
-                    display("Server attivo all'indirizzo 192.168.1.50, in ascolto sulla porta: " + port + ".");
+                    display("Server attivo all'indirizzo 192.168.43.178, in ascolto sulla porta: " + port + ".");
 
                     Socket socket = serverSocket.accept();  	// accept connection
                     // se la connessione ha richiesto lo stop del server
