@@ -126,4 +126,20 @@ public class Squadra {
     public void setFormazioneInserita(boolean formazioneInserita) {
         this.formazioneInserita = formazioneInserita;
     }
+
+    public Object[][] listaGiocatoriRosaToArray(){
+        Object[][] listaObject = new Object[this.getGiocatori().size()][6];
+
+        for(int i=0;i<this.getGiocatori().size();i++){
+            listaObject[i][0] = this.getGiocatori().get(i).getID();
+            listaObject[i][1] = this.getGiocatori().get(i).getCognome();
+            listaObject[i][2] = this.getGiocatori().get(i).getRuolo();
+            listaObject[i][3] = this.getGiocatori().get(i).getSquadraReale();
+            listaObject[i][4] = this.getGiocatori().get(i).getPrezzoBase();
+            listaObject[i][5] = this.getGiocatori().get(i).getPrezzoAcquisto();
+
+        }
+
+        return listaObject;
+    }
 }

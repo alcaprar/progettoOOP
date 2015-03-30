@@ -2,6 +2,7 @@ package interfacce.Applicazione;
 
 import classi.*;
 import db.Mysql;
+import interfacce.Login.CaricamentoDati;
 import org.joda.time.DateTime;
 
 import javax.swing.*;
@@ -40,7 +41,7 @@ public class Applicazione extends JFrame {
 
     final Mysql db = new Mysql();
 
-    public Applicazione(final Squadra squadra) {
+    public Applicazione(final Squadra squadra, CaricamentoDati caricamento) {
         super("Gestore Fantacalcio");
 
         this.sqr = squadra;
@@ -94,6 +95,7 @@ public class Applicazione extends JFrame {
         classificaPanel.setSquadra(sqr);
         calendarioPanel.setSquadra(sqr);
         squadrePanel.setSquadre(sqr);
+        gestioneGiocatoriPanel.setSquadra(sqr);
         infoPanel.setSquadra(sqr);
         gestioneLegaPanel.setSquadra(sqr);
         //setto i riferimento a calendario, home e classifica che servono
@@ -117,12 +119,17 @@ public class Applicazione extends JFrame {
         //se l'utente loggato è il presidente, il tipo di asta è offline e i giocatori sono da inserire popolo le tabelle
         //del pannello gestione giocatori
         //se no rimuovo il pannello
-        if(squadra.getProprietario().isPresidenteLega() && squadra.getCampionato().isGiocatoriDaInserire() && !squadra.getCampionato().isAstaLive()){
-            gestioneGiocatoriPanel.setSquadra(sqr);
-            gestioneGiocatoriPanel.refresh();
-        } else{
+        if(squadra.getProprietario().isPresidenteLega() &&  !squadra.getCampionato().isAstaLive()) {
+            if (squadra.getCampionato().isGiocatoriDaInserire()) {
+                //le rose sono ancora da inserire
+                gestioneGiocatoriPanel.refresh();
+            } else {
+                //giocatori gia inseriti
+                //è possibile modificare le singole rose
+                gestioneGiocatoriPanel.refresh2();
+            }
+        }else {
             tabbedPane1.remove(tabbedPane1.indexOfTab("Gestione Giocatori"));
-
         }
 
         //se l'utente non è il presidente di lega tolgo gestione lega
@@ -158,6 +165,7 @@ public class Applicazione extends JFrame {
         pack();
         setSize(800, 650);
         setLocationRelativeTo(null);
+        caricamento.dispose();
         setVisible(true);
     }
 

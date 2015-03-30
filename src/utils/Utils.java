@@ -127,7 +127,7 @@ public class Utils {
             listaObject[i][1] = listaGiocatori.get(i).getCognome();
             listaObject[i][2] = listaGiocatori.get(i).getRuolo();
             listaObject[i][3] = listaGiocatori.get(i).getSquadraReale();
-            listaObject[i][4 ]=listaGiocatori.get(i).getPrezzoBase();
+            listaObject[i][4]=listaGiocatori.get(i).getPrezzoBase();
         }
 
         return listaObject;

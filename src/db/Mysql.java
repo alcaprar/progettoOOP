@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import classi.*;
 import utils.*;
 
-import javax.swing.*;
 
 /**
  * Classe per la comunicazione col database
@@ -239,7 +238,7 @@ public class Mysql{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             contaStmt = conn.prepareStatement(contaSql);
             rsConta = contaStmt.executeQuery();
@@ -305,31 +304,228 @@ public class Mysql{
         }
     }
 
+    /**
+     * Scarica la lista dei giocatori disponibili per il campionato passato.
+     * Per giocatori disponibili si intende quei giocatori che non appertongono
+     * a nessuna squadra di quel campionato.
+     * @param campionato
+     * @return lista di giocatori liberi (non tesserati da nessuno)
+     */
+    public ArrayList<Giocatore> selectGiocatoriDisponibili(Campionato campionato){
+        Connection conn=null;
+        PreparedStatement giocatoriStmt = null;
+        String giocatoriSql = "select * from CalciatoreAnno left join Tesseramento on CalciatoreAnno.ID=Tesseramento.IDcalcAnno and (Tesseramento.NomeCampionato=?) where Tesseramento.IDcalcAnno is null";
+        ResultSet rsGiocatori=null;
+
+        ArrayList<Giocatore> listaGiocatoriDisponibili = new ArrayList<Giocatore>();
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            giocatoriStmt = conn.prepareStatement(giocatoriSql);
+            giocatoriStmt.setString(1, campionato.getNome());
+
+            rsGiocatori = giocatoriStmt.executeQuery();
+            while(rsGiocatori.next()){
+                int ID = rsGiocatori.getInt("ID");
+                String cognome = rsGiocatori.getString("Cognome");
+                int costo = rsGiocatori.getInt("Costo");
+                int prezzoPagato = rsGiocatori.getInt("PrezzoPagato");
+                String squadraReale = rsGiocatori.getString("SqReale");
+                char ruolo=rsGiocatori.getString("Ruolo").charAt(0);
+                Giocatore giocatore = new Giocatore(ID,cognome,costo,prezzoPagato,squadraReale,ruolo);
+                listaGiocatoriDisponibili.add(giocatore);
+
+            }
+            return  listaGiocatoriDisponibili;
+        } catch(SQLException se){
+            se.printStackTrace();
+            return listaGiocatoriDisponibili;
+        } catch (Exception e){
+            e.printStackTrace();
+            return listaGiocatoriDisponibili;
+        } finally {
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(giocatoriStmt!=null){
+                try{
+                    giocatoriStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsGiocatori!=null){
+                try{
+                    rsGiocatori.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Aggiunge un giocatore ad una squadra.
+     * Viene utilizzata per modificare le rose mentre il campionato è in corso.
+     * Inserisce un giocatore ad una squadra.
+     * Per inserire i giocatori ad inizio campionato viene utilizzata un'altra funzione.
+     * @see #inserisciGiocatoriAnno(ArrayList)
+     * @see #rimuoviGiocatore(Campionato, Squadra, int, int)
+     * @param campionato
+     * @param squadra
+     * @param ID id del giocatore da aggiungere
+     * @param prezzoPagato prezzo pagato per il giocatore
+     * @return true se l'aggiornamento è andato a buon fine
+     */
+    public boolean aggiungiGiocatore(Campionato campionato,Squadra squadra, int ID, int prezzoPagato){
+        Connection conn = null;
+        PreparedStatement giocatorestmt = null;
+        String giocatoreSql = "INSERT into Tesseramento value(?,?,?,?)";
+
+        PreparedStatement soldiDisponibilistmt = null;
+        String soldiDisponibiliSql = "UPDATE Iscrizione set CreditiDisponibili=CreditiDisponibili - ? where IDsq=?";
+
+        int rsGiocatore = 0;
+        int rsCrediti = 0;
+
+        try {
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            giocatorestmt = conn.prepareStatement(giocatoreSql);
+            giocatorestmt.setInt(1,ID);
+            giocatorestmt.setString(2, campionato.getNome());
+            giocatorestmt.setInt(3,prezzoPagato);
+            giocatorestmt.setInt(4,squadra.getID());
+
+            rsGiocatore = giocatorestmt.executeUpdate();
+
+            soldiDisponibilistmt = conn.prepareStatement(soldiDisponibiliSql);
+            soldiDisponibilistmt.setInt(1,prezzoPagato);
+            soldiDisponibilistmt.setInt(2, squadra.getID());
+
+            rsCrediti = soldiDisponibilistmt.executeUpdate();
+
+            return (rsGiocatore==1 && rsCrediti==1);
+
+        } catch(SQLException se){
+            se.printStackTrace();
+            return false;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        } finally {
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Viene utilizzata per modificare le rose mentre il campionato è in corso.
+     * Rimuovere un giocatore da una squadra.
+     * @see #aggiungiGiocatore(Campionato, Squadra, int, int)
+     * @param campionato
+     * @param squadra
+     * @param ID id del giocatore da vendere
+     * @param prezzoVendita prezzo di vendita del giocatore
+     * @return true se l'aggiornamento è andato a buon fine
+     */
+    public boolean rimuoviGiocatore(Campionato campionato,Squadra squadra, int ID, int prezzoVendita){
+        Connection conn = null;
+        PreparedStatement giocatorestmt = null;
+        String giocatoreSql = "DELETE from Tesseramento where IDsq=? and IDcalcAnno=?";
+
+        PreparedStatement soldiDisponibilistmt = null;
+        String soldiDisponibiliSql = "UPDATE Iscrizione set CreditiDisponibili=CreditiDisponibili + ? where IDsq=?";
+
+        int rsGiocatore = 0;
+        int rsCrediti = 0;
+
+        try {
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            giocatorestmt = conn.prepareStatement(giocatoreSql);
+            giocatorestmt.setInt(1, squadra.getID());
+            giocatorestmt.setInt(2, ID);
+
+            rsGiocatore = giocatorestmt.executeUpdate();
+
+            soldiDisponibilistmt = conn.prepareStatement(soldiDisponibiliSql);
+            soldiDisponibilistmt.setInt(1,prezzoVendita);
+            soldiDisponibilistmt.setInt(2, squadra.getID());
+
+            rsCrediti = soldiDisponibilistmt.executeUpdate();
+
+            return (rsGiocatore==1 && rsCrediti==1);
+
+        } catch(SQLException se){
+            se.printStackTrace();
+            return false;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        } finally {
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Scarica la lista di giocatori di una squadra.
+     * Se ancora il presidente di lega non ha inserito le rose viene
+     * restituito lo stesso un ArrayList ma vuoto. (Controllare isEmpty)
+     * @param squadra squadra di cui si vuole trovare la lista di giocatori
+     * @return lista dei giocatori della squadra
+     */
     public ArrayList<Giocatore> selectGiocatori(Squadra squadra){
         Connection conn = null;
         PreparedStatement listaGiocatoristmt = null;
         String listaGiocatoriSql = "select IDcalcAnno,PrezzoPagato,Costo,SqReale,Cognome,Ruolo from Tesseramento JOIN Fantasquadra on Fantasquadra.ID=Tesseramento.IDsq JOIN CalciatoreAnno on CalciatoreAnno.ID=Tesseramento.IDcalcAnno where IDsq=?";
 
+        ResultSet rsGiocatori=null;
+
         int IDsq = squadra.getID();
+
         ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
         try{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             listaGiocatoristmt = conn.prepareStatement(listaGiocatoriSql);
             listaGiocatoristmt.setInt(1, IDsq);
 
-            ResultSet rs = listaGiocatoristmt.executeQuery();
+            rsGiocatori = listaGiocatoristmt.executeQuery();
 
-            while(rs.next()){
-                int ID = rs.getInt("IDcalcAnno");
-                String cognome = rs.getString("Cognome");
-                int costo = rs.getInt("Costo");
-                int prezzoPagato = rs.getInt("PrezzoPagato");
-                String squadraReale = rs.getString("SqReale");
-                char ruolo=rs.getString("Ruolo").charAt(0);
+            while(rsGiocatori.next()){
+                int ID = rsGiocatori.getInt("IDcalcAnno");
+                String cognome = rsGiocatori.getString("Cognome");
+                int costo = rsGiocatori.getInt("Costo");
+                int prezzoPagato = rsGiocatori.getInt("PrezzoPagato");
+                String squadraReale = rsGiocatori.getString("SqReale");
+                char ruolo=rsGiocatori.getString("Ruolo").charAt(0);
                 Giocatore giocatore = new Giocatore(ID,cognome,costo,prezzoPagato,squadraReale,ruolo);
                 listaGiocatori.add(giocatore);
             }
@@ -350,19 +546,42 @@ public class Mysql{
                 try {
                     conn.close();
                 } catch (Exception e) {
-                    //ignored
+                    e.printStackTrace();
+                }
+            }
+            if(listaGiocatoristmt!=null){
+                try{
+                    listaGiocatoristmt.close();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsGiocatori!=null){
+                try{
+                    rsGiocatori.close();
+                } catch(Exception e){
+                    e.printStackTrace();
                 }
             }
         }
     }
 
+    /**
+     * Scarica la lista delle squadre di cui è presidente l'utente loggato.
+     * Inoltre scarica anche la lista di partecipanti al campionato delle singole squadre.
+     * Tutti gli altri dati del campionato verranno popolati in seguito.
+     * @param utente utente loggato
+     * @return lista delle squadre di cui è presidente l'utente loggato
+     */
     public ArrayList<Squadra> selectSquadre(Persona utente){
         Connection conn = null;
-        PreparedStatement squadrestmt = null;
+        PreparedStatement squadreStmt = null;
         String squadreSql ="SELECT * from Iscrizione JOIN Fantasquadra on Iscrizione.IDsq=Fantasquadra.ID JOIN Campionato on Iscrizione.Campionato = Campionato.Nome JOIN Regolamento on Campionato.Nome=Regolamento.NomeCampionato where NickUt=?";
+        ResultSet rsSquadre = null;
 
-        PreparedStatement partecipantistmt = null;
+        PreparedStatement partecipantiStmt = null;
         String partecipantiSql ="SELECT Fantasquadra.ID, Fantasquadra.Nome, Fantasquadra.NickUt from Iscrizione JOIN Fantasquadra on Iscrizione.IDsq=Fantasquadra.ID JOIN Campionato on Iscrizione.Campionato = Campionato.Nome JOIN Regolamento on Campionato.Nome=Regolamento.NomeCampionato where Campionato=?";
+        ResultSet rsPartecipanti = null;
 
         ArrayList<Squadra> listaSquadre = new ArrayList<Squadra>();
         try{
@@ -371,24 +590,24 @@ public class Mysql{
             //apre la connessione
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
-            squadrestmt = conn.prepareStatement(squadreSql);
-            squadrestmt.setString(1, utente.getNickname());
-            ResultSet rs = squadrestmt.executeQuery();
+            squadreStmt = conn.prepareStatement(squadreSql);
+            squadreStmt.setString(1, utente.getNickname());
+            rsSquadre = squadreStmt.executeQuery();
             int i = 0;
-            while (rs.next()) {
-                partecipantistmt = conn.prepareStatement(partecipantiSql);
-                partecipantistmt.setString(1,rs.getString("Campionato"));
-                ResultSet rspartecipanti = partecipantistmt.executeQuery();
+            while (rsSquadre.next()) {
+                partecipantiStmt = conn.prepareStatement(partecipantiSql);
+                partecipantiStmt.setString(1,rsSquadre.getString("Campionato"));
+                rsPartecipanti = partecipantiStmt.executeQuery();
 
                 ArrayList<Squadra> listaSquadrePartecipanti = new ArrayList<Squadra>();
 
-                while(rspartecipanti.next()){
-                    listaSquadrePartecipanti.add(new Squadra(rspartecipanti.getInt("ID"),rspartecipanti.getString("Nome"),new Persona(rspartecipanti.getString("NickUt"))));
+                while(rsPartecipanti.next()){
+                    listaSquadrePartecipanti.add(new Squadra(rsPartecipanti.getInt("ID"),rsPartecipanti.getString("Nome"),new Persona(rsPartecipanti.getString("NickUt"))));
                 }
                 Persona presidente;
-                if(utente.getNome().equals(rs.getString("Presidente"))) presidente=utente;
-                else presidente=new Persona(rs.getString("Presidente"));
-                Squadra squadra = new Squadra(rs.getInt("ID"),rs.getString("Nome"),utente,new Campionato(rs.getString("Campionato"),rs.getInt("NrPartecipanti"),rs.getBoolean("Asta"),rs.getInt("GiornataInizio"),rs.getInt("GiornataFine"),rs.getInt("CreditiIniziali"),rs.getInt("OrarioConsegna"),rs.getInt("PrimaFascia"),rs.getInt("LargFascia"),rs.getInt("BonusCasa"),presidente,listaSquadrePartecipanti,rs.getBoolean("GiocatoriDaInserire"),rs.getInt("ProssimaGiornata")),rs.getInt("CreditiDisponibili"));
+                if(utente.getNome().equals(rsSquadre.getString("Presidente"))) presidente=utente;
+                else presidente=new Persona(rsSquadre.getString("Presidente"));
+                Squadra squadra = new Squadra(rsSquadre.getInt("ID"),rsSquadre.getString("Nome"),utente,new Campionato(rsSquadre.getString("Campionato"),rsSquadre.getInt("NrPartecipanti"),rsSquadre.getBoolean("Asta"),rsSquadre.getInt("GiornataInizio"),rsSquadre.getInt("GiornataFine"),rsSquadre.getInt("CreditiIniziali"),rsSquadre.getInt("OrarioConsegna"),rsSquadre.getInt("PrimaFascia"),rsSquadre.getInt("LargFascia"),rsSquadre.getInt("BonusCasa"),presidente,listaSquadrePartecipanti,rsSquadre.getBoolean("GiocatoriDaInserire"),rsSquadre.getInt("ProssimaGiornata")),rsSquadre.getInt("CreditiDisponibili"));
                 listaSquadre.add(squadra);
                 i++;
             }
@@ -408,17 +627,53 @@ public class Mysql{
                 try {
                     conn.close();
                 } catch (Exception e) {
-                    //ignored
+                    e.printStackTrace();
+                }
+            }
+            if(squadreStmt!=null){
+                try{
+                    squadreStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(partecipantiStmt!=null){
+                try{
+                    partecipantiStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsSquadre!=null){
+                try{
+                    rsSquadre.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsPartecipanti!=null){
+                try{
+                    rsPartecipanti.close();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         }
 
     }
 
+    /**
+     * Scarica la classifica di un campionato.
+     * Anche se il campionato deve ancora cominciare la classifica esiste già,
+     * con tutti i campi a zero. (tranne i nomi delle squadre)
+     * @param campionato
+     * @return classifica
+     */
     public ArrayList<Classifica> selectClassifica(Campionato campionato){
         Connection conn = null;
         PreparedStatement classificastmt = null;
         String classificaSql ="SELECT * from Classifica JOIN Fantasquadra on Classifica.IDsq=Fantasquadra.ID where NomeCampionato=?";
+        ResultSet rsClassifica=null;
 
         ArrayList<Classifica> classifica = new ArrayList<Classifica>();
 
@@ -431,20 +686,20 @@ public class Mysql{
 
             classificastmt = conn.prepareStatement(classificaSql);
             classificastmt.setString(1, campionato.getNome());
-            ResultSet rs = classificastmt.executeQuery();
+            rsClassifica = classificastmt.executeQuery();
             int i = 0;
-            while (rs.next()) {
-                Squadra squadra = new Squadra(rs.getInt("ID"),rs.getString("Nome"));
-                int vinte = rs.getInt("Vinte");
-                int pareggiate = rs.getInt("Pareggiate");
-                int perse = rs.getInt("Perse");
-                int punti = rs.getInt("Punti");
-                float punteggio = rs.getInt("SommaPunteggi");
-                int golFatti = rs.getInt("GolF");
-                int golSubiti = rs.getInt("GolS");
+            while (rsClassifica.next()) {
+                Squadra squadra = new Squadra(rsClassifica.getInt("ID"),rsClassifica.getString("Nome"));
+                int vinte = rsClassifica.getInt("Vinte");
+                int pareggiate = rsClassifica.getInt("Pareggiate");
+                int perse = rsClassifica.getInt("Perse");
+                int punti = rsClassifica.getInt("Punti");
+                float punteggio = rsClassifica.getInt("SommaPunteggi");
+                int golFatti = rsClassifica.getInt("GolF");
+                int golSubiti = rsClassifica.getInt("GolS");
                 int giocate = vinte+pareggiate+perse;
                 int diffReti = golFatti-golSubiti;
-                classifica.add(new Classifica(squadra,giocate,vinte,perse,pareggiate,golFatti,golSubiti,diffReti,punteggio,punti));
+                classifica.add(new Classifica(squadra, giocate, vinte, perse, pareggiate, golFatti, golSubiti, diffReti, punteggio, punti));
                 i++;
             }
 
@@ -463,25 +718,49 @@ public class Mysql{
                 try {
                     conn.close();
                 } catch (Exception e) {
-                    //ignored
+                    e.printStackTrace();
+                }
+            }
+            if(classificastmt!=null){
+                try{
+                    classificastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsClassifica!=null){
+                try{
+                    rsClassifica.close();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         }
 
     }
 
+    /**
+     * Scarica la lista delle giornate reali.
+     * Serve per la parte Admin per modificare la data e l'ora di inizio e fine giornata
+     * durante lo svolgimento del campionato, in caso di cambiamenti da parte della Serie A.
+     * Se è il primo avvio e nel database non esistono ancora le giornate, vengono
+     * create con solo il numero giornata.
+     * @return lista delle giornate reali
+     */
     public ArrayList<GiornataReale> selectGiornateAdmin(){
         Connection conn = null;
         PreparedStatement giornatestmt = null;
         String giornateSql ="SELECT * from GiornataAnno";
+        ResultSet rsGiornate =null;
 
         PreparedStatement contastmt = null;
         String contaSql ="SELECT count(*) from GiornataAnno";
+        ResultSet rscount=null;
 
         PreparedStatement giornateDefaultstmt=null;
         String giornateDefaultSql = "INSERT into GiornataAnno(NrGioReale) value(?)";
 
-        ArrayList<GiornataReale> giornate = new ArrayList<GiornataReale>();
+        ArrayList<GiornataReale> listaGiornate = new ArrayList<GiornataReale>();
         try{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
@@ -489,75 +768,116 @@ public class Mysql{
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             contastmt = conn.prepareStatement(contaSql);
-            ResultSet rscount = contastmt.executeQuery();
+            rscount = contastmt.executeQuery();
             rscount.next();
             int numeroGiornate = rscount.getInt("count(*)");
 
 
             if(numeroGiornate!=0) {
                 giornatestmt = conn.prepareStatement(giornateSql);
-                ResultSet rs = giornatestmt.executeQuery();
+                rsGiornate = giornatestmt.executeQuery();
                 int i = 0;
-                while (rs.next()) {
-                    giornate.add(new GiornataReale(rs.getInt("NrGioReale"),rs.getTimestamp("DataOraInizio"),rs.getTimestamp("DataOraFine")));
+                while (rsGiornate.next()) {
+                    listaGiornate.add(new GiornataReale(rsGiornate.getInt("NrGioReale"),rsGiornate.getTimestamp("DataOraInizio"),rsGiornate.getTimestamp("DataOraFine")));
                     i++;
                 }
             } else{
                 for(int i =1; i<=38;i++){
-                    giornate.add(new GiornataReale(i));
+                    listaGiornate.add(new GiornataReale(i));
                     giornateDefaultstmt = conn.prepareStatement(giornateDefaultSql);
                     giornateDefaultstmt.setInt(1,i);
                     giornateDefaultstmt.executeUpdate();
                 }
             }
-            return  giornate;
+            return  listaGiornate;
 
         }catch(SQLException se){
             se.printStackTrace();
-            return giornate;
+            return listaGiornate;
 
         }catch(Exception e){
             e.printStackTrace();
-            return giornate;
+            return listaGiornate;
 
         }finally {
             if(conn!=null) {
                 try {
                     conn.close();
                 } catch (Exception e) {
-                    //ignored
+                    e.printStackTrace();
+                }
+            }
+            if(contastmt!=null){
+                try{
+                    contastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(giornatestmt!=null){
+                try {
+                    giornatestmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(giornateDefaultstmt!=null){
+                try{
+                    giornateDefaultstmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rscount!=null){
+                try{
+                    rscount.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsGiornate!=null){
+                try{
+                    rsGiornate.close();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         }
 
     }
 
+    /**
+     * Scarica il calendario di un campionato passato per parametro.
+     * @param campionato
+     * @return lista delle giornate(calendario)
+     */
     public ArrayList<Giornata> selectGiornate(Campionato campionato){
         Connection conn = null;
         PreparedStatement giornatastmt = null;
         String giornataSql = "SELECT * from Giornata JOIN GiornataAnno on Giornata.NrGioReale=GiornataAnno.NrGioReale where NomeCampionato=?";
-        //String giornataSql = "SELECT * from Giornata where NomeCampionato=?";
+        ResultSet rsgiornata =null;
 
         PreparedStatement partitastmt = null;
         String partitaSql = "SELECT P.ID, P.NrPart, P.PunteggioCasa,P.PunteggioOspite,P.GolCasa,P.GolOspite,FC.ID as FCID,FO.ID as FOID,FC.Nome as FCNome, FO.Nome as FONome FROM Partita as P JOIN Fantasquadra as FC on P.IDFantasquadraCasa=FC.ID JOIN Fantasquadra as FO on P.IDFantasquadraOspite=FO.ID where IDgiorn=?";
+        ResultSet rspartita=null;
 
         ArrayList<Giornata> listaGiornate = new ArrayList<Giornata>();
         try {
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             giornatastmt = conn.prepareStatement(giornataSql);
             giornatastmt.setString(1, campionato.getNome());
-            ResultSet rsgiornata = giornatastmt.executeQuery();
+            rsgiornata = giornatastmt.executeQuery();
             while(rsgiornata.next()){
                 Giornata giornata = new Giornata(rsgiornata.getInt("ID"),rsgiornata.getInt("Nrgio"),new GiornataReale(rsgiornata.getInt("NrGioReale"),rsgiornata.getTimestamp("DataOraInizio"),rsgiornata.getTimestamp("DataOraFine")));
 
                 partitastmt = conn.prepareStatement(partitaSql);
                 partitastmt.setInt(1,giornata.getID());
 
-                ResultSet rspartita = partitastmt.executeQuery();
+                rspartita = partitastmt.executeQuery();
 
                 ArrayList<Partita> listaPartite = new ArrayList<Partita>();
                 while(rspartita.next()){
@@ -593,16 +913,51 @@ public class Mysql{
                 try {
                     conn.close();
                 } catch (Exception e) {
-                    //ignored
+                    e.printStackTrace();
+                }
+            }
+            if(giornatastmt!=null){
+                try{
+                    giornatastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(partitastmt!=null){
+                try{
+                    partitastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsgiornata!=null){
+                try{
+                    rsgiornata.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rspartita!=null){
+                try{
+                    rspartita.close();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         }
     }
 
+    /**
+     * Trova l'ultima giornata(reale) in cui sono stati inseriti i voti.
+     * Serve per la parte admin per settare lo spinner,
+     * dal quale l'admin sceglie la giornata per cui sta inserendo i voti
+     * @return numero giornata(reale)
+     */
     public int selectGiornateVotiInseriti(){
         Connection conn = null;
         PreparedStatement votistmt = null;
         String votiSql = "select NrGioReale from Voto group by NrGioReale order by NrGioReale desc limit 1";
+        ResultSet rsVoti = null;
 
         int giornata=0;
 
@@ -610,12 +965,12 @@ public class Mysql{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             votistmt = conn.prepareStatement(votiSql);
-            ResultSet rs = votistmt.executeQuery();
+            rsVoti = votistmt.executeQuery();
 
-            if(rs.next()) giornata = rs.getInt("NrGioReale");
+            if(rsVoti.next()) giornata = rsVoti.getInt("NrGioReale");
 
 
             return giornata;
@@ -633,7 +988,21 @@ public class Mysql{
                 try {
                     conn.close();
                 } catch (Exception e) {
-                    //ignored
+                    e.printStackTrace();
+                }
+            }
+            if(votistmt!=null){
+                try{
+                    votistmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsVoti!=null){
+                try{
+                    rsVoti.close();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         }
@@ -643,12 +1012,15 @@ public class Mysql{
         Connection conn = null;
         PreparedStatement formazioneInseritastmt = null;
         String formazioneInseritaSql = "select * from Formazione where IDpart=? and NomeSq=? group by NomeSq";
+        ResultSet rsFormazioneInserita = null;
+
         boolean flag = false;
+
         try{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             //se la formazione era già stata inserito la cancello per reinserirla
             if(squadra.isFormazioneInserita()){
@@ -660,9 +1032,9 @@ public class Mysql{
             formazioneInseritastmt.setInt(1, squadra.prossimaPartita().getID());
             formazioneInseritastmt.setString(2, squadra.getNome());
 
-            ResultSet rs = formazioneInseritastmt.executeQuery();
+            rsFormazioneInserita = formazioneInseritastmt.executeQuery();
 
-            if(rs.next()) flag = true;
+            if(rsFormazioneInserita.next()) flag = true;
             return flag;
 
 
@@ -679,7 +1051,21 @@ public class Mysql{
                 try {
                     conn.close();
                 } catch (Exception e) {
-                    //ignored
+                    e.printStackTrace();
+                }
+            }
+            if(formazioneInseritastmt!=null){
+                try{
+                    formazioneInseritastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsFormazioneInserita!=null){
+                try{
+                    rsFormazioneInserita.close();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         }
@@ -698,9 +1084,12 @@ public class Mysql{
         PreparedStatement formazionestmt = null;
         //String formazioneSql ="select Formazione.IDcalcAnno from Formazione Join Partita on Formazione.IDpart=Partita.ID join Giornata on Partita.IDgiorn=Giornata.ID Join Voto on Formazione.IDcalcAnno=Voto.IDcalcAnno where IDpart=? and NomeSq=? and Voto.NrGioReale=(select NrGioReale from Partita join Giornata on Partita.IDgiorn=Giornata.ID where Partita.ID=?)";
         String formazioneSql ="SELECT * from Formazione where IDpart=? and NomeSq=? order by Pos";
+        ResultSet rsFormazione = null;
 
         PreparedStatement votostmt = null;
         String votoSql = "select * from Formazione as F left join Voto as V on F.IDcalcAnno=V.IDcalcAnno where IDpart=? and F.IDcalcAnno=? and V.NrGioReale=(select NrGioReale from Partita as P join Giornata as G on P.IDgiorn=G.ID where P.ID=?)";
+        ResultSet rsvoto =null;
+
         ArrayList<Voto> formazione = new ArrayList<Voto>();
         try {
             //registra il JBCD driver
@@ -714,17 +1103,17 @@ public class Mysql{
             formazionestmt.setInt(1, IDpart);
             formazionestmt.setString(2, squadra.getNome());
             //formazionestmt.setInt(3,IDpart);
-            ResultSet rs = formazionestmt.executeQuery();
+            rsFormazione = formazionestmt.executeQuery();
 
 
-            while(rs.next()) {
+            while(rsFormazione.next()) {
                 for (Giocatore giocatore : squadra.getGiocatori()) {
-                    if(giocatore.getID()==rs.getInt("IDcalcAnno")){
+                    if(giocatore.getID()==rsFormazione.getInt("IDcalcAnno")){
                         votostmt = conn.prepareStatement(votoSql);
                         votostmt.setInt(1,IDpart);
                         votostmt.setInt(2,giocatore.getID());
                         votostmt.setInt(3,IDpart);
-                        ResultSet rsvoto = votostmt.executeQuery();
+                        rsvoto = votostmt.executeQuery();
                         Voto votoG = null;
                         if(rsvoto.next()){
                             int golF = rsvoto.getInt("GolF");
@@ -756,25 +1145,66 @@ public class Mysql{
         } catch(ClassNotFoundException e){
             e.printStackTrace();
             return formazione;
+        } finally {
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(formazionestmt!=null){
+                try{
+                    formazionestmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(votostmt!=null){
+                try{
+                    votostmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsFormazione!=null){
+                try{
+                    rsFormazione.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsvoto!=null){
+                try{
+                    rsvoto.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
+    /**
+     * Aggiorna il nome della squadra.
+     * Serve per il primo login per settare il nome della squadra,
+     * che al momento della creazione è null.
+     * @param squadra
+     */
     public void aggiornaNomeSquadra(Squadra squadra){
         Connection conn = null;
-        PreparedStatement aggiornaNome = null;
+        PreparedStatement aggiornaNomeStmt = null;
         String aggiornaNomeSql = "UPDATE Fantasquadra set Nome =? where ID=?";
 
         try{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-            aggiornaNome = conn.prepareStatement(aggiornaNomeSql);
-            aggiornaNome.setString(1, squadra.getNome());
-            aggiornaNome.setInt(2, squadra.getID());
-            int rs = aggiornaNome.executeUpdate();
-
+            aggiornaNomeStmt = conn.prepareStatement(aggiornaNomeSql);
+            aggiornaNomeStmt.setString(1, squadra.getNome());
+            aggiornaNomeStmt.setInt(2, squadra.getID());
+            aggiornaNomeStmt.executeUpdate();
 
         }catch(SQLException se){
             se.printStackTrace();
@@ -789,13 +1219,24 @@ public class Mysql{
                 try {
                     conn.close();
                 } catch (Exception e) {
-                    //ignored
+                    e.printStackTrace();
+                }
+            }
+            if(aggiornaNomeStmt!=null){
+                try{
+                    aggiornaNomeStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         }
 
     }
 
+    /**
+     * Aggiorna il nome dell'utente quando viene cambiato nel pannello info.
+     * @param utente
+     */
     public void aggiornaNomeUtente(Persona utente){
             Connection conn = null;
             PreparedStatement aggiornastmt = null;
@@ -805,33 +1246,39 @@ public class Mysql{
                 //registra il JBCD driver
                 Class.forName(JDBC_DRIVER);
                 //apre la connessionename
-                conn = DriverManager.getConnection(DB_URL,USER,PASS);
+                conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
                 aggiornastmt = conn.prepareStatement(aggiornaSql);
                 aggiornastmt.setString(1, utente.getNome());
                 aggiornastmt.setString(2, utente.getNickname());
-                int rs = aggiornastmt.executeUpdate();
-
+                aggiornastmt.executeUpdate();
 
             }catch(SQLException se){
                 se.printStackTrace();
-
-
             }catch(Exception e){
                 e.printStackTrace();
-
-
             }finally {
                 if(conn!=null) {
                     try {
                         conn.close();
                     } catch (Exception e) {
-                        //ignored
+                        e.printStackTrace();
+                    }
+                }
+                if(aggiornastmt!=null){
+                    try{
+                        aggiornastmt.close();
+                    } catch (Exception e){
+                        e.printStackTrace();
                     }
                 }
             }
     }
 
+    /**
+     * Aggiorna il cognome dell'utente quando viene cambiato nel pannello info.
+     * @param utente
+     */
     public void aggiornaCognomeUtente(Persona utente){
         Connection conn = null;
         PreparedStatement aggiornastmt = null;
@@ -841,33 +1288,39 @@ public class Mysql{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessionename
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             aggiornastmt = conn.prepareStatement(aggiornaSql);
             aggiornastmt.setString(1, utente.getCognome());
             aggiornastmt.setString(2, utente.getNickname());
-            int rs = aggiornastmt.executeUpdate();
-
+            aggiornastmt.executeUpdate();
 
         }catch(SQLException se){
             se.printStackTrace();
-
-
         }catch(Exception e){
             e.printStackTrace();
-
-
         }finally {
             if(conn!=null) {
                 try {
                     conn.close();
                 } catch (Exception e) {
-                    //ignored
+                    e.printStackTrace();
+                }
+            }
+            if(aggiornastmt!=null){
+                try{
+                    aggiornastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         }
     }
 
+    /**
+     * Aggiorna la giornata reale quando viene cambiato dall'admin.
+     * @param giornata
+     */
     public void aggiornaGiornataReale(GiornataReale giornata){
         Connection conn=null;
         PreparedStatement giornatastmt = null;
@@ -884,34 +1337,42 @@ public class Mysql{
             giornatastmt.setTimestamp(2, new Timestamp(giornata.getDataOraFine().getTime()));
             giornatastmt.setInt(3, giornata.getNumeroGiornata());
 
-
             giornatastmt.executeUpdate();
 
         }catch(SQLException se){
             se.printStackTrace();
-
-
         }catch(Exception e){
             e.printStackTrace();
-
-
         }finally {
             if(conn!=null) {
                 try {
                     conn.close();
                 } catch (Exception e) {
-                    //ignored
+                    e.printStackTrace();
+                }
+            }
+            if(giornatastmt!=null){
+                try{
+                    giornatastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         }
     }
 
+    /**
+     * Cancella la formazione inserita.
+     * Viene utilizzato quando si vuole aggiornare la formazione già inserita.
+     * Viene prima cancellata con questo metodo e poi inserita con il metodo per l'inserimento.
+     * @param squadra
+     * @return true se l'aggiornamento è andato a buon fine
+     */
     public boolean deleteFormazioneInserita(Squadra squadra){
         Connection conn = null;
         PreparedStatement deleteFormazioneInseritastmt = null;
         String deleteFormazioneInseritaSql = "delete from Formazione where IDpart=? and NomeSq=?";
 
-        int rs  =0;
         try{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
@@ -937,12 +1398,31 @@ public class Mysql{
             return false;
 
         }finally {
-            try { conn.close(); } catch (Exception e) { /* ignored */ }
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(deleteFormazioneInseritastmt!=null){
+                try{
+                    deleteFormazioneInseritastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
 
 
     }
 
+    /**
+     * Inserisci i risultati della giornata.
+     * Viene richiamato dal metodo che calcola i risultati.
+     * @param campionato
+     * @return
+     */
     public boolean inserisciRisultatiGiornata(Campionato campionato){
         Connection conn = null;
         PreparedStatement partitastmt = null;
@@ -1010,8 +1490,6 @@ public class Mysql{
                 classificastmt.executeUpdate();
             }
 
-
-
             return (rsp==1 && rsc==1);
         } catch (SQLException se){
             se.printStackTrace();
@@ -1020,7 +1498,34 @@ public class Mysql{
             e.printStackTrace();
             return false;
         } finally {
-            try { conn.close(); } catch (Exception e) { /* ignored */ }
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(classificastmt!=null){
+                try{
+                    classificastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(partitastmt!=null){
+                try{
+                    partitastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(prossimaGiornatastmt!=null){
+                try{
+                    prossimaGiornatastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
 
 

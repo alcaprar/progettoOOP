@@ -138,7 +138,8 @@ public class Login extends JFrame {
                     db.aggiornaNomeSquadra(squadra);
                     if(utente.equals(squadra.getCampionato().getPresidente())) squadra.getProprietario().setPresidenteLega(true);
                     getFrame().dispose();
-                    Applicazione app = new Applicazione(squadra);
+                    CaricamentoDati caricamento = new CaricamentoDati();
+                    Applicazione app = new Applicazione(squadra, caricamento);
                 }
                 //se non è stato inserito il nome nel dialog ne viene mostrato un altro che dice che non è stata inserita il nome
                 else {
