@@ -61,7 +61,7 @@ public class Server {
                         break;
                     ClientThread t = new ClientThread(socket);  // crea un nuovo thread per il client
                     al.add(t);									// lo aggiunge all'arraylist
-                    t.run();                                  //avvia il tentativo di connessione da parte del client
+                    t.start();                                  //avvia il tentativo di connessione da parte del client
                 }
                 // se è stato richiesto lo stop del server esegue:
                 try {

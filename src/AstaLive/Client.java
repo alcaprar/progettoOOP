@@ -119,18 +119,11 @@ public class Client  {
     }
 
     public void run(){
-        // wait for messages from user
-        Scanner scan = new Scanner(System.in);
         // loop forever for message from the user
         while(true) {
-
-                        /*
-                        *
-                        * Loop di attività del client
-                        *
-                        *
-                        * */
-
+            for(int i = 0; i < 10; i++){
+                sendMessage(new ChatMessage("Sto inviando dati."));
+            }
             break;
         }
         // done disconnect
@@ -146,8 +139,9 @@ public class Client  {
 
         public void run() {
             while(true) {
-                /*try {
-                    //TODO gestione dei messaggi dal server
+                try {
+                    String msg = (String) sInput.readObject();
+                    asta.eventoServer(msg);
                 }
                 catch(IOException e) {
                     display("Server has close the connection: " + e);
@@ -155,7 +149,7 @@ public class Client  {
                 }
                 // can't happen with a String object but need the catch anyhow
                 catch(ClassNotFoundException e2) {
-                }*/
+                }
             }
         }
     }
