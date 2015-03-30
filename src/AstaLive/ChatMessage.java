@@ -13,19 +13,20 @@ public class ChatMessage implements Serializable{
         * Il messaggio che si scambiano i client contiene un giocatore e il tempo per effettuare la propria offerta
         */
 
-        private Giocatore giocatore;
-        private int tempo = 10;
+        //private Giocatore giocatore;
+        private String msg;
 
 
-        ChatMessage(int tipo, Giocatore giocatore, int tempo) {
+        /*ChatMessage(Giocatore giocatore) {
             this.giocatore = giocatore;
         }
 
         // getters
         Giocatore getGiocatore() {
             return giocatore;
-        }
-        int getTempo(){
-            return tempo;
+        }*/
+
+        ChatMessage(String msg){
+            this.msg = msg;
         }
 }

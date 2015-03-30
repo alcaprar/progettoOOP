@@ -53,7 +53,7 @@ public class Server {
                 while(continua)
                 {
                     // Visualizza un messaggio in console per rendere noto che sta ascoltando
-                    display("Server attivo all'indirizzo 192.168.1.50, in ascolto sulla porta: " + port + ".");
+                    display("Server attivo all'indirizzo 192.168.43.178, in ascolto sulla porta: " + port + ".");
 
                     Socket socket = serverSocket.accept();  	// accept connection
                     // se la connessione ha richiesto lo stop del server
@@ -61,7 +61,7 @@ public class Server {
                         break;
                     ClientThread t = new ClientThread(socket);  // crea un nuovo thread per il client
                     al.add(t);									// lo aggiunge all'arraylist
-                    t.run();                                  //avvia il tentativo di connessione da parte del client
+                    t.start();                                  //avvia il tentativo di connessione da parte del client
                 }
                 // se è stato richiesto lo stop del server esegue:
                 try {

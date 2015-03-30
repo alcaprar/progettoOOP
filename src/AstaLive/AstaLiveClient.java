@@ -14,7 +14,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Created by Christian on 25/03/2015.
@@ -53,6 +52,7 @@ public class AstaLiveClient extends JFrame implements ItemListener{
     private SpinnerModel spinnerModel;
     private SpinnerModel spinnerModel1;
     private Client client;
+    private int l;
 
     public void setSquadra(Squadra sqr) {
         this.squadra = sqr;
@@ -67,8 +67,9 @@ public class AstaLiveClient extends JFrame implements ItemListener{
         setTabelleSquadre();
     }
 
-    public AstaLiveClient() {
+    public AstaLiveClient(int l) {
 
+        this.l=l;
         nomeL.setText("Attendi");
         cognomeL.setText("Attendi");
         ruoloL.setText("Attendi");
@@ -86,7 +87,7 @@ public class AstaLiveClient extends JFrame implements ItemListener{
         spinnerModel1 = new SpinnerNumberModel(1,1,1000,1);
         spinnerOfferta.setModel(spinnerModel1);
 
-        if(squadra.getProprietario().isPresidenteLega()){
+        if(l == 1){
             startStopButton.setVisible(true);
             serverL.setVisible(true);
             spinnerPorta.setVisible(true);
@@ -96,7 +97,7 @@ public class AstaLiveClient extends JFrame implements ItemListener{
             spinnerPorta.setVisible(false);
             // default values
             int portNumber = 1500;
-            String serverAddress = "192.168.1.50";
+            String serverAddress = "192.168.43.178";
             String userName = squadra.getProprietario().getNickname();
             boolean ok = false;
             while(true){
@@ -244,7 +245,7 @@ public class AstaLiveClient extends JFrame implements ItemListener{
         serverConsole.setCaretPosition(serverConsole.getText().length() - 1);
     }
 
-    public void displayMessage(ChatMessage chatMessage){
+    /* public void displayMessage(ChatMessage chatMessage){
         cognomeL.setText(chatMessage.getGiocatore().getCognome());
         ruoloL.setText(String.valueOf(chatMessage.getGiocatore().getRuolo()));
         squadraRealeL.setText(chatMessage.getGiocatore().getSquadraReale());
@@ -252,5 +253,9 @@ public class AstaLiveClient extends JFrame implements ItemListener{
         attualeL.setText(String.valueOf(chatMessage.getGiocatore().getPrezzoAcquisto()));
 
         spinnerModel1.setValue((Integer)chatMessage.getGiocatore().getPrezzoAcquisto());
+    }*/
+
+    public static void main(String[] args){
+        AstaLiveClient asta = new AstaLiveClient(1);
     }
 }
