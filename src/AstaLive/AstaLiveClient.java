@@ -30,7 +30,6 @@ public class AstaLiveClient extends JFrame implements ItemListener{
     private JLabel squadraL;
     private JLabel campionatoL;
     private JLabel cognomeL;
-    private JLabel nomeL;
     private JLabel ruoloL;
     private JLabel squadraRealeL;
     private JLabel inizialeL;
@@ -70,7 +69,6 @@ public class AstaLiveClient extends JFrame implements ItemListener{
     public AstaLiveClient(int l) {
 
         this.l=l;
-        nomeL.setText("Attendi");
         cognomeL.setText("Attendi");
         ruoloL.setText("Attendi");
         squadraRealeL.setText("Attendi");
