@@ -1531,6 +1531,11 @@ public class Mysql{
 
     }
 
+    /**
+     * Scarica la lista degli avvisi che il presidente di lega ha inviato a tutti i partecipanti.
+     * @param squadra
+     * @return lista con array di stringhe. [0] =titolo, [1]=testo
+     */
     public ArrayList<String[]> selectAvvisi(Squadra squadra){
         Connection conn = null;
         PreparedStatement avvisistmt = null;
@@ -1559,23 +1564,32 @@ public class Mysql{
         }catch(SQLException se){
             se.printStackTrace();
             return listaAvvisi;
-
         }catch(Exception e){
             e.printStackTrace();
             return listaAvvisi;
-
         }finally {
             if(conn!=null) {
                 try {
                     conn.close();
                 } catch (Exception e) {
-                    //ignored
+                    e.printStackTrace();
+                }
+            }
+            if(avvisistmt!=null){
+                try{
+                    avvisistmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         }
-
     }
 
+    /**
+     * Scarica la lista di messaggi che gli utenti hanno inviato al presidente di lega
+     * @param squadra
+     * @return lista con array di stringhe. [0]= titolo, [0]=testo,[3]=nick utente
+     */
     public ArrayList<String[]> selectMessaggi(Squadra squadra){
         Connection conn = null;
         PreparedStatement messaggiStmt = null;
@@ -1636,7 +1650,13 @@ public class Mysql{
 
     }
 
-    //crea il campionato
+    /**
+     * Crea il campionato passato come parametro.
+     * Nel database vengono inseriti il regolamento, le squadre partecipanti e il calendario.
+     * Le squadre vengono create senza nome, che sarà inserito da ogni utente al primo login.
+     * @param campionato
+     * @return true se l'inserimento è andato a buon fine
+     */
     public boolean creaCampionato(Campionato campionato){
         Connection conn = null ;
         PreparedStatement campionatostmt = null;
@@ -1738,25 +1758,73 @@ public class Mysql{
                 }
             }
 
-            if(rscampionato==1){
-                return true;
-            }
-            else return false;
+            return(rscampionato==1);
         }catch(SQLException se){
-            if(se.getErrorCode()==1062){
-            }
-            System.out.println(se.getErrorCode());
             se.printStackTrace();
             return false;
         }catch(Exception e){
             e.printStackTrace();
             return false;
         }finally {
-            try { conn.close(); } catch (Exception e) { /* ignored */ }
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(campionatostmt!=null){
+                try{
+                    campionatostmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(regolamentstmt!=null){
+                try{
+                    regolamentstmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(partecipantistmt!=null){
+                try{
+                    partecipantistmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(iscrizionestmt!=null){
+                try{
+                    iscrizionestmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(giornatastmt!=null){
+                try{
+                    giornatastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(partitastmt!=null){
+                try{
+                    partecipantistmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
 
     }
 
+    /**
+     * Inserisce la lista dei giocatori disponibili in serie A.
+     * La lista dei giocatori viene presa da un file csv/xls.
+     * @param listaGiocatori
+     * @return true se l'inserimento è andato a buon fine
+     */
     public boolean inserisciGiocatoriAnno(ArrayList<Giocatore> listaGiocatori){
         Connection conn = null;
         PreparedStatement giocatorestmt = null;
@@ -1780,28 +1848,40 @@ public class Mysql{
 
                 rsgiocatore= giocatorestmt.executeUpdate();
             }
-
-            if(rsgiocatore==1){
-                return true;
-            }
-            else{
-                return false;
-            }
-
+            return rsgiocatore==1;
 
         }catch(SQLException se){
             se.printStackTrace();
             return false;
-
         }catch(Exception e){
             e.printStackTrace();
             return false;
-
         }finally {
-            try { conn.close(); } catch (Exception e) { /* ignored */ }
+           if(conn!=null){
+               try{
+                   conn.close();
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
+           }
+            if(giocatorestmt!=null){
+                try{
+                    giocatorestmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
+    /**
+     * Inserisce la lista dei giocatori per ogni squadra del campionato.
+     * Dopo aver inserito i giocatori aggiorna i crediti disponibili di ogni squadra.
+     * Dopo aver inserito tutti i giocatori aggiorna la flag del campionato
+     * che indica se sono stati inseriti i giocatori delle squadre.
+     * @param campionato
+     * @return
+     */
     public boolean inserisciGiocatori(Campionato campionato){
         Connection conn = null;
         PreparedStatement giocatorestmt = null;
@@ -1854,7 +1934,34 @@ public class Mysql{
         return false;
 
         }finally {
-        try { conn.close(); } catch (Exception e) { /* ignored */ }
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(giocatorestmt!=null){
+                try{
+                    giocatorestmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(soldiDisponibilistmt!=null){
+                try{
+                    soldiDisponibilistmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(aggiornaInfoCampionatostmt!=null){
+                try{
+                    aggiornaInfoCampionatostmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
 
     }

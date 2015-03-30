@@ -86,9 +86,6 @@ public class Applicazione extends JFrame {
         //scarico la lista dei giocatori della squadra loggata
         sqr.setGiocatori(db.selectGiocatori(sqr));
 
-        //aggiorno il pannello formazione
-        //refreshFormazione();
-
         //setto in tutti i pannelli il riferimento a squadra
         homePanel.setSquadra(sqr);
         formazionePanel.setSquadra(sqr);

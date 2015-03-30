@@ -63,6 +63,7 @@ public class GestioneLega extends JPanel{
             nonAbilitatolbl.setVisible(false);
             nrGiolbl.setText(String.valueOf(squadra.getCampionato().prossimaGiornata().getNumGiornata()));
         }
+        setListaMessaggi();
     }
 
     private GestioneLega getPanel(){
@@ -120,7 +121,7 @@ public class GestioneLega extends JPanel{
                 if (!e.getValueIsAdjusting()) {
                     JList source = (JList) e.getSource();
                     int numeroMessaggio = source.getSelectedIndex();
-                    testoMessaggi.setText(squadra.getCampionato().getListaMessaggi().get(numeroMessaggio)[2]);
+                    testoMessaggi.setText(squadra.getCampionato().getListaMessaggi().get(numeroMessaggio)[1]);
 
                 }
 
@@ -131,7 +132,7 @@ public class GestioneLega extends JPanel{
     private void setListaMessaggi(){
         DefaultListModel listaMessaggiModel = new DefaultListModel();
         for(String[] messaggio:squadra.getCampionato().getListaMessaggi()){
-            listaMessaggiModel.addElement(messaggio[1] +" - "+messaggio[0]);
+            listaMessaggiModel.addElement(messaggio[2] +" - "+messaggio[0]);
         }
         listaMessaggi.setModel(listaMessaggiModel);
     }
