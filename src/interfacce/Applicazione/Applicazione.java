@@ -92,14 +92,8 @@ public class Applicazione extends JFrame {
         classificaPanel.setSquadra(sqr);
         calendarioPanel.setSquadra(sqr);
         squadrePanel.setSquadre(sqr);
-        gestioneGiocatoriPanel.setSquadra(sqr);
         infoPanel.setSquadra(sqr);
-        gestioneLegaPanel.setSquadra(sqr);
-        //setto i riferimento a calendario, home e classifica che servono
-        //per fare il refresh dopo che è stata calcolata la giornata
-        gestioneLegaPanel.setCalendario(calendarioPanel);
-        gestioneLegaPanel.setHome(homePanel);
-        gestioneLegaPanel.setClassifica(classificaPanel);
+
 
         //fa partire il countdown per l'inserimento della formazione
         homePanel.startCountDown();
@@ -111,12 +105,12 @@ public class Applicazione extends JFrame {
         calendarioPanel.refresh();
         squadrePanel.refresh();
         infoPanel.refresh();
-        gestioneLegaPanel.refresh();
 
         //se l'utente loggato è il presidente, il tipo di asta è offline e i giocatori sono da inserire popolo le tabelle
         //del pannello gestione giocatori
         //se no rimuovo il pannello
         if(squadra.getProprietario().isPresidenteLega() &&  !squadra.getCampionato().isAstaLive()) {
+            gestioneGiocatoriPanel.setSquadra(sqr);
             if (squadra.getCampionato().isGiocatoriDaInserire()) {
                 //le rose sono ancora da inserire
                 gestioneGiocatoriPanel.refresh();
@@ -132,6 +126,15 @@ public class Applicazione extends JFrame {
         //se l'utente non è il presidente di lega tolgo gestione lega
         if(!squadra.getProprietario().isPresidenteLega()){
             tabbedPane1.remove(tabbedPane1.indexOfTab("Gestione Lega"));
+        } else{
+            gestioneLegaPanel.setSquadra(sqr);
+            //setto i riferimento a calendario, home e classifica che servono
+            //per fare il refresh dopo che è stata calcolata la giornata
+            gestioneLegaPanel.setCalendario(calendarioPanel);
+            gestioneLegaPanel.setHome(homePanel);
+            gestioneLegaPanel.setClassifica(classificaPanel);
+
+            gestioneLegaPanel.refresh();
         }
 
         //quando viene aperta la tab formazione bisogna fare alcuni controlli
@@ -145,15 +148,16 @@ public class Applicazione extends JFrame {
                 if(formazione==tab && squadra.getCampionato().isGiocatoriDaInserire()){
                     JOptionPane.showMessageDialog(null, "Ancora non sono stati inseriti i giocatori. Non potrai inviare la formazione.", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
-                //se è già stata inviata la formazione per questa giornata invia un popup di avviso
-                else if(formazione==tab && sqr.isFormazioneInserita()){
-                    JOptionPane.showMessageDialog(null, "Hai già inviato la formazione per questa partita.\nSe invii un'altra formazione, questa sostituirà quella vecchia.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                }
                 //se è scaduto il tempo per inserire la formazione mostra un avviso e cambia la tab
                 else if(formazione==tab && new DateTime().isAfter(homePanel.getProssimaGiornata())){
                     JOptionPane.showMessageDialog(null, "Non è più possibile inserire la formazione perchè è scaduto il tempo.","Tempo scaduto", JOptionPane.INFORMATION_MESSAGE);
                     tabbedpane.setSelectedIndex(0);
                 }
+                //se è già stata inviata la formazione per questa giornata invia un popup di avviso
+                else if(formazione==tab && sqr.isFormazioneInserita()){
+                    JOptionPane.showMessageDialog(null, "Hai già inviato la formazione per questa partita.\nSe invii un'altra formazione, questa sostituirà quella vecchia.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                }
+
             }
         });
 
