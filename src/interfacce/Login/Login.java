@@ -163,7 +163,7 @@ public class Login extends JFrame {
 
                 getFrame().dispose();
                 CaricamentoDati caricamento = new CaricamentoDati();
-                HomeStorico AppStorico = new HomeStorico(storico,caricamento);
+                HomeStorico AppStorico = new HomeStorico(storico,caricamento,getFrame());
             }
         });
 

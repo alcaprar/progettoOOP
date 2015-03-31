@@ -3,10 +3,7 @@ package interfacce.Applicazione;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 import classi.*;
@@ -83,7 +80,7 @@ public class CreaCampionato extends JFrame {
         pack();
         //centra il frame
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
         setResizable(false);
 
@@ -192,10 +189,10 @@ public class CreaCampionato extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if ("".equals(nometxt.getText())) {
-                    JOptionPane.showMessageDialog(getContentPane(), "Inserire il nome del campionato.","Nome mancante",JOptionPane.ERROR_MESSAGE);
-                } else if(partecipantiModel.size()!=Integer.parseInt((String) numeroBox.getSelectedItem())){
-                    JOptionPane.showMessageDialog(getContentPane(),"Inserisci tutti i partecipanti","Partecipanti mancanti",JOptionPane.ERROR_MESSAGE);
-                }else  {
+                    JOptionPane.showMessageDialog(getContentPane(), "Inserire il nome del campionato.", "Nome mancante", JOptionPane.ERROR_MESSAGE);
+                } else if (partecipantiModel.size() != Integer.parseInt((String) numeroBox.getSelectedItem())) {
+                    JOptionPane.showMessageDialog(getContentPane(), "Inserisci tutti i partecipanti", "Partecipanti mancanti", JOptionPane.ERROR_MESSAGE);
+                } else {
                     campionato = creaCampionato();
                     if (db.creaCampionato(campionato)) {
                         Object[] options = {"OK"};
@@ -213,7 +210,7 @@ public class CreaCampionato extends JFrame {
                         }
 
                     } else {
-                        JOptionPane.showMessageDialog(getContentPane(),"Ci sono stati degli errori nella creazione del campionato!","Errore",JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(getContentPane(), "Ci sono stati degli errori nella creazione del campionato!", "Errore", JOptionPane.ERROR_MESSAGE);
                     }
                 }
 
@@ -223,6 +220,14 @@ public class CreaCampionato extends JFrame {
         annullaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                loginForm.setVisible(true);
+                getFrame().dispose();
+            }
+        });
+
+        getFrame().addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
                 loginForm.setVisible(true);
                 getFrame().dispose();
             }

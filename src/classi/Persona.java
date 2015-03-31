@@ -18,7 +18,9 @@ public class Persona {
     private ArrayList<Squadra> presidenza;
     private ArrayList<Storico> listaStorico;
 
-
+    public Persona(String nick){
+        this.nickname =nick;
+    }
     public Persona(String nick, String pass){
         this.nickname = nick;
         this.password = pass;

@@ -4,11 +4,14 @@ import classi.Storico;
 import db.Mysql;
 import interfacce.Applicazione.TabellaGiornata;
 import interfacce.Login.CaricamentoDati;
+import interfacce.Login.Login;
 import utils.RenderTableAlternate;
 import utils.TableNotEditableModel;
 import utils.Utils;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Created by alessandro on 31/03/15.
@@ -28,7 +31,9 @@ public class HomeStorico extends JFrame {
 
     private Mysql db = new Mysql();
 
-    public HomeStorico(Storico storico,CaricamentoDati caricamento){
+    private Login loginForm;
+
+    public HomeStorico(Storico storico,CaricamentoDati caricamento, final Login loginForm){
         super("Storico");
         this.storico=storico;
 
@@ -43,11 +48,19 @@ public class HomeStorico extends JFrame {
         setClassifica();
 
         setContentPane(mainPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
         caricamento.dispose();
         setVisible(true);
+
+        getFrame().addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                loginForm.setVisible(true);
+                getFrame().dispose();
+            }
+        });
         }
 
     private void setCalendario(){
@@ -88,5 +101,9 @@ public class HomeStorico extends JFrame {
 
         //setta l'altezza delle righe
         classificaTable.setRowHeight(50);
+    }
+
+    private HomeStorico getFrame(){
+        return this;
     }
 }
