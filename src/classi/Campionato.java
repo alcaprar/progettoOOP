@@ -25,6 +25,41 @@ public class Campionato {
     private ArrayList<String[]> listaAvvisi;
     private ArrayList<String []> listaMessaggi;
 
+    public Campionato(String nome){
+        this.nome = nome;
+    }
+
+    public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente,ArrayList<Squadra> listaSquadrePartecipanti,boolean giocatoriDaInserire, int prossimaGiornata ){
+        this.nome = nome;
+        this.numeroPartecipanti = numerop;
+        this.astaLive = asta;
+        this.giornataInizio = inizio;
+        this.giornataFine = fine;
+        this.creditiIniziali = crediti;
+        this.orarioConsegna = orario;
+        this.primaFascia = primaf;
+        this.largFascia = fasce;
+        this.bonusCasa = bonusc;
+        this.presidente = presidente;
+        this.listaSquadrePartecipanti = listaSquadrePartecipanti;
+        this.giocatoriDaInserire = giocatoriDaInserire;
+        this.prossimaGiornata = prossimaGiornata;
+    }
+
+    public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente ){
+        this.nome = nome;
+        this.numeroPartecipanti = numerop;
+        this.astaLive = asta;
+        this.giornataInizio = inizio;
+        this.giornataFine = fine;
+        this.creditiIniziali = crediti;
+        this.orarioConsegna = orario;
+        this.primaFascia = primaf;
+        this.largFascia = fasce;
+        this.bonusCasa = bonusc;
+        this.presidente = presidente;
+    }
+
     public ArrayList<Giornata> getCalendario() {
         return calendario;
     }
@@ -49,51 +84,12 @@ public class Campionato {
         presidente = presidente;
     }
 
-    public Campionato(String nome){
-        this.nome = nome;
-    }
-
     public ArrayList<Classifica> getClassifica() {
         return classifica;
     }
 
     public void setClassifica(ArrayList<Classifica> classifica) {
         this.classifica = classifica;
-    }
-
-    public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente,ArrayList<Squadra> listaSquadrePartecipanti,boolean giocatoriDaInserire, int prossimaGiornata ){
-        this.nome = nome;
-        this.numeroPartecipanti = numerop;
-        this.astaLive = asta;
-        this.giornataInizio = inizio;
-        this.giornataFine = fine;
-        this.creditiIniziali = crediti;
-        this.orarioConsegna = orario;
-        this.primaFascia = primaf;
-        this.largFascia = fasce;
-        this.bonusCasa = bonusc;
-        this.presidente = presidente;
-        this.listaSquadrePartecipanti = listaSquadrePartecipanti;
-        this.giocatoriDaInserire = giocatoriDaInserire;
-        this.prossimaGiornata = prossimaGiornata;
-    }
-
-    public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente ){
-        this.nome = nome;
-        this.numeroPartecipanti = numerop;
-        this.astaLive = asta;
-
-        this.giornataInizio = inizio;
-        this.giornataFine = fine;
-        this.creditiIniziali = crediti;
-
-        this.orarioConsegna = orario;
-        this.primaFascia = primaf;
-        this.largFascia = fasce;
-        this.bonusCasa = bonusc;
-        this.presidente = presidente;
-
-
     }
 
     public int getNumeroPartecipanti() {
@@ -184,22 +180,6 @@ public class Campionato {
         this.listaAvvisi = listaAvvisi;
     }
 
-    /*public ArrayList<Persona> getPartecipanti() {
-        return listaPartecipanti;
-    }
-
-    public void setPartecipanti(ArrayList<Persona> partecipanti) {
-        listaPartecipanti = partecipanti;
-    }*/
-
-    public Object[] squadreToArray(){
-        Object[] arrayObject = new Object[this.listaSquadrePartecipanti.size()];
-        for(int i=0;i<this.listaSquadrePartecipanti.size();i++){
-            arrayObject[i] = this.listaSquadrePartecipanti.get(i).getID()+" - "+this.listaSquadrePartecipanti.get(i).getNome()+" - " + listaSquadrePartecipanti.get(i).getProprietario().getNickname();
-        }
-        return arrayObject;
-    }
-
     public boolean isGiocatoriDaInserire() {
         return giocatoriDaInserire;
     }
@@ -214,6 +194,14 @@ public class Campionato {
 
     public void setProssimaGiornata(int prossimaGiornata) {
         this.prossimaGiornata = prossimaGiornata;
+    }
+
+    public ArrayList<String[]> getListaMessaggi() {
+        return listaMessaggi;
+    }
+
+    public void setListaMessaggi(ArrayList<String[]> listaMessaggi) {
+        this.listaMessaggi = listaMessaggi;
     }
 
     public Giornata prossimaGiornata(){
@@ -277,11 +265,11 @@ public class Campionato {
 
     }
 
-    public ArrayList<String[]> getListaMessaggi() {
-        return listaMessaggi;
-    }
-
-    public void setListaMessaggi(ArrayList<String[]> listaMessaggi) {
-        this.listaMessaggi = listaMessaggi;
+    public Object[] squadreToArray(){
+        Object[] arrayObject = new Object[this.listaSquadrePartecipanti.size()];
+        for(int i=0;i<this.listaSquadrePartecipanti.size();i++){
+            arrayObject[i] = this.listaSquadrePartecipanti.get(i).getID()+" - "+this.listaSquadrePartecipanti.get(i).getNome()+" - " + listaSquadrePartecipanti.get(i).getProprietario().getNickname();
+        }
+        return arrayObject;
     }
 }

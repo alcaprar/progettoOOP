@@ -3,7 +3,10 @@ package classi;
 import java.util.ArrayList;
 
 /**
- * Created by alessandro on 25/02/15.
+ * Entità persona.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Persona {
     private String nickname;
@@ -15,9 +18,6 @@ public class Persona {
     private ArrayList<Squadra> presidenza;
     private ArrayList<Storico> listaStorico;
 
-    public Persona(String nick){
-        this.nickname = nick;
-    }
 
     public Persona(String nick, String pass){
         this.nickname = nick;
@@ -39,43 +39,6 @@ public class Persona {
         this.email = email;
     }
 
-
-    public String getNickname() {
-        return this.nickname;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public String getNome() {
-        return this.nome;
-    }
-
-    public String getCognome() {
-        return this.cognome;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public ArrayList<Squadra> getPresidenza() {
-        return this.presidenza;
-    }
-
-    public void setNome(String n){
-        this.nome = n;
-    }
-
-    public void  setCognome(String c){
-        this.cognome = c;
-    }
-
-    public void setEmail(String e){
-        this.email = e;
-    }
-
     public void duplicate(Persona a) {
         a.nickname = this.nickname;
         a.password = this.password;
@@ -90,16 +53,44 @@ public class Persona {
         else return false;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
-    public void setPresidenza(ArrayList<Squadra> presidenza) {
-        this.presidenza = presidenza;
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCognome() {
+        return cognome;
+    }
+
+    public void setCognome(String cognome) {
+        this.cognome = cognome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public boolean isPresidenteLega() {
@@ -108,6 +99,14 @@ public class Persona {
 
     public void setPresidenteLega(boolean presidenteLega) {
         this.presidenteLega = presidenteLega;
+    }
+
+    public ArrayList<Squadra> getPresidenza() {
+        return presidenza;
+    }
+
+    public void setPresidenza(ArrayList<Squadra> presidenza) {
+        this.presidenza = presidenza;
     }
 
     public ArrayList<Storico> getListaStorico() {

@@ -43,12 +43,6 @@ public class Login extends JFrame {
     //è l'utente che fa il login
     private Persona utente;
 
-    //è la lista delle squadre che possiede l'utente loggato
-    private ArrayList<Squadra> listaSquadre = new ArrayList<Squadra>();
-
-    //lista dei campionati a cui ha partecipato l'utente loggato
-    private ArrayList<Storico> listaStorico = new ArrayList<Storico>();
-
     //serve per le funzioni utili
     public Utils utils = new Utils();
 
@@ -129,7 +123,7 @@ public class Login extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 //prendo la squadra che è stata selezionata nel combobox
-                Squadra squadra = listaSquadre.get(comboBoxSquadre.getSelectedIndex());
+                Squadra squadra = utente.getPresidenza().get(comboBoxSquadre.getSelectedIndex());
 
                 //se la squadra non ha il nome, cioè è il primo login,
                 //viene mostrato un input dialog dove viene chiesto di inserire il nome
@@ -165,7 +159,7 @@ public class Login extends JFrame {
         storicoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Storico storico = listaStorico.get(comboBoxStorico.getSelectedIndex());
+                Storico storico = utente.getListaStorico().get(comboBoxStorico.getSelectedIndex());
 
                 getFrame().dispose();
                 CaricamentoDati caricamento = new CaricamentoDati();
@@ -208,13 +202,13 @@ public class Login extends JFrame {
                 if (db.login(utente)) {
                     //se l'utente esiste scarico le squadre di cui è presidente con la funzione selectSquadre
                     //che restituisce un arraylist di squadre
-                    listaSquadre = db.selectSquadre(utente);
+                    utente.setPresidenza(db.selectSquadre(utente));
                     //setto il combobox delle squadre dalla lista di squadre
-                    setComboBoxSquadre(listaSquadre);
+                    setComboBoxSquadre();
                     //scarico la lista dei campionati a cui ha partecipato l'utente
-                    listaStorico = db.selectStorico(utente);
+                    utente.setListaStorico(db.selectStorico(utente));
                     //setto il combobox dello storico
-                    setComboBoxStorico(listaStorico);
+                    setComboBoxStorico();
                     //aggiorno il label con il nome dell'utente
                     nomeutentetxt.setText(utente.getNickname());
                     //cambio la card da mostrare dato che il login è andato bene
@@ -239,11 +233,11 @@ public class Login extends JFrame {
         }
     }
     //setta il combo box a partire dalla lista di squadre
-    private void setComboBoxSquadre(ArrayList<Squadra> listaSquadre){
+    private void setComboBoxSquadre(){
         //inizializzo il model per il combobox
         DefaultComboBoxModel squadreModel = new DefaultComboBoxModel();
         //scorro l'arraylist e popolo il model
-        for(Squadra squadra : listaSquadre){
+        for(Squadra squadra : utente.getPresidenza()){
             int ID = squadra.getID();
             //se il nome della squadra è null, cioè non è stato ancora inserito il nome,
             //cioè non è stato fatto ancora il primo login, lo setto a NomeDaInserire giusto per farlo notare
@@ -265,11 +259,11 @@ public class Login extends JFrame {
     }
 
     //setta il combo box a partire dalla lista di storici
-    private void setComboBoxStorico(ArrayList<Storico> listaStorico){
+    private void setComboBoxStorico(){
         //inizializzo il model per il combobox
         DefaultComboBoxModel storicoModel = new DefaultComboBoxModel();
         //scorro l'arraylist e popolo il model
-        for(Storico storico : listaStorico){
+        for(Storico storico : utente.getListaStorico()){
             int anno = storico.getAnno();
             String nome = storico.getNome();
 
@@ -282,9 +276,9 @@ public class Login extends JFrame {
     public void refresh() {
         //se l'utente esiste scarico le squadre di cui è presidente con la funzione selectSquadre
         //che restituisce un arraylist di squadre
-        listaSquadre = db.selectSquadre(utente);
+        utente.setPresidenza(db.selectSquadre(utente));
         //setto il combobox delle squadre dalla lista di squadre
-        setComboBoxSquadre(listaSquadre);
+        setComboBoxSquadre();
 
 
         getFrame().pack();
