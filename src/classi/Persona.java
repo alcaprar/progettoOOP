@@ -13,6 +13,7 @@ public class Persona {
     private String email;
     private boolean presidenteLega;
     private ArrayList<Squadra> presidenza;
+    private ArrayList<Storico> listaStorico;
 
     public Persona(String nick){
         this.nickname = nick;
@@ -107,5 +108,13 @@ public class Persona {
 
     public void setPresidenteLega(boolean presidenteLega) {
         this.presidenteLega = presidenteLega;
+    }
+
+    public ArrayList<Storico> getListaStorico() {
+        return listaStorico;
+    }
+
+    public void setListaStorico(ArrayList<Storico> listaStorico) {
+        this.listaStorico = listaStorico;
     }
 }

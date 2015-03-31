@@ -5,6 +5,7 @@ import db.Mysql;
 import interfacce.Admin.ApplicazioneAdmin;
 import interfacce.Applicazione.Applicazione;
 import interfacce.Applicazione.CreaCampionato;
+import interfacce.Applicazione.HomeStorico;
 import utils.Utils;
 
 import javax.swing.*;
@@ -36,12 +37,17 @@ public class Login extends JFrame {
     private JLabel infolbl;
     private JTextField squadratxt;
     private JLabel nomeutentetxt;
+    private JComboBox comboBoxStorico;
+    private JButton storicoButton;
 
     //è l'utente che fa il login
     private Persona utente;
 
     //è la lista delle squadre che possiede l'utente loggato
     private ArrayList<Squadra> listaSquadre = new ArrayList<Squadra>();
+
+    //lista dei campionati a cui ha partecipato l'utente loggato
+    private ArrayList<Storico> listaStorico = new ArrayList<Storico>();
 
     //serve per le funzioni utili
     public Utils utils = new Utils();
@@ -155,6 +161,18 @@ public class Login extends JFrame {
                 }
             }
         });
+
+        storicoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Storico storico = listaStorico.get(comboBoxStorico.getSelectedIndex());
+
+                getFrame().dispose();
+                CaricamentoDati caricamento = new CaricamentoDati();
+                HomeStorico AppStorico = new HomeStorico(storico,caricamento);
+            }
+        });
+
         //se viene premuto il bottone crea cambionato viene creato il Jframe di CreaCampionato e viene nascono il Jframe di login
         creaButton.addActionListener(new ActionListener() {
             @Override
@@ -193,6 +211,10 @@ public class Login extends JFrame {
                     listaSquadre = db.selectSquadre(utente);
                     //setto il combobox delle squadre dalla lista di squadre
                     setComboBoxSquadre(listaSquadre);
+                    //scarico la lista dei campionati a cui ha partecipato l'utente
+                    listaStorico = db.selectStorico(utente);
+                    //setto il combobox dello storico
+                    setComboBoxStorico(listaStorico);
                     //aggiorno il label con il nome dell'utente
                     nomeutentetxt.setText(utente.getNickname());
                     //cambio la card da mostrare dato che il login è andato bene
@@ -242,12 +264,30 @@ public class Login extends JFrame {
 
     }
 
-    public void refresh(){
+    //setta il combo box a partire dalla lista di storici
+    private void setComboBoxStorico(ArrayList<Storico> listaStorico){
+        //inizializzo il model per il combobox
+        DefaultComboBoxModel storicoModel = new DefaultComboBoxModel();
+        //scorro l'arraylist e popolo il model
+        for(Storico storico : listaStorico){
+            int anno = storico.getAnno();
+            String nome = storico.getNome();
+
+            storicoModel.addElement(nome + " - "+String.valueOf(anno));
+        }
+
+        comboBoxStorico.setModel(storicoModel);
+    }
+
+    public void refresh() {
         //se l'utente esiste scarico le squadre di cui è presidente con la funzione selectSquadre
         //che restituisce un arraylist di squadre
         listaSquadre = db.selectSquadre(utente);
         //setto il combobox delle squadre dalla lista di squadre
         setComboBoxSquadre(listaSquadre);
+
+
+        getFrame().pack();
 
     }
 

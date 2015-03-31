@@ -16,6 +16,11 @@ public class Giornata {
         this.gioReale = gioReale;
     }
 
+    public Giornata(int numGiornata,int ID){
+        this.ID = ID;
+        this.numGiornata=numGiornata;
+    }
+
     public int getID() {
         return ID;
     }

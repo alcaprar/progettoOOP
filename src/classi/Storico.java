@@ -8,26 +8,51 @@ import java.util.ArrayList;
  * @author Christian Manfredi
  */
 public class Storico {
-    private int Anno;
-    private String nomeCampionato;
-    private ArrayList<Squadra> squadrePartecipanti;
-    private ArrayList<Classifica> classifica;
+    private int ID;
+    private String nome;
+    private int anno;
+    private String presidente;
+    private ArrayList<Squadra> listaSquadrePartecipanti;
     private ArrayList<Giornata> calendario;
+    private ArrayList<Classifica> classifica;
+
+    public Storico(int ID, String nome, int anno, String presidente){
+        this.ID = ID;
+        this.nome = nome;
+        this.anno = anno;
+        this.presidente = presidente;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     public int getAnno() {
-        return Anno;
+        return anno;
     }
 
     public void setAnno(int anno) {
-        Anno = anno;
+        this.anno = anno;
     }
 
-    public ArrayList<Classifica> getClassifica() {
-        return classifica;
+    public String getPresidente() {
+        return presidente;
     }
 
-    public void setClassifica(ArrayList<Classifica> classifica) {
-        this.classifica = classifica;
+    public void setPresidente(String presidente) {
+        this.presidente = presidente;
     }
 
     public ArrayList<Giornata> getCalendario() {
@@ -38,19 +63,19 @@ public class Storico {
         this.calendario = calendario;
     }
 
-    public String getNomeCampionato() {
-        return nomeCampionato;
+    public ArrayList<Classifica> getClassifica() {
+        return classifica;
     }
 
-    public void setNomeCampionato(String nomeCampionato) {
-        this.nomeCampionato = nomeCampionato;
+    public void setClassifica(ArrayList<Classifica> classifica) {
+        this.classifica = classifica;
     }
 
-    public ArrayList<Squadra> getSquadrePartecipanti() {
-        return squadrePartecipanti;
+    public ArrayList<Squadra> getListaSquadrePartecipanti() {
+        return listaSquadrePartecipanti;
     }
 
-    public void setSquadrePartecipanti(ArrayList<Squadra> squadrePartecipanti) {
-        this.squadrePartecipanti = squadrePartecipanti;
+    public void setListaSquadrePartecipanti(ArrayList<Squadra> listaSquadrePartecipanti) {
+        this.listaSquadrePartecipanti = listaSquadrePartecipanti;
     }
 }

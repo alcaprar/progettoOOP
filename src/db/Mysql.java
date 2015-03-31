@@ -2511,5 +2511,275 @@ public class Mysql{
         }
 
     }
+
+    /**
+     * Scarica la lista dei campionati a cui ha partecipato l'utente.
+     * @param utente
+     * @return lista dei campionati passati
+     */
+    public ArrayList<Storico> selectStorico(Persona utente){
+        Connection conn=null;
+        PreparedStatement storicoStmt=null;
+        String storicoSql="select C.* from FantasquadraStorico as F join CampionatoStorico as C on F.IDCampionato=C.ID where NickUt=?";
+        ResultSet rsStorico =null;
+
+        PreparedStatement partecipantiStmt = null;
+        String partecipantiSql = "SELECT * from FantasquadraStorico where IDCampionato=?";
+        ResultSet rsPartecipanti=null;
+
+        ArrayList<Storico> listaStorico = new ArrayList<Storico>();
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            storicoStmt = conn.prepareStatement(storicoSql);
+            storicoStmt.setString(1,utente.getNickname());
+
+            rsStorico= storicoStmt.executeQuery();
+            while(rsStorico.next()){
+                Storico storico = new Storico(rsStorico.getInt("ID"),rsStorico.getString("Nome"),rsStorico.getInt("Anno"),rsStorico.getString("Presidente"));
+
+                partecipantiStmt = conn.prepareStatement(partecipantiSql);
+                partecipantiStmt.setInt(1,storico.getID());
+
+                rsPartecipanti = partecipantiStmt.executeQuery();
+                ArrayList<Squadra> listaPartecipanti  = new ArrayList<Squadra>();
+                while(rsPartecipanti.next()){
+                    Squadra squadra = new Squadra(rsPartecipanti.getInt("ID"),rsPartecipanti.getString("Nome"),new Persona(rsPartecipanti.getString("NickUt")));
+                    listaPartecipanti.add(squadra);
+                }
+                storico.setListaSquadrePartecipanti(listaPartecipanti);
+
+                listaStorico.add(storico);
+
+
+            }
+
+            return listaStorico;
+
+        } catch (SQLException se){
+            se.printStackTrace();
+            return listaStorico;
+        } catch (Exception e){
+            e.printStackTrace();
+            return listaStorico;
+        } finally {
+            if(conn!=null){
+                try{
+                    conn.close();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(storicoStmt!=null){
+                try{
+                    storicoStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(partecipantiStmt!=null){
+                try{
+                    partecipantiStmt.close();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsStorico!=null){
+                try{
+                    rsStorico.close();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsPartecipanti!=null){
+                try{
+                    rsPartecipanti.close();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Scarica la classifica finale del campionato per lo storico.
+     * @param storico
+     * @return classifica
+     */
+    public ArrayList<Classifica> selectClassificaStorico(Storico storico){
+        Connection conn = null;
+        PreparedStatement classificastmt = null;
+        String classificaSql ="SELECT * from ClassificaStorico JOIN FantasquadraStorico on ClassificaStorico.IDSquadra=FantasquadraStorico.ID where ClassificaStorico.IDCampionato=?";
+        ResultSet rsClassifica=null;
+
+        ArrayList<Classifica> classifica = new ArrayList<Classifica>();
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+
+            classificastmt = conn.prepareStatement(classificaSql);
+            classificastmt.setInt(1, storico.getID());
+            rsClassifica = classificastmt.executeQuery();
+            while (rsClassifica.next()) {
+                Squadra squadra=null;
+                for(Squadra sqr : storico.getListaSquadrePartecipanti()){
+                    if(sqr.getID()==rsClassifica.getInt("IDSquadra")){
+                        squadra=sqr;
+                    }
+                }
+                int vinte = rsClassifica.getInt("Vinte");
+                int pareggiate = rsClassifica.getInt("Pareggiate");
+                int perse = rsClassifica.getInt("Perse");
+                int punti = rsClassifica.getInt("Punti");
+                float punteggio = rsClassifica.getInt("SommaPunteggi");
+                int golFatti = rsClassifica.getInt("GolFatti");
+                int golSubiti = rsClassifica.getInt("GolSubiti");
+                int giocate = vinte+pareggiate+perse;
+                int diffReti = golFatti-golSubiti;
+                classifica.add(new Classifica(squadra, giocate, vinte, perse, pareggiate, golFatti, golSubiti, diffReti, punteggio, punti));
+            }
+            return  classifica;
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return classifica;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return classifica;
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if(classificastmt!=null){
+                try{
+                    classificastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsClassifica!=null){
+                try{
+                    rsClassifica.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Scarica il calendario del campionato passato.
+     * @param storico
+     * @return
+     */
+    public ArrayList<Giornata> selectGiornateStorico(Storico storico){
+        Connection conn = null;
+        PreparedStatement giornatastmt = null;
+        String giornataSql = "select * from GiornataStorico where IDCampionato=?";
+        ResultSet rsgiornata =null;
+
+        PreparedStatement partitastmt = null;
+        String partitaSql = "SELECT P.ID, P.NrPartita, P.PunteggioCasa,P.PunteggioOspite,P.GolCasa,P.GolOspite,FC.ID as FCID,FO.ID as FOID,FC.Nome as FCNome, FO.Nome as FONome FROM PartitaStorico as P JOIN FantasquadraStorico as FC on P.IDCasa=FC.ID JOIN FantasquadraStorico as FO on P.IDOspite=FO.ID where IDGiornata=?";
+        ResultSet rspartita=null;
+
+        ArrayList<Giornata> listaGiornate = new ArrayList<Giornata>();
+        try {
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            giornatastmt = conn.prepareStatement(giornataSql);
+            giornatastmt.setInt(1, storico.getID());
+            rsgiornata = giornatastmt.executeQuery();
+            while(rsgiornata.next()){
+                Giornata giornata = new Giornata(rsgiornata.getInt("NrGio"),rsgiornata.getInt("ID"));
+
+                partitastmt = conn.prepareStatement(partitaSql);
+                partitastmt.setInt(1,giornata.getID());
+
+                rspartita = partitastmt.executeQuery();
+
+                ArrayList<Partita> listaPartite = new ArrayList<Partita>();
+                while(rspartita.next()){
+                    Squadra squadraCasa = null;
+                    Squadra squadraOspite=null;
+                    for(Squadra squadra : storico.getListaSquadrePartecipanti()){
+                        if(squadra.getID()==rspartita.getInt("FCID")) squadraCasa=squadra;
+                        if(squadra.getID()==rspartita.getInt("FOID")) squadraOspite = squadra;
+                    }
+                    Partita partita = new Partita(rspartita.getInt("ID"),rspartita.getInt("NrPartita"),squadraCasa,squadraOspite,rspartita.getInt("GolCasa"),rspartita.getInt("GolOspite"),rspartita.getFloat("PunteggioCasa"),rspartita.getFloat("PunteggioOspite"));
+                    listaPartite.add(partita);
+
+                }
+
+                giornata.setPartite(listaPartite);
+
+                listaGiornate.add(giornata);
+
+            }
+
+            return listaGiornate;
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            return listaGiornate;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return listaGiornate;
+
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if(giornatastmt!=null){
+                try{
+                    giornatastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(partitastmt!=null){
+                try{
+                    partitastmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rsgiornata!=null){
+                try{
+                    rsgiornata.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(rspartita!=null){
+                try{
+                    rspartita.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
 

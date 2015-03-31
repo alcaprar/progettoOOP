@@ -34,7 +34,6 @@ public class TabellaGiornata extends JPanel {
      * @param prossimaGiornata
      * @param bonusCasa
      */
-
     public TabellaGiornata(final Giornata giorn, int prossimaGiornata, final int bonusCasa){
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
