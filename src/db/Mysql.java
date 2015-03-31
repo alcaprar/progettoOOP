@@ -2,6 +2,7 @@ package db;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import classi.*;
 import utils.*;
@@ -1966,6 +1967,13 @@ public class Mysql{
 
     }
 
+    /**
+     * Carica i voti della giornata nel database dopo che è stato fatto
+     * il parsing del file csv/xls.
+     * @param listaVoti
+     * @param numeroGiornta
+     * @return true se l'inseriemento è andato a buon fine
+     */
     public boolean inserisciVoti(ArrayList<ArrayList<String>> listaVoti, int numeroGiornta){
         Connection conn = null;
         PreparedStatement votostmt=null;
@@ -2008,23 +2016,38 @@ public class Mysql{
 
                 rs = votostmt.executeUpdate();
             }
-
             return (rs==1);
 
         }catch(SQLException se){
             se.printStackTrace();
             return false;
-
         }catch(Exception e){
             e.printStackTrace();
             return false;
-
         }finally {
-            try { conn.close(); } catch (Exception e) {  }
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(votostmt!=null){
+                try{
+                    votostmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
-
     }
 
+    /**
+     * Inserisce la formazione nel database per la giornata passata come parametro.
+     * @param squadra
+     * @param partita
+     * @return true se l'inserimento è andato a buon fine
+     */
     public boolean inserisciFormazione(Squadra squadra, Partita partita){
         Connection conn = null;
         PreparedStatement formazionestmt = null;
@@ -2053,17 +2076,35 @@ public class Mysql{
         }catch(SQLException se){
             se.printStackTrace();
             return false;
-
         }catch(Exception e){
             e.printStackTrace();
             return false;
-
         }finally {
-            try { conn.close(); } catch (Exception e) {  }
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(formazionestmt!=null){
+                try{
+                    formazionestmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
 
     }
 
+    /**
+     * Inserisce nel database gli avvisi del presidente di lega.
+     * @param campionato
+     * @param titolo titolo dell'avviso
+     * @param testo testo dell'avviso
+     * @return tru se l'inserimento è andato a buon fine
+     */
     public boolean inserisciAvviso(Campionato campionato, String titolo, String testo){
         Connection conn = null;
         PreparedStatement avvisostmt = null;
@@ -2079,7 +2120,7 @@ public class Mysql{
             avvisostmt = conn.prepareStatement(avvisoSql);
             avvisostmt.setString(1, campionato.getNome());
             avvisostmt.setString(2,titolo);
-            avvisostmt.setString(3,testo);
+            avvisostmt.setString(3, testo);
 
             rs = avvisostmt.executeUpdate();
 
@@ -2094,11 +2135,21 @@ public class Mysql{
             return false;
 
         }finally {
-            try { conn.close(); } catch (Exception e) {  }
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(avvisostmt!=null){
+                try{
+                    avvisostmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
-
-
-
     }
 
     /**
@@ -2122,7 +2173,7 @@ public class Mysql{
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
             messaggioStmt = conn.prepareStatement(messaggioSql);
             messaggioStmt.setString(1,squadra.getCampionato().getNome());
-            messaggioStmt.setInt(2,squadra.getID());
+            messaggioStmt.setInt(2, squadra.getID());
             messaggioStmt.setString(3,titolo);
             messaggioStmt.setString(4,testo);
 
@@ -2159,10 +2210,15 @@ public class Mysql{
 
     }
 
+    /**
+     * Cancella tutti campionati e tutte i dati associati ai campionati.
+     * Può essere richiamata solo dall'admin per "pulire" il database.
+     * @return
+     */
     public int deleteCampionati(){
         Connection conn = null;
         PreparedStatement deletestmt = null;
-        String[] deleteSql = {"DELETE FROM Campionato","delete from  Iscrizione","delete from Fantasquadra","delete from Classifica","delete from Regolamento","delete from Partita","delete from Giornata"};
+        String[] deleteSql = {"DELETE FROM Campionato","delete from  Iscrizione","delete from Fantasquadra","delete from Classifica","delete from Regolamento","delete from Partita","delete from Giornata","delete from Avvisi","delete from Messaggi"};
 
         int rs  =0;
         try{
@@ -2191,8 +2247,269 @@ public class Mysql{
             return rs;
 
         }finally {
-            try { conn.close(); } catch (Exception e) { /* ignored */ }
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(deletestmt!=null){
+                try{
+                    deletestmt.close();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
+    }
+
+    /**
+     * Termina il campionato, salvando tutti i dati nello storico.
+     * Nello storico vengono mantenute le seguenti informazioni:
+     * -partecipanti al campionato;
+     * -calendario con i risultati di ogni partita;
+     * -classifica finale.
+     * @return true se l'aggiornamento è andato a buon fine
+     */
+    public boolean terminaCampionato(Campionato campionato){
+        Connection conn = null;
+        PreparedStatement campionatoStmt = null;
+        String campionatoSql = "INSERT into CampionatoStorico(Presidente, Anno,Nome) value(?,?,?) ";
+        ResultSet rsIDCampionato=null;
+        int IDCampionato;
+        PreparedStatement cancellaCampionatoStmt=null;
+        String[] cancellaCampionatoSql={"DELETE from Campionato where Nome=?","DELETE from Regolamento where NomeCampionato=?","DELETE from Tesseramento where NomeCampionato=?","DELETE from Avvisi where NomeCampionato=? ","DELETE from Messaggi where NomeCampionato=?","DELETE from Iscrizione where Campionato=?","DELETE from Classifica where NomeCampionato=?"};
+
+        PreparedStatement partecipantiStmt=null;
+        String partecipantiSql = "INSERT into FantasquadraStorico value(?,?,?,?)";
+        PreparedStatement cancellaFantasquadraStmt = null;
+        String cancellaFantasquadraSql="DELETE from Fantasquadra where ID=?";
+
+        PreparedStatement giornataStmt=null;
+        String giornataSql = "INSERT into GiornataStorico value(?,?,?)";
+        PreparedStatement cancellaGiornataStmt=null;
+        String cancellaGiornataSql="DELETE from Giornata where ID=?";
+
+        PreparedStatement partitaStmt=null;
+        String partitaSql="INSERT into PartitaStorico value(?,?,?,?,?,?,?,?,?)";
+        PreparedStatement cancellaPartitaStmt = null;
+        String cancellaPartitaSql="DELETE from Partita where ID=?";
+        PreparedStatement cancellaFormazioneStmt = null;
+        String cancellaFormazioneSql = "DELETE from Formazione where IDpart=?";
+
+        PreparedStatement classificaStmt =null;
+        String classificaSql = "INSERT into ClassificaStorico value(?,?,?,?,?,?,?,?,?)";
+
+        try {
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            //campionato
+            campionatoStmt = conn.prepareStatement(campionatoSql, Statement.RETURN_GENERATED_KEYS);
+            //presidente
+            campionatoStmt.setString(1, campionato.getPresidente().getNickname());
+            //anno
+            int anno = Calendar.getInstance().get(Calendar.YEAR);
+            campionatoStmt.setInt(2, anno);
+            //nome
+            campionatoStmt.setString(3,campionato.getNome());
+
+            campionatoStmt.executeUpdate();
+            //id del campionato inserito nello storico
+            rsIDCampionato= campionatoStmt.getGeneratedKeys();
+            rsIDCampionato.next();
+            IDCampionato = rsIDCampionato.getInt(1);
+
+            //cancella i record del campionato e delle tabelle associate
+            for(int i=0;i<cancellaCampionatoSql.length;i++){
+                cancellaCampionatoStmt = conn.prepareStatement(cancellaCampionatoSql[i]);
+                cancellaCampionatoStmt.setString(1,campionato.getNome());
+                cancellaCampionatoStmt.executeUpdate();
+            }
+
+            //partecipanti
+            for(Squadra squadra:campionato.getListaSquadrePartecipanti()){
+                partecipantiStmt = conn.prepareStatement(partecipantiSql);
+                //ID
+                partecipantiStmt.setInt(1,squadra.getID());
+                //nome
+                partecipantiStmt.setString(2, squadra.getNome());
+                //nickname propietario
+                partecipantiStmt.setString(3, squadra.getProprietario().getNickname());
+                //ID campionato
+                partecipantiStmt.setInt(4, IDCampionato);
+                partecipantiStmt.executeUpdate();
+
+                cancellaFantasquadraStmt = conn.prepareStatement(cancellaFantasquadraSql);
+                cancellaFantasquadraStmt.setInt(1,squadra.getID());
+                cancellaFantasquadraStmt.executeUpdate();
+
+            }
+
+            //calendario
+            for(Giornata giornata : campionato.getCalendario()){
+                giornataStmt = conn.prepareStatement(giornataSql);
+                //ID
+                giornataStmt.setInt(1,giornata.getID());
+                //ID campionato
+                giornataStmt.setInt(2,IDCampionato);
+                //nr giornata
+                giornataStmt.setInt(3, giornata.getNumGiornata());
+
+                giornataStmt.executeUpdate();
+
+                cancellaGiornataStmt = conn.prepareStatement(cancellaGiornataSql);
+                cancellaGiornataStmt.setInt(1,giornata.getID());
+                cancellaGiornataStmt.executeUpdate();
+
+                for(Partita partita : giornata.getPartite()){
+                    partitaStmt = conn.prepareStatement(partitaSql);
+                    //ID
+                    partitaStmt.setInt(1,partita.getID());
+                    //ID giornata
+                    partitaStmt.setInt(2,giornata.getID());
+                    //Nr partita
+                    partitaStmt.setInt(3,partita.getNumeroPartita());
+                    //ID casa
+                    partitaStmt.setInt(4,partita.getFormCasa().getSquadra().getID());
+                    //ID ospite
+                    partitaStmt.setInt(5,partita.getFormOspite().getSquadra().getID());
+                    //gol casa
+                    partitaStmt.setInt(6,partita.getGolCasa());
+                    //gol ospite
+                    partitaStmt.setInt(7,partita.getGolFuori());
+                    //punti casa
+                    partitaStmt.setFloat(8,partita.getPuntiCasa());
+                    //punti ospite
+                    partitaStmt.setFloat(9,partita.getPuntiFuori());
+
+                    partitaStmt.executeUpdate();
+
+                    cancellaPartitaStmt = conn.prepareStatement(cancellaPartitaSql);
+                    cancellaPartitaStmt.setInt(1,partita.getID());
+                    cancellaPartitaStmt.executeUpdate();
+
+                    cancellaFormazioneStmt =conn.prepareStatement(cancellaFormazioneSql);
+                    cancellaFantasquadraStmt.setInt(1,partita.getID());
+                    cancellaFormazioneStmt.executeUpdate();
+                }
+            }
+
+            //classifica
+            for(Classifica rigaClassifica : campionato.getClassifica()) {
+                classificaStmt = conn.prepareStatement(classificaSql);
+                //ID campionato
+                classificaStmt.setInt(1,IDCampionato);
+                //ID squadra
+                classificaStmt.setInt(2,rigaClassifica.getSquadra().getID());
+                //vinte
+                classificaStmt.setInt(3,rigaClassifica.getVinte());
+                //pareggiate
+                classificaStmt.setInt(4,rigaClassifica.getPareggiate());
+                //perse
+                classificaStmt.setInt(5,rigaClassifica.getPerse());
+                //gol fatti
+                classificaStmt.setInt(6,rigaClassifica.getGolFatti());
+                //gol subiti
+                classificaStmt.setInt(7, rigaClassifica.getGolSubiti());
+                //somma punteggi
+                classificaStmt.setFloat(8,rigaClassifica.getPunteggio());
+                //punti
+                classificaStmt.setInt(9,rigaClassifica.getPunti());
+
+                classificaStmt.executeUpdate();
+            }
+            return true;
+        }catch (SQLException se){
+            se.printStackTrace();
+            return false;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        } finally {
+            if(conn!=null){
+                try{
+                    conn.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(campionatoStmt!=null){
+                try{
+                    campionatoStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(cancellaCampionatoStmt!=null){
+                try{
+                    cancellaCampionatoStmt.close();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(classificaStmt!=null){
+                try{
+                    classificaStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(giornataStmt!=null){
+                try{
+                    giornataStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(cancellaGiornataStmt!=null){
+                try{
+                    cancellaGiornataStmt.close();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(partecipantiStmt!=null){
+                try{
+                    partecipantiStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(cancellaFantasquadraStmt!=null){
+                try{
+                    cancellaFantasquadraStmt.close();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(partitaStmt!=null){
+                try{
+                    partitaStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(cancellaPartitaStmt!=null){
+                try{
+                    cancellaPartitaStmt.close();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(cancellaFormazioneStmt!=null){
+                try{
+                    cancellaFormazioneStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
     }
 }
 
