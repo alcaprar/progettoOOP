@@ -24,6 +24,8 @@ public class Server {
     private int port;
     // the boolean that will be turned of to stop the server
     private boolean keepGoing;
+    //numero di partecipanti
+    private static final int numeroPartecipanti=2;
 
 
     /*
@@ -58,15 +60,17 @@ public class Server {
             {
                 // format message saying we are waiting
                 display("Server waiting for Clients on port " + port + ".");
+                Socket socket = serverSocket.accept();    // accept connection
 
-                Socket socket = serverSocket.accept();  	// accept connection
                 // if I was asked to stop
-                if(!keepGoing)
+                if (!keepGoing)
                     break;
+
                 ClientThread t = new ClientThread(socket);  // make a thread of it
-                al.add(t);									// save it in the ArrayList
+                al.add(t);                                    // save it in the ArrayList
                 t.start();
             }
+
             // I was asked to stop
             try {
                 serverSocket.close();

@@ -46,8 +46,8 @@ public class Classifica extends JPanel {
      */
     private void setTableClassifica(){
         Object[] nomeColonne = {"Squadra", "Partite", "V", "N", "P", "DiffReti", "GolF", "GolS", "Punteggio", "Punti"};
-        Object[][] righeClassifica = utils.listaClassificaToArray(squadra.getCampionato().getClassifica());
-
+        //Object[][] righeClassifica = utils.listaClassificaToArray(squadra.getCampionato().getClassifica());
+        Object[][] righeClassifica = squadra.getCampionato().classificaToArray();
         TableNotEditableModel classificaModel = new TableNotEditableModel(righeClassifica, nomeColonne){
             //restituisce la classe della colonna
             //serve per il row sorter

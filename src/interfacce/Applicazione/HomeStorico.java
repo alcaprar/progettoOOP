@@ -14,7 +14,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * Created by alessandro on 31/03/15.
+ * Classe per la visualizzazione dello storico.
+ * Estende un JFrame.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class HomeStorico extends JFrame {
     private JPanel mainPanel;
@@ -31,8 +35,12 @@ public class HomeStorico extends JFrame {
 
     private Mysql db = new Mysql();
 
-    private Login loginForm;
-
+    /**
+     * Costruttore della pagina per la visualizzazione dello storico.
+     * @param storico oggetto storico da visualizzare
+     * @param caricamento
+     * @param loginForm
+     */
     public HomeStorico(Storico storico,CaricamentoDati caricamento, final Login loginForm){
         super("Storico");
         this.storico=storico;
@@ -54,6 +62,7 @@ public class HomeStorico extends JFrame {
         caricamento.dispose();
         setVisible(true);
 
+        //quando viene chiuso il frame rivisualizza la schermata di login
         getFrame().addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -63,6 +72,11 @@ public class HomeStorico extends JFrame {
         });
         }
 
+    /**
+     * Setta il pannello del calendario.
+     * Per ogni giornata viene creato un nuovo oggetto TabellaGiornata.
+     * @see interfacce.Applicazione.TabellaGiornata
+     */
     private void setCalendario(){
         calendarioPanel.setLayout(new BoxLayout(calendarioPanel,BoxLayout.Y_AXIS));
         int j=0;
@@ -78,10 +92,13 @@ public class HomeStorico extends JFrame {
         }
     }
 
+    /**
+     * Setta la tabella che mostra la classifica.
+     */
     private void setClassifica(){
         Object[] nomeColonne = {"Squadra", "Partite", "V", "N", "P", "DiffReti", "GolF", "GolS", "Punteggio", "Punti"};
-        Object[][] righeClassifica = utils.listaClassificaToArray(storico.getClassifica());
-
+        //Object[][] righeClassifica = utils.listaClassificaToArray(storico.getClassifica());
+        Object[][] righeClassifica = storico.classificaToArray();
         TableNotEditableModel classificaModel = new TableNotEditableModel(righeClassifica, nomeColonne){
             //restituisce la classe della colonna
             //serve per il row sorter
@@ -103,6 +120,10 @@ public class HomeStorico extends JFrame {
         classificaTable.setRowHeight(50);
     }
 
+    /**
+     * Ritorna l'oggetto principale.
+     * @return this
+     */
     private HomeStorico getFrame(){
         return this;
     }

@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Created by alessandro on 24/03/15.
@@ -49,10 +51,17 @@ public class VotiAdmin extends JPanel {
         caricaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(utils.xlsvoti(pathFile, (Integer)spinnerGiornata.getValue())){
-                    JOptionPane.showMessageDialog(null, "Voti della giornata "+ String.valueOf(ultimaGiornataInserita+1)+" inseriti correttamente", "Success", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Voti della giornata "+ String.valueOf(ultimaGiornataInserita+1)+" non sono stati inseriti correttamente", "Errore", JOptionPane.ERROR_MESSAGE);
+                //catturo le eccezzioni IO
+                //se il file non è presente mando un warning
+                try {
+                    if (utils.xlsvoti(pathFile, (Integer) spinnerGiornata.getValue())) {
+                        JOptionPane.showMessageDialog(null, "Voti della giornata " + String.valueOf(ultimaGiornataInserita + 1) + " inseriti correttamente", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Voti della giornata " + String.valueOf(ultimaGiornataInserita + 1) + " non sono stati inseriti correttamente", "Errore", JOptionPane.ERROR_MESSAGE);
+                    }
+                }catch (IOException ioe){
+                    ioe.printStackTrace();
+                    JOptionPane.showMessageDialog(getPanel(),"File non trovato","Errore",JOptionPane.ERROR_MESSAGE);
                 }
 
             }
@@ -66,5 +75,9 @@ public class VotiAdmin extends JPanel {
         SpinnerNumberModel giornataModel = new SpinnerNumberModel(ultimaGiornataInserita+1, ultimaGiornataInserita+1, 38, 1);
 
         spinnerGiornata.setModel(giornataModel);
+    }
+
+    private VotiAdmin getPanel(){
+        return this;
     }
 }

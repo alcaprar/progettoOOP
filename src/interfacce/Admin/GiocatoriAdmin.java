@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -64,8 +65,12 @@ public class GiocatoriAdmin extends JPanel {
         inviaQuotazioni.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                utils.csvQuotazioni(pathFile, ",");
-
+                try{
+                    utils.xlsQuotazioni(pathFile);
+                } catch (IOException ioe){
+                    ioe.printStackTrace();
+                    JOptionPane.showMessageDialog(getPanel(),"File non trovato.","Errore",JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -87,6 +92,10 @@ public class GiocatoriAdmin extends JPanel {
 
         tabellaGiocatori.setModel(giocatoriModel);
 
+    }
+
+    private GiocatoriAdmin getPanel(){
+        return this;
     }
 
 }

@@ -201,7 +201,8 @@ public class Home extends JPanel {
      */
     private void setTableClassifica(){
         Object[] nomeColonne = {"Squadra", "Punti"};
-        Object[][] righeClassifica = utils.listaClassificaToArrayPiccola(squadra.getCampionato().getClassifica());
+        Object[][] righeClassifica = squadra.getCampionato().classificaToArrayPiccola();
+        //Object[][] righeClassifica = utils.listaClassificaToArrayPiccola(squadra.getCampionato().getClassifica());
 
         TableNotEditableModel classificaModel = new TableNotEditableModel(righeClassifica, nomeColonne){
             @Override

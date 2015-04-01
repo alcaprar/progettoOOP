@@ -18,7 +18,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by alessandro on 12/03/15.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Login extends JFrame {
 
@@ -34,13 +36,12 @@ public class Login extends JFrame {
     private JPanel panel1;
     private JPanel login1;
     private JPanel login2;
-    private JLabel infolbl;
     private JTextField squadratxt;
     private JLabel nomeutentetxt;
     private JComboBox comboBoxStorico;
     private JButton storicoButton;
 
-    //è l'utente che fa il login
+    //utente che fa il login
     private Persona utente;
 
     //serve per le funzioni utili
@@ -58,8 +59,6 @@ public class Login extends JFrame {
         setContentPane(panel1);
         //"impacchetta" il Jframe (vuol dire che trova le dimensioni ideali in base ai componenti che ha dentro)
         pack();
-        //info label sarà visibile se l'utente sbaglia le credenziali
-        infolbl.setVisible(false);
         //centra il frame
         setLocationRelativeTo(null);
         //imposta l'operazione quando si chiude con la X
@@ -178,12 +177,18 @@ public class Login extends JFrame {
 
     }
 
-    //ritorna Login (serve dentro gli actionListener perchè non si può usare this direttamente)
+    /**
+     * Ritorna this.
+     * @return
+     */
     public Login getFrame() {
         return this;
     }
 
-    //funzione che controlla il login. viene attivata al clic del bottone o al clic di enter quando il cursore è su passtxt
+    /**
+     * Funzione che controlla il login.
+     * Viene attivata al clic del bottone o al clic di enter quando il cursore è su passtxt
+     */
     private void controllaLogin() {
         //controlla se è l'admin che ha fatto il login
         //-se si apre l'applicazione per l'admin e chiude il frame di login
@@ -195,44 +200,30 @@ public class Login extends JFrame {
         else {
             //creo un nuovo oggetto di persona con solo nome e pass
             utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
-            //con un try catch controllo le credenziali
-            //try catch serve per prendere le eccezioni sql
-            try {
-                //db.login restituisce true se le credenziali sono giuste
-                if (db.login(utente)) {
-                    //se l'utente esiste scarico le squadre di cui è presidente con la funzione selectSquadre
-                    //che restituisce un arraylist di squadre
-                    utente.setPresidenza(db.selectSquadre(utente));
-                    //setto il combobox delle squadre dalla lista di squadre
-                    setComboBoxSquadre();
-                    //scarico la lista dei campionati a cui ha partecipato l'utente
-                    utente.setListaStorico(db.selectStorico(utente));
-                    //setto il combobox dello storico
-                    setComboBoxStorico();
-                    //aggiorno il label con il nome dell'utente
-                    nomeutentetxt.setText(utente.getNickname());
-                    //cambio la card da mostrare dato che il login è andato bene
-                    CardLayout c1 = (CardLayout) (panel1.getLayout());
-                    c1.show(panel1, "login2");
-                }
-                //se il login va male rendo visibile il label delle info(dice che nick e pass sono errati)
-                else infolbl.setVisible(true);
-            }
-            //catturo le eccezioni sql e le gestisco
-            catch (SQLException se) {
-                //se ci sono state eccezioni mostro un Dialog con il codice degli errori
-                if(se.getErrorCode()==0){
-                    JOptionPane.showMessageDialog(getContentPane(),"Ci sono dei problemi con la tua connessione internet!","Manca la connessione",JOptionPane.INFORMATION_MESSAGE);
-                } else{
-                    JOptionPane.showMessageDialog(getContentPane(),"Ci sono dei problemi con il database.\nCodice errore database: "+se.getErrorCode()+"\nSe il problema persiste contattare l'amministratore.","Problemi con il db",JOptionPane.INFORMATION_MESSAGE);
-                }
 
-            } catch (ClassNotFoundException ce) {
-
+            //db.login restituisce true se le credenziali sono giuste
+            if (db.login(utente)) {
+                //se l'utente esiste scarico le squadre di cui è presidente con la funzione selectSquadre
+                //che restituisce un arraylist di squadre
+                utente.setPresidenza(db.selectSquadre(utente));
+                //setto il combobox delle squadre dalla lista di squadre
+                setComboBoxSquadre();
+                //scarico la lista dei campionati a cui ha partecipato l'utente
+                utente.setListaStorico(db.selectStorico(utente));
+                //setto il combobox dello storico
+                setComboBoxStorico();
+                //aggiorno il label con il nome dell'utente
+                nomeutentetxt.setText(utente.getNickname());
+                //cambio la card da mostrare dato che il login è andato bene
+                CardLayout c1 = (CardLayout) (panel1.getLayout());
+                c1.show(panel1, "login2");
             }
         }
     }
-    //setta il combo box a partire dalla lista di squadre
+
+    /**
+     * Setta il combobox a partire dalla lista di squadre.
+     */
     private void setComboBoxSquadre(){
         //inizializzo il model per il combobox
         DefaultComboBoxModel squadreModel = new DefaultComboBoxModel();
@@ -258,7 +249,9 @@ public class Login extends JFrame {
 
     }
 
-    //setta il combo box a partire dalla lista di storici
+    /**
+     * Setta il combobox a partire dalla lista degli storici.
+     */
     private void setComboBoxStorico(){
         //inizializzo il model per il combobox
         DefaultComboBoxModel storicoModel = new DefaultComboBoxModel();
@@ -273,13 +266,17 @@ public class Login extends JFrame {
         comboBoxStorico.setModel(storicoModel);
     }
 
+    /**
+     * Aggiorna la pagina.
+     * Viene utilizzata dopo che è stato creato un campionato per farlo
+     * vedere nella lista.
+     */
     public void refresh() {
         //se l'utente esiste scarico le squadre di cui è presidente con la funzione selectSquadre
         //che restituisce un arraylist di squadre
         utente.setPresidenza(db.selectSquadre(utente));
         //setto il combobox delle squadre dalla lista di squadre
         setComboBoxSquadre();
-
 
         getFrame().pack();
 

@@ -11,7 +11,10 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 /**
- * Created by alessandro on 13/03/15.
+ *
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Registra extends JFrame {
     private JTextField nicktxt;
@@ -21,10 +24,12 @@ public class Registra extends JFrame {
     private JTextField emailtxt;
     private JButton registratiButton;
     private JPanel panel1;
-    private JLabel infolbl;
+    private JButton annullaButton;
     private Persona utente;
-    private Utils utils = new Utils();
 
+    /**
+     * Costruttore del frame per la registrazione.
+     */
     public Registra() {
         //titolo del frame
         super("Registrati - Gestore Fantacalcio");
@@ -32,8 +37,6 @@ public class Registra extends JFrame {
         setContentPane(panel1);
 
         pack();
-
-        infolbl.setVisible(false);
 
         //centra il frame
         setLocationRelativeTo(null);
@@ -45,51 +48,68 @@ public class Registra extends JFrame {
         registratiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                utente = creaUtente();
-
                 try {
-                    if (db.registra(utente)) registraTrue();
+                    if (campiRegistrazioneValidi()) {
+                        utente = creaUtente();
+                        if (db.registra(utente)) {
+                            JOptionPane.showMessageDialog(getContentPane(), "Registrazione effettuata con successo", "Registrazione OK", JOptionPane.INFORMATION_MESSAGE);
+                            dispose();
+                        }
+                    }
 
                 } catch (SQLException se) {
                     if (se.getErrorCode() == 1062) {
-
-                        nicknameRegistrato();
+                        JOptionPane.showMessageDialog(getContentPane(), "Il nickname che hai inserito è già registrato.", "Errore", JOptionPane.ERROR_MESSAGE);
                     }
 
                 } catch (Exception ce) {
-
-
+                    ce.printStackTrace();
                 }
+            }
+        });
+
+        annullaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getFrame().dispose();
             }
         });
     }
 
+    /**
+     * Crea l'utente a partire dai valori nelle textfield.
+     * @return utente
+     */
     public Persona creaUtente() {
-        return new Persona(nicktxt.getText(), utils.passwordString(passtxt.getPassword()), nometxt.getText(), cognometxt.getText(), emailtxt.getText());
+        return new Persona(nicktxt.getText(), Utils.passwordString(passtxt.getPassword()), nometxt.getText(), cognometxt.getText(), emailtxt.getText());
     }
 
-    public void registraTrue() {
-        Object[] options = {"OK"};
-        int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Registrazione effettuata con successo!",
-                "Risposta",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
-        if (succesDialog == 0 || succesDialog == -1) dispose();
+    /**
+     * Controlla se i campi inseriti sono validi.
+     * @return true se i campi sono validi, false altrimenti.
+     */
+    private boolean campiRegistrazioneValidi(){
+        boolean flag = true;
+
+        if(Validator.nickname(nicktxt.getText())){
+            flag=false;
+        } else if(Validator.password(Utils.passwordString(passtxt.getPassword()))){
+            flag = false;
+        } else if(Validator.email(emailtxt.getText())){
+            flag= false;
+        } else if(Validator.nome(nometxt.getText())){
+            flag=false;
+        } else if(Validator.cognome(cognometxt.getText())){
+            flag=false;
+        }
+        return flag;
     }
 
-    public void nicknameRegistrato() {
-        Object[] options = {"OK"};
-        JOptionPane.showOptionDialog(getContentPane(), "Nickname già registrato!",
-                "Nickname esistente",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
-
+    /**Ritorna this.
+     * @return this
+     */
+    private Registra getFrame(){
+        return this;
     }
 
 }

@@ -8,7 +8,11 @@ import utils.TableNotEditableModel;
 import javax.swing.*;
 
 /**
- * Created by Giacomo on 25/03/15.
+ * Classe per mostrare le formazioni di una partita già giocata.
+ * Estende un JFrame.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class FormazioniPartita extends JFrame{
     private JPanel mainPanel;
@@ -26,6 +30,11 @@ public class FormazioniPartita extends JFrame{
     private Partita partita;
     private int bonusCasa;
 
+    /**
+     * Costruttore del JFrame.
+     * @param bonusCasa valore del bonus casa del campionato. se è diverso da zero viene mostrato
+     * @param partita partita di cui mostrare le formazioni
+     */
     public FormazioniPartita(int bonusCasa, Partita partita) {
         super(partita.getFormCasa().getSquadra().getNome() +" "+String.valueOf(partita.getGolCasa())+"-"+String.valueOf(partita.getGolFuori())+" "+partita.getFormOspite().getSquadra().getNome());
         this.bonusCasa =bonusCasa;
@@ -54,6 +63,12 @@ public class FormazioniPartita extends JFrame{
         setVisible(true);
     }
 
+    /**
+     * Setta le tabelle per mostrare la formazione.
+     * Viene utilizzato un modello modificato per rendere non editabile la tabella.
+     * Viene utilizzato un render modificato per cambiare il colore delle righe,
+     * per differenziare i giocatori titolari dalla panchina.
+     */
     private void setTable(){
         //definisce le intestazioni delle colonne
         Object[] nomeColonne = {"Giocatore", "Voto"};

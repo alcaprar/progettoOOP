@@ -7,6 +7,8 @@ import java.util.Calendar;
 import classi.*;
 import utils.*;
 
+import javax.swing.*;
+
 
 /**
  * Classe per la comunicazione col database
@@ -29,7 +31,7 @@ public class Mysql{
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-    public boolean login(Persona utente) throws SQLException,ClassNotFoundException{
+    public boolean login(Persona utente) {
         Connection conn = null ;
         PreparedStatement loginStmt = null;
         String loginSql = "SELECT * FROM Utente where Nickname=? and Password=?";
@@ -49,7 +51,21 @@ public class Mysql{
                 utente.setEmail(loginRs.getString("Email"));
                 return true;
             }
-            else return false;
+            else {
+                JOptionPane.showMessageDialog(null,"Nome utente o password errati","Credenziali errate",JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }catch (SQLException se){
+            se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
+            return false;
+        } catch (ClassNotFoundException ce){
+            ce.printStackTrace();
+            return false;
         }finally {
             if(conn!=null){
                 try{
@@ -84,7 +100,7 @@ public class Mysql{
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-    public boolean registra(Persona utente)throws SQLException, ClassNotFoundException{
+    public boolean registra(Persona utente)throws SQLException,ClassNotFoundException{
         Connection conn = null ;
         PreparedStatement registraStmt = null;
         String registraSql ="INSERT into Utente value(?,?,?,?,?,?)";
@@ -171,6 +187,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return listaUtenti;
 
         }catch(Exception e){
@@ -260,6 +281,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return listaGiocatori;
 
         }catch(Exception e){
@@ -341,6 +367,11 @@ public class Mysql{
             }
             return  listaGiocatoriDisponibili;
         } catch(SQLException se){
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             se.printStackTrace();
             return listaGiocatoriDisponibili;
         } catch (Exception e){
@@ -419,6 +450,11 @@ public class Mysql{
 
         } catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return false;
         } catch (Exception e){
             e.printStackTrace();
@@ -477,6 +513,11 @@ public class Mysql{
 
         } catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return false;
         } catch (Exception e){
             e.printStackTrace();
@@ -536,6 +577,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return listaGiocatori;
 
         }catch(Exception e){
@@ -617,6 +663,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return listaSquadre;
 
         }catch(Exception e){
@@ -708,6 +759,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return classifica;
 
         }catch(Exception e){
@@ -794,6 +850,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return listaGiornate;
 
         }catch(Exception e){
@@ -903,6 +964,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return listaGiornate;
 
         }catch(Exception e){
@@ -978,6 +1044,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return giornata;
 
         }catch(Exception e){
@@ -1041,6 +1112,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return false;
 
         }catch(Exception e){
@@ -1142,6 +1218,11 @@ public class Mysql{
             return formazione;
         } catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return formazione;
         } catch(ClassNotFoundException e){
             e.printStackTrace();
@@ -1209,12 +1290,13 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
-
-
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
         }catch(Exception e){
             e.printStackTrace();
-
-
         }finally {
             if(conn!=null) {
                 try {
@@ -1256,6 +1338,11 @@ public class Mysql{
 
             }catch(SQLException se){
                 se.printStackTrace();
+                if(se.getErrorCode()==0){
+                    JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+                } else{
+                    JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+                }
             }catch(Exception e){
                 e.printStackTrace();
             }finally {
@@ -1298,6 +1385,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
         }catch(Exception e){
             e.printStackTrace();
         }finally {
@@ -1342,6 +1434,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
         }catch(Exception e){
             e.printStackTrace();
         }finally {
@@ -1392,12 +1489,15 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return false;
-
         }catch(Exception e){
             e.printStackTrace();
             return false;
-
         }finally {
             if(conn!=null){
                 try{
@@ -1494,6 +1594,11 @@ public class Mysql{
             return (rsp==1 && rsc==1);
         } catch (SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return false;
         } catch (ClassNotFoundException e){
             e.printStackTrace();
@@ -1564,6 +1669,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return listaAvvisi;
         }catch(Exception e){
             e.printStackTrace();
@@ -1619,6 +1729,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return listaMessaggi;
 
         }catch(Exception e){
@@ -1762,6 +1877,11 @@ public class Mysql{
             return(rscampionato==1);
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return false;
         }catch(Exception e){
             e.printStackTrace();
@@ -1853,6 +1973,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return false;
         }catch(Exception e){
             e.printStackTrace();
@@ -1928,6 +2053,11 @@ public class Mysql{
             else return false;
         }catch(SQLException se){
         se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
         return false;
 
         }catch(Exception e){
@@ -2020,6 +2150,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return false;
         }catch(Exception e){
             e.printStackTrace();
@@ -2075,6 +2210,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return false;
         }catch(Exception e){
             e.printStackTrace();
@@ -2128,6 +2268,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return false;
 
         }catch(Exception e){
@@ -2183,6 +2328,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return false;
 
         }catch(Exception e){
@@ -2240,6 +2390,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return rs;
 
         }catch(Exception e){
@@ -2425,6 +2580,11 @@ public class Mysql{
             return true;
         }catch (SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return false;
         } catch (Exception e){
             e.printStackTrace();
@@ -2561,6 +2721,11 @@ public class Mysql{
 
         } catch (SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return listaStorico;
         } catch (Exception e){
             e.printStackTrace();
@@ -2649,6 +2814,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return classifica;
 
         }catch(Exception e){
@@ -2737,6 +2907,11 @@ public class Mysql{
 
         }catch(SQLException se){
             se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
             return listaGiornate;
 
         }catch(Exception e){

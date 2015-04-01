@@ -17,9 +17,14 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 /**
- * Created by alessandro on 19/03/15.
+ * Classe per la gestione dei giocatori.
+ * Estende un JPanel.
+ * Viene instanziata solo se l'utente che si logga è il presidente di lega.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
-public class GestioneGiocatori extends JPanel implements ItemListener {
+public class GestioneGiocatori extends JPanel {
     private JTable tabellaGiocatori;
     private JButton removeButton;
     private JButton addButton;
@@ -38,7 +43,6 @@ public class GestioneGiocatori extends JPanel implements ItemListener {
 
     //intestazioni delle due tabelle del panel, la prima per la tabella dei
     //giocatori mentre la seconda per la tabella delle squadre
-
     private String[] colonne2 = {"ID", "Cognome", "Ruolo", "Squadra Reale", "Prezzo iniziale", "Prezzo d'Acquisto"};
     private Object[] colonne1 = {"ID", "Cognome", "Ruolo", "Squadra Reale", "Prezzo Iniziale"};
 
@@ -56,37 +60,38 @@ public class GestioneGiocatori extends JPanel implements ItemListener {
 
     private Applicazione applicazione;
 
-    public void refresh() {
-        if (squadra.getCampionato().isGiocatoriDaInserire()) {
-            listaGiocatori = db.selectGiocatoriAdmin();
-        } else {
-            listaGiocatori = db.selectGiocatoriDisponibili(squadra.getCampionato());
-        }
-        setComboBox();
-        setSpinner();
-        setTabellaGiocatori();
-        setTabelleSquadre();
-    }
-
-    public void refresh2() {
-        if (squadra.getCampionato().isGiocatoriDaInserire()) {
-            listaGiocatori = db.selectGiocatoriAdmin();
-        } else {
-            listaGiocatori = db.selectGiocatoriDisponibili(squadra.getCampionato());
-        }
-        setComboBox();
-        setSpinner();
-        setTabellaGiocatori();
-        setTabelleSquadre2();
-    }
-
-
+    /**
+     * Costruttore della pagina di gestione dei giocatori.
+     * @param app
+     */
     public GestioneGiocatori(final Applicazione app) {
         applicazione = app;
 
 
         //si aggiunge il listener per il cambio degli elementi
-        comboBox.addItemListener(this);
+        comboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                int i;
+                i = comboBox.getSelectedIndex();
+                //mostro i soldi spesi per questa squadra
+                soldiSpesilbl.setText(soldiSpesi.get(i).toString());
+                //imposta il modella per la tabella della squadra secondo l'indice del combobox
+                tabellaSquadra.setModel(tabellaSquadraModel.get(i));
+                //controlla che la lista della squadra non sia completa
+                if (tabellaSquadraModel.get(i).getRowCount() == 25) {
+                    addButton.setEnabled(false);
+                } else {
+                    addButton.setEnabled(true);
+                }
+                //controlla che la lista della squadra non sia vuota
+                if (tabellaSquadraModel.get(i).getRowCount() == 0) {
+                    removeButton.setEnabled(false);
+                } else {
+                    removeButton.setEnabled(true);
+                }
+            }
+        });
 
         //Pulsante aggiungi giocatore
         addButton.addActionListener(new ActionListener() {
@@ -234,8 +239,9 @@ public class GestioneGiocatori extends JPanel implements ItemListener {
                         //rimuove la tab della gestione giocatori e
                         //si sposta sulla tab di home
                         JOptionPane.showMessageDialog(null, "Le rose sono state inserite con successo!", "Avviso", JOptionPane.INFORMATION_MESSAGE);
-                        applicazione.getTabbedPane().remove(applicazione.getTabbedPane().indexOfTab("Gestione Giocatori"));
-                        applicazione.getTabbedPane().setSelectedIndex(0);
+                        getPanel().refresh2();
+                        //applicazione.getTabbedPane().remove(applicazione.getTabbedPane().indexOfTab("Gestione Giocatori"));
+                        //applicazione.getTabbedPane().setSelectedIndex(0);
                         applicazione.getFormazionePanel().refresh();
                         applicazione.getInfoPanel().refresh();
                     }
@@ -247,29 +253,10 @@ public class GestioneGiocatori extends JPanel implements ItemListener {
 
     }
 
-    //override del metodo itemStateChanged che descrive cosa accade quando cambia l'elemento selezionato nella combobox
-    @Override
-    public void itemStateChanged(ItemEvent itemEvent) {
-        int i;
-        i = comboBox.getSelectedIndex();
-        //mostro i soldi spesi per questa squadra
-        soldiSpesilbl.setText(soldiSpesi.get(i).toString());
-        //imposta il modella per la tabella della squadra secondo l'indice del combobox
-        tabellaSquadra.setModel(tabellaSquadraModel.get(i));
-        //controlla che la lista della squadra non sia completa
-        if (tabellaSquadraModel.get(i).getRowCount() == 25) {
-            addButton.setEnabled(false);
-        } else {
-            addButton.setEnabled(true);
-        }
-        //controlla che la lista della squadra non sia vuota
-        if (tabellaSquadraModel.get(i).getRowCount() == 0) {
-            removeButton.setEnabled(false);
-        } else {
-            removeButton.setEnabled(true);
-        }
-    }
-
+    /**
+     * Setta le tabelle delle squadre se ancora non sono mai state inserite le rose.
+     * Vengono creti dei TableModel vuoti e inizializzato il contatore dei soldi spesi a 0.
+     */
     private void setTabelleSquadre() {
         //crea una tabella vuota per ogni squadra del campionato
         tabellaSquadraModel = new ArrayList<DefaultTableModel>();
@@ -310,6 +297,10 @@ public class GestioneGiocatori extends JPanel implements ItemListener {
 
     }
 
+    /**
+     * Setta le tabelle delle squadre se le rose sono già state inserite.
+     * I model sono popolati con i giocatori delle rispettive squadre.
+     */
     private void setTabelleSquadre2() {
         //crea una tabella vuota per ogni squadra del campionato
         tabellaSquadraModel = new ArrayList<DefaultTableModel>();
@@ -360,21 +351,26 @@ public class GestioneGiocatori extends JPanel implements ItemListener {
 
     }
 
+    /**
+     * Setta il combobox che serve per cambiare la squadra che si sta guardando.
+     */
     public void setComboBox() {
         comboBoxModel = new DefaultComboBoxModel(squadra.getCampionato().squadreToArray());
         comboBox.setModel(comboBoxModel);
         comboBox.setToolTipText("ID-Nome Squadra-Nick Proprietario");
     }
 
+    /**
+     * Setta lo spinner che serve per il prezzo di acquisto/vendita.
+     */
     public void setSpinner() {
-        /*model per l'oggetto spinner che si occupa dell'inserimento del prezzo d'acquisto
-        dei giocatori al momento dell'inserimento nella tabella della squadra.
-        Gli argomenti del costruttore sono; (partenza, minimo, massimo, incremento)
-        */
         SpinnerModel spinnerModel = new SpinnerNumberModel(1, 1, 1000, 1);
         spinner.setModel(spinnerModel);
     }
 
+    /**
+     * Setta lo spinner che serve per il prezzo di acquisto/vendita.
+     */
     private void setSpinnerGiocatore(int prezzo) {
         /*model per l'oggetto spinner che si occupa dell'inserimento del prezzo d'acquisto
         dei giocatori al momento dell'inserimento nella tabella della squadra.
@@ -384,6 +380,9 @@ public class GestioneGiocatori extends JPanel implements ItemListener {
         spinner.setModel(spinnerModel);
     }
 
+    /**
+     * Setta la tabella dei giocatori disponibili.
+     */
     public void setTabellaGiocatori() {
         Object[][] righeGiocatori = utils.listaGiocatoriToArray(listaGiocatori);
 
@@ -422,6 +421,10 @@ public class GestioneGiocatori extends JPanel implements ItemListener {
 
     }
 
+    /**
+     * Aggiorni il label con il contatore dei soldi.
+     * @param soldi
+     */
     private void aggiornaSoldi(Integer soldi) {
         if (soldi <= squadra.getCampionato().getCreditiIniziali()) {
             soldiSpesilbl.setText(soldi.toString());
@@ -433,6 +436,30 @@ public class GestioneGiocatori extends JPanel implements ItemListener {
             JOptionPane.showMessageDialog(null, "Questa squadra ha superato il budget consentito.", "Errore", JOptionPane.ERROR_MESSAGE);
         }
 
+    }
+
+    /**
+     * Fa il refresh del panel, cioè richiamata i metodi per settare le tabelle, combobox e spinner.
+     * Viene utilizzato quando non sono mai state inserite le rose, cioè le squadre sono ancora vuote.
+     */
+    public void refresh() {
+        listaGiocatori = db.selectGiocatoriAdmin();
+        setComboBox();
+        setSpinner();
+        setTabellaGiocatori();
+        setTabelleSquadre();
+    }
+
+    /**
+     * Fa il refresh della pagina, cioè richiama i metodi per settare le tabelle, combobox e spinner.
+     * Viene utilizzato quando sono già state inserite le rose, cioè le squadre hanno già dei giocatori.
+     */
+    public void refresh2() {
+        listaGiocatori = db.selectGiocatoriDisponibili(squadra.getCampionato());
+        setComboBox();
+        setSpinner();
+        setTabellaGiocatori();
+        setTabelleSquadre2();
     }
 
     private GestioneGiocatori getPanel(){

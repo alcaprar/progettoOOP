@@ -71,7 +71,6 @@ public class Applicazione extends JFrame {
             }
         }
 
-
         //controllo se è già stata inserita la formazione
         sqr.setFormazioneInserita(db.selectFormazioneInserita(sqr));
 
@@ -146,16 +145,16 @@ public class Applicazione extends JFrame {
                 int tab = tabbedpane.getSelectedIndex();
                 //se ancora non sono state create le rose invia un popup di avviso
                 if(formazione==tab && squadra.getCampionato().isGiocatoriDaInserire()){
-                    JOptionPane.showMessageDialog(null, "Ancora non sono stati inseriti i giocatori. Non potrai inviare la formazione.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(formazionePanel, "Ancora non sono stati inseriti i giocatori. Non potrai inviare la formazione.", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
                 //se è scaduto il tempo per inserire la formazione mostra un avviso e cambia la tab
                 else if(formazione==tab && new DateTime().isAfter(homePanel.getProssimaGiornata())){
-                    JOptionPane.showMessageDialog(null, "Non è più possibile inserire la formazione perchè è scaduto il tempo.","Tempo scaduto", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(formazionePanel, "Non è più possibile inserire la formazione perchè è scaduto il tempo.","Tempo scaduto", JOptionPane.INFORMATION_MESSAGE);
                     tabbedpane.setSelectedIndex(0);
                 }
                 //se è già stata inviata la formazione per questa giornata invia un popup di avviso
                 else if(formazione==tab && sqr.isFormazioneInserita()){
-                    JOptionPane.showMessageDialog(null, "Hai già inviato la formazione per questa partita.\nSe invii un'altra formazione, questa sostituirà quella vecchia.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(formazionePanel, "Hai già inviato la formazione per questa partita.\nSe invii un'altra formazione, questa sostituirà quella vecchia.", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
 
             }
