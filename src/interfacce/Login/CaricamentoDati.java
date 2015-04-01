@@ -6,7 +6,6 @@ import javax.swing.*;
  *
  */
 public class CaricamentoDati extends JFrame {
-    private JLabel caricamentoGif;
     private JPanel mainPanel;
     private JLabel label1;
 

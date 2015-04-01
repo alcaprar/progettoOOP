@@ -16,6 +16,8 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
 
+import javax.swing.*;
+
 /**
  * Classe con delle funzioni di utilità.
  * @author Alessandro Caprarelli
@@ -75,7 +77,7 @@ public class Utils {
     }*/
 
     /**
-     * Parsing del file xls(versione 2003/2007) con la lista dei giocatori
+     * Parsing del file xls(versione 2003/2007) con la lista dei giocatori.
      * con le relative quotazioni.
      * @param pathfile
      * @return
@@ -114,6 +116,7 @@ public class Utils {
             return db.inserisciGiocatoriAnno(listaGiocatori);
         } catch (BiffException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Formato del file sconosciuto.\nIl file deve essere un file xls < Excel 2007", "Errore", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
@@ -163,6 +166,7 @@ public class Utils {
             return db.inserisciVoti(listaVoti,numeroGiornata) ;
         } catch (BiffException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null,"Formato del file sconosciuto.\nIl file deve essere un file xls < Excel 2007","Errore",JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
