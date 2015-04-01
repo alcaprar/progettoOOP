@@ -724,7 +724,7 @@ public class Mysql{
     public ArrayList<Classifica> selectClassifica(Campionato campionato){
         Connection conn = null;
         PreparedStatement classificastmt = null;
-        String classificaSql ="SELECT * from Classifica JOIN Fantasquadra on Classifica.IDsq=Fantasquadra.ID where NomeCampionato=?";
+        String classificaSql ="SELECT * from Classifica JOIN Fantasquadra on Classifica.IDsq=Fantasquadra.ID where NomeCampionato=? order by Punti desc";
         ResultSet rsClassifica=null;
 
         ArrayList<Classifica> classifica = new ArrayList<Classifica>();

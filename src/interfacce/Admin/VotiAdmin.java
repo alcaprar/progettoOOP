@@ -56,6 +56,10 @@ public class VotiAdmin extends JPanel {
                 try {
                     if (utils.xlsvoti(pathFile, (Integer) spinnerGiornata.getValue())) {
                         JOptionPane.showMessageDialog(null, "Voti della giornata " + String.valueOf(ultimaGiornataInserita + 1) + " inseriti correttamente", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        ultimaGiornataInserita+=1;
+                        SpinnerNumberModel giornataModel = new SpinnerNumberModel(ultimaGiornataInserita+1, ultimaGiornataInserita+1, 38, 1);
+
+                        spinnerGiornata.setModel(giornataModel);
                     } else {
                         JOptionPane.showMessageDialog(null, "Voti della giornata " + String.valueOf(ultimaGiornataInserita + 1) + " non sono stati inseriti correttamente", "Errore", JOptionPane.ERROR_MESSAGE);
                     }

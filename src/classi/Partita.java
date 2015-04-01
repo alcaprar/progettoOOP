@@ -27,8 +27,6 @@ public class Partita {
     }
 
     public Partita(Squadra casa, Squadra ospite,int numeroPartita){
-        //this.casa = casa;
-        //this.ospite = ospite;
         this.formCasa = new Formazione(casa);
         this.formOspite = new Formazione(ospite);
         this.numeroPartita = numeroPartita;
@@ -44,29 +42,14 @@ public class Partita {
         System.out.println("Casa: "+golCasa+" Ospite: "+golFuori);
     }
 
-    //questo metodo calcola i gol dato il punteggio
-    private int numGol (float p, int primaFascia, int largFascia) {
-        int g=0; //inizializza i gol a 0
-        //si entra nel ciclo solo se il punteggio è superiore al punteggio del primo gol,
-        // ogni iterazione alza la condizione per rientrare della larghezza di una fascia
-        for (int i=primaFascia; i>(int)p; i+=largFascia)  g++;
-        return g;
-    }
-
     private int numGolNew(float p, int primaFascia, int largFascia){
         int punti = (int)p;
         int g=0;
         while(punti>primaFascia){
             g++;
             punti-=largFascia;
-
         }
         return g;
-    }
-
-    public void aggClassifica(Classifica c) {
-        c.aggiornaClassifica(formCasa.getSquadra(), golCasa, golFuori, puntiCasa);
-        c.aggiornaClassifica(formOspite.getSquadra(), golFuori, golCasa, puntiFuori);
     }
 
     public int getGolCasa() {

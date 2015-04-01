@@ -223,7 +223,16 @@ public class Campionato {
     public void aggiornaClassifica(Giornata giornata){
         for(Partita partita : giornata.getPartite()){
             boolean vittoriaCasa=false,  vittoriaOspite=false;
-            if(partita.getGolCasa()>partita.getGolFuori()){
+            boolean formNonInserite = false, formCasaNonInserita=false, formFuoriNonInserita=false;
+            if(partita.getPuntiCasa()==0 && partita.getPuntiFuori()==0){
+                formNonInserite=true;
+            } else if(partita.getPuntiCasa()==0){
+                formCasaNonInserita=true;
+                vittoriaOspite=true;
+            } else if(partita.getPuntiFuori()==0){
+                formFuoriNonInserita=true;
+                vittoriaCasa=true;
+            }else  if(partita.getGolCasa()>partita.getGolFuori()){
                 vittoriaCasa=true;
             } else if( partita.getGolCasa()<partita.getGolFuori()){
                 vittoriaOspite=true;
@@ -234,7 +243,7 @@ public class Campionato {
                     if(vittoriaCasa){
                         rigaClassifica.setVinte(rigaClassifica.getVinte()+1);
                         rigaClassifica.setPunti(rigaClassifica.getPunti()+3);
-                    } else if(vittoriaOspite){
+                    } else if(vittoriaOspite || formNonInserite ||formCasaNonInserita){
                         rigaClassifica.setPerse(rigaClassifica.getPerse()+1);
                     } else{
                         rigaClassifica.setPareggiate(rigaClassifica.getPareggiate()+1);
@@ -246,7 +255,7 @@ public class Campionato {
                     rigaClassifica.setDiffReti(rigaClassifica.getGolFatti()-rigaClassifica.getGolSubiti());
                 } else if(rigaClassifica.getSquadra().equals(partita.getFormOspite().getSquadra())){
                     rigaClassifica.setGiocate(rigaClassifica.getGiocate()+1);
-                    if(vittoriaCasa){
+                    if(vittoriaCasa || formNonInserite || formFuoriNonInserita){
                         rigaClassifica.setPerse(rigaClassifica.getPerse()+1);
                     } else if(vittoriaOspite){
                         rigaClassifica.setVinte(rigaClassifica.getVinte()+1);

@@ -3,6 +3,7 @@ package utils;
 import classi.*;
 import db.Mysql;
 
+import java.awt.*;
 import java.io.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -17,6 +18,8 @@ import jxl.Workbook;
 import jxl.read.biff.BiffException;
 
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 /**
  * Classe con delle funzioni di utilità.
@@ -163,7 +166,7 @@ public class Utils {
                 }
             }
 
-            return db.inserisciVoti(listaVoti,numeroGiornata) ;
+            return db.inserisciVoti(listaVoti, numeroGiornata) ;
         } catch (BiffException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null,"Formato del file sconosciuto.\nIl file deve essere un file xls < Excel 2007","Errore",JOptionPane.ERROR_MESSAGE);
@@ -231,41 +234,6 @@ public class Utils {
 
         return listaObject;
     }
-
-    /*public Object[][] listaClassificaToArrayPiccola(ArrayList<Classifica> listaClassifica){
-
-        Object[][] listaObject = new Object[listaClassifica.size()][2];
-
-        for(int i=0;i<listaClassifica.size();i++){
-            listaObject[i][0] = listaClassifica.get(i).getSquadra().getNome();
-            listaObject[i][1] = new Integer(listaClassifica.get(i).getPunti());
-        }
-
-        return listaObject;
-    }*/
-
-
-    /*public Object[][] listaClassificaToArray(ArrayList<Classifica> listaClassifica){
-
-        Object[][] listaObject = new Object[listaClassifica.size()][10];
-
-        for(int i=0;i<listaClassifica.size();i++){
-            listaObject[i][0] = listaClassifica.get(i).getSquadra().getNome();
-            listaObject[i][1] = new Integer(listaClassifica.get(i).getGiocate());
-            listaObject[i][2] = new Integer(listaClassifica.get(i).getVinte());
-            listaObject[i][3] = new Integer(listaClassifica.get(i).getPareggiate());
-            listaObject[i][4] = new Integer(listaClassifica.get(i).getPerse());
-            listaObject[i][5] = new Integer(listaClassifica.get(i).getDiffReti());
-            listaObject[i][6] = new Integer(listaClassifica.get(i).getGolFatti());
-            listaObject[i][7] = new Integer(listaClassifica.get(i).getGolSubiti());
-            listaObject[i][8] = new Float(listaClassifica.get(i).getPunteggio());
-            listaObject[i][9] = new Integer(listaClassifica.get(i).getPunti());
-
-
-        }
-
-        return listaObject;
-    }*/
 
     /**
      * Crea il calendario del campionato passato per parametro.
@@ -359,7 +327,7 @@ public class Utils {
         for(int i=n/2-1;i>0;i--){
             trasferta.set(i,trasferta.get(i-1));
         }
-        trasferta.set(0,casaUno);
+        trasferta.set(0, casaUno);
         return riporto;
     }
 
@@ -378,5 +346,31 @@ public class Utils {
             casa.set(i,casa.get(i+1));
         }
         casa.set(n/2-1,riporto);
+    }
+    
+    public static void resizeTable(JTable tabella){
+        tabella.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
+        for (int column = 0; column < tabella.getColumnCount(); column++)
+        {
+            TableColumn tableColumn = tabella.getColumnModel().getColumn(column);
+            int preferredWidth = tableColumn.getMinWidth();
+            int maxWidth = tableColumn.getMaxWidth();
+
+            for (int row = 0; row < tabella.getRowCount(); row++)
+            {
+                TableCellRenderer cellRenderer = tabella.getCellRenderer(row, column);
+                Component c = tabella.prepareRenderer(cellRenderer, row, column);
+                int width = c.getPreferredSize().width + tabella.getIntercellSpacing().width;
+                preferredWidth = Math.max(preferredWidth, width);
+
+
+                if (preferredWidth >= maxWidth)
+                {
+                    preferredWidth = maxWidth;
+                    break;
+                }
+            }
+            tableColumn.setPreferredWidth( preferredWidth );
+        }
     }
 }

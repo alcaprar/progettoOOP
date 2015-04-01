@@ -49,58 +49,58 @@ public class Formazione {
     //funzione calcola aggiornata
     public float calcolaNew(){
         float p=0;
-        int n=0;
-        int d=0,c=0,a=0;
-        int dGiocato=0,cGiocato=0,aGiocato=0;
-        for(int i=0;i<11;i++){
-            if(listaGiocatori.get(i).getGiocatore().getRuolo()=='D'){
-                d++;
-                if(listaGiocatori.get(i).getVoto()!=0){
-                    p+=listaGiocatori.get(i).getMagicVoto();
-                    dGiocato++;
+        if(!listaGiocatori.isEmpty()) {
+            int n = 0;
+            int d = 0, c = 0, a = 0;
+            int dGiocato = 0, cGiocato = 0, aGiocato = 0;
+            for (int i = 0; i < 11; i++) {
+                if (listaGiocatori.get(i).getGiocatore().getRuolo() == 'D') {
+                    d++;
+                    if (listaGiocatori.get(i).getVoto() != 0) {
+                        p += listaGiocatori.get(i).getMagicVoto();
+                        dGiocato++;
+                    }
+                } else if (listaGiocatori.get(i).getGiocatore().getRuolo() == 'C') {
+                    c++;
+                    if (listaGiocatori.get(i).getVoto() != 0) {
+                        p += listaGiocatori.get(i).getMagicVoto();
+                        cGiocato++;
+                    }
+                } else if (listaGiocatori.get(i).getGiocatore().getRuolo() == 'A') {
+                    a++;
+                    if (listaGiocatori.get(i).getVoto() != 0) {
+                        p += listaGiocatori.get(i).getMagicVoto();
+                        aGiocato++;
+                    }
                 }
             }
-            else if(listaGiocatori.get(i).getGiocatore().getRuolo()=='C'){
-                c++;
-                if(listaGiocatori.get(i).getVoto()!=0){
-                    p+=listaGiocatori.get(i).getMagicVoto();
-                    cGiocato++;
-                }
-            }
-            else if(listaGiocatori.get(i).getGiocatore().getRuolo()=='A'){
-                a++;
-                if (listaGiocatori.get(i).getVoto()!=0){
-                    p+=listaGiocatori.get(i).getMagicVoto();
-                    aGiocato++;
-                }
-            }
-        }
-        //entra il portiere
-        if(listaGiocatori.get(0).getVoto()==0) p+= listaGiocatori.get(11).getMagicVoto();
+            //entra il portiere
+            if (listaGiocatori.get(0).getVoto() == 0) p += listaGiocatori.get(11).getMagicVoto();
 
-        //entrano i difensori
-        if(dGiocato<d){
-            p+=listaGiocatori.get(12).getMagicVoto();
-            dGiocato++;
-        }
-        if(dGiocato<d){
-            p+=listaGiocatori.get(13).getMagicVoto();
-        }
-        //entrano i centrocampisti
-        if(cGiocato<c){
-            p+=listaGiocatori.get(14).getMagicVoto();
-            cGiocato++;
-        }
-        if(cGiocato<c){
-            p+=listaGiocatori.get(15).getMagicVoto();
-        }
-        //entrano gli attaccanti
-        if(aGiocato<a){
-            p+=listaGiocatori.get(16).getMagicVoto();
-            aGiocato++;
-        }
-        if(aGiocato<a){
-            p+=listaGiocatori.get(17).getMagicVoto();
+            //entrano i difensori
+            if (dGiocato < d) {
+                p += listaGiocatori.get(12).getMagicVoto();
+                dGiocato++;
+            }
+            if (dGiocato < d) {
+                p += listaGiocatori.get(13).getMagicVoto();
+            }
+            //entrano i centrocampisti
+            if (cGiocato < c) {
+                p += listaGiocatori.get(14).getMagicVoto();
+                cGiocato++;
+            }
+            if (cGiocato < c) {
+                p += listaGiocatori.get(15).getMagicVoto();
+            }
+            //entrano gli attaccanti
+            if (aGiocato < a) {
+                p += listaGiocatori.get(16).getMagicVoto();
+                aGiocato++;
+            }
+            if (aGiocato < a) {
+                p += listaGiocatori.get(17).getMagicVoto();
+            }
         }
 
         return p;

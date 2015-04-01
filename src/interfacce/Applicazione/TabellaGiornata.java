@@ -3,12 +3,14 @@ package interfacce.Applicazione;
 import classi.Giornata;
 import utils.RenderTableAlternate;
 import utils.TableNotEditableModel;
+import utils.Utils;
 
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by alessandro on 23/03/15.
@@ -28,6 +30,8 @@ public class TabellaGiornata extends JPanel {
 
     private Giornata giornata;
 
+    private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
     /**
      * Costruttore usato per la stagione corrente
      * @param giorn
@@ -43,7 +47,8 @@ public class TabellaGiornata extends JPanel {
         numeroGiornata = new JLabel(String.valueOf(giornata.getNumGiornata()));
         label2 = new JLabel("Data: ");
         if(giorn.getGioReale().getDataOraInizio()!=null){
-            data = new JLabel(giorn.getGioReale().getDataOraInizio().toString());
+            data = new JLabel(df.format(giorn.getGioReale().getDataOraInizio()));
+            //data = new JLabel(giorn.getGioReale().getDataOraInizio().toString());
         } else {
             data = new JLabel("DATA MANCANTE");
         }
@@ -97,30 +102,7 @@ public class TabellaGiornata extends JPanel {
         giornataTable.setShowHorizontalLines(false);
 
         //stringe le colonne della tabella in base al contenuto
-        giornataTable.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
-        for (int column = 0; column < giornataTable.getColumnCount(); column++)
-        {
-            TableColumn tableColumn = giornataTable.getColumnModel().getColumn(column);
-            int preferredWidth = tableColumn.getMinWidth();
-            int maxWidth = tableColumn.getMaxWidth();
-
-            for (int row = 0; row < giornataTable.getRowCount(); row++)
-            {
-                TableCellRenderer cellRenderer = giornataTable.getCellRenderer(row, column);
-                Component c = giornataTable.prepareRenderer(cellRenderer, row, column);
-                int width = c.getPreferredSize().width + giornataTable.getIntercellSpacing().width;
-                preferredWidth = Math.max(preferredWidth, width);
-
-
-                if (preferredWidth >= maxWidth)
-                {
-                    preferredWidth = maxWidth;
-                    break;
-                }
-            }
-
-            tableColumn.setPreferredWidth( preferredWidth );
-        }
+        Utils.resizeTable(giornataTable);
 
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));

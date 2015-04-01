@@ -10,6 +10,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 
 /**
  * Pagina home dell'applicazione. Mostra le informazioni
@@ -52,6 +53,8 @@ public class Home extends JPanel {
     private Squadra squadra;
 
     private Applicazione applicazione;
+
+    private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     public Home(Applicazione app){
         applicazione = app;
@@ -99,8 +102,9 @@ public class Home extends JPanel {
         } else{
             setTableUltimaG();
             campionatoIniziolbl.setVisible(false);
-            giornataUltimalbl.setText(String.valueOf(squadra.getCampionato().getProssimaGiornata()-1));
-            dataUltimalbl.setText(String.valueOf(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata() - 2).getGioReale().getDataOraInizio()));
+            giornataUltimalbl.setText(String.valueOf(squadra.getCampionato().getProssimaGiornata() - 1));
+            dataUltimalbl.setText(df.format(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata() - 2).getGioReale().getDataOraInizio()));
+            //dataUltimalbl.setText(String.valueOf(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata() - 2).getGioReale().getDataOraInizio()));
         }
 
         if(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata()-1).getGioReale().getNumeroGiornata()==squadra.getCampionato().getGiornataFine()){
@@ -112,7 +116,8 @@ public class Home extends JPanel {
             setTableProssimaG();
             campionatoFinitolbl.setVisible(false);
             giornataProssimalbl.setText(String.valueOf(squadra.getCampionato().getProssimaGiornata()));
-            dataProssimalbl.setText(String.valueOf(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata()-1).getGioReale().getDataOraInizio()));
+            dataProssimalbl.setText(df.format(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata()-1).getGioReale().getDataOraInizio()));
+            //dataProssimalbl.setText(String.valueOf(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata()-1).getGioReale().getDataOraInizio()));
         }
     }
 
@@ -183,13 +188,14 @@ public class Home extends JPanel {
      * Viene utilizzato un render modificato per far mostrare il colore delle righe alternato.
      */
     private void setTableUltimaG(){
-        Object[] nomeColonne = {"","","","","","",""};
+        Object[] nomeColonne = {"Casa","GolCasa","PuntiCasa","-","PuntiTrasferta","GolTrasferta","Trasferta"};
         Object[][] righeUltimaGiornata = squadra.getCampionato().ultimaGiornata().partiteToArray();
 
         TableNotEditableModel prossimaGiornataModel = new TableNotEditableModel(righeUltimaGiornata, nomeColonne);
         ultimaGiornataTable.setModel(prossimaGiornataModel);
         //setta il colore delle righe alternato
         ultimaGiornataTable.setDefaultRenderer(Object.class, new RenderTableAlternate());
+
     }
 
     /**

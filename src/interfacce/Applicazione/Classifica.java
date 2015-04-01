@@ -67,6 +67,10 @@ public class Classifica extends JPanel {
 
         //setta l'altezza delle righe
         tableClassifica.setRowHeight(50);
+
+        //setto la prima colonna piu larga
+        tableClassifica.getColumnModel().getColumn(0).setMinWidth(70);
+
     }
 
 }

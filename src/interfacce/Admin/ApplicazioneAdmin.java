@@ -20,7 +20,7 @@ public class ApplicazioneAdmin extends JFrame {
 
 
         setContentPane(panel1);
-
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
         setVisible(true);

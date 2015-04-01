@@ -74,7 +74,6 @@ public class GestioneLega extends JPanel{
 
         giornataVotiInseriti = db.selectGiornateVotiInseriti();
 
-
         inviaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

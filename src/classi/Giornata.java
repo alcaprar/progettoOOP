@@ -60,7 +60,6 @@ public class Giornata {
 
     }
 
-
     public void calcolaGiornataNew(int primaFascia, int largFascia, int bonusCasa){
         for(Partita part:partite){
             System.out.println(part.getFormCasa().getSquadra().getNome() +" - "+part.getFormOspite().getSquadra().getNome());
