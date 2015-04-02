@@ -85,7 +85,7 @@ public class Client  {
     private void display(String msg) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String time = sdf.format(new Date()) + " " + msg;
-        asta.eventoServer(time + "\n");
+        asta.displayConsoleMessage(time + "\n");
     }
 
     /*
@@ -141,7 +141,7 @@ public class Client  {
             while(true) {
                 try {
                     String msg = (String) sInput.readObject();
-                    asta.eventoServer(msg);
+                    asta.displayConsoleMessage(msg);
                 }
                 catch(IOException e) {
                     display("Server has close the connection: " + e);

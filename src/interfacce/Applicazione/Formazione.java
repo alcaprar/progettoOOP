@@ -9,7 +9,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
- * Created by Christian on 11/03/2015.
+ *
  */
 public class Formazione extends JPanel implements ItemListener {
 

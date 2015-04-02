@@ -35,6 +35,7 @@ public class Info extends JPanel{
     private JTextField titoloMessaggio;
     private JTextArea testoMessaggio;
     private JButton inviaButton;
+    private JLabel saldoL;
 
     private Squadra squadra;
     private DefaultListModel<String> listModel;
@@ -98,6 +99,7 @@ public class Info extends JPanel{
      */
     public void refresh(){
         nomeSquadra.setText(squadra.getNome());
+        saldoL.setText(String.valueOf(squadra.getSoldiDisponibili()));
         nickText.setEditable(false);
         nickText.setText(squadra.getProprietario().getNickname());
         if(!squadra.getProprietario().getNome().equals("")){

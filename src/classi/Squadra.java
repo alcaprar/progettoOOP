@@ -3,7 +3,10 @@ package classi;
 import java.util.ArrayList;
 
 /**
- * Created by Christian on 03/03/2015.
+ * Classe per la gestione delle squadre.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Squadra {
     private int ID;
@@ -17,6 +20,57 @@ public class Squadra {
     //se è stata inserita la formazione per il prossimo incontro
     private boolean formazioneInserita;
 
+    /**
+     * Costruttore utilizzato nella creazione del campionato
+     * @param proprietario utente proprietario della squadra
+     */
+    public Squadra(Persona proprietario){
+        this.proprietario = proprietario;
+    }
+
+    /**
+     * Costruttore utilizzato per la selezione della classifica nel database e la creazione del calendario.
+     * @param ID id squadra
+     * @param nome nome della squadra
+     */
+    public Squadra(int ID, String nome){
+        this.ID = ID;
+        this.nome = nome;
+    }
+
+    /**
+     * Costruttore utilizzato nella selezione delle squadre dal database.
+     * @param ID id squadra
+     * @param nome nome della squadra
+     * @param proprietario utente proprietario della squadra
+     */
+    public Squadra(int ID,  String nome,Persona proprietario){
+        this.ID = ID;
+        this.proprietario = proprietario;
+        this.nome = nome;
+    }
+
+    /**
+     * Costruttore utilizzato nella selezione delle squadre associate ad un utente dal database.
+     * @param ID id squadra
+     * @param nome nome della squadra
+     * @param proprietario utente proprietario della squadra
+     * @param campionato campionato a cui partecipa la squadra
+     * @param soldiDisponibili saldo dei crediti disponibili della squadra
+     */
+    public Squadra(int ID, String nome, Persona proprietario , Campionato campionato,int soldiDisponibili) {
+        this.ID = ID;
+        this.nome = nome;
+        this.proprietario = proprietario;
+        this.campionato = campionato;
+        this.soldiDisponibili = soldiDisponibili;
+    }
+
+    /**
+     * Metodo per comparare due squadre.
+     * @param s squadra da confrontare
+     * @return true se le due squadre sono uguali
+     */
     public boolean equals(Squadra s){
         if(s.getNome().equals(this.getNome()))return true;
         else if(s.getID()==this.getID()) return true;
@@ -51,37 +105,6 @@ public class Squadra {
         this.campionato = campionato;
     }
 
-    public Squadra(Persona proprietario){
-        this.proprietario = proprietario;
-    }
-
-    public Squadra(int ID, String nome){
-        this.ID = ID;
-        this.nome = nome;
-    }
-
-    public Squadra(int ID,  String nome,Persona proprietario){
-        this.ID = ID;
-        this.proprietario = proprietario;
-        this.nome = nome;
-    }
-
-    public Squadra(int ID, String nome, Persona proprietario , Campionato campionato,int soldiDisponibili){
-        this.ID = ID;
-        this.nome = nome;
-        this.proprietario = proprietario;
-        this.campionato = campionato;
-        this.soldiDisponibili = soldiDisponibili;
-    }
-
-    public Squadra(String nome, Persona prop, ArrayList<Giocatore> gioc) {
-        this.nome = nome;
-        this.proprietario = prop;
-        for (Giocatore i : gioc) this.giocatori = gioc;
-    }
-
-
-
     public String getNome() {
         return this.nome;
     }
@@ -111,20 +134,20 @@ public class Squadra {
         this.soldiDisponibili = soldiDisponibili;
     }
 
-    public Partita prossimaPartita(){
-        Partita partita=null;
-        for(Partita part : this.getCampionato().prossimaGiornata().getPartite()){
-            if(part.getFormCasa().getSquadra().equals(this)||part.getFormOspite().getSquadra().equals(this)) partita=part;
-        }
-        return partita;
-    }
-
     public boolean isFormazioneInserita() {
         return formazioneInserita;
     }
 
     public void setFormazioneInserita(boolean formazioneInserita) {
         this.formazioneInserita = formazioneInserita;
+    }
+
+    public Partita prossimaPartita(){
+        Partita partita=null;
+        for(Partita part : this.getCampionato().prossimaGiornata().getPartite()){
+            if(part.getFormCasa().getSquadra().equals(this)||part.getFormOspite().getSquadra().equals(this)) partita=part;
+        }
+        return partita;
     }
 
     public Object[][] listaGiocatoriRosaToArray(){

@@ -5,17 +5,30 @@ import jxl.write.DateTime;
 import java.util.Date;
 
 /**
- * Created by alessandro on 17/03/15.
+ * Classe per la gestione delle giornate reali di campionato
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class GiornataReale {
     private int NumeroGiornata;
     private Date DataOraInizio;
     private Date DataOraFine;
 
+    /**
+     * Costruttore che inizializza esclusivamente il numero della giornata (1-38).
+     * @param numeroGiornata numero della giornata
+     */
     public GiornataReale(int numeroGiornata){
         NumeroGiornata = numeroGiornata;
     }
 
+    /**
+     * Costruttore che inizializza il numero della giornata (1-38) e le date di inizio e fine giornata.
+     * @param numeroGiornata
+     * @param dataOraInizio
+     * @param dataOraFine
+     */
     public GiornataReale(int numeroGiornata, Date dataOraInizio, Date dataOraFine) {
         NumeroGiornata = numeroGiornata;
         DataOraInizio = dataOraInizio;

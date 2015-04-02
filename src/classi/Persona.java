@@ -18,14 +18,31 @@ public class Persona {
     private ArrayList<Squadra> presidenza;
     private ArrayList<Storico> listaStorico;
 
+    /**
+     * Costruttore utilizzato nella selezione delle squadre e nella creazione del campionato.
+     * @param nick nickname dell'utente
+     */
     public Persona(String nick){
         this.nickname =nick;
     }
+
+    /**
+     * Costruttore utilizzato per il controllo del login
+     * @param nick
+     * @param pass
+     */
     public Persona(String nick, String pass){
         this.nickname = nick;
         this.password = pass;
     }
 
+    /**
+     * Costruttore utlizzato per la selezione degli utenti.
+     * @param nick nickname dell'utente
+     * @param nome nome dell'utente
+     * @param cognome cognome dell'utente
+     * @param email indirizzo email dell'utente
+     */
     public Persona(String nick, String nome, String cognome, String email){
         this.nickname = nick;
         this.nome = nome;
@@ -33,6 +50,14 @@ public class Persona {
         this.email = email;
     }
 
+    /**
+     * Costruttore utilizzato nella registrazione degli utenti.
+     * @param nick nickname dell'utente
+     * @param pass password dell'utente
+     * @param nome nome dell'utente
+     * @param cognome cognome dell'utente
+     * @param email indirizzo email dell'utente
+     */
     public  Persona(String nick, String pass, String nome,String cognome, String email){
         this.nickname = nick;
         this.password = pass;
@@ -41,17 +66,13 @@ public class Persona {
         this.email = email;
     }
 
-    public void duplicate(Persona a) {
-        a.nickname = this.nickname;
-        a.password = this.password;
-        a.cognome = this.cognome;
-        a.nome = this.nome;
-        a.email = this.email;
-        a.presidenza = this.presidenza;
-    }
-
-    public boolean equals(Persona a) {
-        if (this.nickname.equals(a.nickname)) return true;
+    /**
+     * Metodo per la comparazione di due utenti.
+     * @param persona2 utente da confrontare
+     * @return true se gli utenti sono uguali
+     */
+    public boolean equals(Persona persona2) {
+        if (this.nickname.equals(persona2.nickname)) return true;
         else return false;
     }
 

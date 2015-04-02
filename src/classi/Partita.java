@@ -1,9 +1,10 @@
 package classi;
 
-import java.util.ArrayList;
-
 /**
- * Created by Giacomo on 18/03/15.
+ * Classe per la gestione delle partite.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Partita {
     private int ID;
@@ -15,6 +16,17 @@ public class Partita {
     private float puntiCasa;
     private float puntiFuori;
 
+    /**
+     * Costruttore utilizzato nella selezione delle giornate dal database.
+     * @param ID id partita
+     * @param numeroPartita numero della partita nella giornata
+     * @param casa squadra ospitante
+     * @param ospite squadra ospite
+     * @param golCasa gol segnati dalla squadra ospitante
+     * @param golFuori gol segnati dalla squadra ospite
+     * @param puntiCasa punteggio ottenuto dalla squadra ospitante
+     * @param puntiFuori punteggio ottenuto dalla squadra ospite
+     */
     public Partita(int ID, int numeroPartita,Squadra casa,Squadra ospite,int golCasa,int golFuori,float puntiCasa,float puntiFuori){
         this.ID = ID;
         this.numeroPartita = numeroPartita;
@@ -26,13 +38,24 @@ public class Partita {
         this.puntiFuori = puntiFuori;
     }
 
+    /**
+     * Costruttore utilizzato nel metodo per la creazione del campionato.
+     * @param casa squadra ospitante
+     * @param ospite squadra ospite
+     * @param numeroPartita numero della partita nella giornata
+     */
     public Partita(Squadra casa, Squadra ospite,int numeroPartita){
         this.formCasa = new Formazione(casa);
         this.formOspite = new Formazione(ospite);
         this.numeroPartita = numeroPartita;
     }
 
-
+    /**
+     * Metodo per il calcolo dei punteggi della partita.
+     * @param primaFascia valore della prima fascia di punteggio
+     * @param largFascia larghezza delle fasce di punteggio
+     * @param bonusCasa bonus per la squadra di casa
+     */
     public void calcolaPartitaNew(int primaFascia, int largFascia, int bonusCasa){
         puntiCasa = formCasa.calcolaNew()+bonusCasa;
         puntiFuori = formOspite.calcolaNew();
@@ -42,6 +65,13 @@ public class Partita {
         System.out.println("Casa: "+golCasa+" Ospite: "+golFuori);
     }
 
+    /**
+     * Metodo per la conversione del punteggio nel numero di gol segnati dalla squadra.
+     * @param p punteggio ottenuto
+     * @param primaFascia valore della prima fascia di punteggio
+     * @param largFascia larghezza delle fasce di punteggio
+     * @return numero di gol segnati dalla squadra
+     */
     private int numGolNew(float p, int primaFascia, int largFascia){
         int punti = (int)p;
         int g=0;

@@ -35,10 +35,8 @@ public class AstaLiveClient extends JFrame implements ItemListener{
     private JLabel inizialeL;
     private JLabel attualeL;
     private JLabel soldiSpesiL;
-    private JButton startStopButton;
+    private JTextArea consoleUtente;
     private JTextArea serverConsole;
-    private JSpinner spinnerPorta;
-    private JLabel serverL;
 
     private Object[] colonne1 = {"ID", "Cognome", "Ruolo", "Squadra Reale", "Prezzo Iniziale"};
     private String[] colonne2 = {"Cognome", "Prezzo d'Acquisto"};
@@ -66,76 +64,43 @@ public class AstaLiveClient extends JFrame implements ItemListener{
         setTabelleSquadre();
     }
 
-    public AstaLiveClient(int l) {
-
-        this.l=l;
+    public AstaLiveClient() {
         cognomeL.setText("Attendi");
         ruoloL.setText("Attendi");
         squadraRealeL.setText("Attendi");
         inizialeL.setText("Attendi");
         attualeL.setText("Attendi");
 
-        serverConsole = new JTextArea(80,80);
-        serverConsole.setEditable(false);
-        serverConsole.append("Console degli eventi server");
+        spinnerModel = new SpinnerNumberModel(1,1,1000,1);
+        spinnerOfferta.setModel(spinnerModel);
 
-        spinnerModel = new SpinnerNumberModel(0, 0, 6000, 1);
-        spinnerPorta.setModel(spinnerModel);
-
-        spinnerModel1 = new SpinnerNumberModel(1,1,1000,1);
-        spinnerOfferta.setModel(spinnerModel1);
-
-        if(l == 1){
-            startStopButton.setVisible(true);
-            serverL.setVisible(true);
-            spinnerPorta.setVisible(true);
-        } else {
-            startStopButton.setVisible(false);
-            serverL.setVisible(false);
-            spinnerPorta.setVisible(false);
-            // default values
-            int portNumber = 1500;
-            String serverAddress = "192.168.43.178";
-            String userName = squadra.getProprietario().getNickname();
-            boolean ok = false;
-            while(true){
-                try {
-                    Socket socket = new Socket(serverAddress, portNumber);
-                    ok = true;
-                }
-                catch (Exception e){ok = false;}
-                if(ok){
-                    client = new Client(serverAddress, portNumber, userName, AstaLiveClient.this);
-                    if(!client.start()) {
-                        JOptionPane.showMessageDialog(null, "Il client ha fallito durante l'avvio.", "Errore", JOptionPane.ERROR_MESSAGE);
-                        System.exit(-1);
-                    } else client.run();
-                }
-            }
+        // default values
+        int portNumber = 1500;
+        String serverAddress = "192.168.43.178";
+        String userName = squadra.getProprietario().getNickname();
+        boolean ok = false;
+        try {
+            Socket socket = new Socket(serverAddress, portNumber);
+            ok = true;
         }
-
-        startStopButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                int port;
-                port = (Integer) spinnerPorta.getValue();
-                if(port == 0){
-                    port = 1500;
-                }
-                Server server = new Server(port, AstaLiveClient.this);
-                server.start();
-            }
-        });
+        catch (Exception e){ok = false;}
+        if(ok){
+            client = new Client(serverAddress, portNumber, userName, AstaLiveClient.this);
+            if(!client.start()) {
+                JOptionPane.showMessageDialog(null, "Il client ha fallito durante l'avvio.", "Errore", JOptionPane.ERROR_MESSAGE);
+                this.dispose();
+            } else client.run();
+        }
 
         buttonOfferta.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                //TODO gestire l'invio dell'offerta
             }
         });
 
         setContentPane(mainPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         pack();
         setSize(800, 600);
         setLocationRelativeTo(null);
@@ -237,12 +202,6 @@ public class AstaLiveClient extends JFrame implements ItemListener{
         }
 
     }
-
-    public void eventoServer(String s){
-        serverConsole.append(s);
-        serverConsole.setCaretPosition(serverConsole.getText().length() - 1);
-    }
-
     /* public void displayMessage(ChatMessage chatMessage){
         cognomeL.setText(chatMessage.getGiocatore().getCognome());
         ruoloL.setText(String.valueOf(chatMessage.getGiocatore().getRuolo()));
@@ -253,7 +212,12 @@ public class AstaLiveClient extends JFrame implements ItemListener{
         spinnerModel1.setValue((Integer)chatMessage.getGiocatore().getPrezzoAcquisto());
     }*/
 
-    public static void main(String[] args){
-        AstaLiveClient asta = new AstaLiveClient(1);
+    public void displayConsoleMessage(String msg){
+        consoleUtente.append(msg);
+        consoleUtente.setCaretPosition(consoleUtente.getText().length() - 1);
+    }
+
+    {
+        AstaLiveClient asta = new AstaLiveClient();
     }
 }

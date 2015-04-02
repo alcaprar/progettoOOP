@@ -26,14 +26,15 @@ public class Server {
         private boolean continua;
 
         private AstaLiveClient asta;
+        private ServerConsole console;
 
 
         /*
          *  Costruttore che avvia il server in background
          */
 
-        public Server(int port, AstaLiveClient asta) {
-            this.asta = asta;
+        public Server(int port) {
+            console = new ServerConsole();
             // inizializza la porta
             this.port = port;
             // visualizza l'ora in formato hh:mm:ss
@@ -47,7 +48,7 @@ public class Server {
 		/* crea un socket per il server e lo imposta per ascoltare sulla porta designata */
             try
             {
-                ServerSocket serverSocket = new ServerSocket(port);
+                ServerSocket serverSocket = new ServerSocket(port,10,InetAddress.getLocalHost());
 
                 // loop infinito in cui il server aspetta chiamate dai client, si esce solo se è necessario terminare il server
                 while(continua)
@@ -78,6 +79,7 @@ public class Server {
                             // poco da fare
                         }
                     }
+                    console.dispose();
                 }
                 catch(Exception e) {
                     display("Eccezione nel tentativo di chiusura del server: " + e);
@@ -107,7 +109,7 @@ public class Server {
          */
         private void display(String msg) {
             String time = sdf.format(new Date()) + " " + msg;
-            asta.eventoServer(time + "\n");
+            console.eventoServer(time + "\n");
         }
 
     /** Classe per Thread dei client. Ad ogni client che si connette viene associato un nuovo Thread. */
@@ -210,8 +212,12 @@ public class Server {
         private void display(String msg) {
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             String time = sdf.format(new Date()) + " " + msg;
-            asta.eventoServer(time + "\n");
+            console.eventoServer(time + "\n");
         }
+    }
+
+    public static void main(String[] args){
+        Server server = new Server(1500);
     }
 
 }

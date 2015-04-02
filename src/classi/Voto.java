@@ -1,7 +1,10 @@
 package classi;
 
 /**
- * Created by Giacomo on 18/03/15.
+ * Classe per la gestione dei voti dei giocatori.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Voto {
     private Giocatore giocatore;
@@ -18,11 +21,29 @@ public class Voto {
     private int assistFermo;
     private float magicVoto;
 
+    /**
+     * Costruttore di default.
+     * @param gioc giocatori associato
+     */
     public Voto(Giocatore gioc){
         this.giocatore=gioc;
     }
 
-
+    /**
+     * Costruttore utilizzato nella selezione dal database dei voti dei giocatori schierati nell'incontro.
+     * @param giocatore giocatore associato
+     * @param gol gol segnati
+     * @param voto voto ottenuto
+     * @param golSubito gol subiti
+     * @param rigParato rigori parati
+     * @param rigSbagliato rigori sbagliati
+     * @param rigSegnato rigori segnati
+     * @param autogol autogol segnati
+     * @param ammonizione ammonizioni
+     * @param espulsione espulsioni
+     * @param assist assist effettuati
+     * @param assistFermo assist da fermo effettuati
+     */
     public Voto(Giocatore giocatore, int gol, float voto, int golSubito, int rigParato, int rigSbagliato, int rigSegnato, int autogol, int ammonizione, int espulsione, int assist, int assistFermo) {
         this.giocatore = giocatore;
         this.voto = voto;
@@ -39,7 +60,21 @@ public class Voto {
         this.magicVoto = calcolaMagicVoto(gol, voto, golSubito, rigParato, rigSbagliato, rigSegnato, autogol, ammonizione, espulsione, assist, assistFermo);
     }
 
-    //calcola il magic voto dati voto, bonus e malus
+    /**
+     * Calcola il fantavoto ottenuto in base a voto, bonus e malus.
+     * @param gol gol segnati
+     * @param voto voto ottenuto
+     * @param golSubito gol subiti
+     * @param rigParato rigori parati
+     * @param rigSbagliato rigori sbagliati
+     * @param rigSegnato rigori segnati
+     * @param autogol autogol segnati
+     * @param ammonizione ammonizione
+     * @param espulsione espulsione
+     * @param assist assist effettuati
+     * @param assistFermo assist da fermo effettuati
+     * @return il fantavoto calcolato
+     */
     private float calcolaMagicVoto(int gol, float voto, int golSubito, int rigParato, int rigSbagliato, int rigSegnato, int autogol, int ammonizione, int espulsione, int assist, int assistFermo) {
         if (voto==0) return 0; //serve a evitare che giocatori che non prendono il voto, ma qualche malus abbiano magic voto negativo
         else return voto+3*gol-golSubito+3*rigParato-3*rigSbagliato+3*rigSegnato-2*autogol-(float)0.5*ammonizione-espulsione+assist+assistFermo;

@@ -3,7 +3,10 @@ package classi;
 import java.io.Serializable;
 
 /**
- * Created by Christian on 03/03/2015.
+ * Classe per la gestione dei giocatori.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Giocatore implements Serializable{
     private String cognome;
@@ -14,7 +17,16 @@ public class Giocatore implements Serializable{
     private char ruolo;
     private Voto voti;
 
-    public Giocatore(String cognome,  int id, int prezzoBase,  String squadra, char ruolo) {
+    /**
+     * Costruttore per i giocatori utilizzabili, non sono acquistati da alcuna squadra per cui non hanno un valore
+     * prezzo di acquisto.
+     * @param cognome cognome del giocatore
+     * @param id id del giocatore
+     * @param prezzoBase prezzo di base per l'acquisto del giocatore
+     * @param squadra squadra reale di appartenenza
+     * @param ruolo ruolo del giocatore
+     */
+    public Giocatore(String cognome, int id, int prezzoBase,  String squadra, char ruolo) {
         this.cognome = cognome;
         this.ID = id;
         this.prezzoBase = prezzoBase;
@@ -22,6 +34,16 @@ public class Giocatore implements Serializable{
         this.ruolo = ruolo;
     }
 
+    /**
+     * Costruttore per i giocatori acquistati dalle squadre. Il prezzo di acquisto viene definito dal presidente di
+     * lega nel caso di asta offline.
+     * @param id id del giocatore
+     * @param cognome cognome del giocatore
+     * @param prezzoBase prezzo di partenza per l'acquisto del giocatore
+     * @param prezzoAcquisto prezzo a cui è stato acquistato il giocatore
+     * @param squadra squadre reale di appartenenza
+     * @param ruolo ruolo del giocatore
+     */
     public Giocatore(int id, String cognome,   int prezzoBase, int prezzoAcquisto, String squadra, char ruolo) {
         this.cognome = cognome;
         this.ID = id;

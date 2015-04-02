@@ -175,12 +175,8 @@ public class CreaCampionato extends JFrame {
                         for (int i = partecipantiModel.getSize(); i > numeroPartecipanti; i--) {
                             utentiModel.addElement(partecipantiModel.getElementAt(i - 1));
                             partecipantiModel.remove(i - 1);
-
                         }
-
                     }
-
-
                 }
             }
         });
@@ -270,7 +266,6 @@ public class CreaCampionato extends JFrame {
             if(!utenteLista.getNickname().equals(presidente.getNickname())){
                 utentiModel.addElement(utenteLista.getNickname());
             }
-
         }
 
         //aggiungo ai partecipanti il presidente
@@ -284,7 +279,6 @@ public class CreaCampionato extends JFrame {
         //permette una selezione alla volta anche premendo CTRL
         utentiList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         partecipantiList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
     }
 
     /**
@@ -378,7 +372,6 @@ public class CreaCampionato extends JFrame {
         int primaf = (Integer) primafSpinner.getValue();
         int fasce = (Integer) fasceSpinner.getValue();
         int bonusc = (Integer) bonuscSpinner.getValue();
-
 
         for (int i = 0; i < partecipantiModel.getSize(); i++) {
             listaSquadrePartecipanti.add(new Squadra(new Persona((String) partecipantiModel.getElementAt(i))));

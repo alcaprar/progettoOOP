@@ -3,7 +3,10 @@ package classi;
 import java.util.ArrayList;
 
 /**
- * Created by Christian on 04/03/2015.
+ * Classe per la gestione delle formazioni.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Formazione {
 
@@ -11,12 +14,19 @@ public class Formazione {
     private String modulo;
     private ArrayList<Voto> listaGiocatori;
 
-
+    /**
+     * Costruttore che imposta esclusivamente la squadra a cui è associata la formazione.
+     * @param squadra squadra
+     */
     public Formazione(Squadra  squadra){
         this.squadra = squadra;
     }
 
-
+    /**
+     * Costruttore che crea la formazione e inserisce la lista dei giocatori, calcolando il modulo utilizzato in base
+     * ai giocatori.
+     * @param form
+     */
     public Formazione(ArrayList<Voto> form){
         this.listaGiocatori = form;
         if(!listaGiocatori.isEmpty()) {
@@ -32,6 +42,11 @@ public class Formazione {
         }
     }
 
+    /**
+     * Costruttore che crea un oggetto formazione da una lista di giocatori e una stringa che definisce il modulo.
+     * @param form lista di giocatori della formazione
+     * @param modulo stringa del modulo utilizzato
+     */
     public Formazione(ArrayList<Giocatore> form, String modulo){
         ArrayList<Voto> listaGioc = new ArrayList<Voto>();
         for(Giocatore gioc:form){
@@ -41,12 +56,10 @@ public class Formazione {
         this.modulo  = modulo;
     }
 
-
-
-
-
-
-    //funzione calcola aggiornata
+    /**
+     * Funzione che calcola i punteggi ottenuti dalla squadra per la giornata attuale.
+     * @return punteggio
+     */
     public float calcolaNew(){
         float p=0;
         if(!listaGiocatori.isEmpty()) {
@@ -102,9 +115,7 @@ public class Formazione {
                 p += listaGiocatori.get(17).getMagicVoto();
             }
         }
-
         return p;
-
     }
 
 
@@ -116,7 +127,10 @@ public class Formazione {
         this.modulo = modulo;
     }
 
-
+    /**
+     * Metodo che a partire da una formazione crea un array di array di oggetti, utile per la creazione di una tabella.
+     * @return array di array di oggetti
+     */
     public Object[][] listaFormToArray(){
 
         Object[][] listaObject = new Object[listaGiocatori.size()][2];
@@ -124,9 +138,7 @@ public class Formazione {
         for(int i=0;i<listaGiocatori.size();i++){
             listaObject[i][0] = new String(listaGiocatori.get(i).getGiocatore().getCognome());
             listaObject[i][1] = new Float(listaGiocatori.get(i).getMagicVoto());
-
         }
-
         return listaObject;
     }
 

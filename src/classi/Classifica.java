@@ -1,7 +1,11 @@
 package classi;
 
 /**
- * Created by Christian on 04/03/2015.
+ * Classe per la gestione delle classifiche di campionato. Ad ogni squadra è associato un oggetto classifica che
+ * contiene i parametri di quella squadra utili alla costruzione della reale classifica di campionato.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Classifica {
     private Squadra squadra;
@@ -15,6 +19,19 @@ public class Classifica {
     private float punteggio;
     private int punti;
 
+    /**
+     * Costruttore.
+     * @param squadra squadra a cui è associato quest'oggetto
+     * @param giocate numero di incontri disputati
+     * @param vinte numero di partite vinte
+     * @param perse numero di partite perse
+     * @param pareggiate numero di partite pareggiate
+     * @param golFatti gol fatti dalla squadra
+     * @param golSubiti gol subiti dalla squadra
+     * @param diffReti differenza reti
+     * @param punteggio somma dei punteggi ottenuti dalla squadra nelle partite di campionato disputate
+     * @param punti punti della squadra in classifica
+     */
     public Classifica(Squadra squadra, int giocate, int vinte, int perse, int pareggiate, int golFatti, int golSubiti, int diffReti, float punteggio, int punti) {
         this.squadra = squadra;
         this.giocate = giocate;
@@ -28,6 +45,13 @@ public class Classifica {
         this.punti = punti;
     }
 
+    /**
+     * Aggiorna i dati dell'oggetto classifica associato alla rispettiva squadra al termine di una giornata.
+     * @param s squadra
+     * @param golf gol fatti
+     * @param gols gol subiti
+     * @param p punteggio ottenuto
+     */
     public void aggiornaClassifica(Squadra s, int golf, int gols, float p) {
         if (s.getID()==squadra.getID()){
         giocate++;

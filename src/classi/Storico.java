@@ -3,6 +3,7 @@ package classi;
 import java.util.ArrayList;
 
 /**
+ * Classe per la gestione dello storico.
  * @author Alessandro Caprarelli
  * @author Giacomo Grilli
  * @author Christian Manfredi
@@ -16,6 +17,13 @@ public class Storico {
     private ArrayList<Giornata> calendario;
     private ArrayList<Classifica> classifica;
 
+    /**
+     * Costruttore.
+     * @param ID id campionato
+     * @param nome nome campionato
+     * @param anno anno in cui si è svolto il campionato
+     * @param presidente presidente del campionato
+     */
     public Storico(int ID, String nome, int anno, String presidente){
         this.ID = ID;
         this.nome = nome;

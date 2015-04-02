@@ -3,7 +3,10 @@ package classi;
 import java.util.ArrayList;
 
 /**
- * Created by alessandro on 14/03/15.
+ * Classe per la gestione dei dati del fantacampionato
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Campionato {
     private String nome;
@@ -29,6 +32,23 @@ public class Campionato {
         this.nome = nome;
     }
 
+    /**
+     * Costruttore della classe.
+     * @param nome nome del campionato
+     * @param numerop numero dei partecipanti del campionato
+     * @param asta flag per stabilire se le squadre partecipanti sono popolate mediante asta oppure i giocatori vengono inseriti dal presidente di lega
+     * @param inizio giornata reale corrispondente alla giornata d'inizio del fantacampionato
+     * @param fine giornata reale corrispondente alla giornata di fine del fantacampionato
+     * @param crediti entità del budget disponibile per ogni utente per l'acquisto dei giocatori
+     * @param orario orario di consegna per l'inserimento della formazione per la giornata seguente
+     * @param primaf fascia di partenza per il calcolo dei punteggi
+     * @param fasce larghezza di ogni fascia, stabilisce il passaggio da una fascia all'altra
+     * @param bonusc bonus per la squadra che gioca in casa
+     * @param presidente presidente di lega del campionato
+     * @param listaSquadrePartecipanti lista delle squadre partecipanti al campionato
+     * @param giocatoriDaInserire true se devono ancora essere inseriti i giocatori nelle squadre
+     * @param prossimaGiornata prossima giornata
+     */
     public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente,ArrayList<Squadra> listaSquadrePartecipanti,boolean giocatoriDaInserire, int prossimaGiornata ){
         this.nome = nome;
         this.numeroPartecipanti = numerop;
@@ -46,34 +66,17 @@ public class Campionato {
         this.prossimaGiornata = prossimaGiornata;
     }
 
-    public Campionato(String nome, int numerop, boolean asta, int inizio, int fine, int crediti, int orario, int primaf, int fasce, int bonusc,Persona presidente ){
-        this.nome = nome;
-        this.numeroPartecipanti = numerop;
-        this.astaLive = asta;
-        this.giornataInizio = inizio;
-        this.giornataFine = fine;
-        this.creditiIniziali = crediti;
-        this.orarioConsegna = orario;
-        this.primaFascia = primaf;
-        this.largFascia = fasce;
-        this.bonusCasa = bonusc;
-        this.presidente = presidente;
+    public ArrayList<Squadra> getListaSquadrePartecipanti() {
+        return listaSquadrePartecipanti;
     }
 
     public ArrayList<Giornata> getCalendario() {
         return calendario;
     }
 
-    public void setCalendario(ArrayList<Giornata> calendario) {
-        this.calendario = calendario;
-    }
-
-    public ArrayList<Squadra> getListaSquadrePartecipanti() {
-        return listaSquadrePartecipanti;
-    }
-
     public void setListaSquadrePartecipanti(ArrayList<Squadra> listaSquadrePartecipanti) {
         this.listaSquadrePartecipanti = listaSquadrePartecipanti;
+
     }
 
     public Persona getPresidente() {
@@ -196,6 +199,10 @@ public class Campionato {
         this.prossimaGiornata = prossimaGiornata;
     }
 
+    public void setCalendario(ArrayList<Giornata> calendario) {
+        this.calendario = calendario;
+    }
+
     public ArrayList<String[]> getListaMessaggi() {
         return listaMessaggi;
     }
@@ -204,6 +211,10 @@ public class Campionato {
         this.listaMessaggi = listaMessaggi;
     }
 
+    /**
+     * Imposta la prossima giornata del campionato da disputare una volta completata quella attuale.
+     * @return prossima giornata
+     */
     public Giornata prossimaGiornata(){
         Giornata prossima = null;
         for(Giornata giorn:calendario){
@@ -212,6 +223,10 @@ public class Campionato {
         return prossima;
     }
 
+    /**
+     * Individua l'ultima giornata disputata.
+     * @return ultima giornata disputata
+     */
     public Giornata ultimaGiornata(){
         Giornata ultima = null;
         for(Giornata giorn:calendario){
@@ -220,6 +235,10 @@ public class Campionato {
         return ultima;
     }
 
+    /**
+     * Aggiorna la classifica al termine di una giornata di campionato.
+     * @param giornata giornata di fantacampionato disputata
+     */
     public void aggiornaClassifica(Giornata giornata){
         for(Partita partita : giornata.getPartite()){
             boolean vittoriaCasa=false,  vittoriaOspite=false;
@@ -274,6 +293,12 @@ public class Campionato {
 
     }
 
+    /**
+     * Metodo utilizzato per creare un array di oggetti a partire dalla lista delle squadre partecipanti ad un campionato.
+     * Viene usato per popolare i selettori delle squadre nei vari elementi dell'interfaccia del programma.
+     * Negli oggetti dell'array sono presenti i nomi delle squadre ed i rispettivi proprietari.
+     * @return array di oggetti
+     */
     public Object[] squadreToArray(){
         Object[] arrayObject = new Object[this.listaSquadrePartecipanti.size()];
         for(int i=0;i<this.listaSquadrePartecipanti.size();i++){
