@@ -322,7 +322,8 @@ public class CreaCampionato extends JFrame {
      */
     private void setInfoIcon() {
         //icona di info
-        ImageIcon icon = (ImageIcon) UIManager.getIcon("OptionPane.informationIcon");
+        UIDefaults defaults = UIManager.getDefaults( );
+        ImageIcon icon = (ImageIcon) defaults.getIcon("OptionPane.informationIcon");
         //è un label senza testo, con solo l'icona di info
         nomeInfo.setIcon(icon);
         //quando il mouse è sopra l'icona spiega cosa bisogna fare

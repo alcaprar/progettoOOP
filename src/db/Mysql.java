@@ -1094,12 +1094,7 @@ public class Mysql{
             //apre la connessione
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-            //se la formazione era già stata inserito la cancello per reinserirla
-            if(squadra.isFormazioneInserita()){
-                deleteFormazioneInserita(squadra);
-            }
 
-            //preparo lo statemant e inserisco la formazione
             formazioneInseritastmt = conn.prepareStatement(formazioneInseritaSql);
             formazioneInseritastmt.setInt(1, squadra.prossimaPartita().getID());
             formazioneInseritastmt.setString(2, squadra.getNome());
@@ -2196,6 +2191,11 @@ public class Mysql{
             //apre la connessione
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             int i=1;
+            //se è già stata inserita la formazione la cancello
+            if(squadra.isFormazioneInserita()){
+                deleteFormazioneInserita(squadra);
+            }
+
             for(Voto gioc :squadra.getFormazione().getListaGiocatori()) {
                 formazionestmt = conn.prepareStatement(formazioneSql);
                 formazionestmt.setInt(1, gioc.getGiocatore().getID());
@@ -2205,7 +2205,9 @@ public class Mysql{
                 i++;
                 rs = formazionestmt.executeUpdate();
             }
-
+            if(rs==1){
+                squadra.setFormazioneInserita(true);
+            }
             return (rs==1);
 
         }catch(SQLException se){
