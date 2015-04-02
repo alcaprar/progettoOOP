@@ -10,6 +10,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 
 /**
@@ -195,6 +197,17 @@ public class Home extends JPanel {
         ultimaGiornataTable.setModel(prossimaGiornataModel);
         //setta il colore delle righe alternato
         ultimaGiornataTable.setDefaultRenderer(Object.class, new RenderTableAlternate());
+
+        ultimaGiornataTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int riga = ultimaGiornataTable.getSelectedRow();
+                    new FormazioniPartita(squadra.getCampionato().getBonusCasa(), squadra.getCampionato().ultimaGiornata().getPartite().get(riga));
+                }
+            }
+        });
+        ultimaGiornataTable.setToolTipText("Doppio clic sulla partita per mostrare i dettagli.");
 
     }
 
