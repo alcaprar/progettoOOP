@@ -317,7 +317,7 @@ public class CreaCampionato extends JFrame {
     private void setInfoIcon() {
         //icona di info
         UIDefaults defaults = UIManager.getDefaults( );
-        ImageIcon icon = (ImageIcon) defaults.getIcon("OptionPane.informationIcon");
+        Icon icon = defaults.getIcon("OptionPane.informationIcon");
         //è un label senza testo, con solo l'icona di info
         nomeInfo.setIcon(icon);
         //quando il mouse è sopra l'icona spiega cosa bisogna fare
@@ -364,7 +364,7 @@ public class CreaCampionato extends JFrame {
     private Campionato creaCampionato() {
         String nome = nometxt.getText();
         int numeroPartecipanti = Integer.parseInt((String) numeroBox.getSelectedItem());
-        boolean asta = "Live".equals((String) astaBox.getSelectedItem());
+        boolean asta = "Live".equals(astaBox.getSelectedItem());
         int inizio = (Integer) inizioSpinner.getValue();
         int fine = (Integer) fineSpinner.getValue();
         int crediti = (Integer) creditiSpinner.getValue();

@@ -47,6 +47,7 @@ public class Home extends JPanel {
     private JLabel orelbl;
     private JLabel minutilbl;
     private JLabel secondilbl;
+    private JPanel ultimaGiornataPanel;
 
     private Utils utils = new Utils();
 
@@ -99,7 +100,7 @@ public class Home extends JPanel {
         if(squadra.getCampionato().getProssimaGiornata()==1){
             ultimaGiornataScrollPane.setVisible(false);
             campionatoIniziolbl.setVisible(true);
-            giornataUltimalbl.setVisible(false);
+            ultimaGiornataPanel.setVisible(false);
             dataUltimalbl.setVisible(false);
         } else{
             setTableUltimaG();
