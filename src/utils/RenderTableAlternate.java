@@ -5,9 +5,15 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 
 /**
- * Created by Christian on 25/03/2015.
+ * Classe per colorare le tabelle a righe alternate
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class RenderTableAlternate extends DefaultTableCellRenderer {
+    /**
+     Sovrascrive il metodo della classe DefaultTableCellRenderer colorando le righe pari di un colore e le dispari di un altro
+     */
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
     {

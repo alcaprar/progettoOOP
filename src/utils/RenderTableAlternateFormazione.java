@@ -5,9 +5,15 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 
 /**
- * Created by alessandro on 28/03/15.
+ * Classe per colorare le tabelle delle formazioni, i titolari di un colore le riserve di un altro
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class RenderTableAlternateFormazione extends DefaultTableCellRenderer {
+    /**
+     Sovrascrive il metodo della classe DefaultTableCellRenderer colorando le prime 11 righe di un colore e le restanti di un altro
+     */
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
     {
