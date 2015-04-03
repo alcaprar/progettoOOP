@@ -323,7 +323,7 @@ public class Campionato {
 
         for(int i=0;i<this.classifica.size();i++){
             listaObject[i][0] = this.classifica.get(i).getSquadra().getNome();
-            listaObject[i][1] = new Integer(this.classifica.get(i).getPunti());
+            listaObject[i][1] = this.classifica.get(i).getPunti();
         }
         return listaObject;
     }
@@ -334,22 +334,22 @@ public class Campionato {
      * Nell'array ci sono tutti i valori presenti in classifica.
      * @see #classifica
      * @see interfacce.Applicazione.Classifica
-     * @return
+     * @return array di object
      */
     public Object[][] classificaToArray(){
         Object[][] listaObject = new Object[this.classifica.size()][10];
 
         for(int i=0;i<this.classifica.size();i++){
             listaObject[i][0] = this.classifica.get(i).getSquadra().getNome();
-            listaObject[i][1] = new Integer(this.classifica.get(i).getGiocate());
-            listaObject[i][2] = new Integer(this.classifica.get(i).getVinte());
-            listaObject[i][3] = new Integer(this.classifica.get(i).getPareggiate());
-            listaObject[i][4] = new Integer(this.classifica.get(i).getPerse());
-            listaObject[i][5] = new Integer(this.classifica.get(i).getDiffReti());
-            listaObject[i][6] = new Integer(this.classifica.get(i).getGolFatti());
-            listaObject[i][7] = new Integer(this.classifica.get(i).getGolSubiti());
-            listaObject[i][8] = new Float(this.classifica.get(i).getPunteggio());
-            listaObject[i][9] = new Integer(this.classifica.get(i).getPunti());
+            listaObject[i][1] = this.classifica.get(i).getGiocate();
+            listaObject[i][2] = this.classifica.get(i).getVinte();
+            listaObject[i][3] = this.classifica.get(i).getPareggiate();
+            listaObject[i][4] = this.classifica.get(i).getPerse();
+            listaObject[i][5] = this.classifica.get(i).getDiffReti();
+            listaObject[i][6] = this.classifica.get(i).getGolFatti();
+            listaObject[i][7] = this.classifica.get(i).getGolSubiti();
+            listaObject[i][8] = this.classifica.get(i).getPunteggio();
+            listaObject[i][9] = this.classifica.get(i).getPunti();
         }
         return listaObject;
     }
