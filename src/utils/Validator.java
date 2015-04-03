@@ -21,10 +21,10 @@ public class Validator {
     public static boolean email(String str) {
         Pattern p = Pattern.compile("[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}");
         Matcher m = p.matcher(str);
-        if (!m.matches()) {
+        if (!m.matches() && str.length()>50) {
             JOptionPane.showMessageDialog(null, "Il campo 'Email' non è corretto");
         }
-        return m.matches();
+        return (m.matches() && str.length()<50);
     }
 
     /**

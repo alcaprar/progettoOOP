@@ -25,6 +25,11 @@ public class Registra extends JFrame {
     private JButton registratiButton;
     private JPanel panel1;
     private JButton annullaButton;
+    private JLabel emailIcon;
+    private JLabel cognomeIcon;
+    private JLabel nomeIcon;
+    private JLabel passwordIcon;
+    private JLabel nicknameIcon;
     private Persona utente;
 
     /**
@@ -103,6 +108,26 @@ public class Registra extends JFrame {
             flag=false;
         }
         return flag;
+    }
+
+    private void setInfoIcon(){
+        UIDefaults defaults = UIManager.getDefaults( );
+        Icon icon = defaults.getIcon("OptionPane.informationIcon");
+
+        nicknameIcon.setIcon(icon);
+        nicknameIcon.setToolTipText("Il nickname deve essere tra 5 e 20 caratteri.");
+
+        passwordIcon.setIcon(icon);
+        passwordIcon.setToolTipText("La password deve essere tra 5 e 20 caratteri.");
+
+        nomeIcon.setIcon(icon);
+        nomeIcon.setToolTipText("Il nome deve essere tra 2 e 20 caratteri.");
+
+        cognomeIcon.setIcon(icon);
+        cognomeIcon.setToolTipText("Il cognome deve essere tra 2 e 20 caratteri.");
+
+        emailIcon.setIcon(icon);
+        emailIcon.setToolTipText("La mail deve essere una mail valida e al massimo di 50 caratteri.");
     }
 
     /**Ritorna this.
