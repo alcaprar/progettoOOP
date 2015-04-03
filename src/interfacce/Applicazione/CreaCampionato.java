@@ -293,7 +293,7 @@ public class CreaCampionato extends JFrame {
         SpinnerNumberModel fineModel = new SpinnerNumberModel(38, 2, 38, 1);
         fineSpinner.setModel(fineModel);
 
-        SpinnerNumberModel creditiModel = new SpinnerNumberModel(800, 1, 2000, 10);
+        SpinnerNumberModel creditiModel = new SpinnerNumberModel(800, 250  , 2000, 10);
         creditiSpinner.setModel(creditiModel);
 
         SpinnerNumberModel limiteModel = new SpinnerNumberModel(30, 0, 360, 1);
