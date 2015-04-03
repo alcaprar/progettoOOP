@@ -191,7 +191,7 @@ public class Home extends JPanel {
      * Viene utilizzato un render modificato per far mostrare il colore delle righe alternato.
      */
     private void setTableUltimaG(){
-        Object[] nomeColonne = {"Casa","GolCasa","PuntiCasa","-","PuntiTrasferta","GolTrasferta","Trasferta"};
+        Object[] nomeColonne = {"Casa","PuntiCasa","GolCasa","-","GolTrasferta","PuntiTrasferta","Trasferta"};
         Object[][] righeUltimaGiornata = squadra.getCampionato().ultimaGiornata().partiteToArray();
 
         TableNotEditableModel prossimaGiornataModel = new TableNotEditableModel(righeUltimaGiornata, nomeColonne);
