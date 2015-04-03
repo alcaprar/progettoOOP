@@ -107,7 +107,6 @@ public class Home extends JPanel {
             campionatoIniziolbl.setVisible(false);
             giornataUltimalbl.setText(String.valueOf(squadra.getCampionato().getProssimaGiornata() - 1));
             dataUltimalbl.setText(df.format(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata() - 2).getGioReale().getDataOraInizio()));
-            //dataUltimalbl.setText(String.valueOf(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata() - 2).getGioReale().getDataOraInizio()));
         }
 
         if(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata()-1).getGioReale().getNumeroGiornata()==squadra.getCampionato().getGiornataFine()){
@@ -120,7 +119,6 @@ public class Home extends JPanel {
             campionatoFinitolbl.setVisible(false);
             giornataProssimalbl.setText(String.valueOf(squadra.getCampionato().getProssimaGiornata()));
             dataProssimalbl.setText(df.format(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata()-1).getGioReale().getDataOraInizio()));
-            //dataProssimalbl.setText(String.valueOf(squadra.getCampionato().getCalendario().get(squadra.getCampionato().getProssimaGiornata()-1).getGioReale().getDataOraInizio()));
         }
     }
 
@@ -155,6 +153,8 @@ public class Home extends JPanel {
                     int s = secondiTotali%60;
                     //aggiorno i label del countdown
                     aggiornaCountdown(d,h,m,s);
+                } else{
+                    return;
                 }
             }
         });
