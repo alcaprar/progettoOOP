@@ -243,14 +243,14 @@ public class Campionato {
         //scorre l'elenco delle partite
         for(Partita partita : giornata.getPartite()){
             boolean vittoriaCasa=false,  vittoriaOspite=false;
-            boolean formNonInserite = false, formCasaNonInserita=false, formFuoriNonInserita=false;
+            boolean formNonInserite = false;// formCasaNonInserita=false, formFuoriNonInserita=false;
             if(partita.getPuntiCasa()==0 && partita.getPuntiFuori()==0){
                 formNonInserite=true;//controlla se sono state inserite le formazioni
             } else if(partita.getPuntiCasa()==0){
-                formCasaNonInserita=true;//controlla se la formazione di casa è stata inserita
+                //formCasaNonInserita=true;//controlla se la formazione di casa è stata inserita
                 vittoriaOspite=true;//assegna la vittoria a tavolino alla squadra ospite
             } else if(partita.getPuntiFuori()==0){
-                formFuoriNonInserita=true;//controlla se la formazione ospite è stata inserita
+                //formFuoriNonInserita=true;//controlla se la formazione ospite è stata inserita
                 vittoriaCasa=true;//assegna la vittoria a tavolino alla squadra in casa
             }else  if(partita.getGolCasa()>partita.getGolFuori()){
                 vittoriaCasa=true;//assegna la vittoria alla squadra in casa
@@ -265,7 +265,7 @@ public class Campionato {
                     if(vittoriaCasa){ //controlla se ha vinto
                         rigaClassifica.setVinte(rigaClassifica.getVinte()+1);
                         rigaClassifica.setPunti(rigaClassifica.getPunti()+3);
-                    } else if(vittoriaOspite || formNonInserite ||formCasaNonInserita){//controlla se ha perso (vittoriaOspite) o non ha dato la formazione (formNonInserite)
+                    } else if(vittoriaOspite || formNonInserite){//controlla se ha perso (vittoriaOspite) o non ha dato la formazione (formNonInserite)
                         rigaClassifica.setPerse(rigaClassifica.getPerse()+1);
                     } else{//se non ha ne vinto ne perso allora ha pareggiato
                         rigaClassifica.setPareggiate(rigaClassifica.getPareggiate()+1);
@@ -277,7 +277,7 @@ public class Campionato {
                     rigaClassifica.setDiffReti(rigaClassifica.getGolFatti()-rigaClassifica.getGolSubiti());
                 } else if(rigaClassifica.getSquadra().equals(partita.getFormOspite().getSquadra())){
                     rigaClassifica.setGiocate(rigaClassifica.getGiocate()+1);
-                    if(vittoriaCasa || formNonInserite || formFuoriNonInserita){
+                    if(vittoriaCasa || formNonInserite ){
                         rigaClassifica.setPerse(rigaClassifica.getPerse()+1);
                     } else if(vittoriaOspite){
                         rigaClassifica.setVinte(rigaClassifica.getVinte()+1);
