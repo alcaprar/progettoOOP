@@ -240,31 +240,34 @@ public class Campionato {
      * @param giornata giornata di fantacampionato disputata
      */
     public void aggiornaClassifica(Giornata giornata){
+        //scorre l'elenco delle partite
         for(Partita partita : giornata.getPartite()){
             boolean vittoriaCasa=false,  vittoriaOspite=false;
             boolean formNonInserite = false, formCasaNonInserita=false, formFuoriNonInserita=false;
             if(partita.getPuntiCasa()==0 && partita.getPuntiFuori()==0){
-                formNonInserite=true;
+                formNonInserite=true;//controlla se sono state inserite le formazioni
             } else if(partita.getPuntiCasa()==0){
-                formCasaNonInserita=true;
-                vittoriaOspite=true;
+                formCasaNonInserita=true;//controlla se la formazione di casa è stata inserita
+                vittoriaOspite=true;//assegna la vittoria a tavolino alla squadra ospite
             } else if(partita.getPuntiFuori()==0){
-                formFuoriNonInserita=true;
-                vittoriaCasa=true;
+                formFuoriNonInserita=true;//controlla se la formazione ospite è stata inserita
+                vittoriaCasa=true;//assegna la vittoria a tavolino alla squadra in casa
             }else  if(partita.getGolCasa()>partita.getGolFuori()){
-                vittoriaCasa=true;
+                vittoriaCasa=true;//assegna la vittoria alla squadra in casa
             } else if( partita.getGolCasa()<partita.getGolFuori()){
-                vittoriaOspite=true;
+                vittoriaOspite=true;//assegna la vittoria alla squadra ospite
             }
+            //scorre le righe della classifica del campionato
             for(classi.Classifica rigaClassifica : this.classifica){
+                //cerca la riga corrispondente alla squadra in casa
                 if(rigaClassifica.getSquadra().equals(partita.getFormCasa().getSquadra())){
                     rigaClassifica.setGiocate(rigaClassifica.getGiocate()+1);
-                    if(vittoriaCasa){
+                    if(vittoriaCasa){ //controlla se ha vinto
                         rigaClassifica.setVinte(rigaClassifica.getVinte()+1);
                         rigaClassifica.setPunti(rigaClassifica.getPunti()+3);
-                    } else if(vittoriaOspite || formNonInserite ||formCasaNonInserita){
+                    } else if(vittoriaOspite || formNonInserite ||formCasaNonInserita){//controlla se ha perso (vittoriaOspite) o non ha dato la formazione (formNonInserite)
                         rigaClassifica.setPerse(rigaClassifica.getPerse()+1);
-                    } else{
+                    } else{//se non ha ne vinto ne perso allora ha pareggiato
                         rigaClassifica.setPareggiate(rigaClassifica.getPareggiate()+1);
                         rigaClassifica.setPunti(rigaClassifica.getPunti()+1);
                     }
