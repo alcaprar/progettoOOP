@@ -51,7 +51,7 @@ public class Client {
             output.writeObject(this.username);
 
             Messaggio listaGiocatorimsg = (Messaggio)input.readObject();
-            gui.appendConsole("Numero giocatori disponibili: "+listaGiocatorimsg.getListaGiocatori().size());
+            gui.setListaGiocatoriDisponibili(listaGiocatorimsg.getListaGiocatori());
         } catch (Exception e){
             gui.appendConsole("Eccezione nella creazione degli stream I/O>> "+e.getMessage());
             e.printStackTrace();

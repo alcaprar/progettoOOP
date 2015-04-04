@@ -48,6 +48,10 @@ public class ClientGUI extends JFrame {
     private ArrayList<TableNotEditableModel> listaDifensoriSquadra;
     private ArrayList<TableNotEditableModel> listaCentrocampistiSquadra;
     private ArrayList<TableNotEditableModel> listaAttaccantiSquadra;
+    private TableNotEditableModel portieriDispModel;
+    private TableNotEditableModel difensoriDispModel;
+    private TableNotEditableModel centrocampistiDispModel;
+    private TableNotEditableModel attaccantiDispModel;
 
     private ArrayList<Integer> soldiSpesi;
 
@@ -213,22 +217,71 @@ public class ClientGUI extends JFrame {
 
         if(giocatore.getRuolo()=='P'){
             listaPortieriSquadra.get(i).addRow(rigaGiocatore);
+            for(int k=0;k<portieriDispModel.getRowCount();k++){
+                if(portieriDispModel.getValueAt(k,0).equals(giocatore.getCognome())){
+                    portieriDispModel.removeRow(k);
+                }
+            }
         } else if(giocatore.getRuolo()=='D'){
             listaDifensoriSquadra.get(i).addRow(rigaGiocatore);
+            for(int k=0;k<difensoriDispModel.getRowCount();k++){
+                if(difensoriDispModel.getValueAt(k,0).equals(giocatore.getCognome())){
+                    difensoriDispModel.removeRow(k);
+                }
+            }
         } else if(giocatore.getRuolo()=='C'){
             listaCentrocampistiSquadra.get(i).addRow(rigaGiocatore);
+            for(int k=0;k<centrocampistiDispModel.getRowCount();k++){
+                if(centrocampistiDispModel.getValueAt(k,0).equals(giocatore.getCognome())){
+                    centrocampistiDispModel.removeRow(k);
+                }
+            }
         } else {
             listaAttaccantiSquadra.get(i).addRow(rigaGiocatore);
+            for(int k=0;k<attaccantiDispModel.getRowCount();k++){
+                if(attaccantiDispModel.getValueAt(k,0).equals(giocatore.getCognome())){
+                    attaccantiDispModel.removeRow(k);
+                }
+            }
         }
 
-        giocatoriAcquistati++;
+        //se l'ho acquistato io aggiorno il contatore
+        if(persona.equals(usernametxt.getText())){
+            giocatoriAcquistati++;
+        }
         soldiSpesi.set(i, soldiSpesi.get(i) + prezzo);
 
         aggiornaSoldi(soldiSpesi.get(squadreCombobox.getSelectedIndex()));
     }
 
     public void setListaGiocatoriDisponibili(ArrayList<Giocatore> listaGiocatori){
+        Object[] colonne = {"Cognome","Prezzo","Squadra"};
 
+        portieriDispModel = new TableNotEditableModel();
+        portieriDispModel.setColumnIdentifiers(colonne);
+        difensoriDispModel = new TableNotEditableModel();
+        difensoriDispModel.setColumnIdentifiers(colonne);
+        centrocampistiDispModel = new TableNotEditableModel();
+        centrocampistiDispModel.setColumnIdentifiers(colonne);
+        attaccantiDispModel = new TableNotEditableModel();
+        attaccantiDispModel.setColumnIdentifiers(colonne);
+
+        for(Giocatore giocatore : listaGiocatori){
+            if(giocatore.getRuolo()=='P'){
+                portieriDispModel.addRow(new Object[]{giocatore.getCognome(),giocatore.getPrezzoBase(),giocatore.getSquadraReale()});
+            } else if(giocatore.getRuolo()=='D'){
+                difensoriDispModel.addRow(new Object[]{giocatore.getCognome(),giocatore.getPrezzoBase(),giocatore.getSquadraReale()});
+            } else if(giocatore.getRuolo()=='C'){
+                centrocampistiDispModel.addRow(new Object[]{giocatore.getCognome(),giocatore.getPrezzoBase(),giocatore.getSquadraReale()});
+            } else if(giocatore.getRuolo()=='A'){
+                attaccantiDispModel.addRow(new Object[]{giocatore.getCognome(),giocatore.getPrezzoBase(),giocatore.getSquadraReale()});
+            }
+        }
+
+        portieriDisponibiliTable.setModel(portieriDispModel);
+        difensoriDisponibiliTable.setModel(difensoriDispModel);
+        centrocampistiDisponibiliTable.setModel(centrocampistiDispModel);
+        attaccantiDisponibiliTable.setModel(attaccantiDispModel);
     }
 
     private ClientGUI getFrame(){
