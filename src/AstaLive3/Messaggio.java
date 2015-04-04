@@ -14,6 +14,7 @@ public class Messaggio implements Serializable {
     static final int INIZIO_ASTA = 1,
             OFFERTA =2,
             RISPOSTA_OFFERTA=3,
+            TEMPO = 4,
             FINE_OFFERTA=5;
 
 

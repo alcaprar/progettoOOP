@@ -26,6 +26,7 @@ public class ClientGUI extends JFrame {
     private JLabel inizialelbl;
     private JSpinner spinnerOfferta;
     private JButton buttonOfferta;
+    private JLabel tempolbl;
 
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
@@ -93,6 +94,10 @@ public class ClientGUI extends JFrame {
     public void setOffertaNotEnabled(){
         spinnerOfferta.setEnabled(false);
         buttonOfferta.setEnabled(false);
+    }
+
+    public void setCountdown(int secondi){
+        tempolbl.setText(String.valueOf(secondi));
     }
 
     private void setSpinnerPorta(){

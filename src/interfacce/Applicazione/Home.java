@@ -1,7 +1,6 @@
 package interfacce.Applicazione;
 
 import classi.*;
-import interfacce.Applicazione.Applicazione;
 import org.joda.time.*;
 import utils.*;
 

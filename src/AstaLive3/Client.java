@@ -77,45 +77,21 @@ public class Client {
                 } else if(messaggio.getTipo()==Messaggio.OFFERTA){
                     gui.setGiocatoreAttuale(messaggio.getGiocatore(), messaggio.getOfferta());
                     gui.setOffertaEnabled();
-
-                    final DateTime stop = new DateTime().plusSeconds(messaggio.getSecondi());
-
-                    final Timer t = new Timer(1000, new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            DateTime now = new DateTime();
-                            if (now.isAfter(stop)) {
-                                gui.appendConsole(String.valueOf(Seconds.secondsBetween(now,stop)));
-                            } else{
-                                gui.setOffertaNotEnabled();
-                                Messaggio offerta = new Messaggio(Messaggio.RISPOSTA_OFFERTA);
-                                if(gui.getOfferto()){
-                                    int valoreOfferta = gui.getValoreOfferta();
-                                    offerta.setOfferta(valoreOfferta);
-                                    gui.appendConsole("Provo a inviare l'offerta: "+valoreOfferta);
-                                } else{
-                                    gui.appendConsole("Provo a inviare il rifiuto dell'offerta.");
-                                    offerta.setOfferta(0);
-                                }
-                                try{
-                                    output.writeObject(offerta);
-                                } catch (IOException ioe){
-                                    gui.appendConsole("Eccezione nell'invio dell'offerta>> " + ioe.getMessage());
-                                    ioe.printStackTrace();
-                                }
-
-                                return;
-                            }
+                } else if(messaggio.getTipo()==Messaggio.TEMPO){
+                    gui.setCountdown(messaggio.getSecondi());
+                    gui.appendConsole("Secondi: "+messaggio.getSecondi());
+                    if(messaggio.getSecondi()==0){
+                        Messaggio risposta = new Messaggio(Messaggio.RISPOSTA_OFFERTA);
+                        risposta.setOfferta(gui.getValoreOfferta());
+                        gui.appendConsole("Risposta offerta: "+gui.getValoreOfferta());
+                        try{
+                            output.writeObject(risposta);
+                        } catch (Exception e){
+                            gui.appendConsole("Eccezione nell'invio dell'offerta>> "+e.getMessage());
+                            e.printStackTrace();
                         }
-                    });
-                    t.start();
-                    try{
-                        this.sleep(messaggio.getSecondi()*1000);
-                    } catch (Exception e){
-                        gui.appendConsole("Eccezione nello sleep del thread>> "+e.getMessage());
-                        e.printStackTrace();
+                        gui.setOffertaNotEnabled();
                     }
-
-
                 }
 
             }

@@ -75,6 +75,10 @@ public class Server extends Thread {
         gui.appendConsole("Stop connessioni.");
 
         //TODO asta
+        //comunico l'inizio dell'asta
+        Messaggio mess = new Messaggio(Messaggio.INIZIO_ASTA);
+        broadcast(mess);
+        asta();
 
     }
 
@@ -87,11 +91,6 @@ public class Server extends Thread {
         catch(Exception e) {
             // nothing I can really do
         }
-
-        //comunico l'inizio dell'asta
-        Messaggio mess = new Messaggio(1);
-        broadcast(mess);
-        asta();
     }
 
     private synchronized void broadcast(Messaggio msg){
@@ -107,12 +106,25 @@ public class Server extends Thread {
             if(portiere.getRuolo()=='P'){
                 gui.appendConsole("Giocatore: "+portiere.getCognome());
                 for(ClientConnesso client: listaClient){
-                    gui.appendConsole( "Client: "+client.username);
+                    gui.appendConsole("Client: " + client.username);
                     Messaggio offerta =  new Messaggio(Messaggio.OFFERTA);
                     offerta.setGiocatore(portiere);
                     offerta.setOfferta(portiere.getPrezzoBase() - 1);
                     offerta.setSecondi(secondiTimer);
                     client.writeMsg(offerta);
+
+                    for(int i = secondiTimer;i>=0;i--){
+                        Messaggio timer = new Messaggio(Messaggio.TEMPO);
+                        timer.setSecondi(i);
+                        client.writeMsg(timer);
+
+                        try{
+                            sleep(1000);
+                        } catch (Exception e){
+                            gui.appendConsole("Eccezione nello sleep del thread>> "+e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
 
                     Messaggio risposta = client.readObject();
                     if(risposta.getOfferta()==0){
