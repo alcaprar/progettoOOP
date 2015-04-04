@@ -123,6 +123,9 @@ public class ServerGUI extends JFrame {
     private void setSpinnerPorta(){
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1500,1000,2000,1);
         spinnerPorta.setModel(spinnerModel);
+
+        JSpinner.NumberEditor editor = new JSpinner.NumberEditor(spinnerPorta, "#");
+        spinnerPorta.setEditor(editor);
     }
 
     private void setListaConnessi(){

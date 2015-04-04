@@ -76,7 +76,6 @@ public class Server extends Thread {
         }
         gui.appendConsole("Stop connessioni.");
 
-        //TODO asta
         //comunico l'inizio dell'asta
         Messaggio mess = new Messaggio(Messaggio.INIZIO_ASTA);
         //invio la lista dei partecipanti
@@ -86,12 +85,6 @@ public class Server extends Thread {
         }
         mess.setListaPartecipanti(listaPartecipanti);
         broadcast(mess);
-        try{
-            sleep(5000);
-        } catch (Exception e){
-            gui.appendConsole("Eccezione nello sleep del thread>> "+e.getMessage());
-            e.printStackTrace();
-        }
 
     }
 
@@ -138,6 +131,7 @@ public class Server extends Thread {
 
                     //offertaAttuale
                     int offertaAttuale = portiere.getPrezzoBase() - 1;
+                    String utenteOfferta = null;
 
                     //asta per il giocatore i-esimo
                     while (continuaAsta()) {
@@ -153,6 +147,7 @@ public class Server extends Thread {
                                 Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
                                 offerta.setGiocatore(portiere);
                                 offerta.setOfferta(offertaAttuale);
+                                offerta.setMessaggio(utenteOfferta);
                                 offerta.setSecondi(secondiTimer);
                                 client.writeMsg(offerta);
 
@@ -179,6 +174,7 @@ public class Server extends Thread {
                                 } else {
                                     gui.appendConsole(client.username + " ha offerto " + risposta.getOfferta() + " per " + portiere.getCognome());
                                     offertaAttuale = risposta.getOfferta();
+                                    utenteOfferta = client.username;
                                 }
                             }
                         }
@@ -418,8 +414,7 @@ public class Server extends Thread {
         }
         if(primoGiroAsta) {
             return true;
-        } else if(counter==0 || counter==1) return false;
-        else return true;
+        } else return !(counter==0 || counter==1);
     }
 
     private void offertaClientTrue(){

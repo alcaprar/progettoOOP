@@ -39,6 +39,9 @@ public class ClientGUI extends JFrame {
     private JTable difensoriDisponibiliTable;
     private JTable centrocampistiDisponibiliTable;
     private JTable attaccantiDisponibiliTable;
+    private JButton lasciaButton;
+    private JCheckBox mostraConsoleCheckBox;
+    private JScrollPane consolePanel;
 
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
@@ -85,6 +88,13 @@ public class ClientGUI extends JFrame {
             }
         });
 
+        lasciaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setOffertaNotEnabled();
+            }
+        });
+
         squadreCombobox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -105,6 +115,17 @@ public class ClientGUI extends JFrame {
                 if (risultato == JOptionPane.OK_OPTION) {
                     getFrame().dispose();
                     System.exit(1);
+                }
+            }
+        });
+
+        mostraConsoleCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (mostraConsoleCheckBox.isSelected()) {
+                    consolePanel.setVisible(true);
+                } else {
+                    consolePanel.setVisible(false);
                 }
             }
         });
@@ -130,7 +151,7 @@ public class ClientGUI extends JFrame {
         consoleArea.setCaretPosition(consoleArea.getText().length());
     }
 
-    public void setGiocatoreAttuale(Giocatore giocatore, int prezzo){
+    public void setGiocatoreAttuale(Giocatore giocatore, int prezzo, String utenteOfferta){
         cognomelbl.setText(giocatore.getCognome());
         ruololbl.setText(String.valueOf(giocatore.getRuolo()));
         squadraRealelbl.setText(giocatore.getSquadraReale());
@@ -139,7 +160,7 @@ public class ClientGUI extends JFrame {
         if(prezzo<giocatore.getPrezzoBase()){
             attualelbl.setText("-");
         } else {
-            attualelbl.setText(String.valueOf(prezzo));
+            attualelbl.setText(String.valueOf(prezzo)+" - "+utenteOfferta);
         }
         int max = creditiIniziali - soldiSpesiMiei -(25-giocatoriAcquistati) ;
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(prezzo+1,prezzo+1,max,1);
@@ -149,12 +170,14 @@ public class ClientGUI extends JFrame {
     public void setOffertaEnabled(){
         spinnerOfferta.setEnabled(true);
         buttonOfferta.setEnabled(true);
+        lasciaButton.setEnabled(true);
         offerto = false;
     }
 
     public void setOffertaNotEnabled(){
         spinnerOfferta.setEnabled(false);
         buttonOfferta.setEnabled(false);
+        lasciaButton.setEnabled(false);
     }
 
     public void setCountdown(int secondi){
@@ -164,6 +187,9 @@ public class ClientGUI extends JFrame {
     private void setSpinnerPorta(){
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1500,1000,2000,1);
         spinnerPorta.setModel(spinnerModel);
+
+        JSpinner.NumberEditor editor = new JSpinner.NumberEditor(spinnerPorta, "#");
+        spinnerPorta.setEditor(editor);
     }
 
     public void setComboBox(ArrayList<String> listaPartecipanti){

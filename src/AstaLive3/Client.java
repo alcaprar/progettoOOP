@@ -79,7 +79,7 @@ public class Client {
                     gui.appendConsole("++++INIZIO ASTA TRA POCO++++");
                     gui.setComboBox(messaggio.getListaPartecipanti());
                 } else if(messaggio.getTipo()==Messaggio.OFFERTA){
-                    gui.setGiocatoreAttuale(messaggio.getGiocatore(), messaggio.getOfferta());
+                    gui.setGiocatoreAttuale(messaggio.getGiocatore(), messaggio.getOfferta(),messaggio.getMessaggio());
                     gui.setOffertaEnabled();
                 } else if(messaggio.getTipo()==Messaggio.TEMPO){
                     gui.setCountdown(messaggio.getSecondi());
