@@ -82,7 +82,6 @@ public class ServerGUI extends JFrame {
     public static void main(String args[]){
         new ServerGUI();
     }
-
     /**
      * Scrive nella console.
      * @param str stringa da stampare

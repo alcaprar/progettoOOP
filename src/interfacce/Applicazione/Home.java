@@ -1,5 +1,7 @@
 package interfacce.Applicazione;
 
+import AstaLive3.ClientGUI;
+import AstaLive3.ServerGUI;
 import classi.*;
 import org.joda.time.*;
 import utils.*;
@@ -47,6 +49,8 @@ public class Home extends JPanel {
     private JLabel minutilbl;
     private JLabel secondilbl;
     private JPanel ultimaGiornataPanel;
+    private JButton buttonAsta;
+    private JButton buttonServer;
 
     private Utils utils = new Utils();
 
@@ -81,6 +85,21 @@ public class Home extends JPanel {
             }
         });
 
+        buttonAsta.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                applicazione.dispose();
+                ClientGUI clientGUI = new ClientGUI();
+            }
+        });
+
+        buttonServer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                buttonAsta.setEnabled(true);
+                ServerGUI serverGUI = new ServerGUI();
+            }
+        });
 
 
     }
@@ -91,11 +110,20 @@ public class Home extends JPanel {
      * interno a squadra.
      */
     public void refresh(){
+        buttonAsta.setVisible(false);
+        buttonServer.setVisible(false);
         nomeSquadra.setText(squadra.getNome());
         nomeUtente.setText(squadra.getProprietario().getNickname());
         nomeCampionato.setText(squadra.getCampionato().getNome());
         setTableClassifica();
         setListaAvvisi();
+        if(squadra.getCampionato().isAstaLive() && squadra.getCampionato().isGiocatoriDaInserire()) {
+            buttonAsta.setVisible(true);
+            if (squadra.getProprietario().isPresidenteLega()){
+                buttonServer.setVisible(true);
+                buttonAsta.setEnabled(false);
+            }
+        }
         if(squadra.getCampionato().getProssimaGiornata()==1){
             ultimaGiornataScrollPane.setVisible(false);
             campionatoIniziolbl.setVisible(true);
