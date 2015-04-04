@@ -140,6 +140,10 @@ public class CreaCampionato extends JFrame {
                 if (inizio > fine) {
                     inizioSpinner.setValue(fine - numeroPartecipanti + 1);
                 }
+                if(numeroPartecipanti != 0){
+                    int fineConsigliata = 38 - ((38 - ((Integer) inizioSpinner.getValue()-1)) % (Integer.parseInt((String)numeroBox.getSelectedItem())-1));
+                    fineSpinner.setValue(fineConsigliata);
+                }
             }
         });
 
@@ -333,10 +337,8 @@ public class CreaCampionato extends JFrame {
         inizioInfo.setIcon(icon);
         inizioInfo.setToolTipText("Giornata di inizio del fantacampionato rispetto alla giornata del campionato di Serie A");
 
-        //int fineConsigliata = 38 - (38 % ((Integer) numeroBox.getSelectedItem()-1)) - ((Integer) inizioSpinner.getValue()-1);
-
         fineInfo.setIcon(icon);
-        fineInfo.setToolTipText("<html>Giornata di fine consigliata per far giocare ad ogni giocatore<br> lo stesso numero di volte contro gli altri giocatori:</html>");
+        fineInfo.setToolTipText("<html>Giornata di fine consigliata per far giocare ad ogni giocatore<br> lo stesso numero di volte contro gli altri giocatori.<br> Se modifichi questo valore è possibile che questo non avvenga.</html>");
 
         creditiInfo.setIcon(icon);
         creditiInfo.setToolTipText("Crediti Iniziali");
