@@ -74,6 +74,7 @@ public class Client {
 
                 if(messaggio.getTipo()==Messaggio.INIZIO_ASTA){
                     gui.appendConsole("++++INIZIO ASTA TRA POCO++++");
+                    gui.setComboBox(messaggio.getListaPartecipanti());
                 } else if(messaggio.getTipo()==Messaggio.OFFERTA){
                     gui.setGiocatoreAttuale(messaggio.getGiocatore(), messaggio.getOfferta());
                     gui.setOffertaEnabled();
@@ -81,17 +82,34 @@ public class Client {
                     gui.setCountdown(messaggio.getSecondi());
                     gui.appendConsole("Secondi: "+messaggio.getSecondi());
                     if(messaggio.getSecondi()==0){
-                        Messaggio risposta = new Messaggio(Messaggio.RISPOSTA_OFFERTA);
-                        risposta.setOfferta(gui.getValoreOfferta());
-                        gui.appendConsole("Risposta offerta: "+gui.getValoreOfferta());
-                        try{
-                            output.writeObject(risposta);
-                        } catch (Exception e){
-                            gui.appendConsole("Eccezione nell'invio dell'offerta>> "+e.getMessage());
-                            e.printStackTrace();
+                        if(gui.haOfferto()){
+                            Messaggio risposta = new Messaggio(Messaggio.RISPOSTA_OFFERTA);
+                            risposta.setOfferta(gui.getValoreOfferta());
+                            gui.appendConsole("Risposta offerta: "+gui.getValoreOfferta());
+                            try{
+                                output.writeObject(risposta);
+                            } catch (Exception e){
+                                gui.appendConsole("Eccezione nell'invio dell'offerta>> "+e.getMessage());
+                                e.printStackTrace();
+                            }
+                        } else{
+                            Messaggio risposta = new Messaggio(Messaggio.RISPOSTA_OFFERTA);
+                            risposta.setOfferta(0);
+                            gui.appendConsole("Rifiutato il giocatore.");
+
+                            try{
+                                output.writeObject(risposta);
+                            } catch (Exception e){
+                                gui.appendConsole("Eccezione nell'invio del rifiuto>> "+e.getMessage());
+                                e.printStackTrace();
+                            }
                         }
+
                         gui.setOffertaNotEnabled();
                     }
+                } else if(messaggio.getTipo()==Messaggio.FINE_OFFERTA){
+                    gui.appendConsole(messaggio.getGiocatore().getCognome()+" aggiudicato da " + messaggio.getMessaggio() +" a "+messaggio.getGiocatore().getPrezzoAcquisto());
+                    gui.aggiungiGiocatore(messaggio.getGiocatore(),messaggio.getMessaggio());
                 }
 
             }

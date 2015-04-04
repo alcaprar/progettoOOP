@@ -53,6 +53,13 @@ public class ServerGUI extends JFrame {
             }
         });
 
+        inizioAstaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                server.asta();
+            }
+        });
+
         setContentPane(mainPanel);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(600,600);
@@ -69,6 +76,7 @@ public class ServerGUI extends JFrame {
      */
     public void appendConsole(String str){
         consoleArea.append(sdf.format(new Date())+">> "+str+"\n");
+        consoleArea.setCaretPosition(consoleArea.getText().length());
     }
 
     public void addConnesso(String utente){

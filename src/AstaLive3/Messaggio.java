@@ -3,6 +3,7 @@ package AstaLive3;
 import classi.Giocatore;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by alessandro on 03/04/15.
@@ -33,6 +34,8 @@ public class Messaggio implements Serializable {
     private String messaggio;
 
     private int secondi;
+
+    private ArrayList<String> listaPartecipanti;
 
     public Messaggio(int tipo){
         this.tipo = tipo;
@@ -76,5 +79,13 @@ public class Messaggio implements Serializable {
 
     public void setSecondi(int secondi) {
         this.secondi = secondi;
+    }
+
+    public ArrayList<String> getListaPartecipanti() {
+        return listaPartecipanti;
+    }
+
+    public void setListaPartecipanti(ArrayList<String> listaPartecipanti) {
+        this.listaPartecipanti = listaPartecipanti;
     }
 }

@@ -77,8 +77,19 @@ public class Server extends Thread {
         //TODO asta
         //comunico l'inizio dell'asta
         Messaggio mess = new Messaggio(Messaggio.INIZIO_ASTA);
+        //invio la lista dei partecipanti
+        ArrayList<String> listaPartecipanti = new ArrayList<String>();
+        for(ClientConnesso client : listaClient){
+            listaPartecipanti.add(client.username);
+        }
+        mess.setListaPartecipanti(listaPartecipanti);
         broadcast(mess);
-        asta();
+        try{
+            sleep(5000);
+        } catch (Exception e){
+            gui.appendConsole("Eccezione nello sleep del thread>> "+e.getMessage());
+            e.printStackTrace();
+        }
 
     }
 
@@ -101,42 +112,105 @@ public class Server extends Thread {
         }
     }
 
-    private void asta(){
+    public void asta(){
         for(Giocatore portiere: listaGiocatori){
             if(portiere.getRuolo()=='P'){
                 gui.appendConsole("Giocatore: "+portiere.getCognome());
-                for(ClientConnesso client: listaClient){
-                    gui.appendConsole("Client: " + client.username);
-                    Messaggio offerta =  new Messaggio(Messaggio.OFFERTA);
-                    offerta.setGiocatore(portiere);
-                    offerta.setOfferta(portiere.getPrezzoBase() - 1);
-                    offerta.setSecondi(secondiTimer);
-                    client.writeMsg(offerta);
 
-                    for(int i = secondiTimer;i>=0;i--){
-                        Messaggio timer = new Messaggio(Messaggio.TEMPO);
-                        timer.setSecondi(i);
-                        client.writeMsg(timer);
+                //setto tutti a true per questo giocatore
+                offertaClientTrue();
 
-                        try{
-                            sleep(1000);
-                        } catch (Exception e){
-                            gui.appendConsole("Eccezione nello sleep del thread>> "+e.getMessage());
-                            e.printStackTrace();
+                //offertaAttuale
+                int offertaAttuale = portiere.getPrezzoBase();
+
+                while (continuaAsta()) {
+                    //scorro un client alla volta
+                    for (ClientConnesso client : listaClient) {
+                        //se il client è ancora in asta
+                        if (client.offerta) {
+                            gui.appendConsole("Client: " + client.username);
+
+                            //invio il giocatore in palio
+                            Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
+                            offerta.setGiocatore(portiere);
+                            offerta.setOfferta(offertaAttuale);
+                            offerta.setSecondi(secondiTimer);
+                            client.writeMsg(offerta);
+
+                            //countdown per l'offerta
+                            for (int i = secondiTimer; i >= 0; i--) {
+                                Messaggio timer = new Messaggio(Messaggio.TEMPO);
+                                timer.setSecondi(i);
+                                client.writeMsg(timer);
+
+                                //aspetto un secondo
+                                try {
+                                    sleep(1000);
+                                } catch (Exception e) {
+                                    gui.appendConsole("Eccezione nello sleep del thread>> " + e.getMessage());
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            //prendo la risposta
+                            Messaggio risposta = client.readObject();
+                            if (risposta.getOfferta() == 0) {
+                                gui.appendConsole(client.username + " ha rifiutato " + portiere.getCognome());
+                                client.offerta = false;
+                            } else {
+                                gui.appendConsole(client.username + " ha offerto " + risposta.getOfferta() + " per " + portiere.getCognome());
+                                offertaAttuale = risposta.getOfferta();
+                            }
+
                         }
                     }
-
-                    Messaggio risposta = client.readObject();
-                    if(risposta.getOfferta()==0){
-                        gui.appendConsole(client.username +" ha rifiutato "+portiere.getCognome());
-                    } else{
-                        gui.appendConsole(client.username+" ha offerto "+risposta.getOfferta()+" per "+portiere.getCognome());
-                    }
-
                 }
+
+                aggiudicaGiocatore(portiere,offertaAttuale);
             }
         }
 
+    }
+
+    private boolean continuaAsta(){
+        int counter = 0;
+        for(ClientConnesso client : listaClient){
+            if(client.offerta){
+                counter++;
+            }
+        }
+
+        if(counter==0 || counter==1) return false;
+        else return true;
+    }
+
+    private void offertaClientTrue(){
+        for(ClientConnesso client : listaClient){
+            client.offerta = true;
+        }
+    }
+
+    private void aggiudicaGiocatore(Giocatore giocatore, int offerta){
+        ClientConnesso clientAggiudicato = null;
+        for(ClientConnesso client :listaClient){
+            if(client.offerta){
+                clientAggiudicato = client;
+            }
+        }
+
+        if(clientAggiudicato!=null){
+            giocatore.setPrezzoAcquisto(offerta);
+            clientAggiudicato.listaGiocatoriSquadre.add(giocatore);
+
+            //comunico a tutti che è stato aggiudicato
+            Messaggio giocatoreAggiudicato = new Messaggio(Messaggio.FINE_OFFERTA);
+            giocatoreAggiudicato.setGiocatore(giocatore);
+            giocatoreAggiudicato.setOfferta(offerta);
+            giocatoreAggiudicato.setMessaggio(clientAggiudicato.username);
+
+            //invio il messaggio a tutti
+            broadcast(giocatoreAggiudicato);
+        }
     }
 
     class ClientConnesso extends Thread{
@@ -145,7 +219,7 @@ public class Server extends Thread {
         ObjectInputStream input;
         ObjectOutputStream output;
 
-        private boolean continua;
+        private boolean offerta;
 
         private String username;
 
