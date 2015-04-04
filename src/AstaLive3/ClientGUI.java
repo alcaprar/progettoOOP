@@ -47,6 +47,8 @@ public class ClientGUI extends JFrame {
     private ArrayList<TableNotEditableModel> listaCentrocampistiSquadra;
     private ArrayList<TableNotEditableModel> listaAttaccantiSquadra;
 
+    private ArrayList<Integer> soldiSpesi;
+
     private ArrayList<String> partecipanti;
 
     public ClientGUI(){
@@ -148,6 +150,8 @@ public class ClientGUI extends JFrame {
         listaAttaccantiSquadra = new ArrayList<TableNotEditableModel>();
 
         partecipanti = new ArrayList<String>();
+
+        soldiSpesi = new ArrayList<Integer>();
         for(String partecipante : listaPartecipanti) {
             squadreBoxModel.addElement(partecipante);
             partecipanti.add(partecipante);
@@ -170,11 +174,13 @@ public class ClientGUI extends JFrame {
             attaccantiModel.setColumnIdentifiers(colonne);
             listaAttaccantiSquadra.add(centrocampistiModel);
 
-
-
+            soldiSpesi.add(new Integer(0));
         }
-
         squadreCombobox.setModel(squadreBoxModel);
+        portieriTable.setModel(listaAttaccantiSquadra.get(0));
+        difensoriTable.setModel(listaDifensoriSquadra.get(0));
+        centrocampistiTable.setModel(listaCentrocampistiSquadra.get(0));
+        attaccantiTable.setModel(listaAttaccantiSquadra.get(0));
     }
 
     public void aggiungiGiocatore(Giocatore giocatore, int prezzo, String persona){
@@ -190,6 +196,8 @@ public class ClientGUI extends JFrame {
         } else {
             listaAttaccantiSquadra.get(i).addRow(rigaGiocatore);
         }
+
+        soldiSpesi.set(i,soldiSpesi.get(i)+prezzo);
     }
 
     public void aggiungiPortiere(Giocatore giocatore, int prezzo,String persona){

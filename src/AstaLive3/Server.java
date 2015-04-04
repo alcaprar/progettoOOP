@@ -22,6 +22,8 @@ public class Server extends Thread {
 
     private boolean accettaConnessioni;
 
+    private boolean primoGiroAsta;
+
     private ArrayList<ClientConnesso> listaClient;
 
     private ArrayList<Giocatore> listaGiocatori;
@@ -132,6 +134,7 @@ public class Server extends Thread {
 
                     //setto tutti a true per questo giocatore
                     offertaClientTrue();
+                    primoGiroAsta=true;
 
                     //offertaAttuale
                     int offertaAttuale = portiere.getPrezzoBase() - 1;
@@ -179,6 +182,7 @@ public class Server extends Thread {
                                 }
                             }
                         }
+                        primoGiroAsta=false;
                     }
                     if (offertaAttuale >= portiere.getPrezzoBase()) {
                         aggiudicaGiocatore(portiere, offertaAttuale);
@@ -202,6 +206,7 @@ public class Server extends Thread {
 
                     //setto tutti a true per questo giocatore
                     offertaClientTrue();
+                    primoGiroAsta=true;
 
                     //offertaAttuale
                     int offertaAttuale = difensore.getPrezzoBase() - 1;
@@ -249,6 +254,7 @@ public class Server extends Thread {
                                 }
                             }
                         }
+                        primoGiroAsta=false;
                     }
                     if (offertaAttuale >= difensore.getPrezzoBase()) {
                         aggiudicaGiocatore(difensore, offertaAttuale);
@@ -272,6 +278,7 @@ public class Server extends Thread {
 
                     //setto tutti a true per questo giocatore
                     offertaClientTrue();
+                    primoGiroAsta = true;
 
                     //offertaAttuale
                     int offertaAttuale = centrocampista.getPrezzoBase() - 1;
@@ -319,6 +326,7 @@ public class Server extends Thread {
                                 }
                             }
                         }
+                        primoGiroAsta=false;
                     }
                     if (offertaAttuale >= centrocampista.getPrezzoBase()) {
                         aggiudicaGiocatore(centrocampista, offertaAttuale);
@@ -342,6 +350,7 @@ public class Server extends Thread {
 
                     //setto tutti a true per questo giocatore
                     offertaClientTrue();
+                    primoGiroAsta = true;
 
                     //offertaAttuale
                     int offertaAttuale = attaccante.getPrezzoBase() - 1;
@@ -389,6 +398,7 @@ public class Server extends Thread {
                                 }
                             }
                         }
+                        primoGiroAsta=false;
                     }
                     if (offertaAttuale >= attaccante.getPrezzoBase()) {
                         aggiudicaGiocatore(attaccante, offertaAttuale);
@@ -406,8 +416,9 @@ public class Server extends Thread {
                 counter++;
             }
         }
-
-        if(counter==0 || counter==1) return false;
+        if(primoGiroAsta) {
+            return true;
+        } else if(counter==0 || counter==1) return false;
         else return true;
     }
 
