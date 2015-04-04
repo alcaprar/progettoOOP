@@ -20,6 +20,8 @@ public class TableNotEditableModel extends DefaultTableModel{
         super(a, b);
     }
 
+    public TableNotEditableModel(){}
+
     /**
      *sovrascrive il metodo di DefaultTableModel che consente di modificare le celle rendendole non modificabili
      */

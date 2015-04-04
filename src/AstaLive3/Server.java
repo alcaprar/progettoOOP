@@ -112,64 +112,291 @@ public class Server extends Thread {
         }
     }
 
-    public void asta(){
-        for(Giocatore portiere: listaGiocatori){
-            if(portiere.getRuolo()=='P'){
-                gui.appendConsole("Giocatore: "+portiere.getCognome());
+    public void asta() {
+        astaPortieri();
+        astaDifensori();
+        astaCentrocampisti();
+        astaAttaccanti();
+    }
 
-                //setto tutti a true per questo giocatore
-                offertaClientTrue();
+    public void astaPortieri(){
+        //finche tutte le squadre non hanno tre portieri gira
+        while (!finitiPortieri()) {
+            //scorre la lista dei giocatori finche non è finita e tutti non hanno completato
+            for(int i =0; i<listaGiocatori.size() && !finitiPortieri();i++){
+                Giocatore portiere = listaGiocatori.get(i);
 
-                //offertaAttuale
-                int offertaAttuale = portiere.getPrezzoBase();
+                //vedo se è un portiere
+                if (portiere.getRuolo() == 'P') {
+                    gui.appendConsole("Giocatore: " + portiere.getCognome());
 
-                while (continuaAsta()) {
-                    //scorro un client alla volta
-                    for (ClientConnesso client : listaClient) {
-                        //se il client è ancora in asta
-                        if (client.offerta) {
-                            gui.appendConsole("Client: " + client.username);
+                    //setto tutti a true per questo giocatore
+                    offertaClientTrue();
 
-                            //invio il giocatore in palio
-                            Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
-                            offerta.setGiocatore(portiere);
-                            offerta.setOfferta(offertaAttuale);
-                            offerta.setSecondi(secondiTimer);
-                            client.writeMsg(offerta);
+                    //offertaAttuale
+                    int offertaAttuale = portiere.getPrezzoBase() - 1;
 
-                            //countdown per l'offerta
-                            for (int i = secondiTimer; i >= 0; i--) {
-                                Messaggio timer = new Messaggio(Messaggio.TEMPO);
-                                timer.setSecondi(i);
-                                client.writeMsg(timer);
+                    //asta per il giocatore i-esimo
+                    while (continuaAsta()) {
+                        //scorro un client alla volta
+                        for(int j=0;j<listaClient.size() && continuaAsta();j++){
+                            ClientConnesso client = listaClient.get(j);
 
-                                //aspetto un secondo
-                                try {
-                                    sleep(1000);
-                                } catch (Exception e) {
-                                    gui.appendConsole("Eccezione nello sleep del thread>> " + e.getMessage());
-                                    e.printStackTrace();
+                            //se il client è ancora in asta
+                            if (client.offerta) {
+                                gui.appendConsole("Client: " + client.username);
+
+                                //invio il giocatore in palio
+                                Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
+                                offerta.setGiocatore(portiere);
+                                offerta.setOfferta(offertaAttuale);
+                                offerta.setSecondi(secondiTimer);
+                                client.writeMsg(offerta);
+
+                                //countdown per l'offerta
+                                for (int k = secondiTimer; k >= 0; k--) {
+                                    Messaggio timer = new Messaggio(Messaggio.TEMPO);
+                                    timer.setSecondi(k);
+                                    client.writeMsg(timer);
+
+                                    //aspetto un secondo
+                                    try {
+                                        sleep(1000);
+                                    } catch (Exception e) {
+                                        gui.appendConsole("Eccezione nello sleep del thread>> " + e.getMessage());
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                //prendo la risposta
+                                Messaggio risposta = client.readObject();
+                                if (risposta.getOfferta() == 0) {
+                                    gui.appendConsole(client.username + " ha rifiutato " + portiere.getCognome());
+                                    client.offerta = false;
+                                } else {
+                                    gui.appendConsole(client.username + " ha offerto " + risposta.getOfferta() + " per " + portiere.getCognome());
+                                    offertaAttuale = risposta.getOfferta();
                                 }
                             }
-
-                            //prendo la risposta
-                            Messaggio risposta = client.readObject();
-                            if (risposta.getOfferta() == 0) {
-                                gui.appendConsole(client.username + " ha rifiutato " + portiere.getCognome());
-                                client.offerta = false;
-                            } else {
-                                gui.appendConsole(client.username + " ha offerto " + risposta.getOfferta() + " per " + portiere.getCognome());
-                                offertaAttuale = risposta.getOfferta();
-                            }
-
                         }
                     }
+                    if (offertaAttuale >= portiere.getPrezzoBase()) {
+                        aggiudicaGiocatore(portiere, offertaAttuale);
+                    }
                 }
-
-                aggiudicaGiocatore(portiere,offertaAttuale);
             }
         }
+        gui.appendConsole("Finiti i portieri.");
+    }
 
+    public void astaDifensori(){
+        //finche tutte le squadre non hanno tre portieri gira
+        while (!finitiDifensori()) {
+            //scorre la lista dei giocatori finche non è finita e tutti non hanno completato
+            for(int i =0; i<listaGiocatori.size() && !finitiDifensori();i++){
+                Giocatore difensore = listaGiocatori.get(i);
+
+                //vedo se è un portiere
+                if (difensore.getRuolo() == 'D') {
+                    gui.appendConsole("Giocatore: " + difensore.getCognome());
+
+                    //setto tutti a true per questo giocatore
+                    offertaClientTrue();
+
+                    //offertaAttuale
+                    int offertaAttuale = difensore.getPrezzoBase() - 1;
+
+                    //asta per il giocatore i-esimo
+                    while (continuaAsta()) {
+                        //scorro un client alla volta
+                        for(int j=0;j<listaClient.size() && continuaAsta();j++){
+                            ClientConnesso client = listaClient.get(j);
+
+                            //se il client è ancora in asta
+                            if (client.offerta) {
+                                gui.appendConsole("Client: " + client.username);
+
+                                //invio il giocatore in palio
+                                Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
+                                offerta.setGiocatore(difensore);
+                                offerta.setOfferta(offertaAttuale);
+                                offerta.setSecondi(secondiTimer);
+                                client.writeMsg(offerta);
+
+                                //countdown per l'offerta
+                                for (int k = secondiTimer; k >= 0; k--) {
+                                    Messaggio timer = new Messaggio(Messaggio.TEMPO);
+                                    timer.setSecondi(k);
+                                    client.writeMsg(timer);
+
+                                    //aspetto un secondo
+                                    try {
+                                        sleep(1000);
+                                    } catch (Exception e) {
+                                        gui.appendConsole("Eccezione nello sleep del thread>> " + e.getMessage());
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                //prendo la risposta
+                                Messaggio risposta = client.readObject();
+                                if (risposta.getOfferta() == 0) {
+                                    gui.appendConsole(client.username + " ha rifiutato " + difensore.getCognome());
+                                    client.offerta = false;
+                                } else {
+                                    gui.appendConsole(client.username + " ha offerto " + risposta.getOfferta() + " per " + difensore.getCognome());
+                                    offertaAttuale = risposta.getOfferta();
+                                }
+                            }
+                        }
+                    }
+                    if (offertaAttuale >= difensore.getPrezzoBase()) {
+                        aggiudicaGiocatore(difensore, offertaAttuale);
+                    }
+                }
+            }
+        }
+        gui.appendConsole("Finiti i difensori.");
+    }
+
+    public void astaCentrocampisti(){
+        //finche tutte le squadre non hanno tre portieri gira
+        while (!finitiCentrocampisti()) {
+            //scorre la lista dei giocatori finche non è finita e tutti non hanno completato
+            for(int i =0; i<listaGiocatori.size() && !finitiCentrocampisti();i++){
+                Giocatore centrocampista = listaGiocatori.get(i);
+
+                //vedo se è un portiere
+                if (centrocampista.getRuolo() == 'P') {
+                    gui.appendConsole("Giocatore: " + centrocampista.getCognome());
+
+                    //setto tutti a true per questo giocatore
+                    offertaClientTrue();
+
+                    //offertaAttuale
+                    int offertaAttuale = centrocampista.getPrezzoBase() - 1;
+
+                    //asta per il giocatore i-esimo
+                    while (continuaAsta()) {
+                        //scorro un client alla volta
+                        for(int j=0;j<listaClient.size() && continuaAsta();j++){
+                            ClientConnesso client = listaClient.get(j);
+
+                            //se il client è ancora in asta
+                            if (client.offerta) {
+                                gui.appendConsole("Client: " + client.username);
+
+                                //invio il giocatore in palio
+                                Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
+                                offerta.setGiocatore(centrocampista);
+                                offerta.setOfferta(offertaAttuale);
+                                offerta.setSecondi(secondiTimer);
+                                client.writeMsg(offerta);
+
+                                //countdown per l'offerta
+                                for (int k = secondiTimer; k >= 0; k--) {
+                                    Messaggio timer = new Messaggio(Messaggio.TEMPO);
+                                    timer.setSecondi(k);
+                                    client.writeMsg(timer);
+
+                                    //aspetto un secondo
+                                    try {
+                                        sleep(1000);
+                                    } catch (Exception e) {
+                                        gui.appendConsole("Eccezione nello sleep del thread>> " + e.getMessage());
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                //prendo la risposta
+                                Messaggio risposta = client.readObject();
+                                if (risposta.getOfferta() == 0) {
+                                    gui.appendConsole(client.username + " ha rifiutato " + centrocampista.getCognome());
+                                    client.offerta = false;
+                                } else {
+                                    gui.appendConsole(client.username + " ha offerto " + risposta.getOfferta() + " per " + centrocampista.getCognome());
+                                    offertaAttuale = risposta.getOfferta();
+                                }
+                            }
+                        }
+                    }
+                    if (offertaAttuale >= centrocampista.getPrezzoBase()) {
+                        aggiudicaGiocatore(centrocampista, offertaAttuale);
+                    }
+                }
+            }
+        }
+        gui.appendConsole("Finiti i centrocampisti.");
+    }
+
+    public void astaAttaccanti(){
+        //finche tutte le squadre non hanno tre portieri gira
+        while (!finitiAttaccanti()) {
+            //scorre la lista dei giocatori finche non è finita e tutti non hanno completato
+            for(int i =0; i<listaGiocatori.size() && !finitiAttaccanti();i++){
+                Giocatore attaccante = listaGiocatori.get(i);
+
+                //vedo se è un portiere
+                if (attaccante.getRuolo() == 'P') {
+                    gui.appendConsole("Giocatore: " + attaccante.getCognome());
+
+                    //setto tutti a true per questo giocatore
+                    offertaClientTrue();
+
+                    //offertaAttuale
+                    int offertaAttuale = attaccante.getPrezzoBase() - 1;
+
+                    //asta per il giocatore i-esimo
+                    while (continuaAsta()) {
+                        //scorro un client alla volta
+                        for(int j=0;j<listaClient.size() && continuaAsta();j++){
+                            ClientConnesso client = listaClient.get(j);
+
+                            //se il client è ancora in asta
+                            if (client.offerta) {
+                                gui.appendConsole("Client: " + client.username);
+
+                                //invio il giocatore in palio
+                                Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
+                                offerta.setGiocatore(attaccante);
+                                offerta.setOfferta(offertaAttuale);
+                                offerta.setSecondi(secondiTimer);
+                                client.writeMsg(offerta);
+
+                                //countdown per l'offerta
+                                for (int k = secondiTimer; k >= 0; k--) {
+                                    Messaggio timer = new Messaggio(Messaggio.TEMPO);
+                                    timer.setSecondi(k);
+                                    client.writeMsg(timer);
+
+                                    //aspetto un secondo
+                                    try {
+                                        sleep(1000);
+                                    } catch (Exception e) {
+                                        gui.appendConsole("Eccezione nello sleep del thread>> " + e.getMessage());
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                //prendo la risposta
+                                Messaggio risposta = client.readObject();
+                                if (risposta.getOfferta() == 0) {
+                                    gui.appendConsole(client.username + " ha rifiutato " + attaccante.getCognome());
+                                    client.offerta = false;
+                                } else {
+                                    gui.appendConsole(client.username + " ha offerto " + risposta.getOfferta() + " per " + attaccante.getCognome());
+                                    offertaAttuale = risposta.getOfferta();
+                                }
+                            }
+                        }
+                    }
+                    if (offertaAttuale >= attaccante.getPrezzoBase()) {
+                        aggiudicaGiocatore(attaccante, offertaAttuale);
+                    }
+                }
+            }
+        }
+        gui.appendConsole("Finiti gli attaccanti.");
     }
 
     private boolean continuaAsta(){
@@ -192,25 +419,77 @@ public class Server extends Thread {
 
     private void aggiudicaGiocatore(Giocatore giocatore, int offerta){
         ClientConnesso clientAggiudicato = null;
+        //cerco l'unico client che era rimasto in gioco
         for(ClientConnesso client :listaClient){
             if(client.offerta){
                 clientAggiudicato = client;
             }
         }
 
-        if(clientAggiudicato!=null){
-            giocatore.setPrezzoAcquisto(offerta);
-            clientAggiudicato.listaGiocatoriSquadre.add(giocatore);
+        giocatore.setPrezzoAcquisto(offerta);
+        clientAggiudicato.listaGiocatoriSquadre.add(giocatore);
 
-            //comunico a tutti che è stato aggiudicato
-            Messaggio giocatoreAggiudicato = new Messaggio(Messaggio.FINE_OFFERTA);
-            giocatoreAggiudicato.setGiocatore(giocatore);
-            giocatoreAggiudicato.setOfferta(offerta);
-            giocatoreAggiudicato.setMessaggio(clientAggiudicato.username);
+        gui.appendConsole(giocatore.getCognome()+" aggiudicato da " + clientAggiudicato.username + " a "+giocatore.getPrezzoAcquisto());
 
-            //invio il messaggio a tutti
-            broadcast(giocatoreAggiudicato);
+        //comunico a tutti che è stato aggiudicato
+        Messaggio giocatoreAggiudicato = new Messaggio(Messaggio.FINE_OFFERTA);
+        giocatoreAggiudicato.setGiocatore(giocatore);
+        giocatoreAggiudicato.setOfferta(offerta);
+        giocatoreAggiudicato.setMessaggio(clientAggiudicato.username);
+
+        //invio il messaggio a tutti
+        broadcast(giocatoreAggiudicato);
+
+        //rimuovo il giocatore dalla lista dei disponibili
+        listaGiocatori.remove(giocatore);
+    }
+
+    private boolean finitiPortieri(){
+        boolean flag = true;
+        for(ClientConnesso client : listaClient){
+            int numPor =0;
+            for(int i=0; i<client.listaGiocatoriSquadre.size();i++){
+                if(client.listaGiocatoriSquadre.get(i).getRuolo()=='P') numPor++;
+            }
+            if(numPor<3) flag=false;
         }
+        return flag;
+    }
+
+    private boolean finitiDifensori(){
+        boolean flag = true;
+        for(ClientConnesso client : listaClient){
+            int numPor =0;
+            for(int i=0; i<client.listaGiocatoriSquadre.size();i++){
+                if(client.listaGiocatoriSquadre.get(i).getRuolo()=='D') numPor++;
+            }
+            if(numPor<8) flag=false;
+        }
+        return flag;
+    }
+
+    private boolean finitiCentrocampisti(){
+        boolean flag = true;
+        for(ClientConnesso client : listaClient){
+            int numPor =0;
+            for(int i=0; i<client.listaGiocatoriSquadre.size();i++){
+                if(client.listaGiocatoriSquadre.get(i).getRuolo()=='C') numPor++;
+            }
+            if(numPor<8) flag=false;
+        }
+        return flag;
+    }
+
+    private boolean finitiAttaccanti(){
+        boolean flag = true;
+        for(ClientConnesso client : listaClient){
+            int numPor =0;
+            for(int i=0; i<client.listaGiocatoriSquadre.size();i++){
+                if(client.listaGiocatoriSquadre.get(i).getRuolo()=='A') numPor++;
+            }
+            if(numPor<6) flag=false;
+        }
+        return flag;
     }
 
     class ClientConnesso extends Thread{

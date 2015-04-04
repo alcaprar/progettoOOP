@@ -108,8 +108,8 @@ public class Client {
                         gui.setOffertaNotEnabled();
                     }
                 } else if(messaggio.getTipo()==Messaggio.FINE_OFFERTA){
-                    gui.appendConsole(messaggio.getGiocatore().getCognome()+" aggiudicato da " + messaggio.getMessaggio() +" a "+messaggio.getGiocatore().getPrezzoAcquisto());
-                    gui.aggiungiGiocatore(messaggio.getGiocatore(),messaggio.getMessaggio());
+                    gui.appendConsole(messaggio.getGiocatore().getCognome()+" aggiudicato da " + messaggio.getMessaggio() +" a "+messaggio.getOfferta());
+                    gui.aggiungiGiocatore(messaggio.getGiocatore(),messaggio.getOfferta(),messaggio.getMessaggio());
                 }
 
             }

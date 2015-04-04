@@ -1,6 +1,7 @@
 package AstaLive3;
 
 import classi.Giocatore;
+import utils.TableNotEditableModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -32,13 +33,19 @@ public class ClientGUI extends JFrame {
     private JButton buttonOfferta;
     private JLabel tempolbl;
     private JComboBox squadreCombobox;
-    private JTable squadreTable;
+    private JTable portieriTable;
+    private JTable difensoriTable;
+    private JTable centrocampistiTable;
+    private JTable attaccantiTable;
 
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
     private boolean offerto;
 
-    private ArrayList<DefaultTableModel> listaGiocatoriSquadra;
+    private ArrayList<TableNotEditableModel> listaPortieriSquadra;
+    private ArrayList<TableNotEditableModel> listaDifensoriSquadra;
+    private ArrayList<TableNotEditableModel> listaCentrocampistiSquadra;
+    private ArrayList<TableNotEditableModel> listaAttaccantiSquadra;
 
     private ArrayList<String> partecipanti;
 
@@ -69,7 +76,10 @@ public class ClientGUI extends JFrame {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 int i = squadreCombobox.getSelectedIndex();
-                squadreTable.setModel(listaGiocatoriSquadra.get(i));
+                portieriTable.setModel(listaPortieriSquadra.get(i));
+                difensoriTable.setModel(listaDifensoriSquadra.get(i));
+                centrocampistiTable.setModel(listaCentrocampistiSquadra.get(i));
+                attaccantiTable.setModel(listaAttaccantiSquadra.get(i));
             }
         });
 
@@ -98,7 +108,11 @@ public class ClientGUI extends JFrame {
         squadraRealelbl.setText(giocatore.getSquadraReale());
         inizialelbl.setText(String.valueOf(giocatore.getPrezzoBase()));
 
-        attualelbl.setText(String.valueOf(prezzo));
+        if(prezzo<giocatore.getPrezzoBase()){
+            attualelbl.setText("-");
+        } else {
+            attualelbl.setText(String.valueOf(prezzo));
+        }
         int max = 100;
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(prezzo+1,prezzo+1,max,1);
         spinnerOfferta.setModel(spinnerModel);
@@ -125,32 +139,90 @@ public class ClientGUI extends JFrame {
     }
 
     public void setComboBox(ArrayList<String> listaPartecipanti){
+        //inizializzo il model del combobox
         DefaultComboBoxModel squadreBoxModel = new DefaultComboBoxModel();
-        listaGiocatoriSquadra = new ArrayList<DefaultTableModel>();
+        //inizializzo il model delle tabelle
+        listaPortieriSquadra = new ArrayList<TableNotEditableModel>();
+        listaDifensoriSquadra = new ArrayList<TableNotEditableModel>();
+        listaCentrocampistiSquadra = new ArrayList<TableNotEditableModel>();
+        listaAttaccantiSquadra = new ArrayList<TableNotEditableModel>();
+
         partecipanti = new ArrayList<String>();
         for(String partecipante : listaPartecipanti) {
             squadreBoxModel.addElement(partecipante);
             partecipanti.add(partecipante);
 
             String[] colonne = {"Giocatore","Prezzo pagato"};
-            DefaultTableModel squadraTableModel = new DefaultTableModel();
-            squadraTableModel.setColumnIdentifiers(colonne);
-            listaGiocatoriSquadra.add(squadraTableModel);
+            //portieri model
+            TableNotEditableModel portieriModel = new TableNotEditableModel();
+            portieriModel.setColumnIdentifiers(colonne);
+            listaPortieriSquadra.add(portieriModel);
+            //difensori model
+            TableNotEditableModel difensoriModel = new TableNotEditableModel();
+            difensoriModel.setColumnIdentifiers(colonne);
+            listaDifensoriSquadra.add(difensoriModel);
+            //centrocampisti
+            TableNotEditableModel centrocampistiModel = new TableNotEditableModel();
+            centrocampistiModel.setColumnIdentifiers(colonne);
+            listaCentrocampistiSquadra.add(centrocampistiModel);
+            //attaccanti
+            TableNotEditableModel attaccantiModel = new TableNotEditableModel();
+            attaccantiModel.setColumnIdentifiers(colonne);
+            listaAttaccantiSquadra.add(centrocampistiModel);
+
+
+
         }
 
         squadreCombobox.setModel(squadreBoxModel);
-        squadreTable.setModel(listaGiocatoriSquadra.get(0));
     }
 
-    public void aggiungiGiocatore(Giocatore giocatore, String persona){
+    public void aggiungiGiocatore(Giocatore giocatore, int prezzo, String persona){
+        int i = partecipanti.indexOf(persona);
+        Object[] rigaGiocatore = {giocatore.getCognome(),prezzo};
+
+        if(giocatore.getRuolo()=='P'){
+            listaPortieriSquadra.get(i).addRow(rigaGiocatore);
+        } else if(giocatore.getRuolo()=='D'){
+            listaDifensoriSquadra.get(i).addRow(rigaGiocatore);
+        } else if(giocatore.getRuolo()=='C'){
+            listaCentrocampistiSquadra.get(i).addRow(rigaGiocatore);
+        } else {
+            listaAttaccantiSquadra.get(i).addRow(rigaGiocatore);
+        }
+    }
+
+    public void aggiungiPortiere(Giocatore giocatore, int prezzo,String persona){
         int i=0;
         int pers=0;
         for(String partecipante : partecipanti){
             if(partecipante.equals(persona)) pers =i;
             i++;
         }
-        Object[] rigaGiocatore = {giocatore.getCognome(),giocatore.getPrezzoAcquisto()};
-        listaGiocatoriSquadra.get(pers).addRow(rigaGiocatore);
+        Object[] rigaGiocatore = {giocatore.getCognome(),prezzo};
+        listaPortieriSquadra.get(pers).addRow(rigaGiocatore);
+    }
+
+    public void aggiungiDifensore(Giocatore giocatore, int prezzo,String persona){
+        int i=0;
+        int pers=0;
+        for(String partecipante : partecipanti){
+            if(partecipante.equals(persona)) pers =i;
+            i++;
+        }
+        Object[] rigaGiocatore = {giocatore.getCognome(),prezzo};
+        listaDifensoriSquadra.get(pers).addRow(rigaGiocatore);
+    }
+
+    public void aggiungiCentrocampista(Giocatore giocatore, int prezzo,String persona){
+        int i=0;
+        int pers=0;
+        for(String partecipante : partecipanti){
+            if(partecipante.equals(persona)) pers =i;
+            i++;
+        }
+        Object[] rigaGiocatore = {giocatore.getCognome(),prezzo};
+        listaPortieriSquadra.get(pers).addRow(rigaGiocatore);
     }
 
     private ClientGUI getFrame(){
