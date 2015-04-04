@@ -1,6 +1,7 @@
 package AstaLive3;
 
 import classi.Giocatore;
+import classi.Persona;
 import db.Mysql;
 
 import java.io.IOException;
@@ -30,11 +31,16 @@ public class Server extends Thread {
 
     final Mysql db = new Mysql();
 
+    private ArrayList<Persona> listaConsentiti = new ArrayList<Persona>();
+
     public Server(int porta, ServerGUI serverGUI){
         this.porta = porta;
         this.gui = serverGUI;
 
         listaClient = new ArrayList<ClientConnesso>();
+
+        listaConsentiti.add(new Persona("ale"));
+        listaConsentiti.add(new Persona("cri"));
 
         accettaConnessioni=true;
 
@@ -57,7 +63,7 @@ public class Server extends Thread {
 
     public void run(){
 
-        while(accettaConnessioni){
+        while(listaClient.size()<listaConsentiti.size()){
             try {
                 gui.appendConsole("Server in attesa di connessioni.. ");
                 Socket client = server.accept();
@@ -67,8 +73,10 @@ public class Server extends Thread {
                 gui.appendConsole("Connessione accettata da: "+client.getInetAddress());
 
                 ClientConnesso clientConn = new ClientConnesso(client);
-                listaClient.add(clientConn);
-                clientConn.start();
+                if(clientConn.controlloUsername()) {
+                    listaClient.add(clientConn);
+                    //clientConn.start();
+                }
             } catch (IOException ioe){
                 gui.appendConsole("Eccezione nell'attesa dei client>>"+ioe.getMessage());
                 ioe.printStackTrace();
@@ -86,6 +94,13 @@ public class Server extends Thread {
         mess.setListaPartecipanti(listaPartecipanti);
         broadcast(mess);
 
+        try{
+            sleep(5000);
+        } catch (Exception e){
+            gui.appendConsole("Eccezione nello sleep del thread>> "+e.getMessage());
+            e.printStackTrace();
+        }
+        asta();
     }
 
     public void stopConnessioni(){
@@ -99,7 +114,7 @@ public class Server extends Thread {
         }
     }
 
-    private synchronized void broadcast(Messaggio msg){
+    private void broadcast(Messaggio msg){
         gui.appendConsole("Broadcast: " + msg.getTipo());
 
         for(ClientConnesso client: listaClient){
@@ -498,6 +513,17 @@ public class Server extends Thread {
         return flag;
     }
 
+    private boolean utenteConsentito(String nickname){
+        boolean flag = false;
+        for(Persona utente :listaConsentiti){
+            if(utente.getNickname().equals(nickname)){
+                flag=true;
+                break;
+            }
+        }
+        return flag;
+    }
+
     class ClientConnesso extends Thread{
 
         private Socket client;
@@ -520,17 +546,6 @@ public class Server extends Thread {
                 input = new ObjectInputStream(client.getInputStream());
 
                 gui.appendConsole("Creati gli stream, attendo l'username.");
-                this.username = (String) input.readObject();
-                gui.appendConsole("Connesso adesso: "+this.username);
-                gui.addConnesso(this.username);
-
-                //invio la lista dei giocatori disponibili
-                Messaggio listaGiocatorimsg = new Messaggio(Messaggio.LISTA_GIOCATORI);
-                listaGiocatorimsg.setListaGiocatori(listaGiocatori);
-                this.writeMsg(listaGiocatorimsg);
-
-                //inizializzo la lista dei giocatori per questo client
-                listaGiocatoriSquadre = new ArrayList<Giocatore>();
             } catch (Exception e){
 
                 //TODO bisogna chiudere la connessione e fare return
@@ -542,6 +557,38 @@ public class Server extends Thread {
                 e.printStackTrace();
             }
 
+        }
+
+        public boolean controlloUsername(){
+            try{
+                this.username = (String) input.readObject();
+
+                if(utenteConsentito(this.username)) {
+                    gui.addConnesso(this.username);
+                    gui.appendConsole("Connesso adesso: " + this.username);
+
+                    //invio la notifica di connessione
+                    this.output.writeObject(true);
+
+                    //invio la lista dei giocatori disponibili
+                    Messaggio listaGiocatorimsg = new Messaggio(Messaggio.LISTA_GIOCATORI);
+                    listaGiocatorimsg.setListaGiocatori(listaGiocatori);
+                    this.writeMsg(listaGiocatorimsg);
+
+                    //inizializzo la lista dei giocatori per questo client
+                    listaGiocatoriSquadre = new ArrayList<Giocatore>();
+
+                    return true;
+                } else{
+                    gui.appendConsole("Non consentina la connesione a "+this.username);
+                    this.output.writeObject(false);
+                    return false;
+                }
+            } catch (Exception e){
+                gui.appendConsole("Eccezione nel controllo username>> " + e.getMessage());
+                e.printStackTrace();
+                return false;
+            }
         }
 
         public void run(){

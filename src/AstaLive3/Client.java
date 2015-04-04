@@ -1,5 +1,6 @@
 package AstaLive3;
 
+import classi.Persona;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 
@@ -20,17 +21,17 @@ public class Client {
     private Socket server;
     private ObjectInputStream input;
     private ObjectOutputStream output;
-    private String username;
+    private Persona utente;
 
     private String indirizzo;
     private int porta;
     private ClientGUI gui;
 
-    public Client(String indirizzo, int porta,String username, ClientGUI clientGUI){
+    public Client(String indirizzo, int porta, Persona utente, ClientGUI clientGUI){
         this.indirizzo = indirizzo;
         this.porta =porta;
         this.gui = clientGUI;
-        this.username = username;
+        this.utente = utente;
 
         //provo a connettermi al server
         try {
@@ -40,7 +41,7 @@ public class Client {
             e.printStackTrace();
         }
 
-        gui.appendConsole("Connessione accettata da: "+server.getInetAddress()+":"+porta);
+        gui.appendConsole("Connessione accettata da: " + server.getInetAddress() + ":" + porta);
 
         //creo gli stream I/O
         gui.appendConsole("Creo gli stream I/O e invio l'username.");
@@ -48,16 +49,22 @@ public class Client {
             input = new ObjectInputStream(server.getInputStream());
             output = new ObjectOutputStream(server.getOutputStream());
 
-            output.writeObject(this.username);
+            output.writeObject(this.utente.getNickname());
 
-            Messaggio listaGiocatorimsg = (Messaggio)input.readObject();
-            gui.setListaGiocatoriDisponibili(listaGiocatorimsg.getListaGiocatori());
+            if((Boolean)input.readObject()){
+                Messaggio listaGiocatorimsg = (Messaggio)input.readObject();
+                gui.setListaGiocatoriDisponibili(listaGiocatorimsg.getListaGiocatori());
+
+                new AscoltaServer().start();
+                gui.appendConsole("Connesso!");
+            } else{
+                gui.appendConsole("Connesione rifiutata.");
+            }
         } catch (Exception e){
             gui.appendConsole("Eccezione nella creazione degli stream I/O>> "+e.getMessage());
             e.printStackTrace();
         }
-        new AscoltaServer().start();
-        gui.appendConsole("Connesso!");
+
     }
 
     class AscoltaServer extends Thread{

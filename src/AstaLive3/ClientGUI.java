@@ -1,6 +1,7 @@
 package AstaLive3;
 
 import classi.Giocatore;
+import classi.Persona;
 import utils.TableNotEditableModel;
 
 import javax.swing.*;
@@ -76,7 +77,8 @@ public class ClientGUI extends JFrame {
                 int porta = (Integer) spinnerPorta.getValue();
                 String username = usernametxt.getText();
                 appendConsole("Tentativo di connessione a: " + indirizzo + ":" + porta + " Username: " + username);
-                new Client(indirizzo, porta, username, getFrame());
+                Persona utente = new Persona(username);
+                new Client(indirizzo, porta, utente, getFrame());
             }
         });
 
@@ -229,7 +231,7 @@ public class ClientGUI extends JFrame {
             soldiSpesi.add(new Integer(0));
         }
         squadreCombobox.setModel(squadreBoxModel);
-        portieriTable.setModel(listaAttaccantiSquadra.get(0));
+        portieriTable.setModel(listaPortieriSquadra.get(0));
         difensoriTable.setModel(listaDifensoriSquadra.get(0));
         centrocampistiTable.setModel(listaCentrocampistiSquadra.get(0));
         attaccantiTable.setModel(listaAttaccantiSquadra.get(0));
