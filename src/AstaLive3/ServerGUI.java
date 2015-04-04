@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.event.ListDataListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -60,9 +62,20 @@ public class ServerGUI extends JFrame {
             }
         });
 
+        getFrame().addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int risultato = JOptionPane.showConfirmDialog(null,"Sei sicuro di voler chiudere?","Exit",JOptionPane.OK_CANCEL_OPTION);
+                if(risultato==JOptionPane.OK_OPTION){
+                    getFrame().dispose();
+                    System.exit(1);
+                }
+            }
+        });
+
         setContentPane(mainPanel);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(600,600);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        pack();
         setVisible(true);
     }
 

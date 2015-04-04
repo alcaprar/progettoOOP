@@ -5,10 +5,7 @@ import utils.TableNotEditableModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +34,11 @@ public class ClientGUI extends JFrame {
     private JTable difensoriTable;
     private JTable centrocampistiTable;
     private JTable attaccantiTable;
+    private JLabel soldiSpesilbl;
+    private JTable portieriDisponibiliTable;
+    private JTable difensoriDisponibiliTable;
+    private JTable centrocampistiDisponibiliTable;
+    private JTable attaccantiDisponibiliTable;
 
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
@@ -50,6 +52,11 @@ public class ClientGUI extends JFrame {
     private ArrayList<Integer> soldiSpesi;
 
     private ArrayList<String> partecipanti;
+
+    private int creditiIniziali = 800;
+    private int giocatoriAcquistati = 0;
+    //miei soldi spesi
+    private Integer soldiSpesiMiei;
 
     public ClientGUI(){
         super("Client");
@@ -69,7 +76,7 @@ public class ClientGUI extends JFrame {
         buttonOfferta.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                offerto=true;
+                offerto = true;
                 setOffertaNotEnabled();
             }
         });
@@ -82,12 +89,27 @@ public class ClientGUI extends JFrame {
                 difensoriTable.setModel(listaDifensoriSquadra.get(i));
                 centrocampistiTable.setModel(listaCentrocampistiSquadra.get(i));
                 attaccantiTable.setModel(listaAttaccantiSquadra.get(i));
+
+                aggiornaSoldi(soldiSpesi.get(i));
             }
         });
 
+        getFrame().addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int risultato = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler chiudere?", "Exit", JOptionPane.OK_CANCEL_OPTION);
+                if (risultato == JOptionPane.OK_OPTION) {
+                    getFrame().dispose();
+                    System.exit(1);
+                }
+            }
+        });
+
+
+
         setContentPane(mainPanel);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        pack();
         setVisible(true);
     }
 
@@ -115,7 +137,7 @@ public class ClientGUI extends JFrame {
         } else {
             attualelbl.setText(String.valueOf(prezzo));
         }
-        int max = 100;
+        int max = creditiIniziali - soldiSpesiMiei -(25-giocatoriAcquistati) ;
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(prezzo+1,prezzo+1,max,1);
         spinnerOfferta.setModel(spinnerModel);
     }
@@ -181,6 +203,8 @@ public class ClientGUI extends JFrame {
         difensoriTable.setModel(listaDifensoriSquadra.get(0));
         centrocampistiTable.setModel(listaCentrocampistiSquadra.get(0));
         attaccantiTable.setModel(listaAttaccantiSquadra.get(0));
+
+        soldiSpesiMiei = soldiSpesi.get(partecipanti.indexOf(usernametxt.getText()));
     }
 
     public void aggiungiGiocatore(Giocatore giocatore, int prezzo, String persona){
@@ -197,40 +221,14 @@ public class ClientGUI extends JFrame {
             listaAttaccantiSquadra.get(i).addRow(rigaGiocatore);
         }
 
-        soldiSpesi.set(i,soldiSpesi.get(i)+prezzo);
+        giocatoriAcquistati++;
+        soldiSpesi.set(i, soldiSpesi.get(i) + prezzo);
+
+        aggiornaSoldi(soldiSpesi.get(squadreCombobox.getSelectedIndex()));
     }
 
-    public void aggiungiPortiere(Giocatore giocatore, int prezzo,String persona){
-        int i=0;
-        int pers=0;
-        for(String partecipante : partecipanti){
-            if(partecipante.equals(persona)) pers =i;
-            i++;
-        }
-        Object[] rigaGiocatore = {giocatore.getCognome(),prezzo};
-        listaPortieriSquadra.get(pers).addRow(rigaGiocatore);
-    }
+    public void setListaGiocatoriDisponibili(ArrayList<Giocatore> listaGiocatori){
 
-    public void aggiungiDifensore(Giocatore giocatore, int prezzo,String persona){
-        int i=0;
-        int pers=0;
-        for(String partecipante : partecipanti){
-            if(partecipante.equals(persona)) pers =i;
-            i++;
-        }
-        Object[] rigaGiocatore = {giocatore.getCognome(),prezzo};
-        listaDifensoriSquadra.get(pers).addRow(rigaGiocatore);
-    }
-
-    public void aggiungiCentrocampista(Giocatore giocatore, int prezzo,String persona){
-        int i=0;
-        int pers=0;
-        for(String partecipante : partecipanti){
-            if(partecipante.equals(persona)) pers =i;
-            i++;
-        }
-        Object[] rigaGiocatore = {giocatore.getCognome(),prezzo};
-        listaPortieriSquadra.get(pers).addRow(rigaGiocatore);
     }
 
     private ClientGUI getFrame(){
@@ -243,5 +241,9 @@ public class ClientGUI extends JFrame {
 
     public int getValoreOfferta(){
         return (Integer)spinnerOfferta.getValue();
+    }
+
+    private void aggiornaSoldi(Integer soldi){
+        soldiSpesilbl.setText(String.valueOf(soldi));
     }
 }

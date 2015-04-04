@@ -49,7 +49,6 @@ public class CreaCampionato extends JFrame {
     private JButton annullaButton;
 
     private ArrayList<Persona> listaUtenti = new ArrayList<Persona>();
-    private ArrayList<Squadra> listaSquadrePartecipanti = new ArrayList<Squadra>();
 
     private Persona presidente;
 
@@ -372,6 +371,8 @@ public class CreaCampionato extends JFrame {
         int primaf = (Integer) primafSpinner.getValue();
         int fasce = (Integer) fasceSpinner.getValue();
         int bonusc = (Integer) bonuscSpinner.getValue();
+
+        ArrayList<Squadra> listaSquadrePartecipanti = new ArrayList<Squadra>();
 
         for (int i = 0; i < partecipantiModel.getSize(); i++) {
             listaSquadrePartecipanti.add(new Squadra(new Persona((String) partecipantiModel.getElementAt(i))));

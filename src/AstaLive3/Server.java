@@ -529,6 +529,11 @@ public class Server extends Thread {
                 gui.appendConsole("Connesso adesso: "+this.username);
                 gui.addConnesso(this.username);
 
+                //invio la lista dei giocatori disponibili
+                Messaggio listaGiocatorimsg = new Messaggio(Messaggio.LISTA_GIOCATORI);
+                listaGiocatorimsg.setListaGiocatori(listaGiocatori);
+                this.writeMsg(listaGiocatorimsg);
+
                 //inizializzo la lista dei giocatori per questo client
                 listaGiocatoriSquadre = new ArrayList<Giocatore>();
             } catch (Exception e){

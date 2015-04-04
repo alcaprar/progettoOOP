@@ -16,7 +16,8 @@ public class Messaggio implements Serializable {
             OFFERTA =2,
             RISPOSTA_OFFERTA=3,
             TEMPO = 4,
-            FINE_OFFERTA=5;
+            FINE_OFFERTA=5,
+            LISTA_GIOCATORI=6;
 
 
     //OFFERTA serve al server per inviare il giocatore con il prezzo attuale. se è la prima offerta il prezzo è quello inizale meno uno
@@ -35,6 +36,7 @@ public class Messaggio implements Serializable {
 
     private int secondi;
 
+    private ArrayList<Giocatore> listaGiocatori;
     private ArrayList<String> listaPartecipanti;
 
     public Messaggio(int tipo){
@@ -87,5 +89,13 @@ public class Messaggio implements Serializable {
 
     public void setListaPartecipanti(ArrayList<String> listaPartecipanti) {
         this.listaPartecipanti = listaPartecipanti;
+    }
+
+    public ArrayList<Giocatore> getListaGiocatori() {
+        return listaGiocatori;
+    }
+
+    public void setListaGiocatori(ArrayList<Giocatore> listaGiocatori) {
+        this.listaGiocatori = listaGiocatori;
     }
 }

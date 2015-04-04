@@ -49,9 +49,12 @@ public class Client {
             output = new ObjectOutputStream(server.getOutputStream());
 
             output.writeObject(this.username);
-        } catch (IOException ioe){
-            gui.appendConsole("Eccezione nella creazione degli stream I/O>> "+ioe.getMessage());
-            ioe.printStackTrace();
+
+            Messaggio listaGiocatorimsg = (Messaggio)input.readObject();
+            gui.appendConsole("Numero giocatori disponibili: "+listaGiocatorimsg.getListaGiocatori().size());
+        } catch (Exception e){
+            gui.appendConsole("Eccezione nella creazione degli stream I/O>> "+e.getMessage());
+            e.printStackTrace();
         }
         new AscoltaServer().start();
         gui.appendConsole("Connesso!");
