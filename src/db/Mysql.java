@@ -116,7 +116,6 @@ public class Mysql{
             registraStmt.setString(3, utente.getNome());
             registraStmt.setString(4,utente.getCognome());
             registraStmt.setString(5,utente.getEmail());
-            registraStmt.setString(6, "u");  //tipo: utente
 
             int rs = registraStmt.executeUpdate();
             if(rs==1){
@@ -1303,6 +1302,54 @@ public class Mysql{
             if(aggiornaNomeStmt!=null){
                 try{
                     aggiornaNomeStmt.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Aggiorna la password dell'admin.
+     * @param password nuova password
+     */
+    public void aggiornaPasswordAdmin(String password){
+        Connection conn = null;
+        PreparedStatement aggiornaPasswordStmt = null;
+        String aggiornaPasswordSql = "UPDATE Utente set Password =? where Nickname='admin'";
+
+        try{
+            //registra il JBCD driver
+            Class.forName(JDBC_DRIVER);
+            //apre la connessione
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            aggiornaPasswordStmt = conn.prepareStatement(aggiornaPasswordSql);
+            aggiornaPasswordStmt.setString(1,password);
+
+            aggiornaPasswordStmt.executeUpdate();
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            if(conn!=null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if(aggiornaPasswordStmt!=null){
+                try{
+                    aggiornaPasswordStmt.close();
                 } catch (Exception e){
                     e.printStackTrace();
                 }

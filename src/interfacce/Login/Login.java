@@ -7,6 +7,7 @@ import interfacce.Applicazione.Applicazione;
 import interfacce.Applicazione.CreaCampionato;
 import interfacce.Applicazione.HomeStorico;
 import utils.Utils;
+import utils.Validator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -199,19 +200,30 @@ public class Login extends JFrame {
      * Viene attivata al clic del bottone o al clic di enter quando il cursore è su passtxt
      */
     private void controllaLogin() {
-        //controlla se è l'admin che ha fatto il login
-        //-se si apre l'applicazione per l'admin e chiude il frame di login
-        if (usertxt.getText().equals("admin") && utils.passwordString(passtxt.getPassword()).equals("admin")) {
-            ApplicazioneAdmin admingui = new ApplicazioneAdmin();
-            getFrame().dispose();
-        }
-        //se non è l'admin deve controllare nel db se le credenziali inserite esistono
-        else {
-            //creo un nuovo oggetto di persona con solo nome e pass
-            utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
+        //creo un nuovo oggetto di persona con solo nome e pass
+        utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
 
-            //db.login restituisce true se le credenziali sono giuste
-            if (db.login(utente)) {
+        //db.login restituisce true se le credenziali sono giuste
+        if (db.login(utente)) {
+            //se è l'admin controllo se è il primo login.
+            if(utente.getNickname().equals("admin")){
+                if(utente.getPassword().equals("password")){
+                    JLabel jPassword = new JLabel("Questo è il tuo primo login. Cambia password.");
+                    JPasswordField passwordField = new JPasswordField();
+                    Object[] ob = {jPassword, passwordField};
+                    int result = JOptionPane.showConfirmDialog(null, ob, "Password", JOptionPane.OK_CANCEL_OPTION);
+
+                    if (result == JOptionPane.OK_OPTION) {
+                        String passwordValue = Utils.passwordString(passwordField.getPassword());
+                        if(Validator.password(passwordValue)){
+                            db.aggiornaPasswordAdmin(passwordValue);
+                        }
+                    }
+                } else{
+                    ApplicazioneAdmin admingui = new ApplicazioneAdmin();
+                    getFrame().dispose();
+                }
+            } else {
                 //se l'utente esiste scarico le squadre di cui è presidente con la funzione selectSquadre
                 //che restituisce un arraylist di squadre
                 utente.setPresidenza(db.selectSquadre(utente));
@@ -228,6 +240,7 @@ public class Login extends JFrame {
             }
         }
     }
+
 
     /**
      * Setta il combobox a partire dalla lista di squadre.
