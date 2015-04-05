@@ -334,7 +334,7 @@ public class Mysql{
      * Scarica la lista dei giocatori disponibili per il campionato passato.
      * Per giocatori disponibili si intende quei giocatori che non appertongono
      * a nessuna squadra di quel campionato.
-     * @param campionato
+     * @param campionato campionato
      * @return lista di giocatori liberi (non tesserati da nessuno)
      */
     public ArrayList<Giocatore> selectGiocatoriDisponibili(Campionato campionato){
@@ -408,8 +408,8 @@ public class Mysql{
      * Per inserire i giocatori ad inizio campionato viene utilizzata un'altra funzione.
      * @see #inserisciGiocatoriAnno(ArrayList)
      * @see #rimuoviGiocatore(Campionato, Squadra, int, int)
-     * @param campionato
-     * @param squadra
+     * @param campionato campionato
+     * @param squadra squadra alla quale bisogna aggiungere il giocatore
      * @param ID id del giocatore da aggiungere
      * @param prezzoPagato prezzo pagato per il giocatore
      * @return true se l'aggiornamento è andato a buon fine
@@ -473,11 +473,11 @@ public class Mysql{
      * Viene utilizzata per modificare le rose mentre il campionato è in corso.
      * Rimuovere un giocatore da una squadra.
      * @see #aggiungiGiocatore(Campionato, Squadra, int, int)
-     * @param campionato
-     * @param squadra
+     * @param campionato campionato
+     * @param squadra squadra da modificare
      * @param ID id del giocatore da vendere
      * @param prezzoVendita prezzo di vendita del giocatore
-     * @return true se l'aggiornamento è andato a buon fine
+     * @return true se l'aggiornamento è andato a buon fine, false altrimenti
      */
     public boolean rimuoviGiocatore(Campionato campionato,Squadra squadra, int ID, int prezzoVendita){
         Connection conn = null;
@@ -717,8 +717,8 @@ public class Mysql{
      * Scarica la classifica di un campionato.
      * Anche se il campionato deve ancora cominciare la classifica esiste già,
      * con tutti i campi a zero. (tranne i nomi delle squadre)
-     * @param campionato
-     * @return classifica
+     * @param campionato campionato per il quale bisogna scaricare la classifica
+     * @return classifica: array list di classifica
      */
     public ArrayList<Classifica> selectClassifica(Campionato campionato){
         Connection conn = null;
@@ -909,8 +909,8 @@ public class Mysql{
 
     /**
      * Scarica il calendario di un campionato passato per parametro.
-     * @param campionato
-     * @return lista delle giornate(calendario)
+     * @param campionato campionato per il quale bisogna scaricare il calendario
+     * @return calendario: array list di giornate
      */
     public ArrayList<Giornata> selectGiornate(Campionato campionato){
         Connection conn = null;
@@ -1079,6 +1079,11 @@ public class Mysql{
         }
     }
 
+    /**
+     * Controlla se è già stata inserita la formazione per la prossima giornata.
+     * @param squadra squadra per cui bisogna controllare
+     * @return true se la formazione è già stata inserita, false altrimenti.
+     */
     public boolean selectFormazioneInserita(Squadra squadra){
         Connection conn = null;
         PreparedStatement formazioneInseritastmt = null;
@@ -1146,8 +1151,8 @@ public class Mysql{
     /**
      * La funzione scarica dal database la formazione della squadra per la partita in questione.
      * Viene ritornato un arraylist di giocatori in ordine di schieramento.
-     * @param IDpart
-     * @param squadra
+     * @param IDpart partita
+     * @param squadra squadra per la quale bisogna scaricare la formazione
      * @return formazione
      */
     public ArrayList<Voto> selectFormazioni(int IDpart, Squadra squadra){
@@ -1264,7 +1269,7 @@ public class Mysql{
      * Aggiorna il nome della squadra.
      * Serve per il primo login per settare il nome della squadra,
      * che al momento della creazione è null.
-     * @param squadra
+     * @param squadra squadra da aggiornare
      */
     public void aggiornaNomeSquadra(Squadra squadra){
         Connection conn = null;
@@ -1360,7 +1365,7 @@ public class Mysql{
 
     /**
      * Aggiorna il nome dell'utente quando viene cambiato nel pannello info.
-     * @param utente
+     * @param utente utente da aggiornare
      */
     public void aggiornaNomeUtente(Persona utente){
             Connection conn = null;
@@ -1407,7 +1412,7 @@ public class Mysql{
 
     /**
      * Aggiorna il cognome dell'utente quando viene cambiato nel pannello info.
-     * @param utente
+     * @param utente utente da aggiornare
      */
     public void aggiornaCognomeUtente(Persona utente){
         Connection conn = null;
@@ -1454,7 +1459,7 @@ public class Mysql{
 
     /**
      * Aggiorna la giornata reale quando viene cambiato dall'admin.
-     * @param giornata
+     * @param giornata giornata da modificare
      */
     public void aggiornaGiornataReale(GiornataReale giornata){
         Connection conn=null;
@@ -1505,7 +1510,7 @@ public class Mysql{
      * Cancella la formazione inserita.
      * Viene utilizzato quando si vuole aggiornare la formazione già inserita.
      * Viene prima cancellata con questo metodo e poi inserita con il metodo per l'inserimento.
-     * @param squadra
+     * @param squadra squadra per la quale bisogna cancellare la formazione
      * @return true se l'aggiornamento è andato a buon fine
      */
     public boolean deleteFormazioneInserita(Squadra squadra){
@@ -1563,8 +1568,8 @@ public class Mysql{
     /**
      * Inserisci i risultati della giornata.
      * Viene richiamato dal metodo che calcola i risultati.
-     * @param campionato
-     * @return
+     * @param campionato campionato per cui bisogna inserire i risultati della giornata
+     * @return true se l'inseriemnto è andato a buon fine, false altrimenti
      */
     public boolean inserisciRisultatiGiornata(Campionato campionato){
         Connection conn = null;
@@ -1681,7 +1686,7 @@ public class Mysql{
 
     /**
      * Scarica la lista degli avvisi che il presidente di lega ha inviato a tutti i partecipanti.
-     * @param squadra
+     * @param squadra squadra loggata
      * @return lista con array di stringhe. [0] =titolo, [1]=testo
      */
     public ArrayList<String[]> selectAvvisi(Squadra squadra){
@@ -1740,7 +1745,7 @@ public class Mysql{
 
     /**
      * Scarica la lista di messaggi che gli utenti hanno inviato al presidente di lega
-     * @param squadra
+     * @param squadra squadra
      * @return lista con array di stringhe. [0]= titolo, [0]=testo,[3]=nick utente
      */
     public ArrayList<String[]> selectMessaggi(Squadra squadra){
@@ -1812,8 +1817,8 @@ public class Mysql{
      * Crea il campionato passato come parametro.
      * Nel database vengono inseriti il regolamento, le squadre partecipanti e il calendario.
      * Le squadre vengono create senza nome, che sarà inserito da ogni utente al primo login.
-     * @param campionato
-     * @return true se l'inserimento è andato a buon fine
+     * @param campionato campionato da inserire
+     * @return true se l'inserimento è andato a buon fine, false altrimenti
      */
     public boolean creaCampionato(Campionato campionato){
         Connection conn = null ;
@@ -1985,7 +1990,7 @@ public class Mysql{
     /**
      * Inserisce la lista dei giocatori disponibili in serie A.
      * La lista dei giocatori viene presa da un file csv/xls.
-     * @param listaGiocatori
+     * @param listaGiocatori lista dei giocatori disponibili
      * @return true se l'inserimento è andato a buon fine
      */
     public boolean inserisciGiocatoriAnno(ArrayList<Giocatore> listaGiocatori){
@@ -2047,8 +2052,8 @@ public class Mysql{
      * Dopo aver inserito i giocatori aggiorna i crediti disponibili di ogni squadra.
      * Dopo aver inserito tutti i giocatori aggiorna la flag del campionato
      * che indica se sono stati inseriti i giocatori delle squadre.
-     * @param campionato
-     * @return
+     * @param campionato campionato per il quale bisogna inserire le rose
+     * @return true se l'inserimento è andato a buon fine, false altrimenti
      */
     public boolean inserisciGiocatori(Campionato campionato){
         Connection conn = null;
@@ -2143,9 +2148,9 @@ public class Mysql{
     /**
      * Carica i voti della giornata nel database dopo che è stato fatto
      * il parsing del file csv/xls.
-     * @param listaVoti
-     * @param numeroGiornta
-     * @return true se l'inseriemento è andato a buon fine
+     * @param listaVoti lista dei voti
+     * @param numeroGiornta numero della giornata reale
+     * @return true se l'inseriemento è andato a buon fine, false altrimenti
      */
     public boolean inserisciVoti(ArrayList<ArrayList<String>> listaVoti, int numeroGiornta){
         Connection conn = null;
@@ -2222,9 +2227,9 @@ public class Mysql{
 
     /**
      * Inserisce la formazione nel database per la giornata passata come parametro.
-     * @param squadra
-     * @param partita
-     * @return true se l'inserimento è andato a buon fine
+     * @param squadra squadra per cui bisogna inserire la formazione
+     * @param partita partita per la quale bisogna inserire la formazione
+     * @return true se l'inserimento è andato a buon fine, false altrimenti
      */
     public boolean inserisciFormazione(Squadra squadra, Partita partita){
         Connection conn = null;
@@ -2290,7 +2295,7 @@ public class Mysql{
 
     /**
      * Inserisce nel database gli avvisi del presidente di lega.
-     * @param campionato
+     * @param campionato campionato per il quale bisogna inserire gli avvisi
      * @param titolo titolo dell'avviso
      * @param testo testo dell'avviso
      * @return tru se l'inserimento è andato a buon fine
@@ -2349,10 +2354,10 @@ public class Mysql{
 
     /**
      * Inserisce un messaggio di una squadra per il presidente di lega nel database.
-     * @param squadra
-     * @param titolo
-     * @param testo
-     * @return true se l'inserimento è andato a buon fine
+     * @param squadra squadra che invia il messaggio
+     * @param titolo titolo del messaggio
+     * @param testo testo del messaggio
+     * @return true se l'inserimento è andato a buon fine, false altrimenti
      */
     public boolean inserisciMessaggio(Squadra squadra, String titolo, String testo){
         Connection conn = null;
@@ -2413,7 +2418,7 @@ public class Mysql{
     /**
      * Cancella tutti campionati e tutte i dati associati ai campionati.
      * Può essere richiamata solo dall'admin per "pulire" il database.
-     * @return
+     * @return numero di righe cancellate dal db
      */
     public int deleteCampionati(){
         Connection conn = null;
@@ -2475,7 +2480,7 @@ public class Mysql{
      * -partecipanti al campionato;
      * -calendario con i risultati di ogni partita;
      * -classifica finale.
-     * @return true se l'aggiornamento è andato a buon fine
+     * @return true se l'aggiornamento è andato a buon fine, false altrimenti
      */
     public boolean terminaCampionato(Campionato campionato){
         Connection conn = null;
@@ -2724,7 +2729,7 @@ public class Mysql{
 
     /**
      * Scarica la lista dei campionati a cui ha partecipato l'utente.
-     * @param utente
+     * @param utente utente
      * @return lista dei campionati passati
      */
     public ArrayList<Storico> selectStorico(Persona utente){
@@ -2821,8 +2826,8 @@ public class Mysql{
 
     /**
      * Scarica la classifica finale del campionato per lo storico.
-     * @param storico
-     * @return classifica
+     * @param storico storico
+     * @return classifica: array list di classifica
      */
     public ArrayList<Classifica> selectClassificaStorico(Storico storico){
         Connection conn = null;
@@ -2903,8 +2908,8 @@ public class Mysql{
 
     /**
      * Scarica il calendario del campionato passato.
-     * @param storico
-     * @return
+     * @param storico storico
+     * @return calendario: arraylisti di giornate
      */
     public ArrayList<Giornata> selectGiornateStorico(Storico storico){
         Connection conn = null;
