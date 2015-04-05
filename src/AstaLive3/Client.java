@@ -4,6 +4,7 @@ import classi.Campionato;
 import classi.Persona;
 
 
+import javax.swing.*;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -25,6 +26,8 @@ public class Client {
     private String indirizzo;
     private int porta;
     private ClientGUI gui;
+
+    private AscoltaServer ascoltaServer;
 
     public Client(String indirizzo, int porta, Persona utente, Campionato camp, ClientGUI clientGUI){
         this.indirizzo = indirizzo;
@@ -55,7 +58,8 @@ public class Client {
                 Messaggio listaGiocatorimsg = (Messaggio)input.readObject();
                 gui.setListaGiocatoriDisponibili(listaGiocatorimsg.getListaGiocatori());
 
-                new AscoltaServer().start();
+                ascoltaServer = new AscoltaServer();
+                ascoltaServer.start();
                 gui.appendConsole("Connesso!");
                 gui.setConnettiNotEnabled();
             } else{
@@ -66,6 +70,17 @@ public class Client {
             e.printStackTrace();
         }
 
+    }
+
+    public void close(){
+        ascoltaServer.stop();
+        try{
+            server.close();
+            input.close();
+            output.close();
+        } catch (Exception e){
+            //non ci posso far niente
+        }
     }
 
     class AscoltaServer extends Thread{
@@ -80,6 +95,8 @@ public class Client {
                     gui.appendConsole("Eccezione nella lettura di un messaggio dal server>> "+e.getMessage());
                     gui.appendConsole("Il server ha chiuso la connessione.");
                     e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Il server ha chiuso la connessione.\nL'asta è da rifare da zero.\nErrore: "+e.getMessage(), "Errore connessione", JOptionPane.ERROR_MESSAGE);
+                    gui.close();
                     break;
                 }
 
@@ -111,8 +128,12 @@ public class Client {
                             try{
                                 output.writeObject(risposta);
                             } catch (Exception e){
-                                gui.appendConsole("Eccezione nell'invio del rifiuto>> "+e.getMessage());
+                                gui.appendConsole("Eccezione nell'invio del rifiuto>> " + e.getMessage());
                                 e.printStackTrace();
+                                JOptionPane.showMessageDialog(null, "Il server ha chiuso la connessione.\nL'asta è da rifare da zero.\nErrore: " + e.getMessage(), "Errore connessione", JOptionPane.ERROR_MESSAGE);
+                                close();
+                                gui.close();
+                                break;
                             }
                         }
 

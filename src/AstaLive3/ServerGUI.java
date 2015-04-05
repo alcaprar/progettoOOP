@@ -65,8 +65,8 @@ public class ServerGUI extends JFrame {
             public void windowClosing(WindowEvent e) {
                 int risultato = JOptionPane.showConfirmDialog(null,"Sei sicuro di voler chiudere?","Exit",JOptionPane.OK_CANCEL_OPTION);
                 if(risultato==JOptionPane.OK_OPTION){
-                    getFrame().dispose();
-                    applicazione.setVisible(true);
+                    server.stopServer();
+                    close();
                 }
             }
         });
@@ -133,5 +133,10 @@ public class ServerGUI extends JFrame {
 
     private ServerGUI getFrame(){
         return this;
+    }
+
+    public void close(){
+        getFrame().dispose();
+        applicazione.setVisible(true);
     }
 }

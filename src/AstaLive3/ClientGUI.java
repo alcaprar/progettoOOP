@@ -3,11 +3,13 @@ package AstaLive3;
 import classi.*;
 import interfacce.Applicazione.Applicazione;
 import utils.TableNotEditableModel;
+import utils.Validator;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,6 +73,8 @@ public class ClientGUI extends JFrame {
     //miei soldi spesi
     private Integer soldiSpesiMiei;
 
+    private Client client;
+
     public ClientGUI(Applicazione app, Campionato camp, Persona ut){
         super("Client - "+ut.getNickname());
         this.applicazione = app;
@@ -84,10 +88,12 @@ public class ClientGUI extends JFrame {
         connettiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String indirizzo = indirizzotxt.getText();
-                int porta = (Integer) spinnerPorta.getValue();
-                appendConsole("Tentativo di connessione a: " + indirizzo + ":" + porta);
-                new Client(indirizzo, porta, utente, campionato, getFrame());
+                if(Validator.indirizzoIP(indirizzotxt.getText())) {
+                    String indirizzo = indirizzotxt.getText();
+                    int porta = (Integer) spinnerPorta.getValue();
+                    appendConsole("Tentativo di connessione a: " + indirizzo + ":" + porta);
+                    client = new Client(indirizzo, porta, utente, campionato, getFrame());
+                }
             }
         });
 
@@ -124,8 +130,7 @@ public class ClientGUI extends JFrame {
             public void windowClosing(WindowEvent e) {
                 int risultato = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler chiudere?", "Exit", JOptionPane.OK_CANCEL_OPTION);
                 if (risultato == JOptionPane.OK_OPTION) {
-                    getFrame().dispose();
-                    applicazione.setVisible(true);
+                    close();
                 }
             }
         });
@@ -342,6 +347,12 @@ public class ClientGUI extends JFrame {
 
     private ClientGUI getFrame(){
         return this;
+    }
+
+    public void close(){
+        client.close();
+        getFrame().dispose();
+        applicazione.setVisible(true);
     }
 
     public boolean haOfferto(){

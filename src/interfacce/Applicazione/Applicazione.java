@@ -3,13 +3,13 @@ package interfacce.Applicazione;
 import classi.*;
 import db.Mysql;
 import interfacce.Login.CaricamentoDati;
+import interfacce.Login.Login;
 import org.joda.time.DateTime;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
@@ -39,14 +39,19 @@ public class Applicazione extends JFrame {
     private GestioneLega gestioneLegaPanel;
     private JPanel gestioneLegaTab;
 
+    private JMenuBar menubar;
+
     private Squadra sqr;
+
+    private Login loginForm;
 
     final Mysql db = new Mysql();
 
-    public Applicazione(final Squadra squadra, CaricamentoDati caricamento) {
+    public Applicazione(final Squadra squadra, CaricamentoDati caricamento, Login login) {
         super("Gestore Fantacalcio");
 
         this.sqr = squadra;
+        this.loginForm = login;
 
         //scarico la classifica e la inserisco nel campionato
         ArrayList<classi.Classifica> classifica = new ArrayList<classi.Classifica>();
@@ -118,7 +123,16 @@ public class Applicazione extends JFrame {
             } else {
                 //giocatori gia inseriti
                 //è possibile modificare le singole rose
-                gestioneGiocatoriPanel.refresh2();
+                gestioneGiocatoriPanel.refreshGiaInseriti();
+            }
+        }else if(squadra.getProprietario().isPresidenteLega() &&  squadra.getCampionato().isAstaLive()){
+            if (squadra.getCampionato().isGiocatoriDaInserire()) {
+                //le rose sono ancora da inserire
+                gestioneGiocatoriPanel.refreshAstaLive();
+            } else {
+                //giocatori gia inseriti
+                //è possibile modificare le singole rose
+                gestioneGiocatoriPanel.refreshGiaInseriti();
             }
         }else {
             tabbedPane1.remove(tabbedPane1.indexOfTab("Gestione Giocatori"));
@@ -165,13 +179,11 @@ public class Applicazione extends JFrame {
         getFrame().addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                int risultato = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler chiudere?", "Exit", JOptionPane.OK_CANCEL_OPTION);
-                if (risultato == JOptionPane.OK_OPTION) {
-                    getFrame().dispose();
-                    System.exit(1);
-                }
+                close();
             }
         });
+
+        setJMenu();
 
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -231,6 +243,72 @@ public class Applicazione extends JFrame {
     private void setListaGiocatori(){
         for(Squadra squadre: sqr.getCampionato().getListaSquadrePartecipanti()){
             squadre.setGiocatori(db.selectGiocatori(squadre));
+        }
+    }
+
+    private void setJMenu(){
+        menubar = new JMenuBar();
+
+        JMenu file = new JMenu("File");
+        file.getAccessibleContext().setAccessibleDescription("File");
+
+        menubar.add(file);
+
+        JMenuItem cambiaSquadra = new JMenuItem("Cambia squadra");
+        cambiaSquadra.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getFrame().dispose();
+                loginForm.setVisible(true);
+            }
+        });
+        file.add(cambiaSquadra);
+
+        JMenuItem logout = new JMenuItem("Logout");
+        logout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getFrame().dispose();
+                loginForm.setVisible(true);
+                loginForm.mostraLogin();
+            }
+        });
+        file.add(logout);
+
+        JMenuItem esci = new JMenuItem("Esci");
+        esci.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                close();
+            }
+        });
+        file.add(esci);
+
+        JMenu info = new JMenu("?");
+        info.getAccessibleContext().setAccessibleDescription("Info");
+
+        menubar.add(info);
+
+        JMenuItem versione = new JMenuItem("Versione");
+        versione.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showOptionDialog(null, "Gestore Fantacalcio\nVersione 1.0\nSviluppatori:\nAlessandro Caprarelli\nGiacomo Grilli\nChristian Manfredi",
+                        "Versione", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, null, new Object[] {},
+                        null);
+            }
+        });
+        info.add(versione);
+
+        getFrame().setJMenuBar(menubar);
+    }
+
+    private void close(){
+        int risultato = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler chiudere?", "Exit", JOptionPane.OK_CANCEL_OPTION);
+        if (risultato == JOptionPane.OK_OPTION) {
+            getFrame().dispose();
+            System.exit(1);
         }
     }
 

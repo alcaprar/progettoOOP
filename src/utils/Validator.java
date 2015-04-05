@@ -28,6 +28,24 @@ public class Validator {
     }
 
     /**
+     * Controlla che una stringa sia un indirizzo IP valido.
+     * @param str indirizzo IP
+     * @return true se è un indirizzo IP valido, false altrimenti.
+     */
+    public static boolean indirizzoIP(String str){
+        if(str.equals("localhost")){
+            return true;
+        } else{
+            Pattern p = Pattern.compile("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]");
+            Matcher m = p.matcher(str);
+            if(!m.matches()){
+                JOptionPane.showMessageDialog(null, "Inserisci un indirizzo IP corretto.");
+            }
+            return (m.matches());
+        }
+    }
+
+    /**
      * Controlla che una stringa sia un nickname  valido
      *
      * @param str nickname

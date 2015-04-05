@@ -34,6 +34,8 @@ public class GestioneGiocatori extends JPanel {
     private JSpinner spinner;
     private JPanel mainPanel;
     private JLabel soldiSpesilbl;
+    private JPanel gestionePanel;
+    private JPanel astaLivePanel;
     private JScrollPane tabellaListaGiocatori;
 
     private DefaultComboBoxModel comboBoxModel;
@@ -239,7 +241,7 @@ public class GestioneGiocatori extends JPanel {
                         //rimuove la tab della gestione giocatori e
                         //si sposta sulla tab di home
                         JOptionPane.showMessageDialog(null, "Le rose sono state inserite con successo!", "Avviso", JOptionPane.INFORMATION_MESSAGE);
-                        getPanel().refresh2();
+                        getPanel().refreshGiaInseriti();
                         //applicazione.getTabbedPane().remove(applicazione.getTabbedPane().indexOfTab("Gestione Giocatori"));
                         //applicazione.getTabbedPane().setSelectedIndex(0);
                         applicazione.getFormazionePanel().refresh();
@@ -454,12 +456,18 @@ public class GestioneGiocatori extends JPanel {
      * Fa il refresh della pagina, cioè richiama i metodi per settare le tabelle, combobox e spinner.
      * Viene utilizzato quando sono già state inserite le rose, cioè le squadre hanno già dei giocatori.
      */
-    public void refresh2() {
+    public void refreshGiaInseriti() {
         listaGiocatori = db.selectGiocatoriDisponibili(squadra.getCampionato());
         setComboBox();
         setSpinner();
         setTabellaGiocatori();
         setTabelleSquadre2();
+    }
+
+    public void refreshAstaLive(){
+        gestionePanel.setVisible(false);
+        astaLivePanel.setVisible(true);
+
     }
 
     private GestioneGiocatori getPanel(){

@@ -2,7 +2,6 @@ package interfacce.Applicazione;
 
 import classi.Storico;
 import db.Mysql;
-import interfacce.Applicazione.TabellaGiornata;
 import interfacce.Login.CaricamentoDati;
 import interfacce.Login.Login;
 import utils.RenderTableAlternate;

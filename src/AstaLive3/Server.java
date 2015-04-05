@@ -6,6 +6,7 @@ import classi.Persona;
 import classi.Squadra;
 import db.Mysql;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -42,9 +43,6 @@ public class Server extends Thread {
 
         //lista dei client connessi
         listaClient = new ArrayList<ClientConnesso>();
-
-        //listaConsentiti.add(new Persona("ale"));
-        //listaConsentiti.add(new Persona("cri"));
 
         accettaConnessioni=true;
 
@@ -111,7 +109,7 @@ public class Server extends Thread {
         asta();
     }
 
-    public void stopConnessioni(){
+    /*public void stopConnessioni(){
         this.accettaConnessioni=false;
         //server per fare l'accept e andare sull'if per fare il break
         try {
@@ -120,6 +118,20 @@ public class Server extends Thread {
         catch(Exception e) {
             gui.appendConsole("Eccezione nello stop delle connessioni>> "+e.getMessage());
             e.printStackTrace();
+        }
+    }*/
+
+    public void stopServer(){
+        this.stop();
+        try{
+            server.close();
+            for(ClientConnesso client:listaClient){
+                client.input.close();
+                client.output.close();
+                client.client.close();
+            }
+        }catch (Exception e){
+            //non ci posso far niente
         }
     }
 
@@ -709,7 +721,9 @@ public class Server extends Thread {
 
         private boolean writeMsg(Messaggio msg){
             if(!client.isConnected()) {
-                //close();
+                JOptionPane.showMessageDialog(null,"Un client si è disconnesso.\nL'asta è da rifare da zero.","Errore connessione",JOptionPane.ERROR_MESSAGE);
+                stopServer();
+                gui.close();
                 return false;
             }
             // write the message to the stream

@@ -139,7 +139,7 @@ public class Login extends JFrame {
                     if(utente.equals(squadra.getCampionato().getPresidente())) squadra.getProprietario().setPresidenteLega(true);
                     getFrame().dispose();
                     CaricamentoDati caricamento = new CaricamentoDati();
-                    Applicazione app = new Applicazione(squadra, caricamento);
+                    Applicazione app = new Applicazione(squadra, caricamento,getFrame());
                 }
                 //se non è stato inserito il nome nel dialog ne viene mostrato un altro che dice che non è stata inserita il nome
                 else {
@@ -224,8 +224,7 @@ public class Login extends JFrame {
                 //aggiorno il label con il nome dell'utente
                 nomeutentetxt.setText(utente.getNickname());
                 //cambio la card da mostrare dato che il login è andato bene
-                CardLayout c1 = (CardLayout) (panel1.getLayout());
-                c1.show(panel1, "login2");
+                mostraSquadre();
             }
         }
     }
@@ -289,6 +288,16 @@ public class Login extends JFrame {
 
         getFrame().pack();
 
+    }
+
+    public void mostraLogin(){
+        CardLayout c1 = (CardLayout) (panel1.getLayout());
+        c1.show(panel1, "login1");
+    }
+
+    public void mostraSquadre(){
+        CardLayout c1 = (CardLayout) (panel1.getLayout());
+        c1.show(panel1, "login2");
     }
 
 }
