@@ -157,12 +157,12 @@ public class Server extends Thread {
                     gui.appendConsole("Giocatore: " + portiere.getCognome());
 
                     //setto tutti a true per questo giocatore
-                    offertaClientTrue();
+                    offertaClientTruePortieri();
                     primoGiroAsta=true;
 
                     //offertaAttuale
                     int offertaAttuale = portiere.getPrezzoBase() - 1;
-                    String utenteOfferta = null;
+                    Persona utenteOfferta = null;
 
                     //asta per il giocatore i-esimo
                     while (continuaAsta()) {
@@ -178,7 +178,7 @@ public class Server extends Thread {
                                 Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
                                 offerta.setGiocatore(portiere);
                                 offerta.setOfferta(offertaAttuale);
-                                offerta.setMessaggio(utenteOfferta);
+                                offerta.setUtente(utenteOfferta);
                                 offerta.setSecondi(secondiTimer);
                                 client.writeMsg(offerta);
 
@@ -205,7 +205,7 @@ public class Server extends Thread {
                                 } else {
                                     gui.appendConsole(client.utente.getNickname() + " ha offerto " + risposta.getOfferta() + " per " + portiere.getCognome());
                                     offertaAttuale = risposta.getOfferta();
-                                    utenteOfferta = client.utente.getNickname();
+                                    utenteOfferta = client.utente;
                                 }
                             }
                         }
@@ -232,11 +232,12 @@ public class Server extends Thread {
                     gui.appendConsole("Giocatore: " + difensore.getCognome());
 
                     //setto tutti a true per questo giocatore
-                    offertaClientTrue();
+                    offertaClientTrueDifensori();
                     primoGiroAsta=true;
 
                     //offertaAttuale
                     int offertaAttuale = difensore.getPrezzoBase() - 1;
+                    Persona utenteOfferta = null;
 
                     //asta per il giocatore i-esimo
                     while (continuaAsta()) {
@@ -252,6 +253,7 @@ public class Server extends Thread {
                                 Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
                                 offerta.setGiocatore(difensore);
                                 offerta.setOfferta(offertaAttuale);
+                                offerta.setUtente(utenteOfferta);
                                 offerta.setSecondi(secondiTimer);
                                 client.writeMsg(offerta);
 
@@ -278,6 +280,7 @@ public class Server extends Thread {
                                 } else {
                                     gui.appendConsole(client.utente.getNickname() + " ha offerto " + risposta.getOfferta() + " per " + difensore.getCognome());
                                     offertaAttuale = risposta.getOfferta();
+                                    utenteOfferta = client.utente;
                                 }
                             }
                         }
@@ -304,11 +307,12 @@ public class Server extends Thread {
                     gui.appendConsole("Giocatore: " + centrocampista.getCognome());
 
                     //setto tutti a true per questo giocatore
-                    offertaClientTrue();
+                    offertaClientTrueCentrocampisti();
                     primoGiroAsta = true;
 
                     //offertaAttuale
                     int offertaAttuale = centrocampista.getPrezzoBase() - 1;
+                    Persona utenteOfferta = null;
 
                     //asta per il giocatore i-esimo
                     while (continuaAsta()) {
@@ -324,6 +328,7 @@ public class Server extends Thread {
                                 Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
                                 offerta.setGiocatore(centrocampista);
                                 offerta.setOfferta(offertaAttuale);
+                                offerta.setUtente(utenteOfferta);
                                 offerta.setSecondi(secondiTimer);
                                 client.writeMsg(offerta);
 
@@ -350,6 +355,7 @@ public class Server extends Thread {
                                 } else {
                                     gui.appendConsole(client.utente.getNickname() + " ha offerto " + risposta.getOfferta() + " per " + centrocampista.getCognome());
                                     offertaAttuale = risposta.getOfferta();
+                                    utenteOfferta = client.utente;
                                 }
                             }
                         }
@@ -376,11 +382,12 @@ public class Server extends Thread {
                     gui.appendConsole("Giocatore: " + attaccante.getCognome());
 
                     //setto tutti a true per questo giocatore
-                    offertaClientTrue();
+                    offertaClientTrueAttaccanti();
                     primoGiroAsta = true;
 
                     //offertaAttuale
                     int offertaAttuale = attaccante.getPrezzoBase() - 1;
+                    Persona utenteOfferta = null;
 
                     //asta per il giocatore i-esimo
                     while (continuaAsta()) {
@@ -396,6 +403,7 @@ public class Server extends Thread {
                                 Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
                                 offerta.setGiocatore(attaccante);
                                 offerta.setOfferta(offertaAttuale);
+                                offerta.setUtente(utenteOfferta);
                                 offerta.setSecondi(secondiTimer);
                                 client.writeMsg(offerta);
 
@@ -422,6 +430,7 @@ public class Server extends Thread {
                                 } else {
                                     gui.appendConsole(client.utente.getNickname() + " ha offerto " + risposta.getOfferta() + " per " + attaccante.getCognome());
                                     offertaAttuale = risposta.getOfferta();
+                                    utenteOfferta = client.utente;
                                 }
                             }
                         }
@@ -448,10 +457,42 @@ public class Server extends Thread {
         } else return !(counter==0 || counter==1);
     }
 
-    private void offertaClientTrue(){
+    private void offertaClientTruePortieri(){
         for(ClientConnesso client : listaClient){
             if(!client.finitiPortieri()){
                 client.offerta = true;
+            } else{
+                client.offerta=false;
+            }
+        }
+    }
+
+    private void offertaClientTrueDifensori(){
+        for(ClientConnesso client : listaClient){
+            if(!client.finitiDifensori()){
+                client.offerta = true;
+            } else{
+                client.offerta=false;
+            }
+        }
+    }
+
+    private void offertaClientTrueCentrocampisti(){
+        for(ClientConnesso client : listaClient){
+            if(!client.finitiCentrocampisti()){
+                client.offerta = true;
+            } else{
+                client.offerta=false;
+            }
+        }
+    }
+
+    private void offertaClientTrueAttaccanti(){
+        for(ClientConnesso client : listaClient){
+            if(!client.finitiAttaccanti()){
+                client.offerta = true;
+            } else{
+                client.offerta=false;
             }
         }
     }

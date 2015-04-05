@@ -57,6 +57,7 @@ public class Client {
 
                 new AscoltaServer().start();
                 gui.appendConsole("Connesso!");
+                gui.setConnettiNotEnabled();
             } else{
                 gui.appendConsole("Connesione rifiutata.");
             }
@@ -86,7 +87,7 @@ public class Client {
                     gui.appendConsole("++++INIZIO ASTA TRA POCO++++");
                     gui.setComboBox(messaggio.getListaPartecipanti());
                 } else if(messaggio.getTipo()==Messaggio.OFFERTA){
-                    gui.setGiocatoreAttuale(messaggio.getGiocatore(), messaggio.getOfferta(),messaggio.getMessaggio());
+                    gui.setGiocatoreAttuale(messaggio.getGiocatore(), messaggio.getOfferta(),messaggio.getUtente());
                     gui.setOffertaEnabled();
                 } else if(messaggio.getTipo()==Messaggio.TEMPO){
                     gui.setCountdown(messaggio.getSecondi());

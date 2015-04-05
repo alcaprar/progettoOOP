@@ -6,6 +6,7 @@ import utils.TableNotEditableModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -161,7 +162,7 @@ public class ClientGUI extends JFrame {
         consoleArea.setCaretPosition(consoleArea.getText().length());
     }
 
-    public void setGiocatoreAttuale(Giocatore giocatore, int prezzo, String utenteOfferta){
+    public void setGiocatoreAttuale(Giocatore giocatore, int prezzo, Persona utenteOfferta){
         cognomelbl.setText(giocatore.getCognome());
         ruololbl.setText(String.valueOf(giocatore.getRuolo()));
         squadraRealelbl.setText(giocatore.getSquadraReale());
@@ -170,7 +171,7 @@ public class ClientGUI extends JFrame {
         if(prezzo<giocatore.getPrezzoBase()){
             attualelbl.setText("-");
         } else {
-            attualelbl.setText(String.valueOf(prezzo)+" - "+utenteOfferta);
+            attualelbl.setText(String.valueOf(prezzo)+" - "+utenteOfferta.getNickname());
         }
         int max = campionato.getCreditiIniziali() - soldiSpesiMiei -(25-giocatoriAcquistati) ;
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(prezzo+1,prezzo+1,max,1);
@@ -190,8 +191,19 @@ public class ClientGUI extends JFrame {
         lasciaButton.setEnabled(false);
     }
 
+    public void setConnettiNotEnabled(){
+        indirizzotxt.setEnabled(false);
+        spinnerPorta.setEnabled(false);
+        connettiButton.setEnabled(false);
+    }
+
     public void setCountdown(int secondi){
         tempolbl.setText(String.valueOf(secondi));
+        if(secondi<=3){
+            tempolbl.setForeground(Color.RED);
+        } else{
+            tempolbl.setForeground(Color.BLACK);
+        }
     }
 
     private void setSpinnerPorta(){
@@ -244,21 +256,18 @@ public class ClientGUI extends JFrame {
         attaccantiTable.setModel(listaAttaccantiSquadra.get(0));
 
         int index=0;
-        int i=0;
-        for(Persona persona:listaPartecipanti){
-            if(persona.equals(utente)) index=i;
-            i++;
+        for(int i=0;i<listaPartecipanti.size();i++){
+            if(listaPartecipanti.get(i).equals(utente)) index = i;
         }
 
         soldiSpesiMiei = soldiSpesi.get(index);
     }
 
     public void aggiungiGiocatore(Giocatore giocatore, int prezzo, Persona persona){
-        int j=0;
+
         int i=0;
-        for(Persona pers:listaPartecipanti){
-            if(persona.equals(utente)) i=j;
-            j++;
+        for(int j=0;j<listaPartecipanti.size();j++){
+            if(listaPartecipanti.get(j).equals(persona)) i=j;
         }
         Object[] rigaGiocatore = {giocatore.getCognome(),prezzo};
 

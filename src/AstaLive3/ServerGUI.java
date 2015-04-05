@@ -50,26 +50,15 @@ public class ServerGUI extends JFrame {
 
         getIPaddress();
 
-        stopConnessioniButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                server.stopConnessioni();
-            }
-        });
 
         startServerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 server = new Server((Integer)spinnerPorta.getValue(), getFrame(), campionato);
+                startServerButton.setEnabled(false);
             }
         });
 
-        inizioAstaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                server.asta();
-            }
-        });
 
         getFrame().addWindowListener(new WindowAdapter() {
             @Override
