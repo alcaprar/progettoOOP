@@ -2,20 +2,20 @@ package AstaLive3;
 
 import classi.*;
 import interfacce.Applicazione.Applicazione;
-import utils.TableNotEditableModel;
-import utils.Validator;
+import utils.*;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by alessandro on 03/04/15.
+ * Classe per l'interfaccia grafica del client.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class ClientGUI extends JFrame {
     private JPanel mainPanel;
@@ -60,6 +60,7 @@ public class ClientGUI extends JFrame {
     private TableNotEditableModel centrocampistiDispModel;
     private TableNotEditableModel attaccantiDispModel;
 
+    //soldi spesi dai singoli partecipanti
     private ArrayList<Integer> soldiSpesi;
 
     private ArrayList<Persona> listaPartecipanti;
@@ -68,9 +69,9 @@ public class ClientGUI extends JFrame {
     private Campionato campionato;
     private Persona utente;
 
-    private int creditiIniziali = 800;
+    //counter dei giocatori acquistati dal client
     private int giocatoriAcquistati = 0;
-    //miei soldi spesi
+    //riferimento ai soldi spesi dal client
     private Integer soldiSpesiMiei;
 
     private Client client;
@@ -92,7 +93,7 @@ public class ClientGUI extends JFrame {
                     String indirizzo = indirizzotxt.getText();
                     int porta = (Integer) spinnerPorta.getValue();
                     appendConsole("Tentativo di connessione a: " + indirizzo + ":" + porta);
-                    client = new Client(indirizzo, porta, utente, campionato, getFrame());
+                    client = new Client(indirizzo, porta, utente, getFrame());
                 }
             }
         });
@@ -154,10 +155,6 @@ public class ClientGUI extends JFrame {
         setVisible(true);
     }
 
-    /*public static void main(String args[]){
-        new ClientGUI();
-    }*/
-
     /**
      * Scrive nella console.
      * @param str stringa da stampare
@@ -167,6 +164,12 @@ public class ClientGUI extends JFrame {
         consoleArea.setCaretPosition(consoleArea.getText().length());
     }
 
+    /**
+     * Setta il panel per l'offerta con il giocatore attuale.
+     * @param giocatore giocatore per cui si sta offrendo
+     * @param prezzo prezzo attuale del giocatore
+     * @param utenteOfferta utente che sta offrendo per questo giocatore
+     */
     public void setGiocatoreAttuale(Giocatore giocatore, int prezzo, Persona utenteOfferta){
         cognomelbl.setText(giocatore.getCognome());
         ruololbl.setText(String.valueOf(giocatore.getRuolo()));
@@ -174,15 +177,21 @@ public class ClientGUI extends JFrame {
         inizialelbl.setText(String.valueOf(giocatore.getPrezzoBase()));
 
         if(prezzo<giocatore.getPrezzoBase()){
-            attualelbl.setText("-");
+            attualelbl.setText("Prezzo base");
         } else {
             attualelbl.setText(String.valueOf(prezzo)+" - "+utenteOfferta.getNickname());
         }
+
+        //setto lo spinner in base hai soldi rimanenti
+        //(serve per non rischiare di far sforare con le offerte
         int max = campionato.getCreditiIniziali() - soldiSpesiMiei -(25-giocatoriAcquistati) ;
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(prezzo+1,prezzo+1,max,1);
         spinnerOfferta.setModel(spinnerModel);
     }
 
+    /**
+     * Rende attivi i bottoni per l'offerta.
+     */
     public void setOffertaEnabled(){
         spinnerOfferta.setEnabled(true);
         buttonOfferta.setEnabled(true);
@@ -190,18 +199,28 @@ public class ClientGUI extends JFrame {
         offerto = false;
     }
 
+    /**
+     * Disattiva i bottoni per l'offerta.
+     */
     public void setOffertaNotEnabled(){
         spinnerOfferta.setEnabled(false);
         buttonOfferta.setEnabled(false);
         lasciaButton.setEnabled(false);
     }
 
+    /**
+     * Disattiva il pannello per la connessione.
+     */
     public void setConnettiNotEnabled(){
         indirizzotxt.setEnabled(false);
         spinnerPorta.setEnabled(false);
         connettiButton.setEnabled(false);
     }
 
+    /**
+     * Aggiorna il label per il tempo rimanente.
+     * @param secondi secondi rimanenti
+     */
     public void setCountdown(int secondi){
         tempolbl.setText(String.valueOf(secondi));
         if(secondi<=3){
@@ -211,6 +230,10 @@ public class ClientGUI extends JFrame {
         }
     }
 
+    /**
+     * Setta lo spinner per la porta.
+     * Utilizza un editor modificato per non far vedere il punto delle migliaia.
+     */
     private void setSpinnerPorta(){
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1500,1000,2000,1);
         spinnerPorta.setModel(spinnerModel);
@@ -219,7 +242,11 @@ public class ClientGUI extends JFrame {
         spinnerPorta.setEditor(editor);
     }
 
-    public void setComboBox(ArrayList<Persona> listaPartecipanti){
+    /**
+     * Setta il combobox e la tabella per i giocatori dei singoli partecipanti.
+     * @param listaPartecipanti
+     */
+    public void setComboBoxTable(ArrayList<Persona> listaPartecipanti){
         //inizializzo il model del combobox
         DefaultComboBoxModel squadreBoxModel = new DefaultComboBoxModel();
         //inizializzo il model delle tabelle
@@ -252,7 +279,7 @@ public class ClientGUI extends JFrame {
             attaccantiModel.setColumnIdentifiers(colonne);
             listaAttaccantiSquadra.add(centrocampistiModel);
 
-            soldiSpesi.add(new Integer(0));
+            soldiSpesi.add(0);
         }
         squadreCombobox.setModel(squadreBoxModel);
         portieriTable.setModel(listaPortieriSquadra.get(0));
@@ -268,6 +295,12 @@ public class ClientGUI extends JFrame {
         soldiSpesiMiei = soldiSpesi.get(index);
     }
 
+    /**
+     * Aggiunge un giocatore alla tabella dei giocatori acquistati.
+     * @param giocatore giocatore acquistato
+     * @param prezzo prezzo d'acquisto del giocatore
+     * @param persona persona che ha acquistato il giocatore
+     */
     public void aggiungiGiocatore(Giocatore giocatore, int prezzo, Persona persona){
 
         int i=0;
@@ -315,6 +348,10 @@ public class ClientGUI extends JFrame {
         aggiornaSoldi(soldiSpesi.get(squadreCombobox.getSelectedIndex()));
     }
 
+    /**
+     * Setta la tabella per la lista dei giocatori disponibili durante l'asta.
+     * @param listaGiocatori lista dei giocatori disponibili
+     */
     public void setListaGiocatoriDisponibili(ArrayList<Giocatore> listaGiocatori){
         Object[] colonne = {"Cognome","Prezzo","Squadra"};
 
@@ -345,24 +382,51 @@ public class ClientGUI extends JFrame {
         attaccantiDisponibiliTable.setModel(attaccantiDispModel);
     }
 
+    /**
+     * Ritorna l'oggetto principale.
+     * @return this
+     */
     private ClientGUI getFrame(){
         return this;
     }
 
+    /**
+     * Chiude la finestra e rende visibile l'applicazione principale.
+     */
     public void close(){
         client.close();
         getFrame().dispose();
         applicazione.setVisible(true);
     }
 
+    /**
+     * Chiude l'applicazione.
+     */
+    public void astaFinita(){
+        getFrame().dispose();
+        System.exit(1);
+    }
+
+    /**
+     * Ritorna true se il client ha offerto, false altrimenti.
+     * @return true se ha offerto, false altrimenti
+     */
     public boolean haOfferto(){
         return offerto;
     }
 
+    /**
+     * Ritorna il valore dello spinner per l'offerta.
+     * @return valore offerta
+     */
     public int getValoreOfferta(){
         return (Integer)spinnerOfferta.getValue();
     }
 
+    /**
+     * Aggiorna il label dei soldi in base alla persona selezionata nel combobox.
+     * @param soldi soldi della persona
+     */
     private void aggiornaSoldi(Integer soldi){
         soldiSpesilbl.setText(String.valueOf(soldi));
     }

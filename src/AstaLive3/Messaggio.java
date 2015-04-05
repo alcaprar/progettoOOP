@@ -7,7 +7,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by alessandro on 03/04/15.
+ * Messaggio che si scambiano Server e Client.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Messaggio implements Serializable {
 
@@ -18,24 +21,16 @@ public class Messaggio implements Serializable {
             RISPOSTA_OFFERTA=3,
             TEMPO = 4,
             FINE_OFFERTA=5,
-            LISTA_GIOCATORI=6;
-
-
-    //OFFERTA serve al server per inviare il giocatore con il prezzo attuale. se è la prima offerta il prezzo è quello inizale meno uno
-    //RISPOSTA OFFERTA serve per il client per rispondere con l'offerta che vuol fare
-    //FINE OFFERTA serve al server per fare il broadcast che il giocatore è stato acquistato da qualcuno
-    //INIZIO ASTA server al server per dire che si inizia
+            LISTA_GIOCATORI=6,
+            FINE_ASTA=7;
 
     private int tipo;
 
     private Giocatore giocatore;
 
-    private int offerta;
-    //se è 0 il client rifiuta il giocatore
+    private int offerta;  //se è 0 il client rifiuta il giocatore
 
     private Persona utente;
-
-    private String messaggio;
 
     private int secondi;
 
@@ -58,10 +53,6 @@ public class Messaggio implements Serializable {
         return this.offerta;
     }
 
-    public String getMessaggio(){
-        return this.messaggio;
-    }
-
     public void setTipo(int tipo) {
         this.tipo = tipo;
     }
@@ -72,10 +63,6 @@ public class Messaggio implements Serializable {
 
     public void setOfferta(int offerta) {
         this.offerta = offerta;
-    }
-
-    public void setMessaggio(String messaggio) {
-        this.messaggio = messaggio;
     }
 
     public int getSecondi() {

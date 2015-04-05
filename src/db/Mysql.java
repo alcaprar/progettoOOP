@@ -2059,7 +2059,7 @@ public class Mysql{
         String soldiDisponibiliSql = "UPDATE Iscrizione set CreditiDisponibili=? where IDsq=?";
 
         PreparedStatement aggiornaInfoCampionatostmt = null;
-        String aggiornaInfoCampionatoSql = "UPDATE Campionato set GiocatoriDaInserire=?";
+        String aggiornaInfoCampionatoSql = "UPDATE Campionato set GiocatoriDaInserire=? where Campionato=?";
         int rs=0;
         try{
             //registra il JBCD driver
@@ -2089,6 +2089,7 @@ public class Mysql{
             }
             aggiornaInfoCampionatostmt = conn.prepareStatement(aggiornaInfoCampionatoSql);
             aggiornaInfoCampionatostmt.setBoolean(1, false);
+            aggiornaInfoCampionatostmt.setString(2,campionato.getNome());
             aggiornaInfoCampionatostmt.executeUpdate();
 
             if(rs==1)return true;

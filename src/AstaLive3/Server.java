@@ -1,9 +1,6 @@
 package AstaLive3;
 
-import classi.Campionato;
-import classi.Giocatore;
-import classi.Persona;
-import classi.Squadra;
+import classi.*;
 import db.Mysql;
 
 import javax.swing.*;
@@ -15,13 +12,16 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * Created by alessandro on 03/04/15.
+ * Classe che gestisce il server dell'asta.
+ * Estende Thread.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Server extends Thread {
 
     private ServerSocket server;
     private ServerGUI gui;
-    private int porta;
     private int secondiTimer = 10;
 
     private boolean accettaConnessioni;
@@ -37,7 +37,6 @@ public class Server extends Thread {
     private Campionato campionato;
 
     public Server(int porta, ServerGUI serverGUI, Campionato camp){
-        this.porta = porta;
         this.gui = serverGUI;
         this.campionato = camp;
 
@@ -52,7 +51,7 @@ public class Server extends Thread {
             //creo il server
             server = new ServerSocket(porta);
             //stampo che il server è stato creato ed è in attesa
-            gui.appendConsole("Il server è in attesa sulla porta: "+this.porta);
+            gui.appendConsole("Il server è in attesa sulla porta: "+porta);
             //metodo per far partire il thread, che richiama il metodo run
             this.start();
         } catch (IOException ioe){
@@ -62,12 +61,14 @@ public class Server extends Thread {
 
     }
 
-
+    /**
+     * Metodo sempre in esecuzione.
+     * Prima aspetta le connessioni dei client finchè non si sono connessi tutti, poi
+     * gestisce l'asta.
+     */
     public void run(){
         //accetta connessioni finche non si raggiunge il numero dei partecipanti
-        //TODO rimettere campionato.listapar.size
-        //while(listaClient.size()<campionato.getListaSquadrePartecipanti().size()){
-        while(listaClient.size()<2){
+        while(listaClient.size()<campionato.getListaSquadrePartecipanti().size()){
             try {
                 gui.appendConsole("Server in attesa di connessioni.. ");
                 //aspetto una connessione
@@ -106,21 +107,28 @@ public class Server extends Thread {
             gui.appendConsole("Eccezione nello sleep del thread>> "+e.getMessage());
             e.printStackTrace();
         }
-        asta();
+
+        //asta
+        astaPortieri();
+        astaDifensori();
+        astaCentrocampisti();
+        astaAttaccanti();
+
+        //asta finita
+        Messaggio astaFinita = new Messaggio(Messaggio.FINE_ASTA);
+        broadcast(astaFinita);
+
+        if(inserisciGiocatori()){
+            JOptionPane.showMessageDialog(null,"Inserimento giocatori completato.","Asta completata",JOptionPane.INFORMATION_MESSAGE);
+            stopServer();
+            gui.close();
+        }
     }
 
-    /*public void stopConnessioni(){
-        this.accettaConnessioni=false;
-        //server per fare l'accept e andare sull'if per fare il break
-        try {
-            new Socket("localhost", porta);
-        }
-        catch(Exception e) {
-            gui.appendConsole("Eccezione nello stop delle connessioni>> "+e.getMessage());
-            e.printStackTrace();
-        }
-    }*/
-
+    /**
+     * Ferma il server.
+     * Blocca il thread e libera le risorse.
+     */
     public void stopServer(){
         this.stop();
         try{
@@ -147,12 +155,6 @@ public class Server extends Thread {
         }
     }
 
-    public void asta() {
-        astaPortieri();
-        astaDifensori();
-        astaCentrocampisti();
-        astaAttaccanti();
-    }
 
     /**
      * Metodo che gestisce l'asta dei portieri.
@@ -238,6 +240,9 @@ public class Server extends Thread {
         }
     }
 
+    /**
+     * Metodo che gestisce l'asta dei difensori.
+     */
     public void astaDifensori(){
         //finche tutte le squadre non hanno tre portieri gira
         while (!finitiDifensori()) {
@@ -319,6 +324,9 @@ public class Server extends Thread {
         }
     }
 
+    /**
+     * Metodo che gestisce l'asta dei centrocampisti.
+     */
     public void astaCentrocampisti(){
         //finche tutte le squadre non hanno tre portieri gira
         while (!finitiCentrocampisti()) {
@@ -400,6 +408,9 @@ public class Server extends Thread {
         }
     }
 
+    /**
+     * Metodo che gestisce l'asta degli attaccanti.
+     */
     public void astaAttaccanti(){
         //finche tutte le squadre non hanno tre portieri gira
         while (!finitiAttaccanti()) {
@@ -481,6 +492,12 @@ public class Server extends Thread {
         }
     }
 
+    /**
+     * Controlla quanti client sono ancora in gioco.
+     * Se è uno solo il giocatore è da aggiudicare.
+     * Se sono zero il giocatore è stato rifiutato da tutti.
+     * @return true se è il primo giro dei client, altrimenti true se sono in gioco uno o zero client.
+     */
     private boolean continuaAsta(){
         int counter = 0;
         for(ClientConnesso client : listaClient){
@@ -493,6 +510,9 @@ public class Server extends Thread {
         } else return !(counter==0 || counter==1);
     }
 
+    /**
+     * Setta a true il flag per l'offerta per tutti i client che ancora non hanno completato i portieri.
+     */
     private void offertaClientTruePortieri(){
         for(ClientConnesso client : listaClient){
             if(!client.finitiPortieri()){
@@ -503,6 +523,9 @@ public class Server extends Thread {
         }
     }
 
+    /**
+     * Setta a true il flag per l'offerta per tutti i client che ancora non hanno completato i difensori.
+     */
     private void offertaClientTrueDifensori(){
         for(ClientConnesso client : listaClient){
             if(!client.finitiDifensori()){
@@ -513,6 +536,9 @@ public class Server extends Thread {
         }
     }
 
+    /**
+     * Setta a true il flag per l'offerta per tutti i client che ancora non hanno completato i centrocampisti.
+     */
     private void offertaClientTrueCentrocampisti(){
         for(ClientConnesso client : listaClient){
             if(!client.finitiCentrocampisti()){
@@ -523,6 +549,9 @@ public class Server extends Thread {
         }
     }
 
+    /**
+     * Setta a true il flag per l'offerta per tutti i client che ancora non hanno completato gli attaccanti.
+     */
     private void offertaClientTrueAttaccanti(){
         for(ClientConnesso client : listaClient){
             if(!client.finitiAttaccanti()){
@@ -533,6 +562,11 @@ public class Server extends Thread {
         }
     }
 
+    /**
+     * Inserisce il giocatore nella lista dei giocatori acquistati del client che lo ha acquistato.
+     * @param giocatore giocatore acquistato
+     * @param offerta prezzo d'acquisto del giocatore
+     */
     private void aggiudicaGiocatore(Giocatore giocatore, int offerta){
         ClientConnesso clientAggiudicato = null;
         //cerco l'unico client che era rimasto in gioco
@@ -560,6 +594,10 @@ public class Server extends Thread {
         listaGiocatori.remove(giocatore);
     }
 
+    /**
+     * Controlla se tutti i client hanno completato l'acquisto dei portieri.
+     * @return true se tutti i client hanno acquistato 3 portieri, false altrimenti.
+     */
     private boolean finitiPortieri(){
         boolean flag = true;
         for(ClientConnesso client : listaClient){
@@ -572,6 +610,10 @@ public class Server extends Thread {
         return flag;
     }
 
+    /**
+     * Controlla se tutti i client hanno completato l'acquisto dei difensori.
+     * @return true se tutti i client hanno acquistato 8 difensori, false altrimenti.
+     */
     private boolean finitiDifensori(){
         boolean flag = true;
         for(ClientConnesso client : listaClient){
@@ -584,6 +626,10 @@ public class Server extends Thread {
         return flag;
     }
 
+    /**
+     * Controlla se tutti i client hanno completato l'acquisto dei centrocampisti.
+     * @return true se tutti i client hanno acquistato 8 centrocampisti, false altrimenti.
+     */
     private boolean finitiCentrocampisti(){
         boolean flag = true;
         for(ClientConnesso client : listaClient){
@@ -596,6 +642,10 @@ public class Server extends Thread {
         return flag;
     }
 
+    /**
+     * Controlla se tutti i client hanno completato l'acquisto degli attaccanti.
+     * @return true se tutti i client hanno acquistato 6 attaccanti, false altrimenti.
+     */
     private boolean finitiAttaccanti(){
         boolean flag = true;
         for(ClientConnesso client : listaClient){
@@ -608,6 +658,26 @@ public class Server extends Thread {
         return flag;
     }
 
+    /**
+     * Inserisce i giocatori nel database quando è finita l'asta.
+     * @return
+     */
+    private boolean inserisciGiocatori(){
+        for(ClientConnesso client : listaClient){
+            for(Squadra squadra : campionato.getListaSquadrePartecipanti()){
+                if(squadra.getProprietario().equals(client.utente)){
+                    squadra.setGiocatori(client.listaGiocatoriSquadra);
+                }
+            }
+        }
+        return db.inserisciGiocatori(campionato);
+    }
+
+    /**
+     * Controlla se l'utente che sta provando a connettersi è tra quelli che partecipano al campionato.
+     * @param utente utente che si sta connettendo
+     * @return true se l'utente può connettersi, false altrimenti
+     */
     private boolean utenteConsentito(Persona utente){
         boolean flag = false;
         for(Squadra squadra : campionato.getListaSquadrePartecipanti()){
@@ -619,6 +689,9 @@ public class Server extends Thread {
         return flag;
     }
 
+    /**
+     * Classe per gestire i singoli client connessi
+     */
     class ClientConnesso{
 
         private Socket client;
@@ -642,18 +715,17 @@ public class Server extends Thread {
 
                 gui.appendConsole("Creati gli stream, attendo l'username.");
             } catch (Exception e){
-
-                //TODO bisogna chiudere la connessione e fare return
-                //client.close();
-                //return;
-                //TODO
-
                 gui.appendConsole("Eccezione nella creazione degli strem I/O>> "+e.getMessage());
                 e.printStackTrace();
             }
 
         }
 
+        /**
+         * Prende l'utente che si è appena connesso e controlla se può connettersi.
+         * Se si invia la notifica di connessione e la lista dei giocatori disponibili.
+         * @return true se l'utente può connettersi, false altrimenti
+         */
         public boolean controlloUsername(){
             try{
                 this.utente = (Persona) input.readObject();
@@ -686,6 +758,10 @@ public class Server extends Thread {
             }
         }
 
+        /**
+         * Controlla se il client ha acquistato tutti i portieri.
+         * @return true se ha acquistato 3 portieri, false altrimenti
+         */
         private boolean finitiPortieri(){
             int i=0;
             for(Giocatore giocatore:listaGiocatoriSquadra){
@@ -694,6 +770,10 @@ public class Server extends Thread {
             return(i==3);
         }
 
+        /**
+         * Controlla se il client ha acquistato tutti i difensori.
+         * @return true se ha acquistato 8 difensori, false altrimenti
+         */
         private boolean finitiDifensori(){
             int i=0;
             for(Giocatore giocatore:listaGiocatoriSquadra){
@@ -702,6 +782,10 @@ public class Server extends Thread {
             return(i==8);
         }
 
+        /**
+         * Controlla se il client ha acquistato tutti i centrocampisti.
+         * @return true se ha acquistato 8 centrocampisti, false altrimenti
+         */
         private boolean finitiCentrocampisti(){
             int i=0;
             for(Giocatore giocatore:listaGiocatoriSquadra){
@@ -710,6 +794,10 @@ public class Server extends Thread {
             return(i==8);
         }
 
+        /**
+         * Controlla se il client ha acquistato tutti gli attaccanti.
+         * @return true se ha acquistato 6 attaccanti, false altrimenti
+         */
         private boolean finitiAttaccanti(){
             int i=0;
             for(Giocatore giocatore:listaGiocatoriSquadra){
@@ -718,7 +806,11 @@ public class Server extends Thread {
             return(i==6);
         }
 
-
+        /**
+         * Invia il messaggio passato per paramentro al client.
+         * @param msg messaggio da inviare
+         * @return true se l'invio è andato a buon fine, false altrimenti.
+         */
         private boolean writeMsg(Messaggio msg){
             if(!client.isConnected()) {
                 JOptionPane.showMessageDialog(null,"Un client si è disconnesso.\nL'asta è da rifare da zero.","Errore connessione",JOptionPane.ERROR_MESSAGE);
@@ -740,6 +832,10 @@ public class Server extends Thread {
             return true;
         }
 
+        /**
+         * Legge l'oggetto inviato dal client.
+         * @return Messaggio ricevuto.
+         */
         private Messaggio readObject(){
             Messaggio mess = null;
             try {

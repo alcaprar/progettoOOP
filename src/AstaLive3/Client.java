@@ -11,6 +11,8 @@ import java.net.Socket;
 
 
 /**
+ * Classe che gestisce la comunicazione con il server.
+ *
  * @author Alessandro Caprarelli
  * @author Giacomo Grilli
  * @author Christian Manfredi
@@ -21,20 +23,22 @@ public class Client {
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private Persona utente;
-    private Campionato campionato;
-
-    private String indirizzo;
-    private int porta;
+    //private Campionato campionato;
     private ClientGUI gui;
 
     private AscoltaServer ascoltaServer;
 
-    public Client(String indirizzo, int porta, Persona utente, Campionato camp, ClientGUI clientGUI){
-        this.indirizzo = indirizzo;
-        this.porta =porta;
+    /**
+     * Costruttore del client.
+     * @param indirizzo indirizzo IP del server
+     * @param porta porta a cui connettersi
+     * @param utente utente che partecipa all'asta
+     * @param clientGUI interfaccia grafica del client
+     */
+    public Client(String indirizzo, int porta, Persona utente, ClientGUI clientGUI){
         this.gui = clientGUI;
         this.utente = utente;
-        this.campionato=camp;
+        //this.campionato=camp;
 
         //provo a connettermi al server
         try {
@@ -72,6 +76,9 @@ public class Client {
 
     }
 
+    /**
+     * Chiude il client. Ferma il thread che ascolta il server e libera tutte le risorse.
+     */
     public void close(){
         ascoltaServer.stop();
         try{
@@ -83,9 +90,19 @@ public class Client {
         }
     }
 
+    /**
+     * Classe per ricevere i messaggi dal server.
+     * Estende Thread.
+     */
     class AscoltaServer extends Thread{
         private Messaggio messaggio;
 
+
+        /**
+         * Ciclo infinito che aspetta i messaggi dal server.
+         * Se ci sono dei problemi nella lettura del messaggio (eccezione) vuol dire che il server ha chiuso
+         * la connessione.
+         */
         public void run(){
             while(true){
                 gui.appendConsole("Aspetto un messaggio dal server..");
@@ -100,13 +117,21 @@ public class Client {
                     break;
                 }
 
+                //se il messaggio è di inizio asta, comunico l'inizio dell'asta
+                //e setto il combobox e le tabelle
                 if(messaggio.getTipo()==Messaggio.INIZIO_ASTA){
                     gui.appendConsole("++++INIZIO ASTA TRA POCO++++");
-                    gui.setComboBox(messaggio.getListaPartecipanti());
-                } else if(messaggio.getTipo()==Messaggio.OFFERTA){
+                    gui.setComboBoxTable(messaggio.getListaPartecipanti());
+                }
+                //se il messaggio è di offerta, setto il panel per il rilancio
+                else if(messaggio.getTipo()==Messaggio.OFFERTA){
                     gui.setGiocatoreAttuale(messaggio.getGiocatore(), messaggio.getOfferta(),messaggio.getUtente());
                     gui.setOffertaEnabled();
-                } else if(messaggio.getTipo()==Messaggio.TEMPO){
+                }
+                //se il messaggio è di tempo, cambio il tempo rimanente
+                //se il tempo è zero invio l'offerta di risposta.
+                //(offerta=0 se è stato rifiutato)
+                else if(messaggio.getTipo()==Messaggio.TEMPO){
                     gui.setCountdown(messaggio.getSecondi());
                     gui.appendConsole("Secondi: "+messaggio.getSecondi());
                     if(messaggio.getSecondi()==0){
@@ -136,14 +161,21 @@ public class Client {
                                 break;
                             }
                         }
-
                         gui.setOffertaNotEnabled();
                     }
-                } else if(messaggio.getTipo()==Messaggio.FINE_OFFERTA){
+                }
+                //se il messaggio è di fine offerta, vuol dire che il server comunica
+                //da chi è stato acquistato il giocatore
+                else if(messaggio.getTipo()==Messaggio.FINE_OFFERTA){
                     gui.appendConsole(messaggio.getGiocatore().getCognome()+" aggiudicato da " + messaggio.getUtente().getNickname() +" a "+messaggio.getOfferta());
                     gui.aggiungiGiocatore(messaggio.getGiocatore(),messaggio.getOfferta(),messaggio.getUtente());
                 }
-
+                //se il messaggio è di fine asta, comunico la fine e chiudo
+                else if(messaggio.getTipo()==Messaggio.FINE_ASTA){
+                    JOptionPane.showMessageDialog(null,"Asta completata.\nRiapri l'applicazione per vedere le modifiche.","Asta completata",JOptionPane.INFORMATION_MESSAGE);
+                    close();
+                    gui.astaFinita();
+                }
             }
         }
     }

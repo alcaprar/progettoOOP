@@ -4,7 +4,6 @@ import classi.*;
 import interfacce.Applicazione.*;
 
 import javax.swing.*;
-import javax.swing.event.ListDataListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -17,7 +16,10 @@ import java.util.Date;
 import java.util.Enumeration;
 
 /**
- * Created by alessandro on 03/04/15.
+ * Classe per l'interfaccia grafica del server.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class ServerGUI extends JFrame {
     private JPanel mainPanel;
@@ -25,8 +27,6 @@ public class ServerGUI extends JFrame {
     private JSpinner spinnerPorta;
     private JButton startServerButton;
     private JTextArea consoleArea;
-    private JButton stopConnessioniButton;
-    private JButton inizioAstaButton;
     private JList listaConnessi;
 
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -38,6 +38,11 @@ public class ServerGUI extends JFrame {
     private Applicazione applicazione;
     private Campionato campionato;
 
+    /**
+     * Costruttore dell'interfaccia grafica
+     * @param app applicazione principale
+     * @param camp campionato per cui si fa l'asta
+     */
     public ServerGUI(Applicazione app, Campionato camp){
         super("Server");
 
@@ -77,9 +82,6 @@ public class ServerGUI extends JFrame {
         setVisible(true);
     }
 
-    /*public static void main(String args[]){
-        new ServerGUI();
-    }*/
     /**
      * Scrive nella console.
      * @param str stringa da stampare
@@ -118,6 +120,10 @@ public class ServerGUI extends JFrame {
         }
     }
 
+    /**
+     * Setta lo spinner per la porta.
+     * Utilizza un editor modificato per non far vedere il punto delle migliaia.
+     */
     private void setSpinnerPorta(){
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1500,1000,2000,1);
         spinnerPorta.setModel(spinnerModel);
@@ -126,15 +132,25 @@ public class ServerGUI extends JFrame {
         spinnerPorta.setEditor(editor);
     }
 
+    /**
+     * Setta il model per la lista degli utenti connessi.
+     */
     private void setListaConnessi(){
         listModel = new DefaultListModel();
         listaConnessi.setModel(listModel);
     }
 
+    /**
+     * Ritorna l'oggetto principale
+     * @return this
+     */
     private ServerGUI getFrame(){
         return this;
     }
 
+    /**
+     * Chiude la finestra e rende visibile l'applicazione principale.
+     */
     public void close(){
         getFrame().dispose();
         applicazione.setVisible(true);
