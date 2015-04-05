@@ -1,7 +1,7 @@
 package interfacce.Applicazione;
 
-import AstaLive3.ClientGUI;
-import AstaLive3.ServerGUI;
+import AstaLive.ClientGUI;
+import AstaLive.ServerGUI;
 import classi.*;
 import interfacce.Login.Login;
 import org.joda.time.*;

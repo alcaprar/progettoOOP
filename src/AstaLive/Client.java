@@ -1,157 +1,182 @@
 package AstaLive;
 
+import classi.Persona;
+
+
+import javax.swing.*;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
+
 /**
- * Created by Christian on 27/03/2015.
+ * Classe che gestisce la comunicazione con il server.
+ *
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
+public class Client {
 
-import java.net.*;
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.*;
+    private Socket server;
+    private ObjectInputStream input;
+    private ObjectOutputStream output;
+    private Persona utente;
+    //private Campionato campionato;
+    private ClientGUI gui;
 
-/*
- * Questa classe contiene gli elementi necessari al funzionamento dei client
- */
-public class Client  {
+    private AscoltaServer ascoltaServer;
 
-    private AstaLiveClient asta;
-
-    // per gestire l'I/O
-    private ObjectInputStream sInput;		// leggi dal socket
-    private ObjectOutputStream sOutput;		// scrivi mediante il socket
-    private Socket socket;
-
-    // Indirizzo server, porta e nome utente
-    private String server, username;
-    private int port;
-
-    /*
-     * Costruttore
+    /**
+     * Costruttore del client.
+     * @param indirizzo indirizzo IP del server
+     * @param porta porta a cui connettersi
+     * @param utente utente che partecipa all'asta
+     * @param clientGUI interfaccia grafica del client
      */
-    Client(String server, int port, String username, AstaLiveClient asta) {
-        this.asta = asta;
-        this.server = server;
-        this.port = port;
-        this.username = username;
-    }
+    public Client(String indirizzo, int porta, Persona utente, ClientGUI clientGUI){
+        this.gui = clientGUI;
+        this.utente = utente;
+        //this.campionato=camp;
 
-    /*
-     * Fa partire il dialogo
-     */
-    public boolean start() {
-        // tentativo di connessione al server
+        //provo a connettermi al server
         try {
-            socket = new Socket(server, port);
-        }
-        // se fallisce ritorna
-        catch(Exception ec) {
-            display("Errore nella connessione al server:" + ec);
-            return false;
+            server = new Socket(indirizzo, porta);
+        } catch (Exception e){
+            gui.appendConsole("Eccezione durante la connessione al server>> "+e.getMessage());
+            e.printStackTrace();
         }
 
-        String msg = "Connessione accettata su " + socket.getInetAddress() + ":" + socket.getPort();
-        display(msg);
+        gui.appendConsole("Connessione accettata da: " + server.getInetAddress() + ":" + porta);
 
-		/* Creating both Data Stream */
-        try
-        {
-            sInput  = new ObjectInputStream(socket.getInputStream());
-            sOutput = new ObjectOutputStream(socket.getOutputStream());
-        }
-        catch (IOException eIO) {
-            display("Eccezione nella creazione degli stream di I/O: " + eIO);
-            return false;
-        }
-
-        // crea il thread che ascolta comunicazione dal server
-        new ListenFromServer().start();
-        // Invia al server lo username del client, unico messaggio con sola stringa che verràò inviato
-        try
-        {
-            sOutput.writeObject(username);
-        }
-        catch (IOException eIO) {
-            display("Eccezione durante il login : " + eIO);
-            disconnect();
-            return false;
-        }
-        // Se non ci sono stati problemi informa il chiamante che è andato tutto bene
-        return true;
-    }
-
-    /*
-     * Visualizza un evento sulla console
-    */
-    private void display(String msg) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String time = sdf.format(new Date()) + " " + msg;
-        asta.displayConsoleMessage(time + "\n");
-    }
-
-    /*
-     * Per inviare un messaggio al server
-     */
-    void sendMessage(ChatMessage msg) {
-        try {
-            sOutput.writeObject(msg);
-        }
-        catch(IOException e) {
-            display("Eccezione nell'invio del messaggio al server: " + e);
-        }
-    }
-
-    /*
-     * Quando qualcosa non va tenta di chiudere gli stream e la connessione
-     */
-    private void disconnect() {
-        try {
-            if(sInput != null) sInput.close();
-        }
-        catch(Exception e) {} // not much else I can do
-        try {
-            if(sOutput != null) sOutput.close();
-        }
-        catch(Exception e) {} // not much else I can do
+        //creo gli stream I/O
+        gui.appendConsole("Creo gli stream I/O e invio l'username.");
         try{
-            if(socket != null) socket.close();
-        }
-        catch(Exception e) {} // not much else I can do
-    }
+            input = new ObjectInputStream(server.getInputStream());
+            output = new ObjectOutputStream(server.getOutputStream());
 
-    public void run(){
-        // loop forever for message from the user
-        while(true) {
-            for(int i = 0; i < 10; i++){
-                sendMessage(new ChatMessage("Sto inviando dati."));
+            output.writeObject(this.utente);
+
+            if((Boolean)input.readObject()){
+                Messaggio listaGiocatorimsg = (Messaggio)input.readObject();
+                gui.setListaGiocatoriDisponibili(listaGiocatorimsg.getListaGiocatori());
+
+                ascoltaServer = new AscoltaServer();
+                ascoltaServer.start();
+                gui.appendConsole("Connesso!");
+                gui.setConnettiNotEnabled();
+            } else{
+                gui.appendConsole("Connesione rifiutata.");
             }
-            break;
+        } catch (Exception e){
+            gui.appendConsole("Eccezione nella creazione degli stream I/O>> "+e.getMessage());
+            e.printStackTrace();
         }
-        // done disconnect
-        disconnect();
+
     }
 
-
-    /*
-     * a class that waits for the message from the server and append them to the JTextArea
-     * if we have a GUI or simply System.out.println() it in console mode
+    /**
+     * Chiude il client. Ferma il thread che ascolta il server e libera tutte le risorse.
      */
-    class ListenFromServer extends Thread {
+    public void close(){
+        ascoltaServer.stop();
+        try{
+            server.close();
+            input.close();
+            output.close();
+        } catch (Exception e){
+            //non ci posso far niente
+        }
+    }
 
-        public void run() {
-            while(true) {
+    /**
+     * Classe per ricevere i messaggi dal server.
+     * Estende Thread.
+     */
+    class AscoltaServer extends Thread{
+        private Messaggio messaggio;
+
+
+        /**
+         * Ciclo infinito che aspetta i messaggi dal server.
+         * Se ci sono dei problemi nella lettura del messaggio (eccezione) vuol dire che il server ha chiuso
+         * la connessione.
+         */
+        public void run(){
+            while(true){
+                gui.appendConsole("Aspetto un messaggio dal server..");
                 try {
-                    String msg = (String) sInput.readObject();
-                    asta.displayConsoleMessage(msg);
-                }
-                catch(IOException e) {
-                    display("Server has close the connection: " + e);
+                    messaggio = (Messaggio) input.readObject();
+                }catch (Exception e){
+                    gui.appendConsole("Eccezione nella lettura di un messaggio dal server>> "+e.getMessage());
+                    gui.appendConsole("Il server ha chiuso la connessione.");
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Il server ha chiuso la connessione.\nL'asta è da rifare da zero.\nErrore: "+e.getMessage(), "Errore connessione", JOptionPane.ERROR_MESSAGE);
+                    gui.close();
                     break;
                 }
-                // can't happen with a String object but need the catch anyhow
-                catch(ClassNotFoundException e2) {
+
+                //se il messaggio è di inizio asta, comunico l'inizio dell'asta
+                //e setto il combobox e le tabelle
+                if(messaggio.getTipo()==Messaggio.INIZIO_ASTA){
+                    gui.appendConsole("++++INIZIO ASTA TRA POCO++++");
+                    gui.setComboBoxTable(messaggio.getListaPartecipanti());
+                }
+                //se il messaggio è di offerta, setto il panel per il rilancio
+                else if(messaggio.getTipo()==Messaggio.OFFERTA){
+                    gui.setGiocatoreAttuale(messaggio.getGiocatore(), messaggio.getOfferta(),messaggio.getUtente());
+                    gui.setOffertaEnabled();
+                }
+                //se il messaggio è di tempo, cambio il tempo rimanente
+                //se il tempo è zero invio l'offerta di risposta.
+                //(offerta=0 se è stato rifiutato)
+                else if(messaggio.getTipo()==Messaggio.TEMPO){
+                    gui.setCountdown(messaggio.getSecondi());
+                    gui.appendConsole("Secondi: "+messaggio.getSecondi());
+                    if(messaggio.getSecondi()==0){
+                        if(gui.haOfferto()){
+                            Messaggio risposta = new Messaggio(Messaggio.RISPOSTA_OFFERTA);
+                            risposta.setOfferta(gui.getValoreOfferta());
+                            gui.appendConsole("Risposta offerta: "+gui.getValoreOfferta());
+                            try{
+                                output.writeObject(risposta);
+                            } catch (Exception e){
+                                gui.appendConsole("Eccezione nell'invio dell'offerta>> "+e.getMessage());
+                                e.printStackTrace();
+                            }
+                        } else{
+                            Messaggio risposta = new Messaggio(Messaggio.RISPOSTA_OFFERTA);
+                            risposta.setOfferta(0);
+                            gui.appendConsole("Rifiutato il giocatore.");
+
+                            try{
+                                output.writeObject(risposta);
+                            } catch (Exception e){
+                                gui.appendConsole("Eccezione nell'invio del rifiuto>> " + e.getMessage());
+                                e.printStackTrace();
+                                JOptionPane.showMessageDialog(null, "Il server ha chiuso la connessione.\nL'asta è da rifare da zero.\nErrore: " + e.getMessage(), "Errore connessione", JOptionPane.ERROR_MESSAGE);
+                                close();
+                                gui.close();
+                                break;
+                            }
+                        }
+                        gui.setOffertaNotEnabled();
+                    }
+                }
+                //se il messaggio è di fine offerta, vuol dire che il server comunica
+                //da chi è stato acquistato il giocatore
+                else if(messaggio.getTipo()==Messaggio.FINE_OFFERTA){
+                    gui.appendConsole(messaggio.getGiocatore().getCognome()+" aggiudicato da " + messaggio.getUtente().getNickname() +" a "+messaggio.getOfferta());
+                    gui.aggiungiGiocatore(messaggio.getGiocatore(),messaggio.getOfferta(),messaggio.getUtente());
+                }
+                //se il messaggio è di fine asta, comunico la fine e chiudo
+                else if(messaggio.getTipo()==Messaggio.FINE_ASTA){
+                    JOptionPane.showMessageDialog(null,"Asta completata.\nRiapri l'applicazione per vedere le modifiche.","Asta completata",JOptionPane.INFORMATION_MESSAGE);
+                    close();
+                    gui.astaFinita();
                 }
             }
         }
     }
-}
 
+}

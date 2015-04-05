@@ -1,4 +1,4 @@
-package AstaLive3;
+package AstaLive;
 
 import classi.*;
 import interfacce.Applicazione.*;
