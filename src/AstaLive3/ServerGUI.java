@@ -1,5 +1,8 @@
 package AstaLive3;
 
+import classi.*;
+import interfacce.Applicazione.*;
+
 import javax.swing.*;
 import javax.swing.event.ListDataListener;
 import java.awt.event.ActionEvent;
@@ -32,8 +35,14 @@ public class ServerGUI extends JFrame {
 
     private DefaultListModel listModel;
 
-    public ServerGUI(){
+    private Applicazione applicazione;
+    private Campionato campionato;
+
+    public ServerGUI(Applicazione app, Campionato camp){
         super("Server");
+
+        this.applicazione = app;
+        this.campionato = camp;
 
         setListaConnessi();
 
@@ -51,7 +60,7 @@ public class ServerGUI extends JFrame {
         startServerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                server = new Server((Integer)spinnerPorta.getValue(), getFrame());
+                server = new Server((Integer)spinnerPorta.getValue(), getFrame(), campionato);
             }
         });
 
@@ -68,7 +77,7 @@ public class ServerGUI extends JFrame {
                 int risultato = JOptionPane.showConfirmDialog(null,"Sei sicuro di voler chiudere?","Exit",JOptionPane.OK_CANCEL_OPTION);
                 if(risultato==JOptionPane.OK_OPTION){
                     getFrame().dispose();
-                    System.exit(1);
+                    applicazione.setVisible(true);
                 }
             }
         });
@@ -79,9 +88,9 @@ public class ServerGUI extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String args[]){
+    /*public static void main(String args[]){
         new ServerGUI();
-    }
+    }*/
     /**
      * Scrive nella console.
      * @param str stringa da stampare
@@ -91,8 +100,8 @@ public class ServerGUI extends JFrame {
         consoleArea.setCaretPosition(consoleArea.getText().length());
     }
 
-    public void addConnesso(String utente){
-        listModel.addElement(utente);
+    public void addConnesso(Persona utente){
+        listModel.addElement(utente.getNickname());
     }
 
     /**

@@ -89,7 +89,7 @@ public class Home extends JPanel {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 applicazione.dispose();
-                ClientGUI clientGUI = new ClientGUI();
+                ClientGUI clientGUI = new ClientGUI(applicazione, squadra.getCampionato(), squadra.getProprietario().duplicate());
             }
         });
 
@@ -97,7 +97,7 @@ public class Home extends JPanel {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 buttonAsta.setEnabled(true);
-                ServerGUI serverGUI = new ServerGUI();
+                ServerGUI serverGUI = new ServerGUI(applicazione, squadra.getCampionato());
             }
         });
 

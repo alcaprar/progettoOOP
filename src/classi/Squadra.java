@@ -1,5 +1,6 @@
 package classi;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  * @author Giacomo Grilli
  * @author Christian Manfredi
  */
-public class Squadra {
+public class Squadra implements Serializable{
     private int ID;
     private String nome;
     private Persona proprietario;

@@ -1,7 +1,7 @@
 package AstaLive3;
 
-import classi.Giocatore;
-import classi.Persona;
+import classi.*;
+import interfacce.Applicazione.Applicazione;
 import utils.TableNotEditableModel;
 
 import javax.swing.*;
@@ -21,7 +21,6 @@ public class ClientGUI extends JFrame {
     private JButton connettiButton;
     private JTextArea consoleArea;
     private JTextField usernametxt;
-    private JLabel campionatoL;
     private JLabel attualelbl;
     private JLabel cognomelbl;
     private JLabel ruololbl;
@@ -43,6 +42,7 @@ public class ClientGUI extends JFrame {
     private JButton lasciaButton;
     private JCheckBox mostraConsoleCheckBox;
     private JScrollPane consolePanel;
+    private JLabel nicknamelbl;
 
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
@@ -59,15 +59,25 @@ public class ClientGUI extends JFrame {
 
     private ArrayList<Integer> soldiSpesi;
 
-    private ArrayList<String> partecipanti;
+    private ArrayList<Persona> listaPartecipanti;
+
+    private Applicazione applicazione;
+    private Campionato campionato;
+    private Persona utente;
 
     private int creditiIniziali = 800;
     private int giocatoriAcquistati = 0;
     //miei soldi spesi
     private Integer soldiSpesiMiei;
 
-    public ClientGUI(){
-        super("Client");
+    public ClientGUI(Applicazione app, Campionato camp, Persona ut){
+        super("Client - "+ut.getNickname());
+        this.applicazione = app;
+        this.campionato = camp;
+        this.utente=ut;
+
+        nicknamelbl.setText(utente.getNickname());
+
         setSpinnerPorta();
 
         connettiButton.addActionListener(new ActionListener() {
@@ -75,10 +85,8 @@ public class ClientGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String indirizzo = indirizzotxt.getText();
                 int porta = (Integer) spinnerPorta.getValue();
-                String username = usernametxt.getText();
-                appendConsole("Tentativo di connessione a: " + indirizzo + ":" + porta + " Username: " + username);
-                Persona utente = new Persona(username);
-                new Client(indirizzo, porta, utente, getFrame());
+                appendConsole("Tentativo di connessione a: " + indirizzo + ":" + porta);
+                new Client(indirizzo, porta, utente, campionato, getFrame());
             }
         });
 
@@ -116,7 +124,7 @@ public class ClientGUI extends JFrame {
                 int risultato = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler chiudere?", "Exit", JOptionPane.OK_CANCEL_OPTION);
                 if (risultato == JOptionPane.OK_OPTION) {
                     getFrame().dispose();
-                    System.exit(1);
+                    applicazione.setVisible(true);
                 }
             }
         });
@@ -140,9 +148,9 @@ public class ClientGUI extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String args[]){
+    /*public static void main(String args[]){
         new ClientGUI();
-    }
+    }*/
 
     /**
      * Scrive nella console.
@@ -164,7 +172,7 @@ public class ClientGUI extends JFrame {
         } else {
             attualelbl.setText(String.valueOf(prezzo)+" - "+utenteOfferta);
         }
-        int max = creditiIniziali - soldiSpesiMiei -(25-giocatoriAcquistati) ;
+        int max = campionato.getCreditiIniziali() - soldiSpesiMiei -(25-giocatoriAcquistati) ;
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(prezzo+1,prezzo+1,max,1);
         spinnerOfferta.setModel(spinnerModel);
     }
@@ -194,7 +202,7 @@ public class ClientGUI extends JFrame {
         spinnerPorta.setEditor(editor);
     }
 
-    public void setComboBox(ArrayList<String> listaPartecipanti){
+    public void setComboBox(ArrayList<Persona> listaPartecipanti){
         //inizializzo il model del combobox
         DefaultComboBoxModel squadreBoxModel = new DefaultComboBoxModel();
         //inizializzo il model delle tabelle
@@ -203,12 +211,11 @@ public class ClientGUI extends JFrame {
         listaCentrocampistiSquadra = new ArrayList<TableNotEditableModel>();
         listaAttaccantiSquadra = new ArrayList<TableNotEditableModel>();
 
-        partecipanti = new ArrayList<String>();
+        this.listaPartecipanti = listaPartecipanti;
 
         soldiSpesi = new ArrayList<Integer>();
-        for(String partecipante : listaPartecipanti) {
-            squadreBoxModel.addElement(partecipante);
-            partecipanti.add(partecipante);
+        for(Persona partecipante : listaPartecipanti) {
+            squadreBoxModel.addElement(partecipante.getNickname());
 
             String[] colonne = {"Giocatore","Prezzo pagato"};
             //portieri model
@@ -236,11 +243,23 @@ public class ClientGUI extends JFrame {
         centrocampistiTable.setModel(listaCentrocampistiSquadra.get(0));
         attaccantiTable.setModel(listaAttaccantiSquadra.get(0));
 
-        soldiSpesiMiei = soldiSpesi.get(partecipanti.indexOf(usernametxt.getText()));
+        int index=0;
+        int i=0;
+        for(Persona persona:listaPartecipanti){
+            if(persona.equals(utente)) index=i;
+            i++;
+        }
+
+        soldiSpesiMiei = soldiSpesi.get(index);
     }
 
-    public void aggiungiGiocatore(Giocatore giocatore, int prezzo, String persona){
-        int i = partecipanti.indexOf(persona);
+    public void aggiungiGiocatore(Giocatore giocatore, int prezzo, Persona persona){
+        int j=0;
+        int i=0;
+        for(Persona pers:listaPartecipanti){
+            if(persona.equals(utente)) i=j;
+            j++;
+        }
         Object[] rigaGiocatore = {giocatore.getCognome(),prezzo};
 
         if(giocatore.getRuolo()=='P'){
@@ -274,7 +293,7 @@ public class ClientGUI extends JFrame {
         }
 
         //se l'ho acquistato io aggiorno il contatore
-        if(persona.equals(usernametxt.getText())){
+        if(persona.equals(utente)){
             giocatoriAcquistati++;
         }
         soldiSpesi.set(i, soldiSpesi.get(i) + prezzo);

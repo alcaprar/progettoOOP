@@ -1,5 +1,6 @@
 package classi;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  * @author Giacomo Grilli
  * @author Christian Manfredi
  */
-public class Persona {
+public class Persona implements Serializable {
     private String nickname;
     private String password;
     private String nome;
@@ -74,6 +75,10 @@ public class Persona {
     public boolean equals(Persona persona2) {
         if (this.nickname.equals(persona2.nickname)) return true;
         else return false;
+    }
+
+    public Persona duplicate(){
+        return new Persona(this.nickname,this.nome,this.cognome,this.email);
     }
 
     public String getNickname() {

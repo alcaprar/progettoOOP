@@ -1,7 +1,9 @@
 package AstaLive3;
 
+import classi.Campionato;
 import classi.Giocatore;
 import classi.Persona;
+import classi.Squadra;
 import db.Mysql;
 
 import java.io.IOException;
@@ -31,16 +33,18 @@ public class Server extends Thread {
 
     final Mysql db = new Mysql();
 
-    private ArrayList<Persona> listaConsentiti = new ArrayList<Persona>();
+    private Campionato campionato;
 
-    public Server(int porta, ServerGUI serverGUI){
+    public Server(int porta, ServerGUI serverGUI, Campionato camp){
         this.porta = porta;
         this.gui = serverGUI;
+        this.campionato = camp;
 
+        //lista dei client connessi
         listaClient = new ArrayList<ClientConnesso>();
 
-        listaConsentiti.add(new Persona("ale"));
-        listaConsentiti.add(new Persona("cri"));
+        //listaConsentiti.add(new Persona("ale"));
+        //listaConsentiti.add(new Persona("cri"));
 
         accettaConnessioni=true;
 
@@ -62,20 +66,24 @@ public class Server extends Thread {
 
 
     public void run(){
-
-        while(listaClient.size()<listaConsentiti.size()){
+        //accetta connessioni finche non si raggiunge il numero dei partecipanti
+        //TODO rimettere campionato.listapar.size
+        //while(listaClient.size()<campionato.getListaSquadrePartecipanti().size()){
+        while(listaClient.size()<2){
             try {
                 gui.appendConsole("Server in attesa di connessioni.. ");
+                //aspetto una connessione
                 Socket client = server.accept();
+                //se accetta connesioni è false chiudo il while
                 if(!accettaConnessioni){
                     break;
                 }
-                gui.appendConsole("Connessione accettata da: "+client.getInetAddress());
+                gui.appendConsole("Connessione accettata da: "+client.getInetAddress() +". Controllo se può partecipare..");
 
+                //creo il thread del client e controllo che possa partecipare
                 ClientConnesso clientConn = new ClientConnesso(client);
                 if(clientConn.controlloUsername()) {
                     listaClient.add(clientConn);
-                    //clientConn.start();
                 }
             } catch (IOException ioe){
                 gui.appendConsole("Eccezione nell'attesa dei client>>"+ioe.getMessage());
@@ -87,9 +95,9 @@ public class Server extends Thread {
         //comunico l'inizio dell'asta
         Messaggio mess = new Messaggio(Messaggio.INIZIO_ASTA);
         //invio la lista dei partecipanti
-        ArrayList<String> listaPartecipanti = new ArrayList<String>();
+        ArrayList<Persona> listaPartecipanti = new ArrayList<Persona>();
         for(ClientConnesso client : listaClient){
-            listaPartecipanti.add(client.username);
+            listaPartecipanti.add(client.utente);
         }
         mess.setListaPartecipanti(listaPartecipanti);
         broadcast(mess);
@@ -110,12 +118,17 @@ public class Server extends Thread {
             new Socket("localhost", porta);
         }
         catch(Exception e) {
-            // nothing I can really do
+            gui.appendConsole("Eccezione nello stop delle connessioni>> "+e.getMessage());
+            e.printStackTrace();
         }
     }
 
+    /**
+     * Invia il messaggio passato per parametro a tutti i client connessi.
+     * @param msg messaggio da inviare
+     */
     private void broadcast(Messaggio msg){
-        gui.appendConsole("Broadcast: " + msg.getTipo());
+        gui.appendConsole("Broadcast");
 
         for(ClientConnesso client: listaClient){
             client.writeMsg(msg);
@@ -129,6 +142,9 @@ public class Server extends Thread {
         astaAttaccanti();
     }
 
+    /**
+     * Metodo che gestisce l'asta dei portieri.
+     */
     public void astaPortieri(){
         //finche tutte le squadre non hanno tre portieri gira
         while (!finitiPortieri()) {
@@ -155,8 +171,8 @@ public class Server extends Thread {
                             ClientConnesso client = listaClient.get(j);
 
                             //se il client è ancora in asta
-                            if (client.offerta) {
-                                gui.appendConsole("Client: " + client.username);
+                            if (client.offerta && !client.finitiPortieri()) {
+                                gui.appendConsole("Client: " + client.utente.getNickname());
 
                                 //invio il giocatore in palio
                                 Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
@@ -184,12 +200,12 @@ public class Server extends Thread {
                                 //prendo la risposta
                                 Messaggio risposta = client.readObject();
                                 if (risposta.getOfferta() == 0) {
-                                    gui.appendConsole(client.username + " ha rifiutato " + portiere.getCognome());
+                                    gui.appendConsole(client.utente.getNickname() + " ha rifiutato " + portiere.getCognome());
                                     client.offerta = false;
                                 } else {
-                                    gui.appendConsole(client.username + " ha offerto " + risposta.getOfferta() + " per " + portiere.getCognome());
+                                    gui.appendConsole(client.utente.getNickname() + " ha offerto " + risposta.getOfferta() + " per " + portiere.getCognome());
                                     offertaAttuale = risposta.getOfferta();
-                                    utenteOfferta = client.username;
+                                    utenteOfferta = client.utente.getNickname();
                                 }
                             }
                         }
@@ -229,8 +245,8 @@ public class Server extends Thread {
                             ClientConnesso client = listaClient.get(j);
 
                             //se il client è ancora in asta
-                            if (client.offerta) {
-                                gui.appendConsole("Client: " + client.username);
+                            if (client.offerta && !client.finitiDifensori()) {
+                                gui.appendConsole("Client: " + client.utente.getNickname());
 
                                 //invio il giocatore in palio
                                 Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
@@ -257,10 +273,10 @@ public class Server extends Thread {
                                 //prendo la risposta
                                 Messaggio risposta = client.readObject();
                                 if (risposta.getOfferta() == 0) {
-                                    gui.appendConsole(client.username + " ha rifiutato " + difensore.getCognome());
+                                    gui.appendConsole(client.utente.getNickname() + " ha rifiutato " + difensore.getCognome());
                                     client.offerta = false;
                                 } else {
-                                    gui.appendConsole(client.username + " ha offerto " + risposta.getOfferta() + " per " + difensore.getCognome());
+                                    gui.appendConsole(client.utente.getNickname() + " ha offerto " + risposta.getOfferta() + " per " + difensore.getCognome());
                                     offertaAttuale = risposta.getOfferta();
                                 }
                             }
@@ -301,8 +317,8 @@ public class Server extends Thread {
                             ClientConnesso client = listaClient.get(j);
 
                             //se il client è ancora in asta
-                            if (client.offerta) {
-                                gui.appendConsole("Client: " + client.username);
+                            if (client.offerta && !client.finitiCentrocampisti()) {
+                                gui.appendConsole("Client: " + client.utente.getNickname());
 
                                 //invio il giocatore in palio
                                 Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
@@ -329,10 +345,10 @@ public class Server extends Thread {
                                 //prendo la risposta
                                 Messaggio risposta = client.readObject();
                                 if (risposta.getOfferta() == 0) {
-                                    gui.appendConsole(client.username + " ha rifiutato " + centrocampista.getCognome());
+                                    gui.appendConsole(client.utente.getNickname() + " ha rifiutato " + centrocampista.getCognome());
                                     client.offerta = false;
                                 } else {
-                                    gui.appendConsole(client.username + " ha offerto " + risposta.getOfferta() + " per " + centrocampista.getCognome());
+                                    gui.appendConsole(client.utente.getNickname() + " ha offerto " + risposta.getOfferta() + " per " + centrocampista.getCognome());
                                     offertaAttuale = risposta.getOfferta();
                                 }
                             }
@@ -373,8 +389,8 @@ public class Server extends Thread {
                             ClientConnesso client = listaClient.get(j);
 
                             //se il client è ancora in asta
-                            if (client.offerta) {
-                                gui.appendConsole("Client: " + client.username);
+                            if (client.offerta && !client.finitiAttaccanti()) {
+                                gui.appendConsole("Client: " + client.utente.getNickname());
 
                                 //invio il giocatore in palio
                                 Messaggio offerta = new Messaggio(Messaggio.OFFERTA);
@@ -401,10 +417,10 @@ public class Server extends Thread {
                                 //prendo la risposta
                                 Messaggio risposta = client.readObject();
                                 if (risposta.getOfferta() == 0) {
-                                    gui.appendConsole(client.username + " ha rifiutato " + attaccante.getCognome());
+                                    gui.appendConsole(client.utente.getNickname() + " ha rifiutato " + attaccante.getCognome());
                                     client.offerta = false;
                                 } else {
-                                    gui.appendConsole(client.username + " ha offerto " + risposta.getOfferta() + " per " + attaccante.getCognome());
+                                    gui.appendConsole(client.utente.getNickname() + " ha offerto " + risposta.getOfferta() + " per " + attaccante.getCognome());
                                     offertaAttuale = risposta.getOfferta();
                                 }
                             }
@@ -434,7 +450,9 @@ public class Server extends Thread {
 
     private void offertaClientTrue(){
         for(ClientConnesso client : listaClient){
-            client.offerta = true;
+            if(!client.finitiPortieri()){
+                client.offerta = true;
+            }
         }
     }
 
@@ -448,15 +466,15 @@ public class Server extends Thread {
         }
 
         giocatore.setPrezzoAcquisto(offerta);
-        clientAggiudicato.listaGiocatoriSquadre.add(giocatore);
+        clientAggiudicato.listaGiocatoriSquadra.add(giocatore);
 
-        gui.appendConsole(giocatore.getCognome()+" aggiudicato da " + clientAggiudicato.username + " a "+giocatore.getPrezzoAcquisto());
+        gui.appendConsole(giocatore.getCognome()+" aggiudicato da " + clientAggiudicato.utente.getNickname() + " a "+giocatore.getPrezzoAcquisto());
 
         //comunico a tutti che è stato aggiudicato
         Messaggio giocatoreAggiudicato = new Messaggio(Messaggio.FINE_OFFERTA);
         giocatoreAggiudicato.setGiocatore(giocatore);
         giocatoreAggiudicato.setOfferta(offerta);
-        giocatoreAggiudicato.setMessaggio(clientAggiudicato.username);
+        giocatoreAggiudicato.setUtente(clientAggiudicato.utente);
 
         //invio il messaggio a tutti
         broadcast(giocatoreAggiudicato);
@@ -469,8 +487,8 @@ public class Server extends Thread {
         boolean flag = true;
         for(ClientConnesso client : listaClient){
             int numPor =0;
-            for(int i=0; i<client.listaGiocatoriSquadre.size();i++){
-                if(client.listaGiocatoriSquadre.get(i).getRuolo()=='P') numPor++;
+            for(int i=0; i<client.listaGiocatoriSquadra.size();i++){
+                if(client.listaGiocatoriSquadra.get(i).getRuolo()=='P') numPor++;
             }
             if(numPor<3) flag=false;
         }
@@ -481,8 +499,8 @@ public class Server extends Thread {
         boolean flag = true;
         for(ClientConnesso client : listaClient){
             int numPor =0;
-            for(int i=0; i<client.listaGiocatoriSquadre.size();i++){
-                if(client.listaGiocatoriSquadre.get(i).getRuolo()=='D') numPor++;
+            for(int i=0; i<client.listaGiocatoriSquadra.size();i++){
+                if(client.listaGiocatoriSquadra.get(i).getRuolo()=='D') numPor++;
             }
             if(numPor<8) flag=false;
         }
@@ -493,8 +511,8 @@ public class Server extends Thread {
         boolean flag = true;
         for(ClientConnesso client : listaClient){
             int numPor =0;
-            for(int i=0; i<client.listaGiocatoriSquadre.size();i++){
-                if(client.listaGiocatoriSquadre.get(i).getRuolo()=='C') numPor++;
+            for(int i=0; i<client.listaGiocatoriSquadra.size();i++){
+                if(client.listaGiocatoriSquadra.get(i).getRuolo()=='C') numPor++;
             }
             if(numPor<8) flag=false;
         }
@@ -505,18 +523,18 @@ public class Server extends Thread {
         boolean flag = true;
         for(ClientConnesso client : listaClient){
             int numPor =0;
-            for(int i=0; i<client.listaGiocatoriSquadre.size();i++){
-                if(client.listaGiocatoriSquadre.get(i).getRuolo()=='A') numPor++;
+            for(int i=0; i<client.listaGiocatoriSquadra.size();i++){
+                if(client.listaGiocatoriSquadra.get(i).getRuolo()=='A') numPor++;
             }
             if(numPor<6) flag=false;
         }
         return flag;
     }
 
-    private boolean utenteConsentito(String nickname){
+    private boolean utenteConsentito(Persona utente){
         boolean flag = false;
-        for(Persona utente :listaConsentiti){
-            if(utente.getNickname().equals(nickname)){
+        for(Squadra squadra : campionato.getListaSquadrePartecipanti()){
+            if(squadra.getProprietario().equals(utente)){
                 flag=true;
                 break;
             }
@@ -524,7 +542,7 @@ public class Server extends Thread {
         return flag;
     }
 
-    class ClientConnesso extends Thread{
+    class ClientConnesso{
 
         private Socket client;
         ObjectInputStream input;
@@ -532,9 +550,9 @@ public class Server extends Thread {
 
         private boolean offerta;
 
-        private String username;
+        private Persona utente;
 
-        private ArrayList<Giocatore> listaGiocatoriSquadre;
+        private ArrayList<Giocatore> listaGiocatoriSquadra;
 
         public ClientConnesso(Socket clientSock){
             this.client = clientSock;
@@ -561,11 +579,11 @@ public class Server extends Thread {
 
         public boolean controlloUsername(){
             try{
-                this.username = (String) input.readObject();
+                this.utente = (Persona) input.readObject();
 
-                if(utenteConsentito(this.username)) {
-                    gui.addConnesso(this.username);
-                    gui.appendConsole("Connesso adesso: " + this.username);
+                if(utenteConsentito(this.utente)) {
+                    gui.addConnesso(this.utente);
+                    gui.appendConsole("Connesso adesso: " + this.utente.getNickname());
 
                     //invio la notifica di connessione
                     this.output.writeObject(true);
@@ -576,11 +594,11 @@ public class Server extends Thread {
                     this.writeMsg(listaGiocatorimsg);
 
                     //inizializzo la lista dei giocatori per questo client
-                    listaGiocatoriSquadre = new ArrayList<Giocatore>();
+                    listaGiocatoriSquadra = new ArrayList<Giocatore>();
 
                     return true;
                 } else{
-                    gui.appendConsole("Non consentina la connesione a "+this.username);
+                    gui.appendConsole("Non consentina la connesione a "+this.utente.getNickname());
                     this.output.writeObject(false);
                     return false;
                 }
@@ -591,12 +609,38 @@ public class Server extends Thread {
             }
         }
 
-        public void run(){
-            while(true){
-                //TODO attende i messagi dai client
-                //??mi sa non serve tanto è il server che gestisce tutto??
+        private boolean finitiPortieri(){
+            int i=0;
+            for(Giocatore giocatore:listaGiocatoriSquadra){
+                if(giocatore.getRuolo()=='P') i++;
             }
+            return(i==3);
         }
+
+        private boolean finitiDifensori(){
+            int i=0;
+            for(Giocatore giocatore:listaGiocatoriSquadra){
+                if(giocatore.getRuolo()=='C') i++;
+            }
+            return(i==8);
+        }
+
+        private boolean finitiCentrocampisti(){
+            int i=0;
+            for(Giocatore giocatore:listaGiocatoriSquadra){
+                if(giocatore.getRuolo()=='C') i++;
+            }
+            return(i==8);
+        }
+
+        private boolean finitiAttaccanti(){
+            int i=0;
+            for(Giocatore giocatore:listaGiocatoriSquadra){
+                if(giocatore.getRuolo()=='A') i++;
+            }
+            return(i==6);
+        }
+
 
         private boolean writeMsg(Messaggio msg){
             if(!client.isConnected()) {
@@ -606,11 +650,11 @@ public class Server extends Thread {
             // write the message to the stream
             try {
                 output.writeObject(msg);
-                gui.appendConsole("Messaggio inviato a: "+ this.username);
+                gui.appendConsole("Messaggio inviato a: "+ this.utente.getNickname());
             }
             // if an error occurs, do not abort just inform the user
             catch(IOException ioe) {
-                gui.appendConsole("Errore nell'invio del messaggio a: " + username);
+                gui.appendConsole("Errore nell'invio del messaggio a: " + this.utente.getNickname());
                 gui.appendConsole(ioe.getMessage());
                 ioe.printStackTrace();
             }

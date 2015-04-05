@@ -1,20 +1,18 @@
 package AstaLive3;
 
+import classi.Campionato;
 import classi.Persona;
-import org.joda.time.DateTime;
-import org.joda.time.Seconds;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Date;
+
 
 /**
- * Created by alessandro on 03/04/15.
+ * @author Alessandro Caprarelli
+ * @author Giacomo Grilli
+ * @author Christian Manfredi
  */
 public class Client {
 
@@ -22,16 +20,18 @@ public class Client {
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private Persona utente;
+    private Campionato campionato;
 
     private String indirizzo;
     private int porta;
     private ClientGUI gui;
 
-    public Client(String indirizzo, int porta, Persona utente, ClientGUI clientGUI){
+    public Client(String indirizzo, int porta, Persona utente, Campionato camp, ClientGUI clientGUI){
         this.indirizzo = indirizzo;
         this.porta =porta;
         this.gui = clientGUI;
         this.utente = utente;
+        this.campionato=camp;
 
         //provo a connettermi al server
         try {
@@ -49,7 +49,7 @@ public class Client {
             input = new ObjectInputStream(server.getInputStream());
             output = new ObjectOutputStream(server.getOutputStream());
 
-            output.writeObject(this.utente.getNickname());
+            output.writeObject(this.utente);
 
             if((Boolean)input.readObject()){
                 Messaggio listaGiocatorimsg = (Messaggio)input.readObject();
@@ -118,8 +118,8 @@ public class Client {
                         gui.setOffertaNotEnabled();
                     }
                 } else if(messaggio.getTipo()==Messaggio.FINE_OFFERTA){
-                    gui.appendConsole(messaggio.getGiocatore().getCognome()+" aggiudicato da " + messaggio.getMessaggio() +" a "+messaggio.getOfferta());
-                    gui.aggiungiGiocatore(messaggio.getGiocatore(),messaggio.getOfferta(),messaggio.getMessaggio());
+                    gui.appendConsole(messaggio.getGiocatore().getCognome()+" aggiudicato da " + messaggio.getUtente().getNickname() +" a "+messaggio.getOfferta());
+                    gui.aggiungiGiocatore(messaggio.getGiocatore(),messaggio.getOfferta(),messaggio.getUtente());
                 }
 
             }

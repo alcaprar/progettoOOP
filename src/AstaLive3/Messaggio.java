@@ -1,6 +1,7 @@
 package AstaLive3;
 
 import classi.Giocatore;
+import classi.Persona;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,12 +33,14 @@ public class Messaggio implements Serializable {
     private int offerta;
     //se è 0 il client rifiuta il giocatore
 
+    private Persona utente;
+
     private String messaggio;
 
     private int secondi;
 
     private ArrayList<Giocatore> listaGiocatori;
-    private ArrayList<String> listaPartecipanti;
+    private ArrayList<Persona> listaPartecipanti;
 
     public Messaggio(int tipo){
         this.tipo = tipo;
@@ -83,11 +86,11 @@ public class Messaggio implements Serializable {
         this.secondi = secondi;
     }
 
-    public ArrayList<String> getListaPartecipanti() {
+    public ArrayList<Persona> getListaPartecipanti() {
         return listaPartecipanti;
     }
 
-    public void setListaPartecipanti(ArrayList<String> listaPartecipanti) {
+    public void setListaPartecipanti(ArrayList<Persona> listaPartecipanti) {
         this.listaPartecipanti = listaPartecipanti;
     }
 
@@ -97,5 +100,13 @@ public class Messaggio implements Serializable {
 
     public void setListaGiocatori(ArrayList<Giocatore> listaGiocatori) {
         this.listaGiocatori = listaGiocatori;
+    }
+
+    public Persona getUtente() {
+        return utente;
+    }
+
+    public void setUtente(Persona utente) {
+        this.utente = utente;
     }
 }
