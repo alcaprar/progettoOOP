@@ -40,6 +40,7 @@ public class Login extends JFrame {
     private JLabel nomeutentetxt;
     private JComboBox comboBoxStorico;
     private JButton storicoButton;
+    private JButton buttonLogout;
 
     //utente che fa il login
     private Persona utente;
@@ -172,6 +173,14 @@ public class Login extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 CreaCampionato creaCampionato = new CreaCampionato(utente, getFrame());
                 getFrame().setVisible(false);
+            }
+        });
+
+        buttonLogout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Login login = new Login();
+                getFrame().dispose();
             }
         });
 

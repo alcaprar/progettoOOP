@@ -3,6 +3,7 @@ package interfacce.Applicazione;
 import AstaLive3.ClientGUI;
 import AstaLive3.ServerGUI;
 import classi.*;
+import interfacce.Login.Login;
 import org.joda.time.*;
 import utils.*;
 
@@ -51,6 +52,7 @@ public class Home extends JPanel {
     private JPanel ultimaGiornataPanel;
     private JButton buttonAsta;
     private JButton buttonServer;
+    private JButton buttonLogout;
 
     private Utils utils = new Utils();
 
@@ -101,6 +103,13 @@ public class Home extends JPanel {
             }
         });
 
+        buttonLogout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Login login = new Login();
+                applicazione.dispose();
+            }
+        });
 
     }
 

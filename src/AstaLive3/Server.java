@@ -218,6 +218,12 @@ public class Server extends Thread {
             }
         }
         gui.appendConsole("Finiti i portieri.");
+        try {
+            sleep(5000);
+        } catch (Exception e) {
+            gui.appendConsole("Eccezione nello sleep del thread>> " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void astaDifensori(){
@@ -293,6 +299,12 @@ public class Server extends Thread {
             }
         }
         gui.appendConsole("Finiti i difensori.");
+        try {
+            sleep(5000);
+        } catch (Exception e) {
+            gui.appendConsole("Eccezione nello sleep del thread>> " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void astaCentrocampisti(){
@@ -368,6 +380,12 @@ public class Server extends Thread {
             }
         }
         gui.appendConsole("Finiti i centrocampisti.");
+        try {
+            sleep(5000);
+        } catch (Exception e) {
+            gui.appendConsole("Eccezione nello sleep del thread>> " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void astaAttaccanti(){
@@ -443,6 +461,12 @@ public class Server extends Thread {
             }
         }
         gui.appendConsole("Finiti gli attaccanti.");
+        try {
+            sleep(5000);
+        } catch (Exception e) {
+            gui.appendConsole("Eccezione nello sleep del thread>> " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private boolean continuaAsta(){
