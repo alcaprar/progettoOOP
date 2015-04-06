@@ -65,7 +65,7 @@ public class CreaCampionato extends JFrame {
      */
     public CreaCampionato(Persona utente, final Login loginForm) {
         //titolo del frame
-        super("Crea Campionato - Gestore fantacalcio");
+        super("JFantacalcio - Crea Campionato");
 
         presidente = utente;
 

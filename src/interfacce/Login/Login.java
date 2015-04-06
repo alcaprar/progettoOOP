@@ -15,8 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * @author Alessandro Caprarelli
@@ -53,7 +51,7 @@ public class Login extends JFrame {
 
     public Login() {
         //titolo del frame
-        super("Login - Gestore fantacalcio");
+        super("JFantacalcio - Login");
 
         //instanzio il db
         db = new Mysql();
@@ -216,7 +214,10 @@ public class Login extends JFrame {
                     if (result == JOptionPane.OK_OPTION) {
                         String passwordValue = Utils.passwordString(passwordField.getPassword());
                         if(Validator.password(passwordValue)){
-                            db.aggiornaPasswordAdmin(passwordValue);
+                            if(db.aggiornaPasswordAdmin(passwordValue)){
+                                ApplicazioneAdmin admingui = new ApplicazioneAdmin();
+                                getFrame().dispose();
+                            }
                         }
                     }
                 } else{

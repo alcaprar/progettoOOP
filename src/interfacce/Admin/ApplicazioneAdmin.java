@@ -16,7 +16,7 @@ public class ApplicazioneAdmin extends JFrame {
     final Mysql db = new Mysql();
 
     public ApplicazioneAdmin() {
-        super("Admin - Gestore fantacalcio");
+        super("JFantacalcio - Admin");
 
 
         setContentPane(panel1);

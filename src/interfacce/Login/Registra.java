@@ -37,7 +37,7 @@ public class Registra extends JFrame {
      */
     public Registra() {
         //titolo del frame
-        super("Registrati - Gestore Fantacalcio");
+        super("JFantacalcio - Registra");
         final Mysql db = new Mysql();
         setContentPane(panel1);
 

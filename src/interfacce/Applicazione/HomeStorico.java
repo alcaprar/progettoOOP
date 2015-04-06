@@ -41,7 +41,7 @@ public class HomeStorico extends JFrame {
      * @param loginForm
      */
     public HomeStorico(Storico storico,CaricamentoDati caricamento, final Login loginForm){
-        super("Storico");
+        super("JFantacalcio - Storico");
         this.storico=storico;
 
         storico.setCalendario(db.selectGiornateStorico(storico));

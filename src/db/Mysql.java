@@ -28,8 +28,6 @@ public class Mysql{
      * l'oggetto Persona sono giuste.
      * @param utente utente da loggare
      * @return true se l'utente esiste e ha inserito la password giusta
-     * @throws SQLException
-     * @throws ClassNotFoundException
      */
     public boolean login(Persona utente) {
         Connection conn = null ;
@@ -114,8 +112,8 @@ public class Mysql{
             registraStmt.setString(1, utente.getNickname());
             registraStmt.setString(2, utente.getPassword());
             registraStmt.setString(3, utente.getNome());
-            registraStmt.setString(4,utente.getCognome());
-            registraStmt.setString(5,utente.getEmail());
+            registraStmt.setString(4, utente.getCognome());
+            registraStmt.setString(5, utente.getEmail());
 
             int rs = registraStmt.executeUpdate();
             if(rs==1){
@@ -1319,7 +1317,7 @@ public class Mysql{
      * Aggiorna la password dell'admin.
      * @param password nuova password
      */
-    public void aggiornaPasswordAdmin(String password){
+    public boolean aggiornaPasswordAdmin(String password){
         Connection conn = null;
         PreparedStatement aggiornaPasswordStmt = null;
         String aggiornaPasswordSql = "UPDATE Utente set Password =? where Nickname='admin'";
@@ -1333,7 +1331,7 @@ public class Mysql{
             aggiornaPasswordStmt = conn.prepareStatement(aggiornaPasswordSql);
             aggiornaPasswordStmt.setString(1,password);
 
-            aggiornaPasswordStmt.executeUpdate();
+            return(aggiornaPasswordStmt.executeUpdate()==1);
 
         }catch(SQLException se){
             se.printStackTrace();
@@ -1342,8 +1340,10 @@ public class Mysql{
             } else{
                 JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
             }
+            return false;
         }catch(Exception e){
             e.printStackTrace();
+            return false;
         }finally {
             if(conn!=null) {
                 try {

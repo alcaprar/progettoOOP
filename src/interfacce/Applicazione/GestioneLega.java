@@ -21,17 +21,16 @@ public class GestioneLega extends JPanel{
     private JButton calcolaButton;
     private JLabel nrGiolbl;
     private JLabel nonAbilitatolbl;
-    private JPanel calcolaPanel;
+    private JPanel calcolaAbilitatoPanel;
     private JList listaMessaggi;
     private JTextArea testoMessaggi;
+    private JButton terminaButton;
+    private JPanel terminaPanel;
+    private JPanel calcolaGiornataPanel;
 
     private Squadra squadra;
 
-    private Calendario calendarioPanel;
-
-    private Home homePanel;
-
-    private Classifica classificaPanel;
+    private Applicazione applicazione;
 
     private final Mysql db = new Mysql();
 
@@ -42,26 +41,23 @@ public class GestioneLega extends JPanel{
         this.squadra = sqr;
     }
 
-    public void setCalendario(Calendario cal){
-        this.calendarioPanel = cal;
-    }
-
-    public void setHome(Home hm){
-        this.homePanel = hm;
-    }
-
-    public void setClassifica(Classifica clas){
-        this.classificaPanel = clas;
+    public void setApplicazione(Applicazione app){
+        this.applicazione = app;
     }
 
     public void refresh(){
         ultimaGiornataReale = squadra.getCampionato().prossimaGiornata().getGioReale().getNumeroGiornata();
         if(giornataVotiInseriti!=ultimaGiornataReale){
-            calcolaPanel.setVisible(false);
+            calcolaAbilitatoPanel.setVisible(false);
             nonAbilitatolbl.setVisible(true);
         } else {
             nonAbilitatolbl.setVisible(false);
             nrGiolbl.setText(String.valueOf(squadra.getCampionato().prossimaGiornata().getNumGiornata()));
+        }
+        //se il campionato è terminato
+        if(squadra.getCampionato().prossimaGiornata().getGioReale().getNumeroGiornata()>squadra.getCampionato().getGiornataFine()){
+            calcolaGiornataPanel.setVisible(false);
+            terminaPanel.setVisible(true);
         }
         setListaMessaggi();
     }
@@ -105,9 +101,9 @@ public class GestioneLega extends JPanel{
                     //permetto l'inserimento per la prossima partita
                     squadra.setFormazioneInserita(false);
                     //aggiorno i vari pannelli con i nuovi dati
-                    calendarioPanel.refresh();
-                    classificaPanel.refresh();
-                    homePanel.refresh();
+                    applicazione.getCalendarioPanel().refresh();
+                    applicazione.getClassificaPanel().refresh();
+                    applicazione.getHomePanel().refresh();
                     getPanel().refresh();
                 }
 
@@ -123,6 +119,17 @@ public class GestioneLega extends JPanel{
                     testoMessaggi.setText(squadra.getCampionato().getListaMessaggi().get(numeroMessaggio)[1]);
 
                 }
+
+            }
+        });
+
+        terminaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                db.terminaCampionato(squadra.getCampionato());
+                applicazione.dispose();
+                applicazione.getLoginForm().setVisible(true);
+                applicazione.getLoginForm().refresh();
 
             }
         });

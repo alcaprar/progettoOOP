@@ -46,6 +46,9 @@ public class GiocatoriAdmin extends JPanel {
 
             CardLayout c1 = (CardLayout) (panelGiocatori.getLayout());
             c1.show(panelGiocatori, "tabella");
+        } else{
+            CardLayout c1 = (CardLayout) (panelGiocatori.getLayout());
+            c1.show(panelGiocatori, "csv");
         }
 
         quotazioniButton.addActionListener(new ActionListener() {

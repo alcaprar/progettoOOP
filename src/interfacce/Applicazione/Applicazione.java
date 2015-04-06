@@ -48,7 +48,7 @@ public class Applicazione extends JFrame {
     final Mysql db = new Mysql();
 
     public Applicazione(final Squadra squadra, CaricamentoDati caricamento, Login login) {
-        super("Gestore Fantacalcio");
+        super("JFantacalcio");
 
         this.sqr = squadra;
         this.loginForm = login;
@@ -145,9 +145,7 @@ public class Applicazione extends JFrame {
             gestioneLegaPanel.setSquadra(sqr);
             //setto i riferimento a calendario, home e classifica che servono
             //per fare il refresh dopo che è stata calcolata la giornata
-            gestioneLegaPanel.setCalendario(calendarioPanel);
-            gestioneLegaPanel.setHome(homePanel);
-            gestioneLegaPanel.setClassifica(classificaPanel);
+            gestioneLegaPanel.setApplicazione(getFrame());
 
             gestioneLegaPanel.refresh();
         }
@@ -310,6 +308,22 @@ public class Applicazione extends JFrame {
             getFrame().dispose();
             System.exit(1);
         }
+    }
+
+    public Calendario getCalendarioPanel(){
+        return calendarioPanel;
+    }
+
+    public Classifica getClassificaPanel(){
+        return classificaPanel;
+    }
+
+    public Home getHomePanel(){
+        return homePanel;
+    }
+
+    public Login getLoginForm(){
+        return loginForm;
     }
 
 
