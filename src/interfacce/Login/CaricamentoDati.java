@@ -1,6 +1,5 @@
 package interfacce.Login;
 
-import oracle.jrockit.jfr.JFR;
 
 import javax.swing.*;
 
