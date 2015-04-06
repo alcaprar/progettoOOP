@@ -21,15 +21,12 @@ import java.util.ArrayList;
  */
 public class Squadre extends JPanel{
     private JComboBox selSqua;
-    private JLabel proprietario;
     private JTable tableRosa;
     private JPanel mainPanel;
 
     private Squadra squadra;
 
     private ArrayList<DefaultTableModel> listaTableModel = new ArrayList<DefaultTableModel>();
-
-    Utils utils = new Utils();
 
     /**
      * Costruttore della pagina.
@@ -60,7 +57,6 @@ public class Squadre extends JPanel{
      */
     public void refresh(){
         setComboBox();
-        proprietario.setText(squadra.getProprietario().getNickname());
         setTabellaGiocatori();
     }
 
@@ -81,8 +77,7 @@ public class Squadre extends JPanel{
     private void setTabellaGiocatori() {
         for(Squadra squadre : squadra.getCampionato().getListaSquadrePartecipanti()){
             Object[][] righeGiocatori = squadre.listaGiocatoriRosaToArray();
-            //Object[][] righeGiocatori = utils.listaGiocatoriToArraySquadre(squadre.getGiocatori());
-            Object[] nomeColonne = {"Cognome", "Ruolo", "Squadra Reale", "Prezzo Pagato"};
+            Object[] nomeColonne = {"ID","Cognome", "Ruolo", "Squadra Reale","Prezzo iniziale", "Prezzo Pagato"};
             TableNotEditableModel giocatoriModel = new TableNotEditableModel(righeGiocatori, nomeColonne);
             listaTableModel.add(giocatoriModel);
         }

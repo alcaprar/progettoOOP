@@ -188,9 +188,11 @@ public class CreaCampionato extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if ("".equals(nometxt.getText())) {
-                    JOptionPane.showMessageDialog(getContentPane(), "Inserire il nome del campionato.", "Nome mancante", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(getContentPane(), "Inserire il nome del campionato.", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else if (partecipantiModel.size() != Integer.parseInt((String) numeroBox.getSelectedItem())) {
-                    JOptionPane.showMessageDialog(getContentPane(), "Inserisci tutti i partecipanti", "Partecipanti mancanti", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(getContentPane(), "Inserisci tutti i partecipanti", "Errore", JOptionPane.ERROR_MESSAGE);
+                } else if (nometxt.getText().length()>19) {
+                    JOptionPane.showMessageDialog(getContentPane(),"Nome campionato troppo lungo.","Errore",JOptionPane.ERROR_MESSAGE);
                 } else {
                     campionato = creaCampionato();
                     if (db.creaCampionato(campionato)) {

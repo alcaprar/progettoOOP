@@ -222,12 +222,12 @@ public class GestioneGiocatori extends JPanel {
                         ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
                         //inserisco i giocatori nella lista
                         for (int k = 0; k < 25; k++) {
-                            int ID = Integer.parseInt((String) tabellaSquadraModel.get(i).getValueAt(k, 0));
+                            int ID = (Integer) tabellaSquadraModel.get(i).getValueAt(k, 0);
                             String cognome = (String) tabellaSquadraModel.get(i).getValueAt(k, 1);
                             char ruolo = ((String) tabellaSquadraModel.get(i).getValueAt(k, 2)).charAt(0);
                             String squadra = (String) tabellaSquadraModel.get(i).getValueAt(k, 3);
-                            int prezzoBase = Integer.parseInt((String) tabellaSquadraModel.get(i).getValueAt(k, 4));
-                            int prezzoAcquisto = Integer.parseInt((String) tabellaSquadraModel.get(i).getValueAt(k, 5));
+                            int prezzoBase = (Integer) tabellaSquadraModel.get(i).getValueAt(k, 4);
+                            int prezzoAcquisto = (Integer) tabellaSquadraModel.get(i).getValueAt(k, 5);
 
                             Giocatore giocatore = new Giocatore(ID, cognome, prezzoBase, prezzoAcquisto, squadra, ruolo);
                             listaGiocatori.add(giocatore);
@@ -458,6 +458,7 @@ public class GestioneGiocatori extends JPanel {
      */
     public void refreshGiaInseriti() {
         listaGiocatori = db.selectGiocatoriDisponibili(squadra.getCampionato());
+        confermaRoseButton.setVisible(false);
         setComboBox();
         setSpinner();
         setTabellaGiocatori();

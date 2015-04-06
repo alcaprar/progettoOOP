@@ -96,15 +96,15 @@ public class Registra extends JFrame {
     private boolean campiRegistrazioneValidi(){
         boolean flag = true;
 
-        if(Validator.nickname(nicktxt.getText())){
+        if(!Validator.nickname(nicktxt.getText())){
             flag=false;
-        } else if(Validator.password(Utils.passwordString(passtxt.getPassword()))){
+        } else if(!Validator.password(Utils.passwordString(passtxt.getPassword()))){
             flag = false;
-        } else if(Validator.email(emailtxt.getText())){
+        } else if(!Validator.email(emailtxt.getText())){
             flag= false;
-        } else if(Validator.nome(nometxt.getText())){
+        } else if(!Validator.nome(nometxt.getText())){
             flag=false;
-        } else if(Validator.cognome(cognometxt.getText())){
+        } else if(!Validator.cognome(cognometxt.getText())){
             flag=false;
         }
         return flag;

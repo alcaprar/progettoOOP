@@ -69,7 +69,18 @@ public class GiocatoriAdmin extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    utils.xlsQuotazioni(pathFile);
+                    if(utils.xlsQuotazioni(pathFile)){
+                        JOptionPane.showMessageDialog(getPanel(),"Inserimento giocatori effettuato con successo.","Ok",JOptionPane.INFORMATION_MESSAGE);
+
+                        listaGiocatori = db.selectGiocatoriAdmin();
+
+                        setTabella();
+
+                        CardLayout c1 = (CardLayout) (panelGiocatori.getLayout());
+                        c1.show(panelGiocatori, "tabella");
+                    } else{
+                        JOptionPane.showMessageDialog(getPanel(),"Inserimento giocatori non riuscito.","Fallito",JOptionPane.ERROR_MESSAGE);
+                    }
                 } catch (IOException ioe){
                     ioe.printStackTrace();
                     JOptionPane.showMessageDialog(getPanel(),"File non trovato.","Errore",JOptionPane.ERROR_MESSAGE);

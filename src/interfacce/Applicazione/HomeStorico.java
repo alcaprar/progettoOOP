@@ -82,7 +82,7 @@ public class HomeStorico extends JFrame {
         while(j<storico.getCalendario().size()){
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-            for(int i=0;i<3 && j<storico.getCalendario().size();i++){
+            for(int i=0;i<2 && j<storico.getCalendario().size();i++){
                 TabellaGiornata giornataIesima = new TabellaGiornata(storico.getCalendario().get(j));
                 panel.add(giornataIesima);
                 j++;

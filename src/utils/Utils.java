@@ -109,7 +109,8 @@ public class Utils {
                     char ruolo = foglio.getCell(1,i).getContents().charAt(0);
                     String cognome = foglio.getCell(2, i).getContents();
                     String squadraReale = foglio.getCell(3, i).getContents();
-                    int costo = (int)Float.parseFloat(foglio.getCell(4,i).getContents());
+                    int costo = (int)Float.parseFloat(foglio.getCell(4,i).getContents().replace(',','.'));
+
 
                     listaGiocatori.add(new Giocatore(cognome,id,costo,squadraReale,ruolo));
                 }

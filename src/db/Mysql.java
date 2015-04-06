@@ -101,7 +101,7 @@ public class Mysql{
     public boolean registra(Persona utente)throws SQLException,ClassNotFoundException{
         Connection conn = null ;
         PreparedStatement registraStmt = null;
-        String registraSql ="INSERT into Utente value(?,?,?,?,?,?)";
+        String registraSql ="INSERT into Utente value(?,?,?,?,?)";
         try{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
@@ -152,12 +152,12 @@ public class Mysql{
         PreparedStatement contaStmt = null ;
         PreparedStatement utentiStmt = null;
 
-        String contaString = "SELECT count(*) from Utente where TipoUtente='u'";
-        String utentiString = "SELECT * from Utente where TipoUtente='u'";
+        String contaString = "SELECT count(*) from Utente";
+        String utentiString = "SELECT * from Utente";
 
         ResultSet rsCount =null;
         ResultSet rsUtenti = null;
-        //String[] utenti=null;
+
         ArrayList<Persona> listaUtenti = new ArrayList<Persona>();
         try{
             //registra il JBCD driver
@@ -173,10 +173,10 @@ public class Mysql{
             if(numeroUtenti!=0){
                 utentiStmt = conn.prepareStatement(utentiString);
                 rsUtenti = utentiStmt.executeQuery();
-                int i =0;
                 while(rsUtenti.next()){
-                    listaUtenti.add(new Persona(rsUtenti.getString("Nickname"),rsUtenti.getString("Nome"),rsUtenti.getString("Cognome"),rsUtenti.getString("Email")));
-                    i++;
+                    if(!rsUtenti.getString("Nickname").equals("admin")) {
+                        listaUtenti.add(new Persona(rsUtenti.getString("Nickname"), rsUtenti.getString("Nome"), rsUtenti.getString("Cognome"), rsUtenti.getString("Email")));
+                    }
                 }
             }
 
@@ -624,7 +624,7 @@ public class Mysql{
         ResultSet rsSquadre = null;
 
         PreparedStatement partecipantiStmt = null;
-        String partecipantiSql ="SELECT Fantasquadra.ID, Fantasquadra.Nome, Fantasquadra.NickUt from Iscrizione JOIN Fantasquadra on Iscrizione.IDsq=Fantasquadra.ID JOIN Campionato on Iscrizione.Campionato = Campionato.Nome JOIN Regolamento on Campionato.Nome=Regolamento.NomeCampionato where Campionato=?";
+        String partecipantiSql ="SELECT Fantasquadra.ID, Fantasquadra.Nome, Fantasquadra.NickUt from Iscrizione JOIN Fantasquadra on Iscrizione.IDsq=Fantasquadra.ID JOIN Campionato on Iscrizione.Campionato = Campionato.Nome where Campionato=?";
         ResultSet rsPartecipanti = null;
 
         ArrayList<Squadra> listaSquadre = new ArrayList<Squadra>();
@@ -1329,7 +1329,7 @@ public class Mysql{
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             aggiornaPasswordStmt = conn.prepareStatement(aggiornaPasswordSql);
-            aggiornaPasswordStmt.setString(1,password);
+            aggiornaPasswordStmt.setString(1, password);
 
             return(aggiornaPasswordStmt.executeUpdate()==1);
 
@@ -2064,7 +2064,7 @@ public class Mysql{
         String soldiDisponibiliSql = "UPDATE Iscrizione set CreditiDisponibili=? where IDsq=?";
 
         PreparedStatement aggiornaInfoCampionatostmt = null;
-        String aggiornaInfoCampionatoSql = "UPDATE Campionato set GiocatoriDaInserire=? where Campionato=?";
+        String aggiornaInfoCampionatoSql = "UPDATE Campionato set GiocatoriDaInserire=? where Nome=?";
         int rs=0;
         try{
             //registra il JBCD driver
@@ -2416,32 +2416,58 @@ public class Mysql{
     }
 
     /**
-     * Cancella tutti campionati e tutte i dati associati ai campionati.
-     * Può essere richiamata solo dall'admin per "pulire" il database.
-     * @return numero di righe cancellate dal db
+     * Cancella giocatori, voti e giornate reali.
+     * Inoltre termina tutti i campionati che non sono stati terminati dai rispettivi presidenti di lega
+     * @return true se l'inserimento è andato a buon fine, false altrimenti
      */
-    public int deleteCampionati(){
+    public boolean terminaCampionatoAdmin(){
         Connection conn = null;
         PreparedStatement deletestmt = null;
-        String[] deleteSql = {"DELETE FROM Campionato","delete from  Iscrizione","delete from Fantasquadra","delete from Classifica","delete from Regolamento","delete from Partita","delete from Giornata","delete from Avvisi","delete from Messaggi"};
+        String[] deleteSql = {"TRUNCATE CalciatoreAnno","TRUNCATE GiornataAnno","TRUNCATE Voto"};
 
-        int rs  =0;
+        PreparedStatement campionatiStmt=null;
+        String campionatiSql = "SELECT * from Campionato";
+        ResultSet rsCampionati = null;
+
+        PreparedStatement partecipantiStmt = null;
+        String partecipantiSql ="SELECT Fantasquadra.ID, Fantasquadra.Nome, Fantasquadra.NickUt from Iscrizione JOIN Fantasquadra on Iscrizione.IDsq=Fantasquadra.ID JOIN Campionato on Iscrizione.Campionato = Campionato.Nome where Campionato=?";
+        ResultSet rsPartecipanti = null;
+
         try{
             //registra il JBCD driver
             Class.forName(JDBC_DRIVER);
             //apre la connessione
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
-            int i =0;
-
             for(String delete : deleteSql){
                 deletestmt = conn.prepareStatement(delete);
                 deletestmt.execute();
-                System.out.println(i);
-                i++;
             }
 
-            return rs;
+            //cerco i campionati non ancora terminati e li termino
+            campionatiStmt = conn.prepareStatement(campionatiSql);
+            rsCampionati = campionatiStmt.executeQuery();
+
+            while(rsCampionati.next()){
+                Campionato campionato = new Campionato(rsCampionati.getString("Nome"));
+                partecipantiStmt = conn.prepareStatement(partecipantiSql);
+                partecipantiStmt.setString(1,campionato.getNome());
+
+                ArrayList<Squadra> listaSquadrePartecipanti = new ArrayList<Squadra>();
+
+                rsPartecipanti = partecipantiStmt.executeQuery();
+
+                while(rsPartecipanti.next()){
+                    listaSquadrePartecipanti.add(new Squadra(rsPartecipanti.getInt("ID"),rsPartecipanti.getString("Nome"),new Persona(rsPartecipanti.getString("NickUt"))));
+                }
+
+                campionato.setListaSquadrePartecipanti(listaSquadrePartecipanti);
+                campionato.setCalendario(selectGiornate(campionato));
+                campionato.setClassifica(selectClassifica(campionato));
+
+                terminaCampionato(campionato);
+            }
+            return  true;
 
         }catch(SQLException se){
             se.printStackTrace();
@@ -2450,11 +2476,11 @@ public class Mysql{
             } else{
                 JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
             }
-            return rs;
+            return false;
 
         }catch(Exception e){
             e.printStackTrace();
-            return rs;
+            return false;
 
         }finally {
             if(conn!=null){
