@@ -123,6 +123,7 @@ public class Utils {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null,"Formato del file sconosciuto.\nIl file deve essere un file xls < Excel 2007","Errore",JOptionPane.ERROR_MESSAGE);
             return false;
+
         }
     }
 
