@@ -1,8 +1,11 @@
 package interfacce.Applicazione;
 
-import entità.*;
-import db.*;
-import utils.*;
+import db.Mysql;
+import entità.Giocatore;
+import entità.Squadra;
+import utils.RenderTableAlternate;
+import utils.TableNotEditableModel;
+import utils.Utils;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -52,8 +55,6 @@ public class GestioneGiocatori extends JPanel {
     private ArrayList<Giocatore> listaGiocatori;
 
     final private Mysql db = new Mysql();
-
-    private Utils utils = new Utils();
 
     public void setSquadra(Squadra squadra) {
         this.squadra = squadra;
@@ -385,7 +386,7 @@ public class GestioneGiocatori extends JPanel {
      * Setta la tabella dei giocatori disponibili.
      */
     public void setTabellaGiocatori() {
-        Object[][] righeGiocatori = utils.listaGiocatoriToArray(listaGiocatori);
+        Object[][] righeGiocatori = Utils.listaGiocatoriToArray(listaGiocatori);
 
         TableNotEditableModel giocatoriModel = new TableNotEditableModel(righeGiocatori, colonne1);
 

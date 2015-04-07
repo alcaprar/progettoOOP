@@ -1,14 +1,12 @@
 package interfacce.Admin;
 
 import db.Mysql;
-import interfacce.Admin.ApplicazioneAdmin;
-import utils.*;
+import utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -22,8 +20,6 @@ public class VotiAdmin extends JPanel {
     private JPanel mainPanel;
 
     final private Mysql db = new Mysql();
-
-    private Utils utils = new Utils();
 
     private String pathFile;
 
@@ -54,7 +50,7 @@ public class VotiAdmin extends JPanel {
                 //catturo le eccezzioni IO
                 //se il file non è presente mando un warning
                 try {
-                    if (utils.xlsvoti(pathFile, (Integer) spinnerGiornata.getValue())) {
+                    if (Utils.xlsvoti(pathFile, (Integer) spinnerGiornata.getValue())) {
                         JOptionPane.showMessageDialog(null, "Voti della giornata " + String.valueOf(ultimaGiornataInserita + 1) + " inseriti correttamente", "Success", JOptionPane.INFORMATION_MESSAGE);
                         ultimaGiornataInserita+=1;
                         SpinnerNumberModel giornataModel = new SpinnerNumberModel(ultimaGiornataInserita+1, ultimaGiornataInserita+1, 38, 1);

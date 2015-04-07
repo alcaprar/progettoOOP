@@ -1,13 +1,12 @@
 package db;
 
+import entità.*;
+import utils.Utils;
+
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import entità.*;
-import utils.*;
-
-import javax.swing.*;
 
 
 /**
@@ -21,7 +20,6 @@ public class Mysql{
     static final private String DB_URL = "jdbc:mysql://db4free.net/progogg";
     static final private String USER = "progogg";
     static final private String PASS = "pagliarecci";
-    private Utils utils = new Utils();
 
     /**
      * Controlla nel database se le credenziali inserite e passate tramite
@@ -1891,7 +1889,7 @@ public class Mysql{
                 }
 
                 //creazione e inserimento calendario
-                utils.creaCalendario(campionato.getGiornataInizio(),campionato.getGiornataFine(),campionato);
+                Utils.creaCalendario(campionato.getGiornataInizio(),campionato.getGiornataFine(),campionato);
 
 
                 //inserimento delle giornate

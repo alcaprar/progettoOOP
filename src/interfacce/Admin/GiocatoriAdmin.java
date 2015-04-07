@@ -1,8 +1,8 @@
 package interfacce.Admin;
 
-import entità.*;
 import db.Mysql;
-import utils.*;
+import entità.Giocatore;
+import utils.Utils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -29,8 +29,6 @@ public class GiocatoriAdmin extends JPanel {
     final private Mysql db = new Mysql();
 
     private String pathFile;
-
-    private Utils utils = new Utils();
 
 
     public GiocatoriAdmin(final ApplicazioneAdmin frame) {
@@ -68,7 +66,7 @@ public class GiocatoriAdmin extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    if(utils.xlsQuotazioni(pathFile)){
+                    if(Utils.xlsQuotazioni(pathFile)){
                         JOptionPane.showMessageDialog(getPanel(),"Inserimento giocatori effettuato con successo.","Ok",JOptionPane.INFORMATION_MESSAGE);
 
                         listaGiocatori = db.selectGiocatoriAdmin();
@@ -93,7 +91,7 @@ public class GiocatoriAdmin extends JPanel {
     private void setTabella() {
         Object[] nomeColonne = {"ID", "Cognome", "Ruolo", "Squadra Reale", "Costo"};
         //listaToArray ritorna un array di obkect che serve per il model
-        Object[][] righeGiocatori = utils.listaGiocatoriToArray(listaGiocatori);
+        Object[][] righeGiocatori = Utils.listaGiocatoriToArray(listaGiocatori);
         //creo il modello con le colonne e i giocatori
         DefaultTableModel giocatoriModel = new DefaultTableModel(righeGiocatori, nomeColonne) {
             //rende non modificabili le colonne dell'ID,cognome e ruolo
