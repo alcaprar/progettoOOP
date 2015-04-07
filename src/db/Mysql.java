@@ -800,7 +800,7 @@ public class Mysql{
 
     /**
      * Scarica la lista delle giornate reali.
-     * Serve per la parte Admin per modificare la data e l'ora di inizio e fine giornata
+     * Serve per la parte admin per modificare la data e l'ora di inizio e fine giornata
      * durante lo svolgimento del campionato, in caso di cambiamenti da parte della Serie A.
      * Se è il primo avvio e nel database non esistono ancora le giornate, vengono
      * create con solo il numero giornata.

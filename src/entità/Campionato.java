@@ -313,7 +313,7 @@ public class Campionato {
      * Ritorna un array di object prendendo i valori dall'oggetto classifica.
      * Nell'array ci sono solo i nomi delle squadre e i punti.
      * @see #classifica
-     * @see interfacce.Applicazione.Home
+     * @see interfacce.gestore.Home
      * @return classifica come array di objet
      */
     public Object[][] classificaToArrayPiccola(){
@@ -331,7 +331,7 @@ public class Campionato {
      * Ritorna un array di object prendendo i valori dall'oggetto classifica.
      * Nell'array ci sono tutti i valori presenti in classifica.
      * @see #classifica
-     * @see interfacce.Applicazione.Classifica
+     * @see interfacce.gestore.Classifica
      * @return array di object
      */
     public Object[][] classificaToArray(){

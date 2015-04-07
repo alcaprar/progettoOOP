@@ -92,7 +92,7 @@ public class Storico{
      * Ritorna un array di object prendendo i valori dall'oggetto classifica.
      * Nell'array ci sono tutti i valori presenti in classifica.
      * @see #classifica
-     * @see interfacce.Applicazione.HomeStorico
+     * @see interfacce.gestore.HomeStorico
      * @return
      */
     public Object[][] classificaToArray(){
