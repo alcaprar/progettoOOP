@@ -243,15 +243,13 @@ public class Campionato {
         //scorre l'elenco delle partite
         for(Partita partita : giornata.getPartite()){
             boolean vittoriaCasa=false,  vittoriaOspite=false;
-            boolean formNonInserite = false;// formCasaNonInserita=false, formFuoriNonInserita=false;
+            boolean formNonInserite = false;
             if(partita.getPuntiCasa()==0 && partita.getPuntiFuori()==0){
                 formNonInserite=true;//controlla se sono state inserite le formazioni
             } else if(partita.getPuntiCasa()==0){
-                //formCasaNonInserita=true;//controlla se la formazione di casa è stata inserita
-                vittoriaOspite=true;//assegna la vittoria a tavolino alla squadra ospite
+                vittoriaOspite=true;//assegna la vittoria a tavolino alla squadra ospite se manca la formazione in casa
             } else if(partita.getPuntiFuori()==0){
-                //formFuoriNonInserita=true;//controlla se la formazione ospite è stata inserita
-                vittoriaCasa=true;//assegna la vittoria a tavolino alla squadra in casa
+                vittoriaCasa=true;//assegna la vittoria a tavolino alla squadra in casa se manca la formazione ospite
             }else  if(partita.getGolCasa()>partita.getGolFuori()){
                 vittoriaCasa=true;//assegna la vittoria alla squadra in casa
             } else if( partita.getGolCasa()<partita.getGolFuori()){
