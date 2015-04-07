@@ -136,8 +136,8 @@ public class Formazione {
         Object[][] listaObject = new Object[listaGiocatori.size()][2];
 
         for(int i=0;i<listaGiocatori.size();i++){
-            listaObject[i][0] = new String(listaGiocatori.get(i).getGiocatore().getCognome());
-            listaObject[i][1] = new Float(listaGiocatori.get(i).getMagicVoto());
+            listaObject[i][0] = listaGiocatori.get(i).getGiocatore().getCognome();
+            listaObject[i][1] = listaGiocatori.get(i).getMagicVoto();
         }
         return listaObject;
     }
