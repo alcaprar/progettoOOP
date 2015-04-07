@@ -2,7 +2,6 @@ package AstaLive;
 
 import entità.Persona;
 
-
 import javax.swing.*;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -63,9 +62,11 @@ public class Client {
                 ascoltaServer = new AscoltaServer();
                 ascoltaServer.start();
                 gui.appendConsole("Connesso!");
+                JOptionPane.showMessageDialog(null, "Connessione effettuata con successo!", "Connesso", JOptionPane.INFORMATION_MESSAGE);
                 gui.setConnettiNotEnabled();
             } else{
                 gui.appendConsole("Connesione rifiutata.");
+                JOptionPane.showMessageDialog(null, "Connessione rifiutata!\nLeggere i dettagli nella console.", "Errore", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception e){
             gui.appendConsole("Eccezione nella creazione degli stream I/O>> "+e.getMessage());
@@ -120,6 +121,8 @@ public class Client {
                 if(messaggio.getTipo()==Messaggio.INIZIO_ASTA){
                     gui.appendConsole("++++INIZIO ASTA TRA POCO++++");
                     gui.setComboBoxTable(messaggio.getListaPartecipanti());
+                    JOptionPane.showMessageDialog(null, "Tutti i partecipanti si sono connessi.\nL'asta inizierà tra pochi secondi.", "Inizio Asta", JOptionPane.INFORMATION_MESSAGE);
+
                 }
                 //se il messaggio è di offerta, setto il panel per il rilancio
                 else if(messaggio.getTipo()==Messaggio.OFFERTA){

@@ -93,8 +93,6 @@ public class Mysql{
      * Registra un nuovo utente.
      * @param utente utente da registrare
      * @return true se la registrazione è andata a buon fine
-     * @throws SQLException
-     * @throws ClassNotFoundException
      */
     public static boolean registra(Persona utente) {
         Connection conn = null ;
