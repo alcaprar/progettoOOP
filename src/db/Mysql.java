@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import classi.*;
+import entità.*;
 import utils.*;
 
 import javax.swing.*;

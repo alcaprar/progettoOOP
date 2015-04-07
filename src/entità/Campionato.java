@@ -1,4 +1,4 @@
-package classi;
+package entità;
 
 import java.util.ArrayList;
 
@@ -258,7 +258,7 @@ public class Campionato {
                 vittoriaOspite=true;//assegna la vittoria alla squadra ospite
             }
             //scorre le righe della classifica del campionato
-            for(classi.Classifica rigaClassifica : this.classifica){
+            for(entità.Classifica rigaClassifica : this.classifica){
                 //cerca la riga corrispondente alla squadra in casa
                 if(rigaClassifica.getSquadra().equals(partita.getFormCasa().getSquadra())){
                     rigaClassifica.setGiocate(rigaClassifica.getGiocate()+1);

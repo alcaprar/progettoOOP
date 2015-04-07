@@ -1,6 +1,6 @@
 package interfacce.Applicazione;
 
-import classi.Giornata;
+import entità.Giornata;
 import utils.RenderTableAlternate;
 import utils.TableNotEditableModel;
 import utils.Utils;

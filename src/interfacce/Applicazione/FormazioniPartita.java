@@ -1,7 +1,6 @@
 package interfacce.Applicazione;
 
-import classi.Partita;
-import utils.RenderTableAlternate;
+import entità.Partita;
 import utils.RenderTableAlternateFormazione;
 import utils.TableNotEditableModel;
 

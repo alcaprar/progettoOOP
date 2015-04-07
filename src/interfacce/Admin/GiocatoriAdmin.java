@@ -1,8 +1,7 @@
 package interfacce.Admin;
 
-import classi.*;
+import entità.*;
 import db.Mysql;
-import interfacce.Admin.ApplicazioneAdmin;
 import utils.*;
 
 import javax.swing.*;

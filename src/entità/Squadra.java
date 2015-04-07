@@ -1,4 +1,4 @@
-package classi;
+package entità;
 
 import java.io.Serializable;
 import java.util.ArrayList;

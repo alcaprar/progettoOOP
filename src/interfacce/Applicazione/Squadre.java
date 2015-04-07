@@ -1,14 +1,11 @@
 package interfacce.Applicazione;
 
-import classi.Squadra;
+import entità.Squadra;
 import utils.RenderTableAlternate;
 import utils.TableNotEditableModel;
-import utils.Utils;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;

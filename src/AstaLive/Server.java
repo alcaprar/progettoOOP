@@ -1,6 +1,6 @@
 package AstaLive;
 
-import classi.*;
+import entità.*;
 import db.Mysql;
 
 import javax.swing.*;

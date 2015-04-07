@@ -1,8 +1,7 @@
 package interfacce.Applicazione;
 
-import classi.*;
+import entità.*;
 import db.*;
-import interfacce.Applicazione.Applicazione;
 import utils.*;
 
 import javax.swing.*;

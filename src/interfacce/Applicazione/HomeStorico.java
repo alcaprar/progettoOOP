@@ -1,6 +1,6 @@
 package interfacce.Applicazione;
 
-import classi.Storico;
+import entità.Storico;
 import db.Mysql;
 import interfacce.Login.CaricamentoDati;
 import interfacce.Login.Login;

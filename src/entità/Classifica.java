@@ -1,4 +1,4 @@
-package classi;
+package entità;
 
 /**
  * Classe per la gestione delle classifiche di campionato. Ad ogni squadra è associato un oggetto classifica che

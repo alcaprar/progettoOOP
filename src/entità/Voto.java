@@ -1,4 +1,4 @@
-package classi;
+package entità;
 
 /**
  * Classe per la gestione dei voti dei giocatori.

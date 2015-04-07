@@ -1,6 +1,6 @@
 package AstaLive;
 
-import classi.Persona;
+import entità.Persona;
 
 
 import javax.swing.*;

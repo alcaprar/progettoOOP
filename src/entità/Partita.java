@@ -1,4 +1,4 @@
-package classi;
+package entità;
 
 /**
  * Classe per la gestione delle partite.
@@ -59,8 +59,8 @@ public class Partita {
     public void calcolaPartita(int primaFascia, int largFascia, int bonusCasa){
         puntiCasa = formCasa.calcolaNew()+bonusCasa;
         puntiFuori = formOspite.calcolaNew();
-        golCasa = numGol(puntiCasa,primaFascia,largFascia);
-        golFuori = numGol(puntiFuori,primaFascia,largFascia);
+        golCasa = numGol(puntiCasa, primaFascia, largFascia);
+        golFuori = numGol(puntiFuori, primaFascia, largFascia);
     }
 
     /**

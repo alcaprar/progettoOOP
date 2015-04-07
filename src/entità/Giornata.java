@@ -1,4 +1,4 @@
-package classi;
+package entità;
 
 import java.util.ArrayList;
 
@@ -97,7 +97,7 @@ public class Giornata {
      */
     public void calcolaGiornata(int primaFascia, int largFascia, int bonusCasa){
         for(Partita part:partite){
-            part.calcolaPartita(primaFascia,largFascia,bonusCasa);
+            part.calcolaPartita(primaFascia, largFascia, bonusCasa);
         }
     }
 

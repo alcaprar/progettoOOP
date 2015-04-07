@@ -1,7 +1,6 @@
 package interfacce.Applicazione;
 
-import classi.Giocatore;
-import classi.Squadra;
+import entità.Squadra;
 import db.Mysql;
 import utils.*;
 

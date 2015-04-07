@@ -1,6 +1,6 @@
 package interfacce.Applicazione;
 
-import classi.Squadra;
+import entità.Squadra;
 
 import javax.swing.*;
 

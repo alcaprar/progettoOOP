@@ -1,7 +1,7 @@
 package interfacce.Applicazione;
 
 
-import classi.*;
+import entità.*;
 import utils.*;
 
 

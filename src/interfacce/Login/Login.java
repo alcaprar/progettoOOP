@@ -1,6 +1,6 @@
 package interfacce.Login;
 
-import classi.*;
+import entità.*;
 import db.Mysql;
 import interfacce.Admin.ApplicazioneAdmin;
 import interfacce.Applicazione.Applicazione;

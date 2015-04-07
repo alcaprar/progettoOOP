@@ -6,7 +6,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-import classi.*;
+import entità.*;
 import db.Mysql;
 import interfacce.Login.Login;
 

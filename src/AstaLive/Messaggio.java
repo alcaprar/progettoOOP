@@ -1,7 +1,7 @@
 package AstaLive;
 
-import classi.Giocatore;
-import classi.Persona;
+import entità.Giocatore;
+import entità.Persona;
 
 import java.io.Serializable;
 import java.util.ArrayList;
