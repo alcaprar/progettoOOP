@@ -37,7 +37,6 @@ public class Client {
     public Client(String indirizzo, int porta, Persona utente, ClientGUI clientGUI){
         this.gui = clientGUI;
         this.utente = utente;
-        //this.campionato=camp;
 
         //provo a connettermi al server
         try {
