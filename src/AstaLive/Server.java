@@ -747,7 +747,7 @@ public class Server extends Thread {
 
                     return true;
                 } else{
-                    gui.appendConsole("Non consentina la connesione a "+this.utente.getNickname());
+                    gui.appendConsole("Non consentita la connessione per l'utente "+this.utente.getNickname());
                     this.output.writeObject(false);
                     return false;
                 }

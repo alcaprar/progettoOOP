@@ -60,7 +60,7 @@ public class Formazione {
      * Funzione che calcola i punteggi ottenuti dalla squadra per la giornata attuale.
      * @return punteggio
      */
-    public float calcolaNew(){
+    public float calcola(){
         float p=0;
         if(!listaGiocatori.isEmpty()) {
             int n = 0;
@@ -87,9 +87,9 @@ public class Formazione {
                     }
                 }
             }
+
             //entra il portiere
             if (listaGiocatori.get(0).getVoto() == 0) p += listaGiocatori.get(11).getMagicVoto();
-
             //entrano i difensori
             if (dGiocato < d) {
                 p += listaGiocatori.get(12).getMagicVoto();
