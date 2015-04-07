@@ -1,15 +1,7 @@
 package utils;
 
-import entità.*;
 import db.Mysql;
-
-import java.awt.*;
-import java.io.*;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-
+import entità.*;
 import jxl.CellType;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -18,6 +10,12 @@ import jxl.read.biff.BiffException;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 /**
  * Classe con delle funzioni di utilità.
@@ -36,47 +34,6 @@ public class Utils {
         return new String(arrayChar);
     }
 
-    /*public boolean csvQuotazioni(String pathFile,  String csvSplitBy){
-        BufferedReader br = null;
-        final Mysql db = new Mysql();
-
-        String line = "";
-
-        ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
-        try {
-
-            br = new BufferedReader(new FileReader(pathFile));
-
-            while ((line = br.readLine()) != null) {
-
-                String[] giocatore = line.split(csvSplitBy);
-
-                listaGiocatori.add(new Giocatore(giocatore[2],Integer.parseInt(giocatore[0]),Integer.parseInt(giocatore[4]),giocatore[3],giocatore[1].charAt(0)));
-
-            }
-
-            return db.inserisciGiocatoriAnno(listaGiocatori);
-
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-    }*/
-
     /**
      * Parsing del file xls(versione 2003/2007) con la lista dei giocatori.
      * con le relative quotazioni.
@@ -84,7 +41,7 @@ public class Utils {
      * @return
      * @throws FileNotFoundException
      */
-    public boolean xlsQuotazioni(String pathfile) throws IOException{
+    public static boolean xlsQuotazioni(String pathfile) throws IOException{
         //file da aprire
         File filexls = new File(pathfile);
         Workbook workbook;
@@ -129,7 +86,7 @@ public class Utils {
      * @param numeroGiornata numero della giornata dei voti che si stanno inserendo.
      * @return true se il parsing e l'inserimento nel db è andato a buon fine
      */
-    public boolean xlsvoti(String pathFile, int numeroGiornata) throws IOException{
+    public static boolean xlsvoti(String pathFile, int numeroGiornata) throws IOException{
         //file da aprire
         File filexls = new File(pathFile);
         Workbook workbook;
@@ -178,7 +135,7 @@ public class Utils {
      * @param listaGiocatori
      * @return
      */
-    public Object[][] listaGiocatoriToArray(ArrayList<Giocatore> listaGiocatori){
+    public static Object[][] listaGiocatoriToArray(ArrayList<Giocatore> listaGiocatori){
 
         Object[][] listaObject = new Object[listaGiocatori.size()][5];
 
@@ -243,7 +200,7 @@ public class Utils {
      * @see #spostaDestra(ArrayList, Squadra, int)
      * @see #spostaSinistra(ArrayList, Squadra, int)
      */
-    public  void creaCalendario(int primaGiornata, int ultimaGiornata, Campionato campionato) {
+    public static  void creaCalendario(int primaGiornata, int ultimaGiornata, Campionato campionato) {
         ArrayList<Giornata> listaGiornate = new ArrayList<Giornata>();
 
         //numero partecipanti
@@ -321,7 +278,7 @@ public class Utils {
      * @param n numero di squadre
      * @return l'elemento che rimane fuori durante lo spostamento
      */
-    private Squadra spostaDestra(ArrayList<Squadra> trasferta, Squadra casaUno, int n){
+    private static Squadra spostaDestra(ArrayList<Squadra> trasferta, Squadra casaUno, int n){
         Squadra riporto = trasferta.get(n/2-1);
         for(int i=n/2-1;i>0;i--){
             trasferta.set(i,trasferta.get(i-1));
@@ -340,7 +297,7 @@ public class Utils {
      * @param riporto
      * @param n
      */
-    private void spostaSinistra(ArrayList<Squadra> casa, Squadra riporto, int n){
+    private static void spostaSinistra(ArrayList<Squadra> casa, Squadra riporto, int n){
         for(int i=0;i<n/2-1;i++){
             casa.set(i,casa.get(i+1));
         }
