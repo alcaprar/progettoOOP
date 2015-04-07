@@ -302,7 +302,7 @@ public class Login extends JFrame {
 
     public void mostraLogin(){
         CardLayout c1 = (CardLayout) (panel1.getLayout());
-        c1.show(panel1, "login");
+        c1.show(panel1, "Login");
     }
 
     public void mostraSquadre(){
