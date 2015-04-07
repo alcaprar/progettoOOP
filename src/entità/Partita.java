@@ -57,8 +57,8 @@ public class Partita {
      * @param bonusCasa bonus per la squadra di casa
      */
     public void calcolaPartita(int primaFascia, int largFascia, int bonusCasa){
-        puntiCasa = formCasa.calcolaNew()+bonusCasa;
-        puntiFuori = formOspite.calcolaNew();
+        puntiCasa = formCasa.calcola()+bonusCasa;
+        puntiFuori = formOspite.calcola();
         golCasa = numGol(puntiCasa, primaFascia, largFascia);
         golFuori = numGol(puntiFuori, primaFascia, largFascia);
     }
