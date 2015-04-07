@@ -56,13 +56,11 @@ public class Partita {
      * @param largFascia larghezza delle fasce di punteggio
      * @param bonusCasa bonus per la squadra di casa
      */
-    public void calcolaPartitaNew(int primaFascia, int largFascia, int bonusCasa){
+    public void calcolaPartita(int primaFascia, int largFascia, int bonusCasa){
         puntiCasa = formCasa.calcolaNew()+bonusCasa;
         puntiFuori = formOspite.calcolaNew();
-        System.out.println("Casa: "+puntiCasa+" Ospite: "+puntiFuori);
-        golCasa = numGolNew(puntiCasa,primaFascia,largFascia);
-        golFuori = numGolNew(puntiFuori,primaFascia,largFascia);
-        System.out.println("Casa: "+golCasa+" Ospite: "+golFuori);
+        golCasa = numGol(puntiCasa,primaFascia,largFascia);
+        golFuori = numGol(puntiFuori,primaFascia,largFascia);
     }
 
     /**
@@ -72,7 +70,7 @@ public class Partita {
      * @param largFascia larghezza delle fasce di punteggio
      * @return numero di gol segnati dalla squadra
      */
-    private int numGolNew(float p, int primaFascia, int largFascia){
+    private int numGol(float p, int primaFascia, int largFascia){
         int punti = (int)p;
         int g=0;
         while(punti>primaFascia){

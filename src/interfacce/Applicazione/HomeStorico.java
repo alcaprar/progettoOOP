@@ -96,7 +96,6 @@ public class HomeStorico extends JFrame {
      */
     private void setClassifica(){
         Object[] nomeColonne = {"Squadra", "Partite", "V", "N", "P", "DiffReti", "GolF", "GolS", "Punteggio", "Punti"};
-        //Object[][] righeClassifica = utils.listaClassificaToArray(storico.getClassifica());
         Object[][] righeClassifica = storico.classificaToArray();
         TableNotEditableModel classificaModel = new TableNotEditableModel(righeClassifica, nomeColonne){
             //restituisce la classe della colonna

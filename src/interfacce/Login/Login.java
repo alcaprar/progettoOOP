@@ -178,8 +178,7 @@ public class Login extends JFrame {
         buttonLogout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Login login = new Login();
-                getFrame().dispose();
+                mostraLogin();
             }
         });
 
@@ -306,7 +305,7 @@ public class Login extends JFrame {
 
     public void mostraLogin(){
         CardLayout c1 = (CardLayout) (panel1.getLayout());
-        c1.show(panel1, "login1");
+        c1.show(panel1, "Login");
     }
 
     public void mostraSquadre(){

@@ -95,10 +95,9 @@ public class Giornata {
      * @param largFascia larghezza della fascia di punteggio
      * @param bonusCasa bonus per la squadra che gioca in casa
      */
-    public void calcolaGiornataNew(int primaFascia, int largFascia, int bonusCasa){
+    public void calcolaGiornata(int primaFascia, int largFascia, int bonusCasa){
         for(Partita part:partite){
-            System.out.println(part.getFormCasa().getSquadra().getNome() +" - "+part.getFormOspite().getSquadra().getNome());
-            part.calcolaPartitaNew(primaFascia,largFascia,bonusCasa);
+            part.calcolaPartita(primaFascia,largFascia,bonusCasa);
         }
     }
 

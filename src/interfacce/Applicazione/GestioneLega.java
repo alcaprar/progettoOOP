@@ -91,7 +91,7 @@ public class GestioneLega extends JPanel{
                 int largFascia= squadra.getCampionato().getLargFascia();
                 int bonusCasa = squadra.getCampionato().getBonusCasa();
                 //calcolo i risultati mettendo i risultati nell'oggetto della giornata
-                squadra.getCampionato().prossimaGiornata().calcolaGiornataNew(primaFascia,largFascia,bonusCasa);
+                squadra.getCampionato().prossimaGiornata().calcolaGiornata(primaFascia,largFascia,bonusCasa);
                 //aggiorno la classifica del campionato
                 squadra.getCampionato().aggiornaClassifica(squadra.getCampionato().prossimaGiornata());
                 //inserisco gli aggiornamenti nel db

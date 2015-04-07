@@ -212,7 +212,7 @@ public class Campionato {
     }
 
     /**
-     * Imposta la prossima giornata del campionato da disputare una volta completata quella attuale.
+     * Ritorna la prossima giornata.
      * @return prossima giornata
      */
     public Giornata prossimaGiornata(){

@@ -186,7 +186,6 @@ public class Applicazione extends JFrame {
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         pack();
-        setSize(800, 650);
         setLocationRelativeTo(null);
         caricamento.dispose();
         setVisible(true);
@@ -291,7 +290,7 @@ public class Applicazione extends JFrame {
         versione.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showOptionDialog(null, "Gestore Fantacalcio\nVersione 1.0\nSviluppatori:\nAlessandro Caprarelli\nGiacomo Grilli\nChristian Manfredi",
+                JOptionPane.showOptionDialog(null, "JFantacalcio\nVersione 1.0\nSviluppatori:\nAlessandro Caprarelli\nGiacomo Grilli\nChristian Manfredi",
                         "Versione", JOptionPane.DEFAULT_OPTION,
                         JOptionPane.INFORMATION_MESSAGE, null, new Object[] {},
                         null);
