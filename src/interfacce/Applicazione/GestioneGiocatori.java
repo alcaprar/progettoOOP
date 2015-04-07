@@ -54,8 +54,6 @@ public class GestioneGiocatori extends JPanel {
 
     private ArrayList<Giocatore> listaGiocatori;
 
-    final private Mysql db = new Mysql();
-
     public void setSquadra(Squadra squadra) {
         this.squadra = squadra;
     }
@@ -141,7 +139,7 @@ public class GestioneGiocatori extends JPanel {
                         ((DefaultTableModel) tabellaGiocatori.getModel()).removeRow(r);
 
                         if (!getPanel().squadra.getCampionato().isGiocatoriDaInserire()) {
-                            db.aggiungiGiocatore(getPanel().squadra.getCampionato(),getPanel().squadra.getCampionato().getListaSquadrePartecipanti().get(i), ID, prezzoPagato);
+                            Mysql.aggiungiGiocatore(getPanel().squadra.getCampionato(),getPanel().squadra.getCampionato().getListaSquadrePartecipanti().get(i), ID, prezzoPagato);
                         }
 
                         soldiSpesi.set(i, soldiSpesi.get(i) + prezzoPagato);
@@ -182,7 +180,7 @@ public class GestioneGiocatori extends JPanel {
                     ((DefaultTableModel) tabellaSquadra.getModel()).removeRow(r);
 
                     if (!getPanel().squadra.getCampionato().isGiocatoriDaInserire()) {
-                        db.rimuoviGiocatore(getPanel().squadra.getCampionato(),getPanel().squadra.getCampionato().getListaSquadrePartecipanti().get(i), ID, prezzoVendita);
+                        Mysql.rimuoviGiocatore(getPanel().squadra.getCampionato(),getPanel().squadra.getCampionato().getListaSquadrePartecipanti().get(i), ID, prezzoVendita);
                     }
 
                     //aggiorno il contatore dei soldi spesi
@@ -236,7 +234,7 @@ public class GestioneGiocatori extends JPanel {
                         int soldiDisponibili = squadra.getCampionato().getCreditiIniziali() - soldiSpesi.get(i) >= 0 ? squadra.getCampionato().getCreditiIniziali() - soldiSpesi.get(i) : 0;
                         squadra.getCampionato().getListaSquadrePartecipanti().get(i).setSoldiDisponibili(soldiDisponibili);
                     }
-                    if (db.inserisciGiocatori(squadra.getCampionato())) {
+                    if (Mysql.inserisciGiocatori(squadra.getCampionato())) {
                         //se l'inserimento è andato bene mostra un dialog
                         //rimuove la tab della gestione giocatori e
                         //si sposta sulla tab di home
@@ -445,7 +443,7 @@ public class GestioneGiocatori extends JPanel {
      * Viene utilizzato quando non sono mai state inserite le rose, cioè le squadre sono ancora vuote.
      */
     public void refresh() {
-        listaGiocatori = db.selectGiocatoriAdmin();
+        listaGiocatori = Mysql.selectGiocatoriAdmin();
         setComboBox();
         setSpinner();
         setTabellaGiocatori();
@@ -457,7 +455,7 @@ public class GestioneGiocatori extends JPanel {
      * Viene utilizzato quando sono già state inserite le rose, cioè le squadre hanno già dei giocatori.
      */
     public void refreshGiaInseriti() {
-        listaGiocatori = db.selectGiocatoriDisponibili(squadra.getCampionato());
+        listaGiocatori = Mysql.selectGiocatoriDisponibili(squadra.getCampionato());
         confermaRoseButton.setVisible(false);
         setComboBox();
         setSpinner();

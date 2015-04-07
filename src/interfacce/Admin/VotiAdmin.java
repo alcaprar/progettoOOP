@@ -19,7 +19,6 @@ public class VotiAdmin extends JPanel {
     private JButton caricaButton;
     private JPanel mainPanel;
 
-    final private Mysql db = new Mysql();
 
     private String pathFile;
 
@@ -69,7 +68,7 @@ public class VotiAdmin extends JPanel {
     }
 
     public void refresh(){
-        ultimaGiornataInserita = db.selectGiornateVotiInseriti();
+        ultimaGiornataInserita = Mysql.selectGiornateVotiInseriti();
 
         //costruttore spinnermodel-->(valore da visualizzare, min, max, incremento)
         SpinnerNumberModel giornataModel = new SpinnerNumberModel(ultimaGiornataInserita+1, ultimaGiornataInserita+1, 38, 1);

@@ -1,7 +1,9 @@
 package interfacce.Applicazione;
 
-import entità.*;
-import db.*;
+import db.Mysql;
+import entità.Giocatore;
+import entità.Partita;
+import entità.Squadra;
 
 import javax.swing.*;
 import java.awt.*;
@@ -135,7 +137,6 @@ public class Formazione extends JPanel implements ItemListener {
     private Squadra squadra;
     private Partita partita;
     private int counter;
-    private final Mysql db = new Mysql();
 
 
     public Formazione() {
@@ -599,7 +600,7 @@ public class Formazione extends JPanel implements ItemListener {
                     //associa la formazione appena creata alla squadra
                     squadra.setFormazione(form);
                     //salva sul database la formazione
-                    if(db.inserisciFormazione(squadra, partita)){
+                    if(Mysql.inserisciFormazione(squadra, partita)){
                         JOptionPane.showMessageDialog(null, "Hai inserito correttamente la formazione", "Completato", JOptionPane.INFORMATION_MESSAGE);
                     } else JOptionPane.showMessageDialog(null, "Non è stato possibile inserire la formazione.\nErrore MySQL", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else if(squadra.getCampionato().isGiocatoriDaInserire()){
@@ -893,7 +894,7 @@ public class Formazione extends JPanel implements ItemListener {
                     formazione.add(17, cercaGiocatore(panAttLabel2.getText()));
                     entità.Formazione form = new entità.Formazione(formazione, "3-5-2");
                     squadra.setFormazione(form);
-                    if(db.inserisciFormazione(squadra, partita)){
+                    if(Mysql.inserisciFormazione(squadra, partita)){
                         JOptionPane.showMessageDialog(null, "Hai inserito correttamente la formazione", "Completato", JOptionPane.INFORMATION_MESSAGE);
                     } else JOptionPane.showMessageDialog(null, "Non è stato possibile inserire la formazione.\nErrore MySQL", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else if(squadra.getCampionato().isGiocatoriDaInserire()){
@@ -1186,7 +1187,7 @@ public class Formazione extends JPanel implements ItemListener {
                     formazione.add(17, cercaGiocatore(panAttLabel2.getText()));
                     entità.Formazione form = new entità.Formazione(formazione, "4-3-3");
                     squadra.setFormazione(form);
-                    if(db.inserisciFormazione(squadra, partita)){
+                    if(Mysql.inserisciFormazione(squadra, partita)){
                         JOptionPane.showMessageDialog(null, "Hai inserito correttamente la formazione", "Completato", JOptionPane.INFORMATION_MESSAGE);
                     } else JOptionPane.showMessageDialog(null, "Non è stato possibile inserire la formazione.\nErrore MySQL", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else if(squadra.getCampionato().isGiocatoriDaInserire()){
@@ -1479,7 +1480,7 @@ public class Formazione extends JPanel implements ItemListener {
                     formazione.add(17, cercaGiocatore(panAttLabel2.getText()));
                     entità.Formazione form = new entità.Formazione(formazione, "4-4-2");
                     squadra.setFormazione(form);
-                    if(db.inserisciFormazione(squadra, partita)){
+                    if(Mysql.inserisciFormazione(squadra, partita)){
                         JOptionPane.showMessageDialog(null, "Hai inserito correttamente la formazione", "Completato", JOptionPane.INFORMATION_MESSAGE);
                     } else JOptionPane.showMessageDialog(null, "Non è stato possibile inserire la formazione.\nErrore MySQL", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else if(squadra.getCampionato().isGiocatoriDaInserire()){
@@ -1772,7 +1773,7 @@ public class Formazione extends JPanel implements ItemListener {
                     formazione.add(17, cercaGiocatore(panAttLabel2.getText()));
                     entità.Formazione form = new entità.Formazione(formazione, "4-5-1");
                     squadra.setFormazione(form);
-                    if(db.inserisciFormazione(squadra, partita)){
+                    if(Mysql.inserisciFormazione(squadra, partita)){
                         JOptionPane.showMessageDialog(null, "Hai inserito correttamente la formazione", "Completato", JOptionPane.INFORMATION_MESSAGE);
                     } else JOptionPane.showMessageDialog(null, "Non è stato possibile inserire la formazione.\nErrore MySQL", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else if(squadra.getCampionato().isGiocatoriDaInserire()){
@@ -2066,7 +2067,7 @@ public class Formazione extends JPanel implements ItemListener {
                     formazione.add(17, cercaGiocatore(panAttLabel2.getText()));
                     entità.Formazione form = new entità.Formazione(formazione, "5-3-2");
                     squadra.setFormazione(form);
-                    if(db.inserisciFormazione(squadra, partita)){
+                    if(Mysql.inserisciFormazione(squadra, partita)){
                         JOptionPane.showMessageDialog(null, "Hai inserito correttamente la formazione", "Completato", JOptionPane.INFORMATION_MESSAGE);
                     } else JOptionPane.showMessageDialog(null, "Non è stato possibile inserire la formazione.\nErrore MySQL", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else if(squadra.getCampionato().isGiocatoriDaInserire()){
@@ -2359,7 +2360,7 @@ public class Formazione extends JPanel implements ItemListener {
                     formazione.add(17, cercaGiocatore(panAttLabel2.getText()));
                     entità.Formazione form = new entità.Formazione(formazione, "5-4-1");
                     squadra.setFormazione(form);
-                    if(db.inserisciFormazione(squadra, partita)){
+                    if(Mysql.inserisciFormazione(squadra, partita)){
                         JOptionPane.showMessageDialog(null, "Hai inserito correttamente la formazione", "Completato", JOptionPane.INFORMATION_MESSAGE);
                     } else JOptionPane.showMessageDialog(null, "Non è stato possibile inserire la formazione.\nErrore MySQL", "Errore", JOptionPane.ERROR_MESSAGE);
                 } else if(squadra.getCampionato().isGiocatoriDaInserire()){

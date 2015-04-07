@@ -19,7 +19,7 @@ public class Mysql{
     static final private String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final private String DB_URL = "jdbc:mysql://db4free.net/progogg";
     static final private String USER = "progogg";
-    static final private String PASS = "pagliarecci";
+    static final private String PASS = "univpm";
 
     /**
      * Controlla nel database se le credenziali inserite e passate tramite
@@ -27,7 +27,7 @@ public class Mysql{
      * @param utente utente da loggare
      * @return true se l'utente esiste e ha inserito la password giusta
      */
-    public boolean login(Persona utente) {
+    public static boolean login(Persona utente) {
         Connection conn = null ;
         PreparedStatement loginStmt = null;
         String loginSql = "SELECT * FROM Utente where Nickname=? and Password=?";
@@ -96,7 +96,7 @@ public class Mysql{
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-    public boolean registra(Persona utente)throws SQLException,ClassNotFoundException{
+    public static boolean registra(Persona utente) {
         Connection conn = null ;
         PreparedStatement registraStmt = null;
         String registraSql ="INSERT into Utente value(?,?,?,?,?)";
@@ -114,13 +114,22 @@ public class Mysql{
             registraStmt.setString(5, utente.getEmail());
 
             int rs = registraStmt.executeUpdate();
-            if(rs==1){
-                return true;
+            return(rs==1);
+        }catch (SQLException se) {
+            se.printStackTrace();
+            if(se.getErrorCode()==0){
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la tua connessione","Errore",JOptionPane.ERROR_MESSAGE);
+            }else if (se.getErrorCode() == 1062) {
+                JOptionPane.showMessageDialog(null, "Il nickname che hai inserito è già registrato.", "Errore", JOptionPane.ERROR_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null,"Ci sono dei problemi con la connessione al database.\nCodice errore database: "+se.getErrorCode(),"Errore",JOptionPane.ERROR_MESSAGE);
             }
-            else{
-                return false;
-            }
-        }finally {
+            return false;
+        } catch (ClassNotFoundException ce) {
+            ce.printStackTrace();
+            return false;
+        }
+        finally {
             if(conn!=null){
                 try{
                     conn.close();
@@ -145,7 +154,7 @@ public class Mysql{
      * la creazione del campionato.
      * @return lista degli utenti disponibili
      */
-    public ArrayList<Persona> selectUtenti(){
+    public static ArrayList<Persona> selectUtenti(){
         Connection conn=null ;
         PreparedStatement contaStmt = null ;
         PreparedStatement utentiStmt = null;
@@ -238,7 +247,7 @@ public class Mysql{
      * Serve al momento della creazione delle squadre
      * @return lista di tutti i giocatori
      */
-    public ArrayList<Giocatore> selectGiocatoriAdmin(){
+    public static ArrayList<Giocatore> selectGiocatoriAdmin(){
         Connection conn = null;
         PreparedStatement giocatoriStmt = null;
         String giocatoriSql ="SELECT * from CalciatoreAnno";
@@ -333,7 +342,7 @@ public class Mysql{
      * @param campionato campionato
      * @return lista di giocatori liberi (non tesserati da nessuno)
      */
-    public ArrayList<Giocatore> selectGiocatoriDisponibili(Campionato campionato){
+    public static ArrayList<Giocatore> selectGiocatoriDisponibili(Campionato campionato){
         Connection conn=null;
         PreparedStatement giocatoriStmt = null;
         String giocatoriSql = "select * from CalciatoreAnno left join Tesseramento on CalciatoreAnno.ID=Tesseramento.IDcalcAnno and (Tesseramento.NomeCampionato=?) where Tesseramento.IDcalcAnno is null";
@@ -410,7 +419,7 @@ public class Mysql{
      * @param prezzoPagato prezzo pagato per il giocatore
      * @return true se l'aggiornamento è andato a buon fine
      */
-    public boolean aggiungiGiocatore(Campionato campionato,Squadra squadra, int ID, int prezzoPagato){
+    public static boolean aggiungiGiocatore(Campionato campionato,Squadra squadra, int ID, int prezzoPagato){
         Connection conn = null;
         PreparedStatement giocatorestmt = null;
         String giocatoreSql = "INSERT into Tesseramento value(?,?,?,?)";
@@ -475,7 +484,7 @@ public class Mysql{
      * @param prezzoVendita prezzo di vendita del giocatore
      * @return true se l'aggiornamento è andato a buon fine, false altrimenti
      */
-    public boolean rimuoviGiocatore(Campionato campionato,Squadra squadra, int ID, int prezzoVendita){
+    public static boolean rimuoviGiocatore(Campionato campionato,Squadra squadra, int ID, int prezzoVendita){
         Connection conn = null;
         PreparedStatement giocatorestmt = null;
         String giocatoreSql = "DELETE from Tesseramento where IDsq=? and IDcalcAnno=?";
@@ -535,7 +544,7 @@ public class Mysql{
      * @param squadra squadra di cui si vuole trovare la lista di giocatori
      * @return lista dei giocatori della squadra
      */
-    public ArrayList<Giocatore> selectGiocatori(Squadra squadra){
+    public static ArrayList<Giocatore> selectGiocatori(Squadra squadra){
         Connection conn = null;
         PreparedStatement listaGiocatoristmt = null;
         String listaGiocatoriSql = "select IDcalcAnno,PrezzoPagato,Costo,SqReale,Cognome,Ruolo from Tesseramento JOIN Fantasquadra on Fantasquadra.ID=Tesseramento.IDsq JOIN CalciatoreAnno on CalciatoreAnno.ID=Tesseramento.IDcalcAnno where IDsq=?";
@@ -615,7 +624,7 @@ public class Mysql{
      * @param utente utente loggato
      * @return lista delle squadre di cui è presidente l'utente loggato
      */
-    public ArrayList<Squadra> selectSquadre(Persona utente){
+    public static ArrayList<Squadra> selectSquadre(Persona utente){
         Connection conn = null;
         PreparedStatement squadreStmt = null;
         String squadreSql ="SELECT * from Iscrizione JOIN Fantasquadra on Iscrizione.IDsq=Fantasquadra.ID JOIN Campionato on Iscrizione.Campionato = Campionato.Nome JOIN Regolamento on Campionato.Nome=Regolamento.NomeCampionato where NickUt=?";
@@ -716,7 +725,7 @@ public class Mysql{
      * @param campionato campionato per il quale bisogna scaricare la classifica
      * @return classifica: array list di classifica
      */
-    public ArrayList<Classifica> selectClassifica(Campionato campionato){
+    public static ArrayList<Classifica> selectClassifica(Campionato campionato){
         Connection conn = null;
         PreparedStatement classificastmt = null;
         String classificaSql ="SELECT * from Classifica JOIN Fantasquadra on Classifica.IDsq=Fantasquadra.ID where NomeCampionato=? order by Punti desc";
@@ -799,7 +808,7 @@ public class Mysql{
      * create con solo il numero giornata.
      * @return lista delle giornate reali
      */
-    public ArrayList<GiornataReale> selectGiornateAdmin(){
+    public static ArrayList<GiornataReale> selectGiornateAdmin(){
         Connection conn = null;
         PreparedStatement giornatestmt = null;
         String giornateSql ="SELECT * from GiornataAnno";
@@ -908,7 +917,7 @@ public class Mysql{
      * @param campionato campionato per il quale bisogna scaricare il calendario
      * @return calendario: array list di giornate
      */
-    public ArrayList<Giornata> selectGiornate(Campionato campionato){
+    public static ArrayList<Giornata> selectGiornate(Campionato campionato){
         Connection conn = null;
         PreparedStatement giornatastmt = null;
         String giornataSql = "SELECT * from Giornata JOIN GiornataAnno on Giornata.NrGioReale=GiornataAnno.NrGioReale where NomeCampionato=?";
@@ -1015,7 +1024,7 @@ public class Mysql{
      * dal quale l'admin sceglie la giornata per cui sta inserendo i voti
      * @return numero giornata(reale)
      */
-    public int selectGiornateVotiInseriti(){
+    public static int selectGiornateVotiInseriti(){
         Connection conn = null;
         PreparedStatement votistmt = null;
         String votiSql = "select NrGioReale from Voto group by NrGioReale order by NrGioReale desc limit 1";
@@ -1080,7 +1089,7 @@ public class Mysql{
      * @param squadra squadra per cui bisogna controllare
      * @return true se la formazione è già stata inserita, false altrimenti.
      */
-    public boolean selectFormazioneInserita(Squadra squadra){
+    public static  boolean selectFormazioneInserita(Squadra squadra){
         Connection conn = null;
         PreparedStatement formazioneInseritastmt = null;
         String formazioneInseritaSql = "select * from Formazione where IDpart=? and NomeSq=? group by NomeSq";
@@ -1151,7 +1160,7 @@ public class Mysql{
      * @param squadra squadra per la quale bisogna scaricare la formazione
      * @return formazione
      */
-    public ArrayList<Voto> selectFormazioni(int IDpart, Squadra squadra){
+    public static ArrayList<Voto> selectFormazioni(int IDpart, Squadra squadra){
         Connection conn = null;
         PreparedStatement formazionestmt = null;
         //String formazioneSql ="select Formazione.IDcalcAnno from Formazione Join Partita on Formazione.IDpart=Partita.ID join Giornata on Partita.IDgiorn=Giornata.ID Join Voto on Formazione.IDcalcAnno=Voto.IDcalcAnno where IDpart=? and NomeSq=? and Voto.NrGioReale=(select NrGioReale from Partita join Giornata on Partita.IDgiorn=Giornata.ID where Partita.ID=?)";
@@ -1267,7 +1276,7 @@ public class Mysql{
      * che al momento della creazione è null.
      * @param squadra squadra da aggiornare
      */
-    public void aggiornaNomeSquadra(Squadra squadra){
+    public static void aggiornaNomeSquadra(Squadra squadra){
         Connection conn = null;
         PreparedStatement aggiornaNomeStmt = null;
         String aggiornaNomeSql = "UPDATE Fantasquadra set Nome =? where ID=?";
@@ -1315,7 +1324,7 @@ public class Mysql{
      * Aggiorna la password dell'admin.
      * @param password nuova password
      */
-    public boolean aggiornaPasswordAdmin(String password){
+    public static boolean aggiornaPasswordAdmin(String password){
         Connection conn = null;
         PreparedStatement aggiornaPasswordStmt = null;
         String aggiornaPasswordSql = "UPDATE Utente set Password =? where Nickname='admin'";
@@ -1365,7 +1374,7 @@ public class Mysql{
      * Aggiorna il nome dell'utente quando viene cambiato nel pannello info.
      * @param utente utente da aggiornare
      */
-    public void aggiornaNomeUtente(Persona utente){
+    public static void aggiornaNomeUtente(Persona utente){
             Connection conn = null;
             PreparedStatement aggiornastmt = null;
             String aggiornaSql = "UPDATE Utente set Nome =? where Nickname=?";
@@ -1412,7 +1421,7 @@ public class Mysql{
      * Aggiorna il cognome dell'utente quando viene cambiato nel pannello info.
      * @param utente utente da aggiornare
      */
-    public void aggiornaCognomeUtente(Persona utente){
+    public static void aggiornaCognomeUtente(Persona utente){
         Connection conn = null;
         PreparedStatement aggiornastmt = null;
         String aggiornaSql = "UPDATE Utente set Cognome =? where Nickname=?";
@@ -1459,7 +1468,7 @@ public class Mysql{
      * Aggiorna la giornata reale quando viene cambiato dall'admin.
      * @param giornata giornata da modificare
      */
-    public void aggiornaGiornataReale(GiornataReale giornata){
+    public static void aggiornaGiornataReale(GiornataReale giornata){
         Connection conn=null;
         PreparedStatement giornatastmt = null;
         String giornataSql = "UPDATE GiornataAnno set DataOraInizio=?, DataOraFine=? where NrGioReale=?";
@@ -1511,7 +1520,7 @@ public class Mysql{
      * @param squadra squadra per la quale bisogna cancellare la formazione
      * @return true se l'aggiornamento è andato a buon fine
      */
-    public boolean deleteFormazioneInserita(Squadra squadra){
+    public static boolean deleteFormazioneInserita(Squadra squadra){
         Connection conn = null;
         PreparedStatement deleteFormazioneInseritastmt = null;
         String deleteFormazioneInseritaSql = "delete from Formazione where IDpart=? and NomeSq=?";
@@ -1569,7 +1578,7 @@ public class Mysql{
      * @param campionato campionato per cui bisogna inserire i risultati della giornata
      * @return true se l'inseriemnto è andato a buon fine, false altrimenti
      */
-    public boolean inserisciRisultatiGiornata(Campionato campionato){
+    public static boolean inserisciRisultatiGiornata(Campionato campionato){
         Connection conn = null;
         PreparedStatement partitastmt = null;
         String partitaSql="UPDATE Partita set PunteggioCasa=?, PunteggioOspite=?, GolCasa=?, GolOspite=? where ID=?";
@@ -1687,7 +1696,7 @@ public class Mysql{
      * @param squadra squadra loggata
      * @return lista con array di stringhe. [0] =titolo, [1]=testo
      */
-    public ArrayList<String[]> selectAvvisi(Squadra squadra){
+    public static ArrayList<String[]> selectAvvisi(Squadra squadra){
         Connection conn = null;
         PreparedStatement avvisistmt = null;
         String avvisiSql = "SELECT * from Avvisi where NomeCampionato=? order by ID desc";
@@ -1746,7 +1755,7 @@ public class Mysql{
      * @param squadra squadra
      * @return lista con array di stringhe. [0]= titolo, [0]=testo,[3]=nick utente
      */
-    public ArrayList<String[]> selectMessaggi(Squadra squadra){
+    public static ArrayList<String[]> selectMessaggi(Squadra squadra){
         Connection conn = null;
         PreparedStatement messaggiStmt = null;
         String messaggiSql = "SELECT M.Titolo, M.Testo, F.Nome from Messaggi as M JOIN Fantasquadra as F on F.ID=M.IDSquadra where NomeCampionato=? order by M.ID desc";
@@ -1818,7 +1827,7 @@ public class Mysql{
      * @param campionato campionato da inserire
      * @return true se l'inserimento è andato a buon fine, false altrimenti
      */
-    public boolean creaCampionato(Campionato campionato){
+    public static boolean creaCampionato(Campionato campionato){
         Connection conn = null ;
         PreparedStatement campionatostmt = null;
         String campionatoSql ="INSERT into Campionato value(?,?,?,?,?,?)";
@@ -1991,7 +2000,7 @@ public class Mysql{
      * @param listaGiocatori lista dei giocatori disponibili
      * @return true se l'inserimento è andato a buon fine
      */
-    public boolean inserisciGiocatoriAnno(ArrayList<Giocatore> listaGiocatori){
+    public static boolean inserisciGiocatoriAnno(ArrayList<Giocatore> listaGiocatori){
         Connection conn = null;
         PreparedStatement giocatorestmt = null;
         String giocatoreSql = "INSERT into CalciatoreAnno value(?,?,?,?,?)";
@@ -2053,7 +2062,7 @@ public class Mysql{
      * @param campionato campionato per il quale bisogna inserire le rose
      * @return true se l'inserimento è andato a buon fine, false altrimenti
      */
-    public boolean inserisciGiocatori(Campionato campionato){
+    public static boolean inserisciGiocatori(Campionato campionato){
         Connection conn = null;
         PreparedStatement giocatorestmt = null;
         String giocatoreSql = "INSERT into Tesseramento value(?,?,?,?)";
@@ -2150,7 +2159,7 @@ public class Mysql{
      * @param numeroGiornta numero della giornata reale
      * @return true se l'inseriemento è andato a buon fine, false altrimenti
      */
-    public boolean inserisciVoti(ArrayList<ArrayList<String>> listaVoti, int numeroGiornta){
+    public static boolean inserisciVoti(ArrayList<ArrayList<String>> listaVoti, int numeroGiornta){
         Connection conn = null;
         PreparedStatement votostmt=null;
         String votoSql ="INSERT into Voto value(?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -2229,7 +2238,7 @@ public class Mysql{
      * @param partita partita per la quale bisogna inserire la formazione
      * @return true se l'inserimento è andato a buon fine, false altrimenti
      */
-    public boolean inserisciFormazione(Squadra squadra, Partita partita){
+    public static boolean inserisciFormazione(Squadra squadra, Partita partita){
         Connection conn = null;
         PreparedStatement formazionestmt = null;
         String formazioneSql = "INSERT into Formazione value(?,?,?,?)";
@@ -2298,7 +2307,7 @@ public class Mysql{
      * @param testo testo dell'avviso
      * @return tru se l'inserimento è andato a buon fine
      */
-    public boolean inserisciAvviso(Campionato campionato, String titolo, String testo){
+    public static boolean inserisciAvviso(Campionato campionato, String titolo, String testo){
         Connection conn = null;
         PreparedStatement avvisostmt = null;
         String avvisoSql = "INSERT into Avvisi(NomeCampionato, Titolo, Testo) value(?,?,?)";
@@ -2357,7 +2366,7 @@ public class Mysql{
      * @param testo testo del messaggio
      * @return true se l'inserimento è andato a buon fine, false altrimenti
      */
-    public boolean inserisciMessaggio(Squadra squadra, String titolo, String testo){
+    public static boolean inserisciMessaggio(Squadra squadra, String titolo, String testo){
         Connection conn = null;
         PreparedStatement messaggioStmt = null;
         String messaggioSql = "INSERT into Messaggi(NomeCampionato, IDSquadra, Titolo, Testo) value(?,?,?,?)";
@@ -2418,7 +2427,7 @@ public class Mysql{
      * Inoltre termina tutti i campionati che non sono stati terminati dai rispettivi presidenti di lega
      * @return true se l'inserimento è andato a buon fine, false altrimenti
      */
-    public boolean terminaCampionatoAdmin(){
+    public static boolean terminaCampionatoAdmin(){
         Connection conn = null;
         PreparedStatement deletestmt = null;
         String[] deleteSql = {"TRUNCATE CalciatoreAnno","TRUNCATE GiornataAnno","TRUNCATE Voto"};
@@ -2506,7 +2515,7 @@ public class Mysql{
      * -classifica finale.
      * @return true se l'aggiornamento è andato a buon fine, false altrimenti
      */
-    public boolean terminaCampionato(Campionato campionato){
+    public static boolean terminaCampionato(Campionato campionato){
         Connection conn = null;
         PreparedStatement campionatoStmt = null;
         String campionatoSql = "INSERT into CampionatoStorico(Presidente, Anno,Nome) value(?,?,?) ";
@@ -2756,7 +2765,7 @@ public class Mysql{
      * @param utente utente
      * @return lista dei campionati passati
      */
-    public ArrayList<Storico> selectStorico(Persona utente){
+    public static ArrayList<Storico> selectStorico(Persona utente){
         Connection conn=null;
         PreparedStatement storicoStmt=null;
         String storicoSql="select C.* from FantasquadraStorico as F join CampionatoStorico as C on F.IDCampionato=C.ID where NickUt=?";
@@ -2853,7 +2862,7 @@ public class Mysql{
      * @param storico storico
      * @return classifica: array list di classifica
      */
-    public ArrayList<Classifica> selectClassificaStorico(Storico storico){
+    public static ArrayList<Classifica> selectClassificaStorico(Storico storico){
         Connection conn = null;
         PreparedStatement classificastmt = null;
         String classificaSql ="SELECT * from ClassificaStorico JOIN FantasquadraStorico on ClassificaStorico.IDSquadra=FantasquadraStorico.ID where ClassificaStorico.IDCampionato=?";
@@ -2935,7 +2944,7 @@ public class Mysql{
      * @param storico storico
      * @return calendario: arraylisti di giornate
      */
-    public ArrayList<Giornata> selectGiornateStorico(Storico storico){
+    public static ArrayList<Giornata> selectGiornateStorico(Storico storico){
         Connection conn = null;
         PreparedStatement giornatastmt = null;
         String giornataSql = "select * from GiornataStorico where IDCampionato=?";

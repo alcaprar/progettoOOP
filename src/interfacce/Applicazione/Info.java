@@ -1,8 +1,10 @@
 package interfacce.Applicazione;
 
-import entità.Squadra;
 import db.Mysql;
-import utils.*;
+import entità.Squadra;
+import utils.RenderTableAlternate;
+import utils.TableNotEditableModel;
+import utils.Validator;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -38,7 +40,6 @@ public class Info extends JPanel{
 
     private Squadra squadra;
     private DefaultListModel<String> listModel;
-    final private Mysql db = new Mysql();
 
     /**
      * Costruttore della pagina per la visualizzazione delle info.
@@ -47,9 +48,9 @@ public class Info extends JPanel{
         modificaName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(!nomeText.equals("")) {
+                if(Validator.nome(nomeText.getText())) {
                     squadra.getProprietario().setNome(nomeText.getText());
-                    db.aggiornaNomeUtente(squadra.getProprietario());
+                    Mysql.aggiornaNomeUtente(squadra.getProprietario());
                     miniRefresh();
                 } else if(!squadra.getProprietario().getNome().equals("")){
                     nomeText.setText(squadra.getProprietario().getNome());
@@ -60,9 +61,9 @@ public class Info extends JPanel{
         modificaCog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(!cognomeText.equals("")) {
+                if(Validator.cognome(cognomeText.getText())) {
                     squadra.getProprietario().setCognome(cognomeText.getText());
-                    db.aggiornaCognomeUtente(squadra.getProprietario());
+                    Mysql.aggiornaCognomeUtente(squadra.getProprietario());
                     miniRefresh();
                 } else if(!squadra.getProprietario().getNome().equals("")){
                     cognomeText.setText(squadra.getProprietario().getCognome());
@@ -74,7 +75,7 @@ public class Info extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(db.inserisciMessaggio(squadra, titoloMessaggio.getText(), testoMessaggio.getText())){
+                if(Mysql.inserisciMessaggio(squadra, titoloMessaggio.getText(), testoMessaggio.getText())){
                     JOptionPane.showMessageDialog(null, "Avviso inserito con successo", "Successo", JOptionPane.INFORMATION_MESSAGE);
                     titoloMessaggio.setText("");
                     testoMessaggio.setText("");

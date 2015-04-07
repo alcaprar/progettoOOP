@@ -1,12 +1,11 @@
 package interfacce.Applicazione;
 
-import entità.Storico;
 import db.Mysql;
+import entità.Storico;
 import interfacce.Login.CaricamentoDati;
 import interfacce.Login.Login;
 import utils.RenderTableAlternate;
 import utils.TableNotEditableModel;
-import utils.Utils;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -30,10 +29,6 @@ public class HomeStorico extends JFrame {
 
     private Storico storico;
 
-    private Utils utils = new Utils();
-
-    private Mysql db = new Mysql();
-
     /**
      * Costruttore della pagina per la visualizzazione dello storico.
      * @param storico oggetto storico da visualizzare
@@ -44,8 +39,8 @@ public class HomeStorico extends JFrame {
         super("JFantacalcio - Storico");
         this.storico=storico;
 
-        storico.setCalendario(db.selectGiornateStorico(storico));
-        storico.setClassifica(db.selectClassificaStorico(storico));
+        storico.setCalendario(Mysql.selectGiornateStorico(storico));
+        storico.setClassifica(Mysql.selectClassificaStorico(storico));
 
         nomeCampionato.setText(storico.getNome());
         annoCampionato.setText(String.valueOf(storico.getAnno()));

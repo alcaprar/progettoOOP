@@ -1,7 +1,10 @@
 package AstaLive;
 
-import entità.*;
 import db.Mysql;
+import entità.Campionato;
+import entità.Giocatore;
+import entità.Persona;
+import entità.Squadra;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -32,8 +35,6 @@ public class Server extends Thread {
 
     private ArrayList<Giocatore> listaGiocatori;
 
-    final Mysql db = new Mysql();
-
     private Campionato campionato;
 
     public Server(int porta, ServerGUI serverGUI, Campionato camp){
@@ -45,7 +46,7 @@ public class Server extends Thread {
 
         accettaConnessioni=true;
 
-        listaGiocatori = db.selectGiocatoriAdmin();
+        listaGiocatori = Mysql.selectGiocatoriAdmin();
 
         try {
             //creo il server
@@ -670,7 +671,7 @@ public class Server extends Thread {
                 }
             }
         }
-        return db.inserisciGiocatori(campionato);
+        return Mysql.inserisciGiocatori(campionato);
     }
 
     /**

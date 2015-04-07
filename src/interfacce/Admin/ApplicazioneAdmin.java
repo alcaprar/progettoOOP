@@ -1,7 +1,5 @@
 package interfacce.Admin;
 
-import db.Mysql;
-
 import javax.swing.*;
 
 /**
@@ -12,8 +10,6 @@ public class ApplicazioneAdmin extends JFrame {
     private JPanel panel1;
     private GiocatoriAdmin giocatoriAdmin;
     private VotiAdmin votiAdmin1;
-
-    final Mysql db = new Mysql();
 
     public ApplicazioneAdmin() {
         super("JFantacalcio - Admin");

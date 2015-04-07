@@ -45,8 +45,6 @@ public class Utils {
         //file da aprire
         File filexls = new File(pathfile);
         Workbook workbook;
-
-        final Mysql db = new Mysql();
         try{
             //creo un oggetto workbook dal file
             workbook = Workbook.getWorkbook(filexls);
@@ -72,7 +70,7 @@ public class Utils {
 
             }
 
-            return db.inserisciGiocatoriAnno(listaGiocatori);
+            return Mysql.inserisciGiocatoriAnno(listaGiocatori);
         } catch (BiffException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Formato del file sconosciuto.\nIl file deve essere un file xls < Excel 2007", "Errore", JOptionPane.ERROR_MESSAGE);
@@ -90,8 +88,6 @@ public class Utils {
         //file da aprire
         File filexls = new File(pathFile);
         Workbook workbook;
-
-        final Mysql db = new Mysql();
         try {
             workbook = Workbook.getWorkbook(filexls);
             // prendo il primo foglio
@@ -122,7 +118,7 @@ public class Utils {
                 }
             }
 
-            return db.inserisciVoti(listaVoti, numeroGiornata) ;
+            return Mysql.inserisciVoti(listaVoti, numeroGiornata) ;
         } catch (BiffException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null,"Formato del file sconosciuto.\nIl file deve essere un file xls < Excel 2007","Errore",JOptionPane.ERROR_MESSAGE);
@@ -175,7 +171,7 @@ public class Utils {
      * @param listaGiornate
      * @return
      */
-    public Object[][] listaGiornateToArray(ArrayList<GiornataReale> listaGiornate){
+    public static Object[][] listaGiornateToArray(ArrayList<GiornataReale> listaGiornate){
         Object[][] listaObject = new Object[listaGiornate.size()][3];
 
         for(int i=0; i<listaGiornate.size();i++){

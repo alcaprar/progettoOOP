@@ -1,14 +1,16 @@
 package interfacce.Applicazione;
 
+import db.Mysql;
+import entità.Campionato;
+import entità.Persona;
+import entità.Squadra;
+import interfacce.Login.Login;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.util.ArrayList;
-
-import entità.*;
-import db.Mysql;
-import interfacce.Login.Login;
 
 
 /**
@@ -55,8 +57,6 @@ public class CreaCampionato extends JFrame {
     private DefaultListModel partecipantiModel, utentiModel;
 
     private Campionato campionato;
-
-    final private Mysql db = new Mysql();
 
     /**
      * Costruttore dell'oggetto CreaCampionato.
@@ -195,7 +195,7 @@ public class CreaCampionato extends JFrame {
                     JOptionPane.showMessageDialog(getContentPane(),"Nome campionato troppo lungo.","Errore",JOptionPane.ERROR_MESSAGE);
                 } else {
                     campionato = creaCampionato();
-                    if (db.creaCampionato(campionato)) {
+                    if (Mysql.creaCampionato(campionato)) {
                         Object[] options = {"OK"};
                         int succesDialog = JOptionPane.showOptionDialog(getContentPane(), "Campionato creato con successo!",
                                 "Risposta",
@@ -256,10 +256,8 @@ public class CreaCampionato extends JFrame {
      * Aggiunge il presidente di lega(colui che sta creando il campionato) al model dei partecipanti.
      */
     private void setJlist() {
-        //db
-        final Mysql db = new Mysql();
         //scarica la lista degli utenti e li metto in un array di stringhe
-        listaUtenti = db.selectUtenti();
+        listaUtenti = Mysql.selectUtenti();
 
         //inizializzo i modelli per le jlist
         utentiModel = new DefaultListModel();

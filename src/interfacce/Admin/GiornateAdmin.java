@@ -1,7 +1,7 @@
 package interfacce.Admin;
 
-import entità.*;
 import db.Mysql;
+import entità.GiornataReale;
 import utils.Utils;
 
 import javax.swing.*;
@@ -27,13 +27,9 @@ public class GiornateAdmin extends JPanel {
 
     private ArrayList<GiornataReale> listaGiornate = new ArrayList<GiornataReale>();
 
-    final private Mysql db = new Mysql();
-
-    private Utils utils = new Utils();
-
     public GiornateAdmin() {
 
-        listaGiornate = db.selectGiornateAdmin();
+        listaGiornate = Mysql.selectGiornateAdmin();
 
         setTabella();
 
@@ -77,7 +73,7 @@ public class GiornateAdmin extends JPanel {
                 listaGiornate.get(giornata).setDataOraInizio((Date)spinnerInizio.getValue());
                 listaGiornate.get(giornata).setDataOraFine((Date) spinnerFine.getValue());
 
-                db.aggiornaGiornataReale(listaGiornate.get(giornata));
+                Mysql.aggiornaGiornataReale(listaGiornate.get(giornata));
                 setTabella();
             }
         });
@@ -93,7 +89,7 @@ public class GiornateAdmin extends JPanel {
     private void setTabella() {
         Object[] nomeColonne = {"Numero Giornata", "Data Ora Inizio","Data Ora fine"};
         //listaToArray ritorna un array di object che serve per il model
-        Object[][] righeGiornate = utils.listaGiornateToArray(listaGiornate);
+        Object[][] righeGiornate = Utils.listaGiornateToArray(listaGiornate);
         //creo il modello con le colonne e i giocatori
         DefaultTableModel giocatoriModel = new DefaultTableModel(righeGiornate, nomeColonne) {
             //rende non modificabili le celle della tabella

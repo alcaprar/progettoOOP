@@ -1,13 +1,13 @@
 package interfacce.Login;
 
-import entità.*;
-import db.*;
-import utils.*;
+import db.Mysql;
+import entità.Persona;
+import utils.Utils;
+import utils.Validator;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 /**
  *
@@ -37,7 +37,6 @@ public class Registra extends JFrame {
     public Registra() {
         //titolo del frame
         super("JFantacalcio - Registra");
-        final Mysql db = new Mysql();
         setContentPane(panel1);
 
         pack();
@@ -52,23 +51,16 @@ public class Registra extends JFrame {
         registratiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
+
                     if (campiRegistrazioneValidi()) {
                         utente = creaUtente();
-                        if (db.registra(utente)) {
+                        if (Mysql.registra(utente)) {
                             JOptionPane.showMessageDialog(getContentPane(), "Registrazione effettuata con successo", "Registrazione OK", JOptionPane.INFORMATION_MESSAGE);
                             dispose();
                         }
                     }
 
-                } catch (SQLException se) {
-                    if (se.getErrorCode() == 1062) {
-                        JOptionPane.showMessageDialog(getContentPane(), "Il nickname che hai inserito è già registrato.", "Errore", JOptionPane.ERROR_MESSAGE);
-                    }
 
-                } catch (Exception ce) {
-                    ce.printStackTrace();
-                }
             }
         });
 

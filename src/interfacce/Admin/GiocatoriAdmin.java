@@ -26,14 +26,12 @@ public class GiocatoriAdmin extends JPanel {
 
     private ArrayList<Giocatore> listaGiocatori = new ArrayList<Giocatore>();
 
-    final private Mysql db = new Mysql();
-
     private String pathFile;
 
 
     public GiocatoriAdmin(final ApplicazioneAdmin frame) {
 
-        listaGiocatori = db.selectGiocatoriAdmin();
+        listaGiocatori = Mysql.selectGiocatoriAdmin();
 
         //se la lista di giocatori non è vuota, cioè
         //è già stato caricato il csv una volta
@@ -69,7 +67,7 @@ public class GiocatoriAdmin extends JPanel {
                     if(Utils.xlsQuotazioni(pathFile)){
                         JOptionPane.showMessageDialog(getPanel(),"Inserimento giocatori effettuato con successo.","Ok",JOptionPane.INFORMATION_MESSAGE);
 
-                        listaGiocatori = db.selectGiocatoriAdmin();
+                        listaGiocatori = Mysql.selectGiocatoriAdmin();
 
                         setTabella();
 

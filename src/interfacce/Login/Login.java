@@ -1,7 +1,9 @@
 package interfacce.Login;
 
-import entità.*;
 import db.Mysql;
+import entità.Persona;
+import entità.Squadra;
+import entità.Storico;
 import interfacce.Admin.ApplicazioneAdmin;
 import interfacce.Applicazione.Applicazione;
 import interfacce.Applicazione.CreaCampionato;
@@ -47,14 +49,9 @@ public class Login extends JFrame {
     //serve per le funzioni utili
     public Utils utils = new Utils();
 
-    final private Mysql db;
-
     public Login() {
         //titolo del frame
         super("JFantacalcio - Login");
-
-        //instanzio il db
-        db = new Mysql();
         //setta il contenuto principale del Jframe
         setContentPane(panel1);
         //"impacchetta" il Jframe (vuol dire che trova le dimensioni ideali in base ai componenti che ha dentro)
@@ -134,7 +131,7 @@ public class Login extends JFrame {
                 //-viene chiuso il Jframe del login
                 //-viene creato l'oggetto Applicazione passandogli la squadra
                 if(squadra.getNome()!= null && squadra.getNome().length()>0){
-                    db.aggiornaNomeSquadra(squadra);
+                    Mysql.aggiornaNomeSquadra(squadra);
                     if(utente.equals(squadra.getCampionato().getPresidente())) squadra.getProprietario().setPresidenteLega(true);
                     getFrame().dispose();
                     CaricamentoDati caricamento = new CaricamentoDati();
@@ -201,7 +198,7 @@ public class Login extends JFrame {
         utente = new Persona(usertxt.getText(), utils.passwordString(passtxt.getPassword()));
 
         //db.login restituisce true se le credenziali sono giuste
-        if (db.login(utente)) {
+        if (Mysql.login(utente)) {
             //se è l'admin controllo se è il primo login.
             if(utente.getNickname().equals("admin")){
                 if(utente.getPassword().equals("password")){
@@ -213,7 +210,7 @@ public class Login extends JFrame {
                     if (result == JOptionPane.OK_OPTION) {
                         String passwordValue = Utils.passwordString(passwordField.getPassword());
                         if(Validator.password(passwordValue)){
-                            if(db.aggiornaPasswordAdmin(passwordValue)){
+                            if(Mysql.aggiornaPasswordAdmin(passwordValue)){
                                 ApplicazioneAdmin admingui = new ApplicazioneAdmin();
                                 getFrame().dispose();
                             }
@@ -226,11 +223,11 @@ public class Login extends JFrame {
             } else {
                 //se l'utente esiste scarico le squadre di cui è presidente con la funzione selectSquadre
                 //che restituisce un arraylist di squadre
-                utente.setPresidenza(db.selectSquadre(utente));
+                utente.setPresidenza(Mysql.selectSquadre(utente));
                 //setto il combobox delle squadre dalla lista di squadre
                 setComboBoxSquadre();
                 //scarico la lista dei campionati a cui ha partecipato l'utente
-                utente.setListaStorico(db.selectStorico(utente));
+                utente.setListaStorico(Mysql.selectStorico(utente));
                 //setto il combobox dello storico
                 setComboBoxStorico();
                 //aggiorno il label con il nome dell'utente
@@ -295,7 +292,7 @@ public class Login extends JFrame {
     public void refresh() {
         //se l'utente esiste scarico le squadre di cui è presidente con la funzione selectSquadre
         //che restituisce un arraylist di squadre
-        utente.setPresidenza(db.selectSquadre(utente));
+        utente.setPresidenza(Mysql.selectSquadre(utente));
         //setto il combobox delle squadre dalla lista di squadre
         setComboBoxSquadre();
 

@@ -1,9 +1,9 @@
 package interfacce.Applicazione;
 
 
-import entità.*;
-import utils.*;
-
+import entità.Squadra;
+import utils.RenderTableAlternate;
+import utils.TableNotEditableModel;
 
 import javax.swing.*;
 
@@ -12,15 +12,13 @@ import javax.swing.*;
  * Estende un JPanel.
  * @author Alessandro Caprarelli
  * @author Giacomo Grilli
- * @author Christian Mattioli
+ * @author Christian Manfredi
  */
 public class Classifica extends JPanel {
     private JPanel mainPanel;
     private JTable tableClassifica;
 
     private Squadra squadra;
-
-    Utils utils = new Utils();
     /**
      * Setta il riferimento alla squadra loggato.
      * Viene utilizzato da Applicazione.

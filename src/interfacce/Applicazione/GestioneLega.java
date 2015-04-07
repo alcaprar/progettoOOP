@@ -1,7 +1,7 @@
 package interfacce.Applicazione;
 
-import entità.Squadra;
 import db.Mysql;
+import entità.Squadra;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -31,8 +31,6 @@ public class GestioneLega extends JPanel{
     private Squadra squadra;
 
     private Applicazione applicazione;
-
-    private final Mysql db = new Mysql();
 
     private int giornataVotiInseriti;
     private int ultimaGiornataReale;
@@ -68,13 +66,13 @@ public class GestioneLega extends JPanel{
 
     public GestioneLega(){
 
-        giornataVotiInseriti = db.selectGiornateVotiInseriti();
+        giornataVotiInseriti = Mysql.selectGiornateVotiInseriti();
 
         inviaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(db.inserisciAvviso(squadra.getCampionato(), titoloAvviso.getText(), testoAvviso.getText())){
+                if(Mysql.inserisciAvviso(squadra.getCampionato(), titoloAvviso.getText(), testoAvviso.getText())){
                     JOptionPane.showMessageDialog(null, "Avviso inserito con successo", "Successo", JOptionPane.INFORMATION_MESSAGE);
                     titoloAvviso.setText("");
                     testoAvviso.setText("");
@@ -95,7 +93,7 @@ public class GestioneLega extends JPanel{
                 //aggiorno la classifica del campionato
                 squadra.getCampionato().aggiornaClassifica(squadra.getCampionato().prossimaGiornata());
                 //inserisco gli aggiornamenti nel db
-                if(db.inserisciRisultatiGiornata(squadra.getCampionato())){
+                if(Mysql.inserisciRisultatiGiornata(squadra.getCampionato())){
                     //aggiorno la prossima giornata
                     squadra.getCampionato().setProssimaGiornata(squadra.getCampionato().getProssimaGiornata() + 1);
                     //permetto l'inserimento per la prossima partita
@@ -126,7 +124,7 @@ public class GestioneLega extends JPanel{
         terminaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                db.terminaCampionato(squadra.getCampionato());
+                Mysql.terminaCampionato(squadra.getCampionato());
                 applicazione.dispose();
                 applicazione.getLoginForm().setVisible(true);
                 applicazione.getLoginForm().refresh();

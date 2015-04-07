@@ -1,7 +1,10 @@
 package interfacce.Applicazione;
 
-import entità.*;
 import db.Mysql;
+import entità.Giornata;
+import entità.Partita;
+import entità.Squadra;
+import entità.Voto;
 import interfacce.Login.CaricamentoDati;
 import interfacce.Login.Login;
 import org.joda.time.DateTime;
@@ -9,7 +12,10 @@ import org.joda.time.DateTime;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 /**
@@ -45,8 +51,6 @@ public class Applicazione extends JFrame {
 
     private Login loginForm;
 
-    final Mysql db = new Mysql();
-
     public Applicazione(final Squadra squadra, CaricamentoDati caricamento, Login login) {
         super("JFantacalcio");
 
@@ -55,12 +59,12 @@ public class Applicazione extends JFrame {
 
         //scarico la classifica e la inserisco nel campionato
         ArrayList<entità.Classifica> classifica = new ArrayList<entità.Classifica>();
-        classifica = db.selectClassifica(sqr.getCampionato());
+        classifica = Mysql.selectClassifica(sqr.getCampionato());
         sqr.getCampionato().setClassifica(classifica);
 
         //scarico il calendario e lo inserisco nel campionato
         ArrayList<Giornata> listaGiornate = new ArrayList<Giornata>();
-        listaGiornate = db.selectGiornate(sqr.getCampionato());
+        listaGiornate = Mysql.selectGiornate(sqr.getCampionato());
         sqr.getCampionato().setCalendario(listaGiornate);
 
         //scarico la lista dei giocatori delle squadre del mio campionato
@@ -70,27 +74,27 @@ public class Applicazione extends JFrame {
         for(Giornata giorn :sqr.getCampionato().getCalendario()){
             if(giorn.getNumGiornata()<=sqr.getCampionato().getProssimaGiornata()) {
                 for (Partita part : giorn.getPartite()) {
-                    ArrayList<Voto> formCasa = db.selectFormazioni(part.getID(), part.getFormCasa().getSquadra());
+                    ArrayList<Voto> formCasa = Mysql.selectFormazioni(part.getID(), part.getFormCasa().getSquadra());
                     part.getFormCasa().setListaGiocatori(formCasa);
-                    ArrayList<Voto> formOspite = db.selectFormazioni(part.getID(), part.getFormOspite().getSquadra());
+                    ArrayList<Voto> formOspite = Mysql.selectFormazioni(part.getID(), part.getFormOspite().getSquadra());
                     part.getFormOspite().setListaGiocatori(formOspite);
                 }
             }
         }
 
         //controllo se è già stata inserita la formazione
-        sqr.setFormazioneInserita(db.selectFormazioneInserita(sqr));
+        sqr.setFormazioneInserita(Mysql.selectFormazioneInserita(sqr));
 
         //scarico la lista degli avvisi
-        sqr.getCampionato().setListaAvvisi(db.selectAvvisi(sqr));
+        sqr.getCampionato().setListaAvvisi(Mysql.selectAvvisi(sqr));
 
         //scarico la lista dei messaggi se è il presidente di lega
         if(sqr.getProprietario().isPresidenteLega()){
-            sqr.getCampionato().setListaMessaggi(db.selectMessaggi(sqr));
+            sqr.getCampionato().setListaMessaggi(Mysql.selectMessaggi(sqr));
         }
 
         //scarico la lista dei giocatori della squadra loggata
-        sqr.setGiocatori(db.selectGiocatori(sqr));
+        sqr.setGiocatori(Mysql.selectGiocatori(sqr));
 
         //setto in tutti i pannelli il riferimento a squadra
         homePanel.setSquadra(sqr);
@@ -239,7 +243,7 @@ public class Applicazione extends JFrame {
      */
     private void setListaGiocatori(){
         for(Squadra squadre: sqr.getCampionato().getListaSquadrePartecipanti()){
-            squadre.setGiocatori(db.selectGiocatori(squadre));
+            squadre.setGiocatori(Mysql.selectGiocatori(squadre));
         }
     }
 
