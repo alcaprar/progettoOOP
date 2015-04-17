@@ -15,16 +15,16 @@ public class Fantacalcio{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
         catch (UnsupportedLookAndFeelException e) {
-            exit(-1);
+            //niente da fare
         }
         catch (ClassNotFoundException e) {
-            exit(-1);
+            //niente da fare
         }
         catch (InstantiationException e) {
-            exit(-1);
+            //niente da fare
         }
         catch (IllegalAccessException e) {
-            exit(-1);
+            //niente da fare
         }
 
         Login logingui = new Login();

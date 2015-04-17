@@ -10,7 +10,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/mysql-connector.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/joda-time-2.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -28,7 +28,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/joda-time-2.4.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/mysql-connector.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
