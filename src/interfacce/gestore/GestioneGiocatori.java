@@ -236,12 +236,8 @@ public class GestioneGiocatori extends JPanel {
                     }
                     if (Mysql.inserisciGiocatori(squadra.getCampionato())) {
                         //se l'inserimento è andato bene mostra un dialog
-                        //rimuove la tab della gestione giocatori e
-                        //si sposta sulla tab di home
                         JOptionPane.showMessageDialog(null, "Le rose sono state inserite con successo!", "Avviso", JOptionPane.INFORMATION_MESSAGE);
                         getPanel().refreshGiaInseriti();
-                        //gestore.getTabbedPane().remove(gestore.getTabbedPane().indexOfTab("Gestione Giocatori"));
-                        //gestore.getTabbedPane().setSelectedIndex(0);
                         applicazione.getFormazionePanel().refresh();
                         applicazione.getInfoPanel().refresh();
                     }
